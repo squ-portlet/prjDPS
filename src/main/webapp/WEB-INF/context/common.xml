@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  
+ * Project 				:	prjDPS
+ * Organization 		:	Sultan Qaboos University
+ * Centre				:	Centre for Information System
+ * Department 			:	Web & E-Services
+ * Author				:	Bhabesh
+ * 
+ * FrameWork			:	Spring 3.2.3 (Annotation) Portlet
+ * 
+ * File Name			:	common.xml
+ * 
+ * Date of Modification	:	22-December-2016
+ *  
+ * Summary				:	web context file
+ *
+ * Copyright 2016 the original author or authors.
+ *
+ * Licensed under the SQU, CIS policy
+ * you may not use this file except in compliance with the License.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ */
+--> 
+<beans xmlns="http://www.springframework.org/schema/beans"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xmlns:aop="http://www.springframework.org/schema/aop"
+     xmlns:tx="http://www.springframework.org/schema/tx"
+     xmlns:context="http://www.springframework.org/schema/context"
+     xmlns:util="http://www.springframework.org/schema/util"
+     xsi:schemaLocation="
+     http://www.springframework.org/schema/beans 
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/tx 
+     http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+     http://www.springframework.org/schema/aop 
+     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+     http://www.springframework.org/schema/context
+     http://www.springframework.org/schema/context/spring-context-3.0.xsd
+     http://www.springframework.org/schema/util
+     http://www.springframework.org/schema/util/spring-util-3.0.xsd
+     ">
+
+			<context:component-scan base-package="om.edu.squ.squportal.portlet.dps.utility" />
+			<context:component-scan base-package="om.edu.squ.squportal.portlet.preferences.dao.service" />
+			<context:component-scan base-package="om.edu.squ.squportal.portlet.preferences.dao.db" />
+
+    	<!-- View resolver -->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- property name="cache" value="true" /-->
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+		<property name="requestContextAttribute"><value>rc</value></property>
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<!-- Message source for this context, loaded from localized "messages_xx" files -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>messages</value>
+				<value>extension</value>
+			</list>
+		</property>	
+	</bean>
+	
+	<!-- LDAP source for this context, loaded from "ldap.properties" files -->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+					<!-- 
+					<value>classpath:jdbc.properties</value>
+					 -->
+					<value>classpath:ldap.properties</value>
+			</list>
+		</property>
+	</bean>
+   
+	 <bean id="queryProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+    	<property name="locations" value="classpath:sql/query.xml" />
+	</bean>
+	 <bean id="queryPropsCommonRole" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+    	<property name="locations" value="classpath:sql/sql_role.xml" />
+	</bean>
+
+<!-- Data Source from HRMS -->
+		<bean id="dataSourceHrms" class="org.springframework.jndi.JndiObjectFactoryBean"> 
+	    	<property name="jndiName" value="java:comp/env/jdbc/hrmscl"/> 
+	 	</bean> 
+		<bean id="namedParameterJdbcTemplateHrms" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">  
+			<constructor-arg ref="dataSourceHrms"></constructor-arg>  
+		</bean>
+		<bean id="simpleJdbcCallHrms" class="org.springframework.jdbc.core.simple.SimpleJdbcCall">
+			<constructor-arg ref="dataSourceHrms"></constructor-arg>
+		</bean>
+<!-- Data Source from DPS -->	
+		<bean id="dataSourceDps" class="org.springframework.jndi.JndiObjectFactoryBean"> 
+    		<property name="jndiName" value="java:comp/env/jdbc/dpsTest"/> 
+ 		</bean> 
+		<bean id="namedParameterJdbcTemplateDps" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">  
+			<constructor-arg ref="dataSourceDps"></constructor-arg>  
+		</bean>
+		<bean id="simpleJdbcCallDps" class="org.springframework.jdbc.core.simple.SimpleJdbcCall">
+			<constructor-arg ref="dataSourceDps"></constructor-arg>
+		</bean>
+
+<!-- DI to DPS Common DB Dao -->			
+		<bean id="dpsDbDao"	class="om.edu.squ.squportal.portlet.dps.dao.db.DpsDbImpl">
+	 		<property name="nPJdbcTemplHrms" ref="namedParameterJdbcTemplateHrms"/> 
+	 		<property name="simpleJdbcCallHrms" ref="simpleJdbcCallHrms"/>
+	 		<property name="nPJdbcTemplDps" ref="namedParameterJdbcTemplateDps"/> 
+	 		<property name="simpleJdbcCallDps" ref="simpleJdbcCallDps"/>
+			<property name="queryProps" ref="queryProps" />
+	 	</bean>
+		
+<!-- DI to DPS Common Service Dao -->
+	<bean id="dpsServiceDao"	class="om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceImpl"/>
+
+
+<!-- DI to DPS Common Role Dao -->
+		<bean id="roleDbDao" class="om.edu.squ.squportal.portlet.dps.role.db.RoleDbImpl">
+			<property name="nPJdbcTemplDps" ref="namedParameterJdbcTemplateDps"/> 
+	 		<property name="simpleJdbcCallDps" ref="simpleJdbcCallDps"/>
+	 		<property name="queryPropsCommonRole" ref="queryPropsCommonRole" />
+		</bean>
+
+<!-- om.edu.squ.squportal.portlet.dps.role.service -->
+
+
+
+
+
+
+
+	<bean id="userIdUtil"	class="om.edu.squ.squportal.portlet.dps.utility.UserIdUtil"/>
+<!-- 
+	<bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller"/> -->
+	
+    <bean id="jaxb2Marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <property name="classesToBeBound">
+            <list>
+                <value>om.edu.squ.squportal.portlet.dps.role.bo.RoleExtension</value>
+                <value>om.edu.squ.squportal.portlet.dps.role.bo.Advisor</value>
+                <value>om.edu.squ.squportal.portlet.dps.role.bo.Supervisor</value>
+                <value>om.edu.squ.squportal.portlet.dps.role.bo.HOD</value>
+                <value>om.edu.squ.squportal.portlet.dps.role.bo.CollegeAsstDean</value>
+                <value>om.edu.squ.squportal.portlet.dps.role.bo.CollegeDean</value>
+                <value>om.edu.squ.squportal.portlet.dps.role.bo.DpsDean</value>
+                <value>om.edu.squ.squportal.portlet.dps.role.bo.DpsStaff</value>
+            </list>
+        </property>
+    </bean>
+    
+
+	<bean id="roleService" class="om.edu.squ.squportal.portlet.dps.role.service.RoleServiceImpl">
+<!-- 		<property name="unmarshaller" ref="castorMarshaller" /> -->
+		<property name="unmarshaller" ref="jaxb2Marshaller" />
+	</bean>
+
+	
+<!--	
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean"> 
+    	<property name="jndiName" value="java:comp/env/jdbc/pool/dsnewlib"/> 
+ 	</bean> 
+	<bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">  
+		<constructor-arg ref="dataSource"></constructor-arg>  
+	</bean>
+
+  	<bean id="libraryDbDao"	class="om.edu.squ.squportal.portlet.dps.dao.db.DpsDbImpl">
+
+ 		<property name="namedParameterJdbcTemplate" ref="namedParameterJdbcTemplate"/> 
+		<property name="queryProps" ref="queryProps" />
+
+ 	</bean>	 
+
+	<bean id="libraryServiceDao"	class="om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceImpl"/>
+
+-->
+
+<!-- LDAP - SQU Oracle Internet Directory Configuration -->
+	<!-- PRIMARY LDAP - SQU Oracle Internet Directory Configuration -->
+		<bean id="contextSource" class="org.springframework.ldap.core.support.LdapContextSource"> 
+		   <property name="url" value="${urls}" /> 
+		    <property name="base" value="${base}" /> 
+		</bean> 
+		<bean id="ldapTemplate" class="org.springframework.ldap.core.LdapTemplate">
+			<constructor-arg ref="contextSource" />
+		</bean>
+	<!-- ************************************* -->
+	<!-- ALTERNATE LDAP - SQU Oracle Internet Directory Configuration -->
+		<bean id="contextSource2"  class="org.springframework.ldap.core.support.LdapContextSource">
+		  <property name="url" value="${url2}"/>
+		   <property name="base" value="${base}" /> 
+		  <property name="userDn" value="${userdn}"/>
+		  <property name="password" value="${pwd}"/>
+		</bean>
+
+		<bean id="ldapTemplate2" class="org.springframework.ldap.core.LdapTemplate">
+			<constructor-arg ref="contextSource2" />
+		</bean>
+	<!-- ************************************* -->	
+<!--	
+		<bean id="ldapDao"
+			class="om.edu.squ.squportal.portlet.dps.dao.ldap.LdapDaoImpl">
+			<property name="ldapTemplate" ref="ldapTemplate" />
+			<property name="ldapTemplate2" ref="ldapTemplate2" />
+		</bean>
+-->
+		
+<!-- ************************************* -->		
+	<!-- Default ExceptionHandler -->
+<!-- 	<bean id="defaultExceptionHandler" class="org.springframework.web.portlet.handler.SimpleMappingExceptionResolver"> -->
+<!--     <property name="order" value="10"/> -->
+<!-- 		<property name="defaultErrorView" value="error"/> -->
+<!-- 		<property name="exceptionMappings"> -->
+<!-- 			<props> -->
+<!-- 				<prop key="javax.portlet.PortletSecurityException">unauthorized</prop> -->
+<!-- 				<prop key="javax.portlet.UnavailableException">unavailable</prop> -->
+<!-- 				<prop key="org.springframework.jdbc.CannotGetJdbcConnectionException">dbunavailable</prop> -->
+<!-- 				<prop key="org.springframework.ldap.CommunicationException">dbunavailable</prop> -->
+<!-- 			</props> -->
+<!-- 		</property>   -->
+<!-- 	</bean> -->
+    
+</beans>    

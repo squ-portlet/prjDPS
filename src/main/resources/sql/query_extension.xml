@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>DPS Queries -- Extension of Study </comment>
+  	<entry key="dps.extension.select.extension.reasons">
+  	<![CDATA[
+		SELECT 
+			SISCODECD										AS		SISCODECD	
+			,DECODE 
+					(
+					  :paramLocale,
+					  'en', CODENM, A_CODENM
+					)     									AS		EXTENSION_REASON_NAME
+		FROM 
+		    SIS_CODES
+		WHERE
+		    SISCODETYPCD=291
+  	]]>
+
+  	</entry>
+  	<entry key="dps.extension.select.student.records">
+	SELECT 
+	          TO_CHAR(EXTN.CREATE_DATE,'DD/MM/YYYY')									AS		CREATE_DATE
+	        , EXTN.TOCCYRCD																AS		TOCCYRCD
+	        , EXTN.TOSEMCD																AS		SEMCD
+	        , (
+	            SELECT 
+	                DECODE 
+	                (
+	                  :paramLocale,
+	                  'en', SEMNM, A_SEMNM
+	                )
+	              FROM SEM
+	              WHERE SEMCD = EXTN.TOSEMCD
+	          ) 																		AS 		SEM_NAME
+	        , EXTN.EXTREASONCD  														AS		EXTENSION_REASON_CODE
+	        , DECODE
+	          (
+	            EXTN.EXTREASONCD
+	            ,'5301',EXTN.OTHER_REASON, 
+	              DECODE
+	              (
+	                  :paramLocale
+	                  ,'en', SISCD.CODENM, SISCD.A_CODENM
+	              )
+	            )                                           							AS 		EXTENSION_REASON_NAME
+	        , EXTN.OTHER_REASON															AS		EXTENSION_OTHER_REASON							    
+	        , EXTN.EXTREQ_STATUSCD														AS		STATUS_CODE
+	        , (
+	            SELECT 
+	              DECODE 
+	              (
+	                :paramLocale
+	                ,'en', CODENM, A_CODENM
+	                )
+	              FROM SIS_CODES
+	              WHERE SISCODECD= EXTN.EXTREQ_STATUSCD
+	            ) 																		AS 		STATUS_DESC
+	        
+	FROM 
+	    STD_EXTENSION EXTN,
+	    SIS_CODES     SISCD
+	
+	WHERE
+	        EXTN.EXTREASONCD=SISCD.SISCODECD
+	    AND STDNO = :paramStdNo
+  	</entry>
+  
+  	
+  
+  	
+  	<entry key="dps.extension.insert.student">
+  		INSERT INTO  
+            STD_EXTENSION (
+                            STDNO
+                            ,STDSTATCD
+                            ,FROMCCYRCD
+                            ,FROMSEMCD
+                            ,TOCCYRCD
+                            ,TOSEMCD
+                            ,CREATE_USERNAME
+                            ,CREATE_DATE
+                            ,EXTREASONCD
+                            ,OTHER_REASON
+                            ,EXTREQ_STATUSCD
+                            )
+				VALUES    (
+                            :paramStdNo
+                            ,:paramStdStatCode
+                            ,:paramFromYearCode
+                            ,:paramFromSemCode
+                            ,:paramToYearCode
+                            ,:paramToSemCode
+                            ,:paramUserCode
+                            ,SYSDATE
+                            ,:paramExtReasonCode
+                            ,:paramExtReasonOther
+                            ,:paramExtStatusCode
+				          )
+  	</entry>
+  	<entry key="dps.extension.select.student.records.by.employee">
+				  	SELECT * 
+							  FROM
+							(  
+							    SELECT DISTINCT
+							            EXT.STDNO                                     	AS  STUDENT_NO
+							          , PORTAL.STD_ID									AS	STUDENT_ID  
+							          , DECODE
+							                  (
+							                      :paramLocal
+							                      ,'en',PORTAL.STD_NAME
+							                      , PORTAL.A_STD_NAME
+							                  )                                       	AS  STUDENT_NAME        
+							          , EXT.STDSTATCD                                 	AS  STDSTATCD
+							          , PORTAL.COHORT                                 	AS  COHORT
+							          , EXT.TOCCYRCD                                  	AS  TOCCYRCD                              
+							          , EXT.TOSEMCD                                   	AS  TOSEMCD
+							          , COL.COLCENCD
+							          , DECODE
+							                (
+							                    :paramLocal
+							                    ,'en', PORTAL.DEGREE_NAME
+							                    ,PORTAL.A_DEGREE_NAME
+							                )                                         	AS  DEGREE_NAME
+							          , DECODE 
+							                (
+							                      :paramLocal
+							                      ,'en', PORTAL.COLLEGENM
+							                      , PORTAL.A_COLLEGENM
+							                )                                         	AS  COLLEGE_NAME
+							          , EXT.EXTREQ_STATUSCD                           	AS  STATUS_CODE
+							          , (
+							              SELECT 
+							                  DECODE
+							                  (
+							                      :paramLocal
+							                      ,'en', CODENM , A_CODENM
+							                  )
+							                  FROM
+							                    SIS_CODES
+							                  WHERE 
+							                    SISCODECD = EXT.EXTREQ_STATUSCD
+							            )                                             	AS  STATUS_DESC
+							          , EXT.CREATE_DATE                               	AS  CREATE_DATE
+			                          , FUNC_APPROVE_STATUS(
+			                                              EXT.STDNO,
+			                                              :paramSupervisorRoleCode, 
+			                                              :paramFormCode
+			                                              )                           	AS  SUPERVISOR_STATUS
+			                          , FUNC_APPROVE_STATUS(
+			                                              EXT.STDNO,
+			                                              :paramColDeanRoleCode, 
+			                                              :paramFormCode
+			                                              )                           	AS  COLLEGE_DEAN_STATUS
+			                          , FUNC_APPROVE_STATUS(
+			                                              EXT.STDNO,
+			                                              :paramDpsDeanRoleCode, 
+			                                              :paramFormCode
+			                                              )                           	AS  DPS_DEAN_STATUS
+			                          ,	FUNC_IS_APPROVER(
+														 		  EXT.STDNO
+														 		, EXT.STDSTATCD
+														 		, :paramFormName
+														 		, :paramRoleName
+														 		, :paramEmpNo
+			                         						)						 	AS	IS_APPROVER	 					          
+							    FROM     
+							          STD_EXTENSION       EXT
+							          ,V_STDINFO_PORTAL   PORTAL
+							          ,COL_CEN            COL
+							          , STD_THESIS        THESIS
+							          , V_DEPT_MAJOR      DEPT_MAJ
+							          , COL_DEPT          DEPT
+							    WHERE
+							              DEPT.COLCENCD     = COL.COLCENCD
+							          AND DEPT_MAJ.DEPTNO   = DEPT.DEPTNO (+)
+							          AND EXT.STDNO         = PORTAL.STDNO
+							          AND THESIS.STDNO      = EXT.STDNO (+)
+							          AND THESIS.STDNO      = PORTAL.STDNO
+							          AND PORTAL.COLLEGE_CODE = COL.L_ABR_CC 
+							          --AND EXT.EXTREQ_STATUSCD IS NOT NULL
+							          AND 
+							              ( 
+							                      :paramColCode = COL.COLCENCD		 		--  College DEAN/ ASST DEAN
+							                  OR  :paramColCode IS NULL               		-- 	DPS DEAN / DPS STAFF
+							              )
+							          AND
+							            (
+							                      :paramAdvisor = PORTAL.ADVISOR			--	ADVISOR
+							                  OR  :paramAdvisor IS NULL
+							            )
+							          AND
+							            (
+							                      :paramSupervisor =  THESIS.SUPVISREMPNO	--	SUPERVISOR
+							                  OR  :paramSupervisor  IS NULL
+							            )
+							          AND
+							            (
+							                      :paramDeptCode  = DEPT.DEPTNO				--	HOD
+							                  OR  :paramDeptCode  IS NULL
+							            )
+							)
+							ORDER BY  CREATE_DATE DESC
+  	
+  	</entry>
+    
+</properties>

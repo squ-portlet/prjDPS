@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<!-- 
+		<entry key="sql.role.extension.is.supervisor">
+			SELECT 
+				    DECODE
+				          (
+				            COUNT_REC,
+				            0,'N','Y'
+				          )       AS      													IS_SUPERVISOR
+			FROM
+				(
+				    SELECT 
+				          COUNT(THESIS.STDNO) AS COUNT_REC
+				    FROM 
+				      STD_THESIS THESIS
+				      ,STD_EXTENSION EXT
+				    WHERE
+				        THESIS.STDNO = EXT.STDNO
+				        AND LPAD(THESIS.SUPVISREMPNO,7,0) = LPAD(:paramEmpNo,7,0)
+				)
+		
+		</entry>
+		<entry key="sql.role.extension.is.advisor">
+			SELECT 
+			    DECODE
+			          (
+			            COUNT_REC,
+			            0,'N','Y'
+			          )       AS      														IS_ADVISOR
+			FROM
+			(
+			    SELECT 
+			          COUNT(VPORTAL.STDNO) AS COUNT_REC
+			    FROM 
+			      V_STDINFO_PORTAL VPORTAL
+			    WHERE
+			         LPAD(VPORTAL.ADVISOR,7,0) = LPAD(:paramEmpNo,7,0)
+			)
+		</entry>
+		<entry key="sql.role.is.extension.col.dean">
+				SELECT 
+				    DECODE
+				          (
+				            COUNT_REC,
+				            0,'N','Y'
+				          )       AS      													IS_COL_DEAN
+				FROM
+				(
+				    SELECT 
+				          COUNT(USERS.USERNAME) AS COUNT_REC
+				    FROM 
+				      SIS_USERS USERS
+				      ,SIS_CODES CODES
+				      , (
+				          SELECT DISTINCT COL.COLCENCD
+				            FROM
+				                  V_STDINFO_PORTAL  PORTAL
+				                , COL_CEN           COL
+				                , STD_EXTENSION     EXTN
+				            WHERE
+				                PORTAL.STDNO = EXTN.STDNO
+				              AND PORTAL.COLLEGE_CODE = COL.L_ABR_CC
+				        ) EXTN_COLCEN
+				    WHERE
+				    USERS.USERCATEGORY = CODES.SISCODECD
+				      AND CODES.L_ABR_CODE LIKE 'DEAN'
+				      AND LPAD(LTRIM(USERS.USERNAME,'e'),7,0) = LPAD(:paramEmpNo,7,0)
+				      AND USERS.STATUSACTIVE='Y'
+				      AND USERS.COLCENCD =  EXTN_COLCEN.COLCENCD
+				)
+							
+		</entry>
+		
+		<entry key="sql.role.is.dps.dean">
+			SELECT 
+			    DECODE
+			          (
+			            COUNT_REC,
+			            0,'N','Y'
+			          )       AS      														IS_DPS_DEAN
+			FROM
+			(
+			    SELECT 
+			         COUNT(USERS.USERNAME) AS COUNT_REC
+			    FROM 
+			      SIS_USERS USERS
+			      ,SIS_CODES CODES
+			      
+			    WHERE
+			    USERS.USERCATEGORY = CODES.SISCODECD
+			      AND CODES.L_ABR_CODE LIKE '%DEAN%'
+			      AND LPAD(LTRIM(USERS.USERNAME,'e'),7,0) = LPAD(:paramEmpNo,7,0)
+			      AND USERS.STATUSACTIVE='Y'
+			      AND USERS.COLCENCD = 36 
+			)
+			
+		</entry>
+		
+		<entry key="sql.role.is.college.asst.dean">
+				SELECT 
+				    DECODE
+				          (
+				            COUNT_REC,
+				            0,'N','Y'
+				          )       AS      													IS_COL_ASST_DEAN
+				FROM
+				(
+				    SELECT 
+				          COUNT(USERS.USERNAME) AS COUNT_REC
+				    FROM 
+				      SIS_USERS USERS
+				      ,SIS_CODES CODES
+				      , (
+				          SELECT DISTINCT COL.COLCENCD
+				            FROM
+				                  V_STDINFO_PORTAL  PORTAL
+				                , COL_CEN           COL
+				                , STD_EXTENSION     EXTN
+				            WHERE
+				                PORTAL.STDNO = EXTN.STDNO
+				              AND PORTAL.COLLEGE_CODE = COL.L_ABR_CC
+				        ) EXTN_COLCEN
+				    WHERE
+				    USERS.USERCATEGORY = CODES.SISCODECD
+				      AND CODES.L_ABR_CODE LIKE 'ADEANP'
+				      AND LPAD(LTRIM(USERS.USERNAME,'e'),7,0) = LPAD(:paramEmpNo,7,0)
+				      AND USERS.STATUSACTIVE='Y'
+				      AND USERS.COLCENCD =  EXTN_COLCEN.COLCENCD
+				)
+		</entry>
+ -->		
+		
+</properties>

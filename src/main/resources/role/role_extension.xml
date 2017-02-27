@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<roleExtension>
+	<student access="view" sequence="0"></student>
+	<advisor access="view" sequence="0"></advisor>
+	<supervisor rolecode="2012" access="approve" sequence="1"></supervisor>
+	<hod access="view" sequence="0"></hod>
+	<collegeAsstDean access="view" sequence="0"></collegeAsstDean>
+	<collegeDean rolecode="1883" access="approve" sequence="2"></collegeDean>
+	<dpsDean rolecode="1883" access="approve" sequence="3"></dpsDean>
+	<dpsStaff access="view" sequence="0"></dpsStaff>	
+</roleExtension>

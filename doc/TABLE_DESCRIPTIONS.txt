@@ -1,0 +1,198 @@
+DESC SIS_CODES
+Name         Null     Type         
+------------ -------- ------------ 
+SISCODECD    NOT NULL NUMBER(4)    
+SISCODETYPCD NOT NULL NUMBER(3)    
+L_ABR_CODE   NOT NULL VARCHAR2(8)  
+A_ABR_CODE   NOT NULL VARCHAR2(8)  
+CODENM       NOT NULL VARCHAR2(80) 
+A_CODENM     NOT NULL VARCHAR2(80) 
+A_CODENM2             VARCHAR2(80) 
+ACTIVE       NOT NULL VARCHAR2(1)  
+UPDDTE       NOT NULL DATE         
+USRACCTCD    NOT NULL VARCHAR2(12) 
+
+desc approval_transaction    
+Name              Null     Type         
+----------------- -------- ------------ 
+STDNO             NOT NULL NUMBER(9)    
+STDSTATCD         NOT NULL NUMBER(9)    
+APPROVALCD        NOT NULL NUMBER(10)   
+APPROVAL_STATUSCD          NUMBER(4)    
+TRANSACTION_DATE           DATE         
+APPROVER_EMPNO             NUMBER(6)    
+APPROVER_USERNAME          VARCHAR2(20) 
+CREATE_DATE                DATE         
+CREATE_USERNAME            VARCHAR2(20) 
+UPDATE_DATE                DATE         
+UPDATE_USERNAME            VARCHAR2(20) 
+REQUESTCD                  NUMBER(10)   
+
+desc std_thesis
+Name          Null     Type          
+------------- -------- ------------- 
+STDTHESISCD   NOT NULL NUMBER(9)     
+STDNO         NOT NULL NUMBER(9)     
+THESISAREACD  NOT NULL NUMBER(4)     
+THESISEVALCD  NOT NULL NUMBER(4)     
+THESISTOPIC   NOT NULL VARCHAR2(160) 
+A_THESISTOPIC NOT NULL VARCHAR2(160) 
+STARTDTE      NOT NULL DATE          
+FINISHDTE              DATE          
+SUPVISREMPNO  NOT NULL NUMBER(6)     
+USRACCTCD     NOT NULL VARCHAR2(12)  
+UPDTE         NOT NULL DATE          
+STDSTATCD              NUMBER(9)     
+
+desc std_extension
+Name            Null     Type          
+--------------- -------- ------------- 
+STDNO           NOT NULL NUMBER(9)     
+STDSTATCD       NOT NULL NUMBER(9)     
+FROMCCYRCD      NOT NULL NUMBER(4)     
+FROMSEMCD       NOT NULL NUMBER(2)     
+TOCCYRCD        NOT NULL NUMBER(4)     
+TOSEMCD         NOT NULL NUMBER(2)     
+COMMNT                   VARCHAR2(80)  
+A_COMMNT                 VARCHAR2(80)  
+USRACCTCD                VARCHAR2(12)  
+UPDDTE                   DATE          
+EXTREASONCD              NUMBER(4)     
+EXTREQ_STATUSCD          NUMBER(4)     
+OTHER_REASON             VARCHAR2(100) 
+CREATE_DATE              DATE          
+CREATE_USERNAME          VARCHAR2(20)  
+
+desc V_STDINFO_PORTAL
+Name          Null     Type           
+------------- -------- -------------- 
+STDNO         NOT NULL NUMBER(9)      
+STD_ID        NOT NULL NUMBER(9)      
+ACTIVE                 VARCHAR2(4000) 
+GENDER        NOT NULL VARCHAR2(80)   
+A_GENDER      NOT NULL VARCHAR2(80)   
+STD_NAME               VARCHAR2(50)   
+A_STD_NAME             VARCHAR2(50)   
+HOME_REGION            VARCHAR2(30)   
+HOME_WILLAYAT          VARCHAR2(30)   
+TOWN_VILLAGE           VARCHAR2(35)   
+AHOME_REGION           VARCHAR2(30)   
+AHOME_WILAYAT          VARCHAR2(30)   
+AHOME_TOWN             VARCHAR2(35)   
+HOME_POBOX             VARCHAR2(5)    
+HOME_POSTALCD          VARCHAR2(3)    
+ID_CODE                VARCHAR2(15)   
+COHORT        NOT NULL NUMBER(4)      
+L_ABR_STATUS  NOT NULL VARCHAR2(8)    
+STATUS_NAME   NOT NULL VARCHAR2(80)   
+A_STATUS_NAME NOT NULL VARCHAR2(80)   
+DEG_NUMBER    NOT NULL NUMBER(2)      
+DEGREE_NAME   NOT NULL VARCHAR2(80)   
+A_DEGREE_NAME NOT NULL VARCHAR2(80)   
+DEGREE_LEVEL           VARCHAR2(16)   
+COLLEGE_CODE  NOT NULL VARCHAR2(3)    
+COLLEGENM     NOT NULL VARCHAR2(50)   
+A_COLLEGENM   NOT NULL VARCHAR2(50)   
+MAJOR_CODE             VARCHAR2(4)    
+MAJORNAME              VARCHAR2(80)   
+A_MAJORNAME            VARCHAR2(80)   
+MINOR_CODE             VARCHAR2(4)    
+MINORNAME              VARCHAR2(80)   
+A_MINORNAME            VARCHAR2(80)   
+SPEC_CODE              VARCHAR2(4)    
+SPECNAME               VARCHAR2(80)   
+A_SPECNAME             VARCHAR2(80)   
+STD_PHONE              NUMBER(13)     
+PARENT_PHONE           NUMBER         
+STD_EMAIL              VARCHAR2(50)   
+ADVISOR                NUMBER(6)      
+ADVISOR1               NUMBER(6)      
+STDSTATCD     NOT NULL NUMBER(9)      
+
+DESC SIS_USERS USERS
+ERROR:                             
+---------------------------------- 
+ERROR: object USERS does not exist 
+
+desc SIS_USERS 
+Name         Null     Type         
+------------ -------- ------------ 
+USERNAME     NOT NULL VARCHAR2(12) 
+PASSWORD     NOT NULL VARCHAR2(30) 
+USERCATEGORY NOT NULL NUMBER(4)    
+COLCENCD     NOT NULL NUMBER(3)    
+DEPTNO       NOT NULL NUMBER(4)    
+EXPIRYDATE            DATE         
+STATUSACTIVE NOT NULL CHAR(1)      
+UPDTDTE      NOT NULL DATE         
+USRACCTCD    NOT NULL VARCHAR2(12) 
+REMARK                VARCHAR2(60) 
+PINCODE               NUMBER(7)    
+EMAIL                 VARCHAR2(50) 
+REGALLOWED            VARCHAR2(1)  
+
+
+DESC COL_CEN
+Name        Null     Type         
+----------- -------- ------------ 
+COLCENCD    NOT NULL NUMBER(3)    
+A_ABR_CC    NOT NULL VARCHAR2(3)  
+L_ABR_CC    NOT NULL VARCHAR2(3)  
+COLCENNM    NOT NULL VARCHAR2(50) 
+A_COLCENNM  NOT NULL VARCHAR2(50) 
+COLCENTYPCD NOT NULL NUMBER(4)    
+EMPNO                NUMBER(6)    
+UPDDTE      NOT NULL DATE         
+USRACCTCD   NOT NULL VARCHAR2(12) 
+
+
+desc APPROVAL_MASTER
+Name              Null     Type       
+----------------- -------- ---------- 
+APPROVALCD        NOT NULL NUMBER(10) 
+FORMCD            NOT NULL NUMBER(6)  
+APPROVER_ROLECD   NOT NULL NUMBER(4)  
+APPROVAL_SEQUENCE NOT NULL NUMBER(2)  
+
+
+
+desc APPROVAL_TRANSACTION
+Name              Null     Type         
+----------------- -------- ------------ 
+STDNO             NOT NULL NUMBER(9)    
+STDSTATCD         NOT NULL NUMBER(9)    
+APPROVALCD        NOT NULL NUMBER(10)   
+APPROVAL_STATUSCD          NUMBER(4)    
+TRANSACTION_DATE           DATE         
+APPROVER_EMPNO             NUMBER(6)    
+APPROVER_USERNAME          VARCHAR2(20) 
+CREATE_DATE                DATE         
+CREATE_USERNAME            VARCHAR2(20) 
+UPDATE_DATE                DATE         
+UPDATE_USERNAME            VARCHAR2(20) 
+REQUESTCD                  NUMBER(10)
+
+
+DESC V_DEPT_MAJOR
+Name       Null     Type         
+---------- -------- ------------ 
+DEPTNO     NOT NULL NUMBER(4)    
+L_ABR_DEPT          NUMBER(4)    
+DEPTNM              VARCHAR2(60) 
+MAJCD      NOT NULL NUMBER(3)    
+L_ABR_MAJ           VARCHAR2(4)  
+MAJLNM              VARCHAR2(80) 
+
+
+
+DESC SIS_OBJECT
+Name      Null     Type          
+--------- -------- ------------- 
+OBJECTCD  NOT NULL NUMBER(6)     
+OBJTYPECD NOT NULL NUMBER(3)     
+OBJECTNM  NOT NULL VARCHAR2(60)  
+COMMNT             VARCHAR2(80)  
+UPDDTE    NOT NULL DATE          
+USRACCTCD NOT NULL VARCHAR2(12)  
+URL                VARCHAR2(120) 
+A_COMMNT           VARCHAR2(80) 

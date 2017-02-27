@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>DPS Queries</comment>
+    <entry key="dps.select.current.yr.sem">
+    	<![CDATA[
+	    	SELECT 
+				  CYS.CCYRCD      															AS  	CCYRCD
+				, CYS.SEMCD       															AS  	SEMCD
+				, DECODE 
+						  (
+						    :paramLocale,
+						    'en', SEM.L_ABR_SEM, A_ABR_SEM
+						  )             													AS		ABR_SEM
+				, DECODE
+		          (
+		              :paramLocale,
+		              'en',SEMNM,A_SEMNM
+		          )                                               							AS		SEM_NAME						          
+			FROM 
+			        CURRENT_YR_SEM        CYS
+			      , SEM                   SEM
+		      WHERE
+	    	      CYS.SEMCD  = SEM.SEMCD
+    	]]>
+    </entry>
+    <entry key="dps.select.next.yr.sem">
+    	<![CDATA[
+			SELECT 
+			        * 
+			FROM
+			    (
+			        SELECT 
+			             YS.CCYRCD 															AS  	CCYRCD
+			            , YS.SEMCD															AS  	SEMCD
+			            , DECODE 
+			              (
+			                :paramLocale,
+			                'en', SEM.L_ABR_SEM, A_ABR_SEM
+			              )             													AS  	ABR_SEM
+			          , DECODE
+			                (
+			                    :paramLocale,
+			                    'en',SEMNM,A_SEMNM
+			                )                                      							AS		SEM_NAME					  
+			        FROM  
+			              YR_SEM          YS
+			            , CURRENT_YR_SEM  CYS
+			            , SEM             SEM
+			        WHERE 
+			              	YS.SEMCD  	= 	SEM.SEMCD
+			          AND 	YS.SEMCD 	<> 	3
+			          AND 	YS.SEMSTDTE >=  (
+			                                SELECT 
+			                                  	SEMSTDTE
+			                                FROM 
+			                                	YR_SEM
+			                                WHERE
+			                                  		CCYRCD = CYS.CCYRCD
+			                                  	AND SEMCD  = CYS.SEMCD
+			                              	)
+			          ORDER BY YS.SEMSTDTE 
+			    )
+			    WHERE ROWNUM < 2
+    	]]>
+    </entry>
+    
+    <entry key="dps.hrms.select.employee.detail">
+    	<![CDATA[
+	    	SELECT
+	    		VHM_EMP_CODE 																AS		HRMS_EMP_CODE
+			   	,VHM_EMP_BRAN_CODE             												AS    	HRMS_BRANCH_CODE
+			  	,VHM_EMP_DEPT_CODE             												AS		HRMS_DEPT_CODE
+			FROM
+			  VHM_EMPLOYEE
+			WHERE
+			        LPAD(VHM_EMP_CODE,7,0)  =   :paramEmpNumber
+			  AND   VHM_EMP_ACTIVE          =   'Y'
+    	]]>
+    </entry>
+    
+    <entry key="dps.select.employee.detail">
+    	<![CDATA[
+    		SELECT
+	    		USERNAME 																   	AS	 	EMPNO
+			   	,COLCENCD             												       	AS		BRANCH_CODE
+			  	,DEPTNO             												        AS		DEPT_CODE
+          		,EMAIL                                      								AS    	EMP_EMAIL
+			FROM
+			  SIS_USERS
+			WHERE
+			        LTRIM(USERNAME,'e') =   :paramEmpNumber
+			  AND   STATUSACTIVE          =   'Y'
+    	]]>
+    </entry>
+    <entry key="personal.details.of.student">
+    	<![CDATA[ 
+   	        SELECT     SI.STD_ID 															AS 		STUDENT_ID,              
+                       NVL(DECODE(:paramLocale,'en',SI.STD_NAME,SI.A_STD_NAME),'-') 		AS 		STUDENT_NAME,
+                       NVL(DECODE(:paramLocale,'en',SI.HOME_REGION,SI.AHOME_REGION),'-') 	AS 		STUDENT_HOME_REGION,
+                       NVL(DECODE(:paramLocale,'en',SI.HOME_WILLAYAT,SI.AHOME_WILAYAT),'-') AS 		STUDENT_HOME_WILAYAT,
+                       NVL(DECODE(:paramLocale,'en',SI.TOWN_VILLAGE,SI.AHOME_TOWN),'-') 	AS 		STUDENT_TOWN_VILLAGE,
+                       NVL(SI.HOME_POBOX,'-') 												AS 		STUDENT_HOME_POBOX,
+                       NVL(SI.HOME_POSTALCD,'-') 											AS 		STUDENT_HOME_POSTALCD,
+                       NVL(SI.STD_PHONE,NULL) 												AS 		STUDENT_PHONE,
+                       NVL(SI.STD_EMAIL,'-') 												AS 		STUDENT_EMAIL
+           FROM        V_STDINFO_PORTAL     SI         
+           WHERE       SI.STD_ID= :paramStudentId 
+    	]]>
+    </entry>
+    <entry key="academic.details.of.student">
+    	<![CDATA[
+    		SELECT		SI.STD_ID													  		AS 		STUDENT_ID,    
+                       	SI.STDNO                                                          	AS	    STUDENT_NO,
+                       	SI.STDSTATCD														AS		STDSTATCD,
+                       	DECODE(:paramLocale,'en',SI.COLLEGENM, SI.A_COLLEGENM) 			  	AS 		COLLEGE_NAME,
+                       	NVL(DECODE(:paramLocale,'en',SI.MAJORNAME, SI.A_MAJORNAME ),'') 	AS 		MAJOR_NAME,     
+                       	SI.ADVISOR														  	AS		ADVISOR_ID,
+                       	(
+                          SELECT 
+                              DECODE(:paramLocale,'en',ADVISOR_NAME, A_ADVISOR_NAME)
+                          FROM
+                              V_STDADVISOR_PORTAL
+                          WHERE
+                                  STD_ID = SI.STD_ID
+                              AND ACTIVE = 'Y' 
+                       	)                                                                  	AS 		ADVISOR_NAME,
+                       	DECODE(:paramLocale,'en',SI.DEGREE_NAME, SI.A_DEGREE_NAME)			AS 		DEGREE_NAME,          
+                       	DECODE(:paramLocale,'en',SI.STATUS_NAME, SI.A_STATUS_NAME) 			AS 		STATUS_NAME,         
+                       	NVL(DECODE(:paramLocale,'en',SI.MINORNAME, SI.A_MINORNAME ),'')  	AS 		MINOR_NAME ,      
+                       	NVL(DECODE(:paramLocale,'en',SI.SPECNAME, SI.A_SPECNAME ),'')   	AS 		SPEC_NAME,
+                       	STH.SUPVISREMPNO                                                   	AS	    SUPERVISOR_ID
+           FROM        	V_STDINFO_PORTAL     SI 
+                       ,V_STD_THESIS        STH
+           WHERE       SI.STD_ID= :paramStudentId     
+                    AND  SI.STDNO(+) = STH.STDNO
+                    AND  SI.STDSTATCD(+) = STH.STDSTATCD 
+    	 ]]>
+    </entry>
+    
+</properties>

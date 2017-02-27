@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>DPS ROLE Queries</comment>
+    <entry key="">
+    	<![CDATA[
+			SELECT 
+			        APP_M.APPROVER_ROLECD													AS	ROLE_CODE
+			    ,   APP_M.APPROVAL_SEQUENCE													AS	ROLE_SEQUENCE
+			FROM
+			        APPROVAL_MASTER   APP_M
+			    ,   SIS_OBJECT        OBJ
+			WHERE
+			          APP_M.FORMCD        =  OBJ.OBJECTCD
+			     AND  UPPER(OBJ.OBJECTNM) = UPPER(:paramFormName)
+			ORDER BY   APPROVAL_SEQUENCE 		
+    	
+    	]]>
+    </entry>
+		<entry key="sql.role.is.supervisor">
+			SELECT 
+				    DECODE
+				          (
+				            COUNT_REC,
+				            0,'N','Y'
+				          )       															AS  IS_SUPERVISOR
+			FROM
+				(
+				    SELECT 
+				          COUNT(THESIS.STDNO) AS COUNT_REC
+				    FROM 
+				      STD_THESIS THESIS
+				    WHERE
+				        LPAD(THESIS.SUPVISREMPNO,7,0) = LPAD(:paramEmpNo,7,0)
+				)
+		</entry>
+		<entry key="sql.role.is.advisor">
+			SELECT 
+			   DECODE
+			          (
+			            COUNT_REC,
+			            0,'N','Y'
+			          )             														AS	IS_ADVISOR
+			FROM
+			(
+			    SELECT 
+			          COUNT(VPORTAL.STDNO) AS COUNT_REC
+			    FROM 
+			      V_STDINFO_PORTAL VPORTAL
+			    WHERE
+			         LPAD(VPORTAL.ADVISOR,7,0) = LPAD(:paramEmpNo,7,0)
+			)
+		
+		</entry>
+		<entry key="sql.role.is.hod">
+				SELECT 
+				    DECODE
+				          (
+				            COUNT_REC,
+				            0,'N','Y'
+				          )             													AS	IS_COL_HOD
+				FROM
+				(
+				    SELECT 
+				          COUNT(USERS.USERNAME) AS COUNT_REC
+				    FROM 
+				      SIS_USERS USERS
+				      ,SIS_CODES CODES
+				    WHERE
+				    USERS.USERCATEGORY = CODES.SISCODECD
+				      AND CODES.L_ABR_CODE LIKE 'HOD'
+				      AND LPAD(LTRIM(USERS.USERNAME,'e'),7,0) = LPAD(:paramEmpNo,7,0)
+				      AND USERS.STATUSACTIVE='Y'
+				)		
+		</entry>
+		<entry key="sql.role.is.college.post.graduate.asst.dean">
+				SELECT 
+				    DECODE
+				          (
+				            COUNT_REC,
+				            0,'N','Y'
+				          )             													AS	IS_COL_ASST_DEAN
+				FROM
+				(
+				    SELECT 
+				          COUNT(USERS.USERNAME) AS COUNT_REC
+				    FROM 
+				      SIS_USERS USERS
+				      ,SIS_CODES CODES
+				    WHERE
+				    USERS.USERCATEGORY = CODES.SISCODECD
+				      AND CODES.L_ABR_CODE LIKE 'ADEANP'
+				      AND LPAD(LTRIM(USERS.USERNAME,'e'),7,0) = LPAD(:paramEmpNo,7,0)
+				      AND USERS.STATUSACTIVE='Y'
+				)
+					
+		</entry>		
+		<entry key="sql.role.is.extension.col.dean">
+				SELECT 
+				    DECODE
+				          (
+				            COUNT_REC,
+				            0,'N','Y'
+				          )             													AS	IS_COL_DEAN
+				FROM
+				(
+				    SELECT 
+				          COUNT(USERS.USERNAME) AS COUNT_REC
+				    FROM 
+				      SIS_USERS USERS
+				      ,SIS_CODES CODES
+				    WHERE
+				    USERS.USERCATEGORY = CODES.SISCODECD
+				      AND CODES.L_ABR_CODE LIKE 'DEAN'
+				      AND LPAD(LTRIM(USERS.USERNAME,'e'),7,0) = LPAD(:paramEmpNo,7,0)
+				      AND USERS.STATUSACTIVE='Y'
+
+				)
+		</entry>
+		<entry key="sql.role.is.dps.dean">
+			SELECT 
+			    DECODE
+			          (
+			            COUNT_REC,
+			            0,'N','Y'
+			          )             														AS	IS_DPS_DEAN
+			FROM
+			(
+			    SELECT 
+			         COUNT(USERS.USERNAME) AS COUNT_REC
+			    FROM 
+			      SIS_USERS USERS
+			      ,SIS_CODES CODES
+			      
+			    WHERE
+			    USERS.USERCATEGORY = CODES.SISCODECD
+			      AND CODES.L_ABR_CODE LIKE '%DEAN%'
+			      AND LPAD(LTRIM(USERS.USERNAME,'e'),7,0) = LPAD(:paramEmpNo,7,0)
+			      AND USERS.STATUSACTIVE='Y'
+			      AND USERS.COLCENCD = 36 
+			)
+			
+		</entry>
+		<entry key="sql.role.approval_transaction">
+				SELECT
+				        APP_T.STDNO             											AS  STUDENT_NO
+				      , APP_T.STDSTATCD         											AS  STDSTATCD 
+			      	  , APP_T.APPROVAL_STATUSCD 											AS  STATUS_CODE
+				      , APP_M.APPROVALCD        											AS  APPROVAL_CODE
+				      , APP_M.APPROVER_ROLECD   											AS  APPROVER_ROLE_CODE
+				      , APP_M.APPROVAL_SEQUENCE 											AS  APPROVAL_SEQUENCE
+				      
+				FROM
+				      APPROVAL_MASTER       APP_M
+				    , APPROVAL_TRANSACTION  APP_T
+				WHERE
+				          APP_M.APPROVALCD      = APP_T.APPROVALCD
+				      AND APP_M.FORMCD          = :paramFormCode
+				      AND APP_T.APPROVER_EMPNO  = :paramEmpNo
+				ORDER BY APP_T.TRANSACTION_DATE DESC		
+		</entry>
+
+    
+</properties>

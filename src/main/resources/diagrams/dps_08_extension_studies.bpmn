@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="dps08ExtensionStudies" name="DPS 08 Extension Studies" isExecutable="true">
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <userTask id="approveSuperVisor" name="Supervisor"></userTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="approveSuperVisor"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow2" sourceRef="approveSuperVisor" targetRef="exclusivegateway1"></sequenceFlow>
+    <userTask id="approveColDean" name="College Dean"></userTask>
+    <sequenceFlow id="flow3" sourceRef="exclusivegateway1" targetRef="approveColDean">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${authorise==true}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <scriptTask id="scriptFail" name="Failure Notification" scriptFormat="groovy" activiti:autoStoreVariables="false">
+      <script>out:println"\n=== Approve Failure ==="</script>
+    </scriptTask>
+    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="scriptFail">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${authorise==false}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow7" sourceRef="scriptFail" targetRef="endevent1"></sequenceFlow>
+    <scriptTask id="scriptPass" name="Success Notification" scriptFormat="groovy" activiti:autoStoreVariables="false">
+      <script>out:println"\n=== Approve Success ==="</script>
+    </scriptTask>
+    <sequenceFlow id="flow8" sourceRef="approveColDean" targetRef="scriptPass"></sequenceFlow>
+    <sequenceFlow id="flow9" sourceRef="scriptPass" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dps08ExtensionStudies">
+    <bpmndi:BPMNPlane bpmnElement="dps08ExtensionStudies" id="BPMNPlane_dps08ExtensionStudies">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="100.0" y="360.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="approveSuperVisor" id="BPMNShape_approveSuperVisor">
+        <omgdc:Bounds height="55.0" width="105.0" x="180.0" y="350.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="330.0" y="358.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="approveColDean" id="BPMNShape_approveColDean">
+        <omgdc:Bounds height="55.0" width="105.0" x="390.0" y="287.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="720.0" y="350.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scriptFail" id="BPMNShape_scriptFail">
+        <omgdc:Bounds height="55.0" width="105.0" x="420.0" y="420.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scriptPass" id="BPMNShape_scriptPass">
+        <omgdc:Bounds height="55.0" width="105.0" x="540.0" y="287.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="135.0" y="377.0"></omgdi:waypoint>
+        <omgdi:waypoint x="180.0" y="377.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="285.0" y="377.0"></omgdi:waypoint>
+        <omgdi:waypoint x="330.0" y="378.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="350.0" y="358.0"></omgdi:waypoint>
+        <omgdi:waypoint x="349.0" y="314.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="314.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="350.0" y="398.0"></omgdi:waypoint>
+        <omgdi:waypoint x="350.0" y="447.0"></omgdi:waypoint>
+        <omgdi:waypoint x="420.0" y="447.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="525.0" y="447.0"></omgdi:waypoint>
+        <omgdi:waypoint x="737.0" y="447.0"></omgdi:waypoint>
+        <omgdi:waypoint x="737.0" y="385.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="495.0" y="314.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="314.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="645.0" y="314.0"></omgdi:waypoint>
+        <omgdi:waypoint x="737.0" y="314.0"></omgdi:waypoint>
+        <omgdi:waypoint x="737.0" y="350.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
