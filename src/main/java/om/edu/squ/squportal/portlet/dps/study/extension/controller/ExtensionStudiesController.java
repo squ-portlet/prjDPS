@@ -205,6 +205,8 @@ public class ExtensionStudiesController
 		}
 		
 		model.addAttribute("employee", employee);
+		model.addAttribute("appApprove", Constants.CONST_SQL_STATUS_CODE_ACCPT);
+		model.addAttribute("appRecect", Constants.CONST_SQL_STATUS_CODE_REJCT);
 		
 		return "study/extension/approver/welcomeExtensionApprover";
 	}
@@ -273,11 +275,45 @@ public class ExtensionStudiesController
 			response.getWriter().print(gson.toJson(""));
 		}
 		
-
-
-		
-		
 	}
+	
+	
+	/**
+	 * 
+	 * method name  : getResourceDataForApprove
+	 * @param extensionDTO
+	 * @param request
+	 * @param response
+	 * @param locale
+	 * @throws IOException
+	 * ExtensionStudiesController
+	 * return type  : void
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Feb 27, 2017 3:31:31 PM
+	 */
+	@ResourceMapping(value="ajaxExtensionDataApprove")
+	private	void getResourceDataForApprove(
+			@ModelAttribute("extensionDTO") ExtensionDTO extensionDTO,
+			ResourceRequest request, ResourceResponse response,Locale locale
+		) throws IOException
+		{
+			Gson	gson	=	new Gson();
+			Employee employee;
+			try
+			{
+				employee = dpsServiceDao.getEmployee(getEmpNumber(request),locale);
+			}
+			catch (ExceptionEmptyResultset ex)
+			{
+				// TODO Auto-generated catch block
+				ex.printStackTrace();
+				response.getWriter().print(gson.toJson(""));
+			}
+			
+			logger.info("Extension DTO : "+extensionDTO);
+		}
 	
 	
 	

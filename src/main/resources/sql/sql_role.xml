@@ -159,6 +159,60 @@
 				      AND APP_T.APPROVER_EMPNO  = :paramEmpNo
 				ORDER BY APP_T.TRANSACTION_DATE DESC		
 		</entry>
+		<entry key="sql.role.approval.code">
+				SELECT 
+				    APP_M.APPROVALCD														AS  APPROVAL_CODE
+				FROM
+				        APPROVAL_MASTER   APP_M
+				      , SIS_OBJECT        OBJ
+				      , SIS_CODES         CODES
+				WHERE
+				          APP_M.FORMCD          = OBJ.OBJECTCD
+				    AND   APP_M.APPROVER_ROLECD = CODES.SISCODECD
+				    AND   OBJ.OBJECTNM          = :paramFormName
+				    AND   CODES.L_ABR_CODE      = :paramRoleName		
+		</entry>
+		<entry key="sql.role.status.code">
+				SELECT
+				    CODES.SISCODECD															AS  STATUS_CODE
+				FROM
+				        SIS_CODES       CODES
+				    ,   SIS_CODE_TYPES  TYPES
+				WHERE
+				        CODES.SISCODETYPCD =  TYPES.SISCODETYPCD
+				    AND TYPES.SISCODETYPNM = 'APPROVAL_STATUS'
+				    AND CODES.L_ABR_CODE  = :paramStatusCodeName
+		</entry>
+		
+		<entry key="sql.role.approval_transaction.insert">
+				INSERT 
+				      INTO 
+				      APPROVAL_TRANSACTION
+								            (
+								                STDNO
+								              , STDSTATCD
+								              , APPROVALCD
+								              , APPROVAL_STATUSCD
+								              , TRANSACTION_DATE
+								              , APPROVER_EMPNO
+								              , APPROVER_USERNAME
+								              , CREATE_DATE
+								              , CREATE_USERNAME
+								            )
+				      VALUES
+								            (
+								                :paramStdNo
+								              , :paramStdStatCode
+								              , :paramApprovalCode
+								              , :paramStatusCode
+								              , SYSDATE
+								              , :paramEmpNo
+								              , :paramUserName
+								              , SYSDATE
+								              , :paramUserName
+								            )
+		</entry>
+		
 
     
 </properties>

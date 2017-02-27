@@ -7,6 +7,9 @@
 
 			<portlet:resourceURL id="ajaxStudentExtensionDataByRole" var="urlAjaxStudentExtensionDataByRole">
 			</portlet:resourceURL>
+			
+			<portlet:resourceURL id="ajaxExtensionDataApprove" var="urlAjaxExtensionDataApprove"></portlet:resourceURL>
+			
 
 	<ul class="nav nav-tabs">
 		<li role="presentation" id="idExtNav-home" class="clsExtNavRole active"><a href="#">Home</a></li>
@@ -19,14 +22,7 @@
 	<%@include file="../../../ui/cssWelcome.jsp" %>	
 	<%@include file="../../../ui/js/study/extension/jsExtension.jsp" %>
 
-<script type="text/javascript">
-<!--
 
-//-->
-
-
-	
-</script>
     <div class="section">
       <div class="container-fluid">
 			<c:url value="/ui/ajax-loader.gif" var="imgAjaxLoader"/>		
@@ -67,9 +63,9 @@
     <div class="modal fade" id="modalApprovForm" role="dialog" aria-labelledby="myModalLabelExtensionForm" aria-hidden="true" >
       <div class="modal-dialog">
         <div class="modal-content">
-        
+        	<input type="hidden" id="txtModalAppFormStatus" >
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Ã</button>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&nbsp;</button>
             <h4 class="modal-title"><spring:message code="prop.dps.extension.approver.modal.title.text"/> </h4>
           </div>
           <div class="modal-body">

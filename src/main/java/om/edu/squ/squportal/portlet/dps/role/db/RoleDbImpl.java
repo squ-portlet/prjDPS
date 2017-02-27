@@ -230,6 +230,49 @@ public class RoleDbImpl implements RoleDbDao
 		return result.equals("Y") ? true : false;
 	}
 	
+	/**
+	 * 
+	 * method name  : getApprovalCode
+	 * @param formName
+	 * @param roleName
+	 * @return
+	 * RoleDbImpl
+	 * return type  : String
+	 * 
+	 * purpose		: Get Approval Code
+	 *
+	 * Date    		:	Feb 27, 2017 9:01:03 PM
+	 */
+	public String	getApprovalCode(String formName, String roleName)
+	{
+		String	PROP_SQL_ROLE_APPROVAL_CODE		=	queryPropsCommonRole.getProperty(Constants.CONST_PROP_SQL_ROLE_APPROVAL_CODE);
+		Map<String, String> mapParamsRole	=	new HashMap<String, String>();
+		mapParamsRole.put("paramFormName", formName);
+		mapParamsRole.put("paramRoleName", roleName);
+		
+		return nPJdbcTemplDps.queryForObject(PROP_SQL_ROLE_APPROVAL_CODE, mapParamsRole, String.class);
+		
+	}
+	
+	/**
+	 * 
+	 * method name  : getStatusCode
+	 * @param statusCodeName
+	 * @return
+	 * RoleDbImpl
+	 * return type  : String
+	 * 
+	 * purpose		: Get Status Code
+	 *
+	 * Date    		:	Feb 27, 2017 9:49:45 PM
+	 */
+	public String	getStatusCode(String statusCodeName)
+	{
+		String	PROP_SQL_ROLE_STATUS_CODE		=	queryPropsCommonRole.getProperty(Constants.CONST_PROP_SQL_ROLE_APPROVAL_CODE);
+		Map<String, String> mapParamsRole	=	new HashMap<String, String>();
+		mapParamsRole.put("paramStatusCodeName", statusCodeName);
+		return nPJdbcTemplDps.queryForObject(PROP_SQL_ROLE_STATUS_CODE, mapParamsRole, String.class);
+	}
 	
 	
 }

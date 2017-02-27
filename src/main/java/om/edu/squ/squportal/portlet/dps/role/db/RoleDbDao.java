@@ -119,4 +119,33 @@ public interface RoleDbDao
 	 * Date    		:	Feb 13, 2017 5:28:49 PM
 	 */
 	public boolean isDpsDean(String empNumber);
+	
+	/**
+	 * 
+	 * method name  : getApprovalCode
+	 * @param formName
+	 * @param roleName
+	 * @return
+	 * RoleDbImpl
+	 * return type  : String
+	 * 
+	 * purpose		: Get Approval Code
+	 *
+	 * Date    		:	Feb 27, 2017 9:01:03 PM
+	 */
+	public String	getApprovalCode(String formName, String roleName);
+	
+	/**
+	 * 
+	 * method name  : getStatusCode
+	 * @param statusCodeName
+	 * @return
+	 * RoleDbImpl
+	 * return type  : String
+	 * 
+	 * purpose		: Get Status Code
+	 *
+	 * Date    		:	Feb 27, 2017 9:49:45 PM
+	 */
+	public String	getStatusCode(String statusCodeName);
 }

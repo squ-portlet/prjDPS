@@ -107,6 +107,11 @@ public interface Constants
 	
 	/******************************************************/
 	public static final	String	CONST_SQL_STATUS_CODE_PENDING					=	"5539";
+	public static final	String	CONST_SQL_STATUS_CODE_NAME_MODFY				=	"MODFY";
+	public static final	String	CONST_SQL_STATUS_CODE_NAME_PENDING				=	"PENDG";
+	public static final	String	CONST_SQL_STATUS_CODE_REJCT						=	"REJCT";
+	public static final	String	CONST_SQL_STATUS_CODE_ACCPT						=	"ACCPT";
+	
 	/************* SQL CONSTANT STATUS CODE ******************************/
 	
 	/************* SQL CONSTANT ROLE CODE ******************************/
@@ -153,15 +158,9 @@ public interface Constants
 	public	static	final	String	CONST_PROP_SQL_ROLE_IS_POST_GRAD_ASST_DEAN	=	"sql.role.is.college.post.graduate.asst.dean";
 	public	static	final	String	CONST_PROP_SQL_ROLE_IS_COLLEGE_DEAN			=	"sql.role.is.extension.col.dean";
 	public	static	final	String	CONST_PROP_SQL_ROLE_IS_DPS_DEAN				=	"sql.role.is.dps.dean";
-/*
-	public	static	final	String	CONST_ROLE_NAME_ADVISOR						=	"advisor";
-	public	static	final	String	CONST_ROLE_NAME_SUPERVISOR					=	"supervisor";
-	public	static	final	String	CONST_ROLE_NAME_HOD							=	"hod";
-	public	static	final	String	CONST_ROLE_NAME_ASST_DEAN					=	"assitantdean";
-	public	static	final	String	CONST_ROLE_NAME_COL_DEAN					=	"collegedean";
-	public	static	final	String	CONST_ROLE_NAME_DPS_DEAN					=	"dpsdean";
-	public	static	final	String	CONST_ROLE_NAME_DPS_STAFF					=	"dpsstaff";
-*/	
+	public	static	final	String	CONST_PROP_SQL_ROLE_APPROVAL_CODE			=	"sql.role.approval.code";
+	public	static	final	String	CONST_PROP_SQL_ROLE_STATUS_CODE				=	"sql.role.status.code";
+
 
 	public	static	final	String	CONST_ROLE_NAME_ADVISOR						=	"ADVISOR";
 	public	static	final	String	CONST_ROLE_NAME_SUPERVISOR					=	"SUPRVS";

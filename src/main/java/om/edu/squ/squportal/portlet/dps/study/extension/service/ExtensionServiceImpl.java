@@ -39,6 +39,7 @@ import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO;
 import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionReason;
 import om.edu.squ.squportal.portlet.dps.study.extension.db.ExtensionDbDao;
 import om.edu.squ.squportal.portlet.dps.study.extension.model.ExtensionStudentDataModel;
+import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -129,6 +130,15 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		return extensionDbDao.getExtensionsForApprovers(roleType, employee, locale);
 	}
 
-
+	/**
+	 	TODO
+	 */
+	public int setRoleTransaction(ExtensionDTO extensionDTO)
+	{
+		String approvalCode		=	dpsServiceDao.getApprovalCode(Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY,extensionDTO.getRoleName());
+		extensionDTO.setApprovalCode(approvalCode);
+		
+		return 0;
+	}
 	
 }

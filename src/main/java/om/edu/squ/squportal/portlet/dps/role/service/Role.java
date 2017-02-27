@@ -70,4 +70,19 @@ public interface Role
 	 * Date    		:	Feb 13, 2017 5:51:43 PM
 	 */
 	public Employee getEmployeeRole(String empNumber);
+	
+	/**
+	 * 
+	 * method name  : getApprovalCode
+	 * @param formName
+	 * @param roleName
+	 * @return
+	 * RoleDbImpl
+	 * return type  : String
+	 * 
+	 * purpose		: Get Approval Code
+	 *
+	 * Date    		:	Feb 27, 2017 9:01:03 PM
+	 */
+	public String	getApprovalCode(String formName, String roleName);
 }

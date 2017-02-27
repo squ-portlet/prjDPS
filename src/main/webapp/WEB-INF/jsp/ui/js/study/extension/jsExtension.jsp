@@ -9,6 +9,10 @@
 	$(function(){
 	
 		var oTable;
+		var rowData;
+		var varRoleName;
+		var btnRadio;
+		
 		$("#reasonCode").change(function(){
 
 			if($("#reasonCode").val()=='5301')
@@ -27,6 +31,7 @@
 		
 		<c:forEach items="${employee.myRoles}" var="myRole">
 		$("#role-${myRole.roleName}").click(function(){
+			varRoleName	=	'${myRole.roleName}';
 			$(".clsExtNavRole").removeClass("active");
 			$("#idExtNav-${myRole.roleName}").addClass("active");
 			var roleNameValue = {
@@ -66,12 +71,14 @@
 				}
 			});
 
+
 				function loadMytable(data)
 				{
 						$("#tblExtension").show();
 						
 						 oTable=$('#tblExtension').DataTable( {
 							"aaData" : data,
+							rowId: 'studentId',
 							"aoColumns" : 
 								[
 									{ "mData": "studentId" },
@@ -85,8 +92,8 @@
 									{ "mData": "approver",
 										"render": function(data, type, full, meta) {
 											if(data){
-												return ' <div class="col-xs-10"><div class="col-xs-2"><label><input type="radio" class ="clsAppAction" name="appAction" id="appRadio1" value="A"><spring:message code="prop.dps.role.approve.text"/></label> </div>  \
-																				<div class="col-xs-2"><label><input type="radio" class ="clsAppAction" name="appAction" id="appRadio2" value="R"> <spring:message code="prop.dps.role.reject.text"/> </label></div> </div> ';
+												return ' <div class="col-xs-10"><div class="col-xs-2"><label><input type="radio" class ="clsAppAction" name="appAction" id="appRadio1" value="${appApprove}" data-toggle="modal" data-target="#modalApprovForm"><spring:message code="prop.dps.role.approve.text"/></label> </div>  \
+																				<div class="col-xs-2"><label><input type="radio" class ="clsAppAction" name="appAction" id="appRadio2" value="${appRecect}" data-toggle="modal" data-target="#modalApprovForm"> <spring:message code="prop.dps.role.reject.text"/> </label></div> </div> ';
 													}
 											else
 											{
@@ -126,43 +133,85 @@
 		
 		
 
-		
-		$("#tblExtension").on('click', '.clsAppAction', function() {
-		    //ar ID = $(this).closest('tr').find('td').eq(0).text();
-		   
-		    $(this).prop("checked", true);
-		    if($(this).val()=='A')
-		    {
-		    	<spring:message code="prop.dps.role.approve.text" var="txtRole"/>
-		    	$('.modal-body').html('<spring:message code="prop.dps.extension.approver.modal.body.confirmation.text" arguments="${txtRole}"/>');
-		    }
-		    else
-		    {
-		    	<spring:message code="prop.dps.role.reject.text" var="txtRole"/>
-		    	$('.modal-body').html('<spring:message code="prop.dps.extension.approver.modal.body.confirmation.text" arguments="${txtRole}"/>');
-		    }
+
+		$("#tblExtension").on('click', '.clsAppAction', function(event) {
+					event.preventDefault();
+  					btnRadio = $(this);
+				    $(this).prop("checked", true);
+				    $('#txtModalAppFormStatus').val($(this).val());
+				    if($(this).val()=='${appApprove}')
+				    {
+				    	<spring:message code="prop.dps.role.approve.text" var="txtRole"/>
+				    	$('.modal-body').html('<spring:message code="prop.dps.extension.approver.modal.body.confirmation.text" arguments="${txtRole}"/>');
+				    }
+				    else
+				    {
+				    	<spring:message code="prop.dps.role.reject.text" var="txtRole"/>
+				    	$('.modal-body').html('<spring:message code="prop.dps.extension.approver.modal.body.confirmation.text" arguments="${txtRole}"/>');
+				    }
+				    
+				    var tdata=oTable;
+					rowData =	tdata.table(0).row( this ).data(); 
 		    
-		    var tdata=oTable;
-		    var tableData = tdata.table( this.parentNode.parentNode );
-			var rowData =	tdata.table(0).row( this ).data(); 
-		    
-			
-		    $('#modalApprovForm').modal({
-				  keyboard: false
-			});
-		    
-		    $('#linkSubmitApprove').click(function(event) {
-				alert("submit button clicked");	
-		    });
-		    //alert(ID);
 		});
+		
+		
+		//start
+		
+		
+						    $('#linkSubmitApprove').click(function(event) {
+				    	event.preventDefault();
+
+				    	var extensionDTO	= {
+								studentNo 		: rowData.studentNo,
+								stdStatCode		: rowData.stdStatCode,
+								statusCode		: $('#txtModalAppFormStatus').val(),
+								roleName		: varRoleName
+								
+							};
+						var requestSent = false;
+						if(!requestSent) {
+							requestSent = true;
+								$.ajax({
+										url:	"${urlAjaxExtensionDataApprove}",
+										type:	'POST',
+										cache:	false,
+										data:	extensionDTO,
+										success:function(data)
+										{
+											//alert("ajax success");
+											$(btnRadio).prop("checked", true);
+										},
+										erorr:
+											{
+												//alert("ajax failure");
+											},
+										complete:function()
+										{
+											requestSent = false;
+											
+										}
+										
+									
+								});
+						}
+						
+						extensionDTO = null;
+						
+				    });
+		
+		
+		
+		//finish
 		
 		
 		
 	});
 
 	$(function(){
-		
+		$("#modalApprovForm").on('hidden.bs.modal', function () {
+		    $(this).data('bs.modal', null);
+		});
 		
 		
 	});

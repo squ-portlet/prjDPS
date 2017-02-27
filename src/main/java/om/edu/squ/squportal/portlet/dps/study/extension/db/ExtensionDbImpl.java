@@ -244,6 +244,8 @@ public class ExtensionDbImpl implements ExtensionDbDao
 				ExtensionDTO	extensionDTO	=	new ExtensionDTO();
 				extensionDTO.setStudentId(rs.getString(Constants.CONST_COLMN_STUDENT_ID));
 				extensionDTO.setStudentNo(rs.getString(Constants.CONST_COLMN_STUDENT_NO));
+				//extensionDTO.setStatusCode(rs.getString(Constants.CONST_COLMN_STDSTATCD));
+				extensionDTO.setStdStatCode(rs.getString(Constants.CONST_COLMN_STDSTATCD));
 				extensionDTO.setStudentName(rs.getString(Constants.CONST_COLMN_STUDENT_NAME));
 				extensionDTO.setCohort(rs.getString(Constants.CONST_COLMN_COHORT));
 				extensionDTO.setCollegeName(rs.getString(Constants.CONST_COLMN_COLLEGE_NAME));

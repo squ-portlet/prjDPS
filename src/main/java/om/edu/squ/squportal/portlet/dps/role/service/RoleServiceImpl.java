@@ -120,6 +120,23 @@ public class RoleServiceImpl implements Role
 	}
 	
 	
+	/**
+	 * 
+	 * method name  : getApprovalCode
+	 * @param formName
+	 * @param roleName
+	 * @return
+	 * RoleDbImpl
+	 * return type  : String
+	 * 
+	 * purpose		: Get Approval Code
+	 *
+	 * Date    		:	Feb 27, 2017 9:01:03 PM
+	 */
+	public String	getApprovalCode(String formName, String roleName)
+	{
+		return roleDbDao.getApprovalCode(formName, roleName);
+	}
 	
 	
 }
