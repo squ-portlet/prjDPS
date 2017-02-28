@@ -131,14 +131,21 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 	}
 
 	/**
-	 	TODO
+	 * 
+	 * method name  : setRoleTransaction
+	 * @param extensionDTO
+	 * @param employee
+	 * @return
+	 * ExtensionServiceImpl
+	 * return type  : int
+	 * 
+	 * purpose		: add record for approval 
+	 *
+	 * Date    		:	Feb 28, 2017 11:32:46 AM
 	 */
-	public int setRoleTransaction(ExtensionDTO extensionDTO)
+	public int setRoleTransaction(ExtensionDTO extensionDTO, Employee employee)
 	{
-		String approvalCode		=	dpsServiceDao.getApprovalCode(Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY,extensionDTO.getRoleName());
-		extensionDTO.setApprovalCode(approvalCode);
-		
-		return 0;
+		return dpsServiceDao.setRoleTransaction(extensionDTO, employee);
 	}
 	
 }

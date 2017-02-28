@@ -29,6 +29,8 @@
  */
 package om.edu.squ.squportal.portlet.dps.role.db;
 
+import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
+
 
 /**
  * @author Bhabesh
@@ -148,4 +150,19 @@ public interface RoleDbDao
 	 * Date    		:	Feb 27, 2017 9:49:45 PM
 	 */
 	public String	getStatusCode(String statusCodeName);
+	
+	/**
+	 * 
+	 * method name  : setRoleTransaction
+	 * @param transactionDTO
+	 * @return
+	 * RoleDbImpl
+	 * return type  : int
+	 * 
+	 * purpose		: add a record in transaction table for approver status for a particular form and authorized employee
+	 *
+	 * Date    		:	Feb 28, 2017 10:47:05 AM
+	 */
+	public int setRoleTransaction(ApprovalTransactionDTO transactionDTO);
+	
 }

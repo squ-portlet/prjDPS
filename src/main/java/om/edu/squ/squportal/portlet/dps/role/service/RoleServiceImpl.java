@@ -36,6 +36,7 @@ import java.io.InputStream;
 import javax.xml.transform.stream.StreamSource;
 
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
+import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
 import om.edu.squ.squportal.portlet.dps.role.db.RoleDbDao;
 
 import org.slf4j.Logger;
@@ -138,5 +139,38 @@ public class RoleServiceImpl implements Role
 		return roleDbDao.getApprovalCode(formName, roleName);
 	}
 	
+	/**
+	 * 
+	 * method name  : getStatusCode
+	 * @param statusCodeName
+	 * @return
+	 * RoleDbImpl
+	 * return type  : String
+	 * 
+	 * purpose		: Get Status Code
+	 *
+	 * Date    		:	Feb 27, 2017 9:49:45 PM
+	 */
+	public String	getStatusCode(String statusCodeName)
+	{
+		return roleDbDao.getStatusCode(statusCodeName);
+	}
+	
+	/**
+	 * 
+	 * method name  : setRoleTransaction
+	 * @param transactionDTO
+	 * @return
+	 * RoleDbImpl
+	 * return type  : int
+	 * 
+	 * purpose		: add a record in transaction table for approver status for a particular form and authorized employee
+	 *
+	 * Date    		:	Feb 28, 2017 10:47:05 AM
+	 */
+	public int setRoleTransaction(ApprovalTransactionDTO transactionDTO)
+	{
+		return roleDbDao.setRoleTransaction(transactionDTO);
+	}
 	
 }

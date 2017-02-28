@@ -44,8 +44,10 @@ import om.edu.squ.squportal.portlet.dps.bo.YearSemester;
 import om.edu.squ.squportal.portlet.dps.dao.db.DpsDbDao;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
+import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.RoleNameValue;
 import om.edu.squ.squportal.portlet.dps.role.service.Role;
+import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 import om.edu.squ.squportal.portlet.dps.utility.UserIdUtil;
 import om.edu.squ.squportal.portlet.dps.utility.UtilProperty;
@@ -275,24 +277,34 @@ public class DpsServiceImpl implements DpsServiceDao
 		
 		return employee;
 	}
-	
-	
+
+
 	/**
 	 * 
-	 * method name  : getApprovalCode
-	 * @param formName
-	 * @param roleName
+	 * method name  : setRoleTransaction
+	 * @param extensionDTO
 	 * @return
-	 * RoleDbImpl
-	 * return type  : String
+	 * DpsServiceImpl
+	 * return type  : int
 	 * 
-	 * purpose		: Get Approval Code
+	 * purpose		: add a record in transaction table for approver status for a particular form and authorized employee
 	 *
-	 * Date    		:	Feb 27, 2017 9:01:03 PM
+	 * Date    		:	Feb 28, 2017 9:13:06 AM
 	 */
-	public String	getApprovalCode(String formName, String roleName)
+	public int setRoleTransaction(ExtensionDTO extensionDTO, Employee employee)
 	{
-		return roleService.getApprovalCode(formName, roleName);
+		ApprovalTransactionDTO	transactionDTO	=	new ApprovalTransactionDTO();
+		String 	approvalCode		=	roleService.getApprovalCode(Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY,extensionDTO.getRoleName());
+		String	statusCode			=	roleService.getStatusCode(extensionDTO.getStatusCodeName());
+		
+		transactionDTO.setStudentNo(extensionDTO.getStudentNo());
+		transactionDTO.setStdStatCode(extensionDTO.getStdStatCode());
+		transactionDTO.setApprovalCode(approvalCode);
+		transactionDTO.setStatusCode(statusCode);
+		transactionDTO.setAppEmpNo(employee.getEmpNumber());
+		transactionDTO.setAppEmpName(employee.getUserName());
+		
+		return roleService.setRoleTransaction(transactionDTO);
 	}
 	
 	

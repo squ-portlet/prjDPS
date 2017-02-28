@@ -33,10 +33,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import om.edu.squ.squportal.portlet.dps.bo.Employee;
+import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
+import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+
+
 
 /**
  * @author Bhabesh
@@ -44,6 +52,8 @@ import org.springframework.jdbc.core.simple.SimpleJdbcCall;
  */
 public class RoleDbImpl implements RoleDbDao
 {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	private	NamedParameterJdbcTemplate	nPJdbcTemplDps;
 	private	SimpleJdbcCall				simpleJdbcCallDps;
 	private	Properties					queryPropsCommonRole;
@@ -268,11 +278,43 @@ public class RoleDbImpl implements RoleDbDao
 	 */
 	public String	getStatusCode(String statusCodeName)
 	{
-		String	PROP_SQL_ROLE_STATUS_CODE		=	queryPropsCommonRole.getProperty(Constants.CONST_PROP_SQL_ROLE_APPROVAL_CODE);
+		String	PROP_SQL_ROLE_STATUS_CODE		=	queryPropsCommonRole.getProperty(Constants.CONST_PROP_SQL_ROLE_STATUS_CODE);
 		Map<String, String> mapParamsRole	=	new HashMap<String, String>();
 		mapParamsRole.put("paramStatusCodeName", statusCodeName);
+//		logger.info("mapParamsRole : "+mapParamsRole);
+//		logger.info("PROP_SQL_ROLE_STATUS_CODE : "+PROP_SQL_ROLE_STATUS_CODE);
 		return nPJdbcTemplDps.queryForObject(PROP_SQL_ROLE_STATUS_CODE, mapParamsRole, String.class);
 	}
 	
+
+	/**
+	 * 
+	 * method name  : setRoleTransaction
+	 * @param transactionDTO
+	 * @return
+	 * RoleDbImpl
+	 * return type  : int
+	 * 
+	 * purpose		: add a record in transaction table for approver status for a particular form and authorized employee
+	 *
+	 * Date    		:	Feb 28, 2017 10:47:05 AM
+	 */
+	public int setRoleTransaction(ApprovalTransactionDTO transactionDTO)
+	{
+		String	PROP_SQL_ROLE_APPROVAL_TRANSACTION	=	queryPropsCommonRole.getProperty(Constants.CONST_PROP_SQL_ROLE_APPROVAL_TRANSACTION);
+		
+		Map<String, String> mapParamsTransaction	=	new HashMap<String, String>();
+		mapParamsTransaction.put("paramStdNo", transactionDTO.getStudentNo() );
+		mapParamsTransaction.put("paramStdStatCode", transactionDTO.getStdStatCode() );
+		mapParamsTransaction.put("paramApprovalCode", transactionDTO.getApprovalCode());
+		mapParamsTransaction.put("paramStatusCode", transactionDTO.getStatusCode());
+		mapParamsTransaction.put("paramEmpNo", transactionDTO.getAppEmpNo().substring(1));
+		mapParamsTransaction.put("paramUserName",transactionDTO.getAppEmpName() );
+
+		logger.info("mapParamsRole : "+mapParamsTransaction);
+		logger.info("PROP_SQL_ROLE_APPROVAL_TRANSACTION : "+PROP_SQL_ROLE_APPROVAL_TRANSACTION);
+		
+		return nPJdbcTemplDps.update(PROP_SQL_ROLE_APPROVAL_TRANSACTION, mapParamsTransaction);
+	}
 	
 }

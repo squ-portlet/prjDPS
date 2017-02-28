@@ -60,6 +60,7 @@ public class ExtensionDTO
 	private	String	reasonDesc;
 	private	String	reasonOther;
 	private	String	statusCode;
+	private	String	statusCodeName;
 	private	String	statusDesc;
 	private	String	roleStatusSupervisor;
 	private	String	roleStatusCollegeDean;
@@ -530,6 +531,27 @@ public class ExtensionDTO
 	{
 		this.statusCode = statusCode;
 	}
+	
+	/**
+	 * Getter Method	: getStatusCodeName
+	 * @return the statusCodeName
+	 * 
+	 * Date				: Feb 28, 2017
+	 */
+	public String getStatusCodeName()
+	{
+		return this.statusCodeName;
+	}
+	/**
+	 * Setter method : setStatusCodeName
+	 * @param statusCodeName the statusCodeName to set
+	 * 
+	 * Date          : Feb 28, 2017 8:38:13 AM
+	 */
+	public void setStatusCodeName(String statusCodeName)
+	{
+		this.statusCodeName = statusCodeName;
+	}
 	/**
 	 * Getter Method	: getStatusDesc
 	 * @return the statusDesc
@@ -694,12 +716,13 @@ public class ExtensionDTO
 				+ ", activitiDate=" + this.activitiDate + ", reasonCode="
 				+ this.reasonCode + ", reasonDesc=" + this.reasonDesc
 				+ ", reasonOther=" + this.reasonOther + ", statusCode="
-				+ this.statusCode + ", statusDesc=" + this.statusDesc
-				+ ", roleStatusSupervisor=" + this.roleStatusSupervisor
-				+ ", roleStatusCollegeDean=" + this.roleStatusCollegeDean
-				+ ", roleStatusDpsDean=" + this.roleStatusDpsDean
-				+ ", approver=" + this.approver + ", roleName=" + this.roleName
-				+ ", approvalCode=" + this.approvalCode + "]";
+				+ this.statusCode + ", statusCodeName=" + this.statusCodeName
+				+ ", statusDesc=" + this.statusDesc + ", roleStatusSupervisor="
+				+ this.roleStatusSupervisor + ", roleStatusCollegeDean="
+				+ this.roleStatusCollegeDean + ", roleStatusDpsDean="
+				+ this.roleStatusDpsDean + ", approver=" + this.approver
+				+ ", roleName=" + this.roleName + ", approvalCode="
+				+ this.approvalCode + "]";
 	}
 	
 	

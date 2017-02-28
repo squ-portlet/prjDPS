@@ -104,4 +104,19 @@ public interface ExtensionServiceDao
 	 * Date    		:	Feb 15, 2017 10:09:55 PM
 	 */
 	public List<ExtensionDTO> getExtensionsForApprovers(String roleType, Employee employee, Locale locale);
+	
+	/**
+	 * 
+	 * method name  : setRoleTransaction
+	 * @param extensionDTO
+	 * @param employee
+	 * @return
+	 * ExtensionServiceImpl
+	 * return type  : int
+	 * 
+	 * purpose		: add record for approval 
+	 *
+	 * Date    		:	Feb 28, 2017 11:32:46 AM
+	 */
+	public int setRoleTransaction(ExtensionDTO extensionDTO, Employee employee);
 }

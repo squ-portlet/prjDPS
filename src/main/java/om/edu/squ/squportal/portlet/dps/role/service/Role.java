@@ -35,6 +35,7 @@ import java.io.IOException;
 import javax.xml.transform.stream.StreamSource;
 
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
+import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
 
 /**
  * @author Bhabesh
@@ -85,4 +86,32 @@ public interface Role
 	 * Date    		:	Feb 27, 2017 9:01:03 PM
 	 */
 	public String	getApprovalCode(String formName, String roleName);
+	
+	/**
+	 * 
+	 * method name  : getStatusCode
+	 * @param statusCodeName
+	 * @return
+	 * RoleDbImpl
+	 * return type  : String
+	 * 
+	 * purpose		: Get Status Code
+	 *
+	 * Date    		:	Feb 27, 2017 9:49:45 PM
+	 */
+	public String	getStatusCode(String statusCodeName);
+	
+	/**
+	 * 
+	 * method name  : setRoleTransaction
+	 * @param transactionDTO
+	 * @return
+	 * RoleDbImpl
+	 * return type  : int
+	 * 
+	 * purpose		: add a record in transaction table for approver status for a particular form and authorized employee
+	 *
+	 * Date    		:	Feb 28, 2017 10:47:05 AM
+	 */
+	public int setRoleTransaction(ApprovalTransactionDTO transactionDTO);
 }

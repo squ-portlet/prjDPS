@@ -40,6 +40,7 @@ import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
 import om.edu.squ.squportal.portlet.dps.bo.YearSemester;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
+import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO;
 
 /**
  * @author Bhabesh
@@ -154,17 +155,16 @@ public interface DpsServiceDao
 	
 	/**
 	 * 
-	 * method name  : getApprovalCode
-	 * @param formName
-	 * @param roleName
+	 * method name  : setRoleTransaction
+	 * @param extensionDTO
+	 * @param employee TODO
 	 * @return
-	 * RoleDbImpl
-	 * return type  : String
+	 * DpsServiceImpl
+	 * return type  : int
 	 * 
-	 * purpose		: Get Approval Code
+	 * purpose		: add a record in transaction table for approver status for a particular form and authorized employee
 	 *
-	 * Date    		:	Feb 27, 2017 9:01:03 PM
+	 * Date    		:	Feb 28, 2017 9:13:06 AM
 	 */
-	public String	getApprovalCode(String formName, String roleName);
-	
+	public int setRoleTransaction(ExtensionDTO extensionDTO, Employee employee);
 }

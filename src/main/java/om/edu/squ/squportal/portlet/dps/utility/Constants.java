@@ -160,6 +160,8 @@ public interface Constants
 	public	static	final	String	CONST_PROP_SQL_ROLE_IS_DPS_DEAN				=	"sql.role.is.dps.dean";
 	public	static	final	String	CONST_PROP_SQL_ROLE_APPROVAL_CODE			=	"sql.role.approval.code";
 	public	static	final	String	CONST_PROP_SQL_ROLE_STATUS_CODE				=	"sql.role.status.code";
+	
+	public	static	final	String	CONST_PROP_SQL_ROLE_APPROVAL_TRANSACTION	=	"sql.role.approval_transaction.insert";
 
 
 	public	static	final	String	CONST_ROLE_NAME_ADVISOR						=	"ADVISOR";

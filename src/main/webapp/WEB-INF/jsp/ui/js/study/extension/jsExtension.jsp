@@ -160,43 +160,44 @@
 		
 		
 						    $('#linkSubmitApprove').click(function(event) {
-				    	event.preventDefault();
-
-				    	var extensionDTO	= {
-								studentNo 		: rowData.studentNo,
-								stdStatCode		: rowData.stdStatCode,
-								statusCode		: $('#txtModalAppFormStatus').val(),
-								roleName		: varRoleName
-								
-							};
-						var requestSent = false;
-						if(!requestSent) {
-							requestSent = true;
-								$.ajax({
-										url:	"${urlAjaxExtensionDataApprove}",
-										type:	'POST',
-										cache:	false,
-										data:	extensionDTO,
-										success:function(data)
-										{
-											//alert("ajax success");
-											$(btnRadio).prop("checked", true);
-										},
-										erorr:
-											{
-												//alert("ajax failure");
-											},
-										complete:function()
-										{
-											requestSent = false;
-											
-										}
+						    	event.preventDefault();
+		
+						    	var extensionDTO	= {
+										studentNo 		: rowData.studentNo,
+										stdStatCode		: rowData.stdStatCode,
+										statusCodeName	: $('#txtModalAppFormStatus').val(),
+										roleName		: varRoleName
 										
-									
-								});
-						}
-						
-						extensionDTO = null;
+									};
+						    	$('#modalApprovForm').modal('toggle');
+								var requestSent = false;
+								if(!requestSent) {
+									requestSent = true;
+										$.ajax({
+												url:	"${urlAjaxExtensionDataApprove}",
+												type:	'POST',
+												cache:	false,
+												data:	extensionDTO,
+												success:function(data)
+												{
+													//alert("ajax success");
+													$(btnRadio).prop("checked", true);
+												},
+												erorr:
+													{
+														//alert("ajax failure");
+													},
+												complete:function()
+												{
+													requestSent = false;
+													
+												}
+												
+											
+										});
+								}
+								
+								extensionDTO = null;
 						
 				    });
 		
