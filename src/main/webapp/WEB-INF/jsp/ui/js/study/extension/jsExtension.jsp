@@ -86,9 +86,24 @@
 									{ "mData": "cohort" },
 									{ "mData": "collegeName" },
 									{ "mData": "degreeName" },
-									{ "mData": "roleStatusSupervisor" },
-									{ "mData": "roleStatusCollegeDean" },
-									{ "mData": "roleStatusDpsDean" },
+									{ "mData": "roleStatusSupervisor", 
+										"render" : function(data, type, full, meta)	
+										{
+											return getStatusIcon(data);
+										}
+									},
+									{ "mData": "roleStatusCollegeDean" ,
+										"render" : function(data, type, full, meta)	
+										{
+											return getStatusIcon(data);
+										}	
+									},
+									{ "mData": "roleStatusDpsDean",
+										"render" : function(data, type, full, meta)	
+										{
+											return getStatusIcon(data);
+										}	
+									},
 									{ "mData": "approver",
 										"render": function(data, type, full, meta) {
 											if(data){
@@ -180,12 +195,11 @@
 												data:	extensionDTO,
 												success:function(data)
 												{
-													//alert("ajax success");
 													$(btnRadio).prop("checked", true);
 												},
 												erorr:
 													{
-														//alert("ajax failure");
+
 													},
 												complete:function()
 												{
@@ -204,6 +218,23 @@
 		
 		
 		//finish
+		
+		
+		function getStatusIcon(status)
+		{
+			if(status=='Y')
+			{
+				return '<font color="green"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></font>';
+			}
+			if(status=='N')
+			{
+				return '<font color="red"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></font>';
+			}
+			if(status=='NA')
+			{
+				return '<span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>';
+			}
+		}
 		
 		
 		
