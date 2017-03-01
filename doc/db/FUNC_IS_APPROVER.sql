@@ -48,7 +48,8 @@ BEGIN
                       APPROVAL_TRANSACTION  APP_T
                   WHERE
                           APP_T.APPROVALCD  = APPROVAL_CODE
-                      AND APP_T.APPROVER_EMPNO =paramEmpNo;
+                      AND APP_T.APPROVER_EMPNO =paramEmpNo
+                      AND APP_T.STDNO          = paramStudentNo;
           END;
      
           BEGIN
