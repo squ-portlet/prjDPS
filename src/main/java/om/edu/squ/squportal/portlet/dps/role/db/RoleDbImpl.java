@@ -29,20 +29,30 @@
  */
 package om.edu.squ.squportal.portlet.dps.role.db;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
+import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
 import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
 
+
+
+
+
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.transaction.annotation.Transactional;
 
 
 
@@ -240,28 +250,29 @@ public class RoleDbImpl implements RoleDbDao
 		return result.equals("Y") ? true : false;
 	}
 	
-	/**
-	 * 
-	 * method name  : getApprovalCode
-	 * @param formName
-	 * @param roleName
-	 * @return
-	 * RoleDbImpl
-	 * return type  : String
-	 * 
-	 * purpose		: Get Approval Code
-	 *
-	 * Date    		:	Feb 27, 2017 9:01:03 PM
-	 */
-	public String	getApprovalCode(String formName, String roleName)
+
+	@Override
+	public ApprovalDTO	getApprovalCode(String formName, String roleName)
 	{
 		String	PROP_SQL_ROLE_APPROVAL_CODE		=	queryPropsCommonRole.getProperty(Constants.CONST_PROP_SQL_ROLE_APPROVAL_CODE);
+		RowMapper<ApprovalDTO> 	mapper			=	new RowMapper<ApprovalDTO>()
+		{
+			
+			@Override
+			public ApprovalDTO mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				ApprovalDTO	approvalDTO	=	new ApprovalDTO();
+				approvalDTO.setApprovalCode(rs.getString(Constants.CONST_COLMN_APPROVAL_CODE));
+				approvalDTO.setApprovalSequenceNo(rs.getInt(Constants.CONST_COLMN_APPROVAL_SEQUENCE));
+				approvalDTO.setApprovalMaxSequenceNo(rs.getInt(Constants.CONST_COLMN_APPROVAL_MAX_SEQUENCE));
+				return approvalDTO;
+			}
+		};
 		Map<String, String> mapParamsRole	=	new HashMap<String, String>();
 		mapParamsRole.put("paramFormName", formName);
 		mapParamsRole.put("paramRoleName", roleName);
 		
-		return nPJdbcTemplDps.queryForObject(PROP_SQL_ROLE_APPROVAL_CODE, mapParamsRole, String.class);
-		
+		return nPJdbcTemplDps.queryForObject(PROP_SQL_ROLE_APPROVAL_CODE, mapParamsRole, mapper);
 	}
 	
 	/**
@@ -299,6 +310,7 @@ public class RoleDbImpl implements RoleDbDao
 	 *
 	 * Date    		:	Feb 28, 2017 10:47:05 AM
 	 */
+	@Transactional
 	public int setRoleTransaction(ApprovalTransactionDTO transactionDTO)
 	{
 		String	PROP_SQL_ROLE_APPROVAL_TRANSACTION	=	queryPropsCommonRole.getProperty(Constants.CONST_PROP_SQL_ROLE_APPROVAL_TRANSACTION);
@@ -310,9 +322,6 @@ public class RoleDbImpl implements RoleDbDao
 		mapParamsTransaction.put("paramStatusCode", transactionDTO.getStatusCode());
 		mapParamsTransaction.put("paramEmpNo", transactionDTO.getAppEmpNo().substring(1));
 		mapParamsTransaction.put("paramUserName",transactionDTO.getAppEmpName() );
-
-		logger.info("mapParamsRole : "+mapParamsTransaction);
-		logger.info("PROP_SQL_ROLE_APPROVAL_TRANSACTION : "+PROP_SQL_ROLE_APPROVAL_TRANSACTION);
 		
 		return nPJdbcTemplDps.update(PROP_SQL_ROLE_APPROVAL_TRANSACTION, mapParamsTransaction);
 	}

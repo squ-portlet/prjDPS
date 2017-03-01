@@ -10,8 +10,11 @@
 	
 		var oTable;
 		var rowData;
+		var rowId;
+		var rowIndex;
 		var varRoleName;
 		var btnRadio;
+		
 		
 		$("#reasonCode").change(function(){
 
@@ -119,7 +122,12 @@
 								 ],
 							"iDisplayLength": 10,
 							destroy: true,
-							"bJQueryUI": true
+							"bJQueryUI": true,
+							"sDom":  '<f><t><"col-sm-3"i><"col-sm-2"l><"col-sm-5"p>', 
+							"oLanguage": {
+								  "sUrl": "${urlCdn}/DataTables/language/lang_${rc.locale.language}.txt"
+								},
+							"order": []							
 							});
 				}
 				
@@ -151,6 +159,7 @@
 
 		$("#tblExtension").on('click', '.clsAppAction', function(event) {
 					event.preventDefault();
+					
   					btnRadio = $(this);
 				    $(this).prop("checked", true);
 				    $('#txtModalAppFormStatus').val($(this).val());
@@ -167,7 +176,7 @@
 				    
 				    var tdata=oTable;
 					rowData =	tdata.table(0).row( this ).data(); 
-		    
+					rowIndex = tdata.row( this ).index();
 		});
 		
 		
@@ -196,6 +205,9 @@
 												success:function(data)
 												{
 													$(btnRadio).prop("checked", true);
+													//oTable.fnUpdate('---', rowId, 8);
+													rowData.collegeName='just a test';
+													oTable.row(rowIndex).data(rowData).draw();
 												},
 												erorr:
 													{

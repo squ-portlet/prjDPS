@@ -40,6 +40,7 @@ import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
 import om.edu.squ.squportal.portlet.dps.bo.YearSemester;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
+import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO;
 
 /**
@@ -157,14 +158,14 @@ public interface DpsServiceDao
 	 * 
 	 * method name  : setRoleTransaction
 	 * @param extensionDTO
-	 * @param employee TODO
+	 * @param employee
 	 * @return
-	 * DpsServiceImpl
-	 * return type  : int
+	 * DpsServiceDao
+	 * return type  : ApprovalDTO
 	 * 
 	 * purpose		: add a record in transaction table for approver status for a particular form and authorized employee
 	 *
-	 * Date    		:	Feb 28, 2017 9:13:06 AM
+	 * Date    		:	Mar 1, 2017 5:45:32 PM
 	 */
-	public int setRoleTransaction(ExtensionDTO extensionDTO, Employee employee);
+	public ApprovalDTO setRoleTransaction(ExtensionDTO extensionDTO, Employee employee);
 }

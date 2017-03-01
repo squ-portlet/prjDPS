@@ -29,6 +29,7 @@
  */
 package om.edu.squ.squportal.portlet.dps.role.db;
 
+import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
 
 
@@ -128,14 +129,14 @@ public interface RoleDbDao
 	 * @param formName
 	 * @param roleName
 	 * @return
-	 * RoleDbImpl
-	 * return type  : String
+	 * RoleDbDao
+	 * return type  : ApprovalDTO
 	 * 
-	 * purpose		: Get Approval Code
+	 * purpose		: Get Approval details for a form and roleName
 	 *
-	 * Date    		:	Feb 27, 2017 9:01:03 PM
+	 * Date    		:	Mar 1, 2017 5:30:35 PM
 	 */
-	public String	getApprovalCode(String formName, String roleName);
+	public ApprovalDTO	getApprovalCode(String formName, String roleName);
 	
 	/**
 	 * 

@@ -313,13 +313,10 @@ public class ExtensionStudiesController
 			}
 			catch (ExceptionEmptyResultset ex)
 			{
-				// TODO Auto-generated catch block
-				ex.printStackTrace();
+				logger.error("Error in Data generation. Actual error :  "+ex.getMessage());
 				response.getWriter().print(gson.toJson(""));
 			}
-			
-			//logger.info("Extension DTO : "+extensionDTO);
-			logger.info("result : "+resultTr);
+
 		}
 	
 	

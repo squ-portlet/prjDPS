@@ -49,6 +49,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Bhabesh
@@ -168,7 +169,33 @@ public class ExtensionDbImpl implements ExtensionDbDao
 			return 0;
 		}
 	}
-
+	
+	/**
+	 * 
+	 * method name  : setExtensionStatusOfStudent
+	 * @param extensionDTO
+	 * @return
+	 * ExtensionDbImpl
+	 * return type  : int
+	 * 
+	 * purpose		: Update the status of extension
+	 *
+	 * Date    		:	Mar 1, 2017 4:45:34 PM
+	 */
+	@Transactional
+	public int setExtensionStatusOfStudent(ExtensionDTO extensionDTO)
+	{
+		String 	SQL_EXTENSION_UPDATE_STATUS_STUDENT	=	queryExtensionProps.getProperty(Constants.CONST_SQL_EXTENSION_UPDATE_STATUS_STUDENT);
+		
+		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+		namedParameterMap.put("paramStdNo", extensionDTO.getStudentNo());
+		namedParameterMap.put("paramStdStatCode", extensionDTO.getStdStatCode());
+		namedParameterMap.put("paramStatusCodeName", extensionDTO.getStatusCodeName());
+		namedParameterMap.put("paramUserName", extensionDTO.getUserName());
+		
+		return nPJdbcTemplDpsExtension.update(SQL_EXTENSION_UPDATE_STATUS_STUDENT, namedParameterMap);
+	}
+	
 	/**
 	 * 
 	 * method name  : getExtensionsForStudents

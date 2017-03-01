@@ -86,6 +86,18 @@ public class ExtensionDTO
 		this.reasonCode		=	extensionStudentDataModel.getReasonCode();
 		this.reasonOther	=	extensionStudentDataModel.getReasonOther();
 	}
+	
+
+	
+	public ExtensionDTO(String studentNo, String stdStatCode, String statusCodeName, String userName)
+	{
+		this.studentNo		=	studentNo;
+		this.stdStatCode	=	stdStatCode;
+		this.statusCodeName	=	statusCodeName;
+		this.userName		=	userName;
+	}
+	
+	
 	/**
 	 * Getter Method	: getStudentNo
 	 * @return the studentNo

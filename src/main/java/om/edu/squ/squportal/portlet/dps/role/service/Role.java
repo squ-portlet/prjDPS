@@ -35,6 +35,7 @@ import java.io.IOException;
 import javax.xml.transform.stream.StreamSource;
 
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
+import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
 
 /**
@@ -78,14 +79,14 @@ public interface Role
 	 * @param formName
 	 * @param roleName
 	 * @return
-	 * RoleDbImpl
-	 * return type  : String
+	 * Role
+	 * return type  : ApprovalDTO
 	 * 
-	 * purpose		: Get Approval Code
+	 * purpose		: Get Approval details for a form and roleName
 	 *
-	 * Date    		:	Feb 27, 2017 9:01:03 PM
+	 * Date    		:	Mar 1, 2017 5:33:00 PM
 	 */
-	public String	getApprovalCode(String formName, String roleName);
+	public ApprovalDTO	getApprovalCode(String formName, String roleName);
 	
 	/**
 	 * 

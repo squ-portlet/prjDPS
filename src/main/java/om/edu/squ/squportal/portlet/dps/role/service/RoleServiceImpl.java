@@ -36,6 +36,7 @@ import java.io.InputStream;
 import javax.xml.transform.stream.StreamSource;
 
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
+import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
 import om.edu.squ.squportal.portlet.dps.role.db.RoleDbDao;
 
@@ -120,21 +121,8 @@ public class RoleServiceImpl implements Role
 		return employee;
 	}
 	
-	
-	/**
-	 * 
-	 * method name  : getApprovalCode
-	 * @param formName
-	 * @param roleName
-	 * @return
-	 * RoleDbImpl
-	 * return type  : String
-	 * 
-	 * purpose		: Get Approval Code
-	 *
-	 * Date    		:	Feb 27, 2017 9:01:03 PM
-	 */
-	public String	getApprovalCode(String formName, String roleName)
+	@Override
+	public ApprovalDTO	getApprovalCode(String formName, String roleName)
 	{
 		return roleDbDao.getApprovalCode(formName, roleName);
 	}

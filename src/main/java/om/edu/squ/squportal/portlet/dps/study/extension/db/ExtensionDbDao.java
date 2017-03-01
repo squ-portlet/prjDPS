@@ -71,6 +71,20 @@ public interface ExtensionDbDao
 	 * Date    		:	Jan 24, 2017 2:02:28 PM
 	 */
 	public int setExtensionByStudent(ExtensionDTO extensionDTO );
+
+	/**
+	 * 
+	 * method name  : setExtensionStatusOfStudent
+	 * @param extensionDTO
+	 * @return
+	 * ExtensionDbImpl
+	 * return type  : int
+	 * 
+	 * purpose		: Update the status of extension
+	 *
+	 * Date    		:	Mar 1, 2017 4:45:34 PM
+	 */
+	public int setExtensionStatusOfStudent(ExtensionDTO extensionDTO);
 	
 	/**
 	 * 

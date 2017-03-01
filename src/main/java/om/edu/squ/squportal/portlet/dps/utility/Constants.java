@@ -98,6 +98,7 @@ public interface Constants
 	public static final	String	CONST_COLMN_APPROVAL_CODE						=	"APPROVAL_CODE";
 	public static final	String	CONST_COLMN_APPROVER_ROLE_CODE					=	"APPROVER_ROLE_CODE";
 	public static final	String	CONST_COLMN_APPROVAL_SEQUENCE					=	"APPROVAL_SEQUENCE";
+	public static final	String	CONST_COLMN_APPROVAL_MAX_SEQUENCE				=	"APPROVAL_MAX_SEQUENCE";
 	
 	public static final	String	CONST_COLMN_ROLE_SUPERVISOR_STATUS				=	"SUPERVISOR_STATUS";
 	public static final	String	CONST_COLMN_ROLE_COLLEGE_DEAN_STATUS			=	"COLLEGE_DEAN_STATUS";
@@ -148,6 +149,7 @@ public interface Constants
 	/* ---  SQL - DPS - Extension property--------------------- */
 	public	static	final	String	CONST_SQL_EXTENSION_REASONS					=	"dps.extension.select.extension.reasons";
 	public	static	final	String	CONST_SQL_EXTENSION_INSERT_STUDENT			=	"dps.extension.insert.student";
+	public	static	final	String	CONST_SQL_EXTENSION_UPDATE_STATUS_STUDENT	=	"dps.extension.update.status.student";
 	public	static	final	String	CONST_SQL_EXTENSION_SELECT_STUDENT_RECORDS	=	"dps.extension.select.student.records";
 	public	static	final	String	CONST_SQL_EXTENSION_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	"dps.extension.select.student.records.by.employee";
 	

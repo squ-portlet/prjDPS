@@ -35,6 +35,7 @@ import java.util.Locale;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
+import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO;
 import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionReason;
 import om.edu.squ.squportal.portlet.dps.study.extension.db.ExtensionDbDao;
@@ -133,19 +134,45 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 	/**
 	 * 
 	 * method name  : setRoleTransaction
-	 * @param extensionDTO
+	 * @param extensionDTOTr
 	 * @param employee
 	 * @return
 	 * ExtensionServiceImpl
 	 * return type  : int
 	 * 
 	 * purpose		: add record for approval 
+	 * Note			: This function relates with two different transactional statements
 	 *
 	 * Date    		:	Feb 28, 2017 11:32:46 AM
 	 */
-	public int setRoleTransaction(ExtensionDTO extensionDTO, Employee employee)
+	public int setRoleTransaction(ExtensionDTO extensionDTOTr, Employee employee)
 	{
-		return dpsServiceDao.setRoleTransaction(extensionDTO, employee);
+		ExtensionDTO	extensionDTOStudent	=	new ExtensionDTO();
+		ApprovalDTO	approvalDTO		= dpsServiceDao.setRoleTransaction(extensionDTOTr, employee);
+
+		logger.info("approvalDTO : "+approvalDTO);
+		if(extensionDTOTr.getStatusCodeName().equals(Constants.CONST_SQL_STATUS_CODE_REJCT))
+		{
+			extensionDTOStudent.setStatusCodeName(extensionDTOTr.getStatusCodeName());
+		}
+		else
+		{
+			if(approvalDTO.getApprovalSequenceNo()==approvalDTO.getApprovalMaxSequenceNo())
+			{
+				extensionDTOStudent.setStatusCodeName(extensionDTOTr.getStatusCodeName());
+			}
+			else
+			{
+				extensionDTOStudent.setStatusCodeName(Constants.CONST_SQL_STATUS_CODE_NAME_MODFY);
+			}
+		}
+		
+		extensionDTOStudent.setStudentNo(extensionDTOTr.getStudentNo());
+		extensionDTOStudent.setStdStatCode(extensionDTOTr.getStdStatCode());
+		extensionDTOStudent.setUserName(employee.getUserName());
+		
+		
+		return extensionDbDao.setExtensionStatusOfStudent(extensionDTOStudent);
 	}
 	
 }

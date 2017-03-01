@@ -35,19 +35,22 @@
             <table id="tblExtension" class="table table-striped table-bordered dt-responsive nowrap collapsed"  width="100%" style="display: none;">
               <thead>
                 <tr>
-                  <th rowspan="2">Student Id</th>
-                  <th rowspan="2">Name</th>
-                  <th rowspan="2">Cohort</th>
-                  <th rowspan="2">College</th>
-                  <th rowspan="2">Program</th>
-                  <th colspan="3">Approver</th>
-                  <th rowspan="2">Action</th>
-                </tr>
-                <tr>
+                  <th >Student Id</th>
+                  <th >Name</th>
+                  <th >Cohort</th>
+                  <th >College</th>
+                  <th >Program</th>
+<!--                   <th colspan="3">Approver</th> -->
                   <th>Supervisor</th>
                   <th>Col.Dean</th>
                   <th>DPS Dean</th>
+                  <th >Action</th>
                 </tr>
+<!--                 <tr>
+                  <th>Supervisor</th>
+                  <th>Col.Dean</th>
+                  <th>DPS Dean</th>
+                </tr> -->
               </thead>
               <tbody>
                 <tr></tr>
