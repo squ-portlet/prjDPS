@@ -123,7 +123,7 @@
 							"iDisplayLength": 10,
 							destroy: true,
 							"bJQueryUI": true,
-							"sDom":  '<f><t><"col-sm-3"i><"col-sm-2"l><"col-sm-5"p>', 
+							"sDom":  '<f><t><"col-sm-5"i><"col-sm-2"l><"col-sm-3"p>', 
 							"oLanguage": {
 								  "sUrl": "${urlCdn}/DataTables/language/lang_${rc.locale.language}.txt"
 								},
@@ -204,9 +204,12 @@
 												data:	extensionDTO,
 												success:function(data)
 												{
-													$(btnRadio).prop("checked", true);
-													//oTable.fnUpdate('---', rowId, 8);
-													rowData.collegeName='just a test';
+													//$(btnRadio).prop("checked", true);
+													var jsonReqBO=JSON.parse(data);
+													rowData.approver='';
+													rowData.roleStatusSupervisor=jsonReqBO.roleStatusSupervisor;
+													rowData.roleStatusCollegeDean=jsonReqBO.roleStatusCollegeDean;
+													rowData.roleStatusDpsDean=jsonReqBO.roleStatusDpsDean;
 													oTable.row(rowIndex).data(rowData).draw();
 												},
 												erorr:

@@ -269,6 +269,7 @@ public class ExtensionStudiesController
 		{
 			employee = dpsServiceDao.getEmployee(getEmpNumber(request),locale);
 			List<ExtensionDTO> dtos	=	extensionServiceDao.getExtensionsForApprovers(roleNameValue.getRoleValue(), employee, locale);
+			//logger.info("dtos : "+gson.toJson(dtos));
 			response.getWriter().print(gson.toJson(dtos));
 		}
 		catch (ExceptionEmptyResultset ex)
@@ -300,15 +301,16 @@ public class ExtensionStudiesController
 			ResourceRequest request, ResourceResponse response,Locale locale
 		) throws IOException
 		{
-			Gson		gson		=	new Gson();
-			Employee	employee;
-			int			resultTr	=	0;	
+			Gson			gson					=	new Gson();
+			Employee		employee;
+			ExtensionDTO	extensionDTOResult		=	null;	
 			try
 			{
 				employee = dpsServiceDao.getEmployee(getEmpNumber(request),locale);
 				employee.setUserName(request.getRemoteUser());
 				
-				resultTr = extensionServiceDao.setRoleTransaction(extensionDTO, employee);
+				extensionDTOResult = extensionServiceDao.setRoleTransaction(extensionDTO, employee, locale);
+				response.getWriter().print(gson.toJson(extensionDTOResult));
 				
 			}
 			catch (ExceptionEmptyResultset ex)

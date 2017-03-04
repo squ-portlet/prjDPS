@@ -128,14 +128,38 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		{
 			employee.setEmpNumber(employee.getEmpNumber().substring(1));
 		}
-		return extensionDbDao.getExtensionsForApprovers(roleType, employee, locale);
+		return extensionDbDao.getExtensionsForApprovers(roleType, employee, locale, null);
 	}
 
 	/**
 	 * 
-	 * method name  : setRoleTransaction
-	 * @param extensionDTOTr
+	 * method name  : getExtensionsForApprovers
+	 * @param roleType
 	 * @param employee
+	 * @param studentNo
+	 * @param locale
+	 * @return
+	 * ExtensionServiceImpl
+	 * return type  : ExtensionDTO
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Mar 4, 2017 1:00:05 AM
+	 */
+	private ExtensionDTO getExtensionsForApprovers(String roleType, Employee employee, String studentNo,Locale locale)
+	{
+		if(employee.getEmpNumber().substring(0,1).equals("e"))
+		{
+			employee.setEmpNumber(employee.getEmpNumber().substring(1));
+		}
+		return extensionDbDao.getExtensionsForApprovers(roleType, employee, locale, studentNo).get(0);
+	}
+	
+	/**
+	 * 
+	 * method name  : setRoleTransaction
+	 * @param employee
+	 * @param extensionDTOTr
 	 * @return
 	 * ExtensionServiceImpl
 	 * return type  : int
@@ -145,12 +169,13 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 	 *
 	 * Date    		:	Feb 28, 2017 11:32:46 AM
 	 */
-	public int setRoleTransaction(ExtensionDTO extensionDTOTr, Employee employee)
+	public ExtensionDTO setRoleTransaction(ExtensionDTO extensionDTOTr, Employee employee, Locale locale)
 	{
+		int 			resultTr			=	0;		
 		ExtensionDTO	extensionDTOStudent	=	new ExtensionDTO();
-		ApprovalDTO	approvalDTO		= dpsServiceDao.setRoleTransaction(extensionDTOTr, employee);
+		ExtensionDTO	extensionDTOResult	=	null;
+		ApprovalDTO	approvalDTO				= 	dpsServiceDao.setRoleTransaction(extensionDTOTr, employee);
 
-		logger.info("approvalDTO : "+approvalDTO);
 		if(extensionDTOTr.getStatusCodeName().equals(Constants.CONST_SQL_STATUS_CODE_REJCT))
 		{
 			extensionDTOStudent.setStatusCodeName(extensionDTOTr.getStatusCodeName());
@@ -171,8 +196,15 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		extensionDTOStudent.setStdStatCode(extensionDTOTr.getStdStatCode());
 		extensionDTOStudent.setUserName(employee.getUserName());
 		
+		resultTr			=	extensionDbDao.setExtensionStatusOfStudent(extensionDTOStudent);
+		if(resultTr>0)
+						{
+							extensionDTOResult	=	getExtensionsForApprovers(extensionDTOTr.getRoleName(),employee,extensionDTOTr.getStudentNo(),locale);
+						}
 		
-		return extensionDbDao.setExtensionStatusOfStudent(extensionDTOStudent);
+		
+		
+		return extensionDTOResult;
 	}
 	
 }

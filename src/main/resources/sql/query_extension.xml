@@ -220,6 +220,11 @@
 							                      :paramDeptCode  = DEPT.DEPTNO				--	HOD
 							                  OR  :paramDeptCode  IS NULL
 							            )
+							         AND
+										(
+										          :paramStdNo = EXT.STDNO
+										      OR  :paramStdNo IS NULL
+										)
 							)
 							ORDER BY  CREATE_DATE DESC
   	

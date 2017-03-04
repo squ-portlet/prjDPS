@@ -134,10 +134,9 @@
 			      
 			    WHERE
 			    USERS.USERCATEGORY = CODES.SISCODECD
-			      AND CODES.L_ABR_CODE LIKE '%DEAN%'
+			      AND CODES.L_ABR_CODE LIKE 'DEANP'
 			      AND LPAD(LTRIM(USERS.USERNAME,'e'),7,0) = LPAD(:paramEmpNo,7,0)
 			      AND USERS.STATUSACTIVE='Y'
-			      AND USERS.COLCENCD = 36 
 			)
 			
 		</entry>

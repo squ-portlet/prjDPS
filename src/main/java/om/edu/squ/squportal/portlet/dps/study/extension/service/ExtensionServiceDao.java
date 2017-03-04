@@ -105,11 +105,13 @@ public interface ExtensionServiceDao
 	 */
 	public List<ExtensionDTO> getExtensionsForApprovers(String roleType, Employee employee, Locale locale);
 	
+	
 	/**
 	 * 
 	 * method name  : setRoleTransaction
 	 * @param extensionDTO
 	 * @param employee
+	 * @param locale TODO
 	 * @return
 	 * ExtensionServiceImpl
 	 * return type  : int
@@ -118,5 +120,5 @@ public interface ExtensionServiceDao
 	 *
 	 * Date    		:	Feb 28, 2017 11:32:46 AM
 	 */
-	public int setRoleTransaction(ExtensionDTO extensionDTO, Employee employee);
+	public ExtensionDTO setRoleTransaction(ExtensionDTO extensionDTO, Employee employee, Locale locale);
 }

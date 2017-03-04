@@ -259,7 +259,7 @@ public class ExtensionDbImpl implements ExtensionDbDao
 	 *
 	 * Date    		:	Feb 15, 2017 10:09:55 PM
 	 */
-	public List<ExtensionDTO> getExtensionsForApprovers(String roleType, Employee employee, Locale locale)
+	public List<ExtensionDTO> getExtensionsForApprovers(String roleType, Employee employee, Locale locale, String studentNo)
 	{
 		String SQL_EXTENSION_SELECT_STUDENT_RECORDS_BY_EMPLOYEE		=	queryExtensionProps.getProperty(Constants.CONST_SQL_EXTENSION_SELECT_STUDENT_RECORDS_BY_EMPLOYEE);	
 		RowMapper<ExtensionDTO> 	mapper		=	new RowMapper<ExtensionDTO>()
@@ -295,6 +295,7 @@ public class ExtensionDbImpl implements ExtensionDbDao
 		
 		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
 		namedParameterMap.put("paramLocal", locale.getLanguage());
+		namedParameterMap.put("paramStdNo", null);
 		namedParameterMap.put("paramColCode", null);
 		namedParameterMap.put("paramAdvisor", null);
 		namedParameterMap.put("paramSupervisor", null);
@@ -327,6 +328,10 @@ public class ExtensionDbImpl implements ExtensionDbDao
 				break;
 		}
 	
+		if(null != studentNo)
+		{
+			namedParameterMap.put("paramStdNo", studentNo);
+		}
 		return nPJdbcTemplDpsExtension.query(SQL_EXTENSION_SELECT_STUDENT_RECORDS_BY_EMPLOYEE, namedParameterMap, mapper);
 	}
 	
