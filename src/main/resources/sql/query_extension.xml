@@ -165,18 +165,18 @@
 							          , EXT.CREATE_DATE                               	AS  CREATE_DATE
 			                          , FUNC_APPROVE_STATUS(
 			                                              EXT.STDNO,
-			                                              :paramSupervisorRoleCode, 
-			                                              :paramFormCode
+			                                              :paramSupervisorRoleName, 
+			                                              :paramFormName
 			                                              )                           	AS  SUPERVISOR_STATUS
 			                          , FUNC_APPROVE_STATUS(
 			                                              EXT.STDNO,
-			                                              :paramColDeanRoleCode, 
-			                                              :paramFormCode
+			                                              :paramColDeanRoleName, 
+			                                              :paramFormName
 			                                              )                           	AS  COLLEGE_DEAN_STATUS
 			                          , FUNC_APPROVE_STATUS(
 			                                              EXT.STDNO,
-			                                              :paramDpsDeanRoleCode, 
-			                                              :paramFormCode
+			                                              :paramDpsDeanRoleName, 
+			                                              :paramFormName
 			                                              )                           	AS  DPS_DEAN_STATUS
 			                          ,	FUNC_IS_APPROVER(
 														 		  EXT.STDNO

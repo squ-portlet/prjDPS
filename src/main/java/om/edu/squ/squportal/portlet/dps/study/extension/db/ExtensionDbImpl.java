@@ -304,9 +304,9 @@ public class ExtensionDbImpl implements ExtensionDbDao
 		namedParameterMap.put("paramFormName", Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY);
 		namedParameterMap.put("paramEmpNo", employee.getEmpNumber());
 		
-		namedParameterMap.put("paramSupervisorRoleCode", Constants.CONST_SQL_ROLE_SUPERVISOR);
-		namedParameterMap.put("paramColDeanRoleCode", Constants.CONST_SQL_ROLE_COL_DEAN);
-		namedParameterMap.put("paramDpsDeanRoleCode", Constants.CONST_SQL_ROLE_DPS_DEAN);
+		namedParameterMap.put("paramSupervisorRoleName", Constants.CONST_SQL_ROLE_NAME_SUPERVISOR);
+		namedParameterMap.put("paramColDeanRoleName", Constants.CONST_SQL_ROLE_NAME_COL_DEAN);
+		namedParameterMap.put("paramDpsDeanRoleName", Constants.CONST_SQL_ROLE_NAME_DPS_DEAN);
 		
 		namedParameterMap.put("paramFormCode", Constants.CONST_FORM_DPS_EXTENSION_STUDY);
 		

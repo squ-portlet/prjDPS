@@ -120,6 +120,9 @@ public interface Constants
 	public static final	String	CONST_SQL_ROLE_COL_DEAN							=	"1883";	  // DEAN
 	public static final	String	CONST_SQL_ROLE_DPS_DEAN							=	"5548";
 	
+	public static final	String	CONST_SQL_ROLE_NAME_SUPERVISOR					=	"SUPRVS";   
+	public static final	String	CONST_SQL_ROLE_NAME_COL_DEAN					=	"DEAN";	  
+	public static final	String	CONST_SQL_ROLE_NAME_DPS_DEAN					=	"DEANP";
 	
 	/******************************************************/
 	
