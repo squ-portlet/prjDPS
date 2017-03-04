@@ -110,8 +110,6 @@ public class DpsServiceImpl implements DpsServiceDao
 		YearSemester	currYearSemester	=	dpsDbDao.getCurrentYearSemester(locale);
 		YearSemester 	nextYearSemester	=	dpsDbDao.getNextYearSemester(locale);
 		
-		logger.info("nextYearSemester : "+nextYearSemester);
-		
 		if(nextYearSemester.equals(currYearSemester))
 		{ 
 			return null;

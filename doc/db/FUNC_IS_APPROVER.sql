@@ -77,7 +77,6 @@ BEGIN
                                  AND  APP_M.FORMCD              = OBJ.OBJECTCD
                                  AND    APP_T.APPROVAL_STATUSCD = CODES.SISCODECD(+)
                                  AND  APP_T.STDNO (+)           = paramStudentNo
-                                 AND  APP_T.APPROVER_EMPNO (+)  = paramEmpNo
                                  AND  OBJ.OBJECTNM  = paramFormName
                             
                             GROUP BY   L_ABR_CODE, APPROVAL_SEQUENCE   
