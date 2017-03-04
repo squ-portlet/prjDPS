@@ -240,7 +240,11 @@ public class ExtensionDbImpl implements ExtensionDbDao
 		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
 		namedParameterMap.put("paramStdNo", studentNo);
 		namedParameterMap.put("paramLocale", locale.getLanguage());
+		namedParameterMap.put("paramSupervisorRoleName", Constants.CONST_SQL_ROLE_NAME_SUPERVISOR);
+		namedParameterMap.put("paramColDeanRoleName", Constants.CONST_SQL_ROLE_NAME_COL_DEAN);
+		namedParameterMap.put("paramDpsDeanRoleName", Constants.CONST_SQL_ROLE_NAME_DPS_DEAN);
 		
+		namedParameterMap.put("paramFormName", Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY);
 		
 		return nPJdbcTemplDpsExtension.query(SQL_EXTENSION_SELECT_STUDENT_RECORDS, namedParameterMap, mapper);
 	}
@@ -308,7 +312,7 @@ public class ExtensionDbImpl implements ExtensionDbDao
 		namedParameterMap.put("paramColDeanRoleName", Constants.CONST_SQL_ROLE_NAME_COL_DEAN);
 		namedParameterMap.put("paramDpsDeanRoleName", Constants.CONST_SQL_ROLE_NAME_DPS_DEAN);
 		
-		namedParameterMap.put("paramFormCode", Constants.CONST_FORM_DPS_EXTENSION_STUDY);
+		namedParameterMap.put("paramFormName", Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY);
 		
 		switch (roleType)
 		{

@@ -55,8 +55,23 @@
 	                )
 	              FROM SIS_CODES
 	              WHERE SISCODECD= EXTN.EXTREQ_STATUSCD
-	            ) 																		AS 		STATUS_DESC
-	        
+	            ) 
+	            																		AS 		STATUS_DESC
+          , FUNC_APPROVE_STATUS(
+                            EXTN.STDNO,
+                            :paramSupervisorRoleName, 
+                            :paramFormName
+                            )                           								AS  SUPERVISOR_STATUS
+        , FUNC_APPROVE_STATUS(
+                            EXTN.STDNO,
+                            :paramColDeanRoleName, 
+                            :paramFormName
+                            )                           								AS  COLLEGE_DEAN_STATUS
+        , FUNC_APPROVE_STATUS(
+                            EXTN.STDNO,
+                            :paramDpsDeanRoleName, 
+                            :paramFormName
+                            )                           								AS  DPS_DEAN_STATUS	        
 	FROM 
 	    STD_EXTENSION EXTN,
 	    SIS_CODES     SISCD
