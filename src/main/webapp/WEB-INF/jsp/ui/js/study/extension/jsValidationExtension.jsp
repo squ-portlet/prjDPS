@@ -9,6 +9,8 @@
 <script type="text/javascript">
 	$(function(){
 
+		extensionStudentDataModel
+		
 
 		/*********
 		* Approver should can not reject without specifying reasons
@@ -26,6 +28,35 @@
 
 	});
 
+		
+		/************************************************** jqueryvalidation for New Request screen *******************************************/	
+		$( "#extensionStudentDataModel" ).validate({
+			  rules: {
+				  yearSem: {
+			      required: true
+			    },
+			    reasonCode: {
+				      required: true
+				    },
+			    reasonOther: {
+				      required: "#reasonCode:filled"
+				}
+
+			  },
+			  errorPlacement: function(error, element) {
+
+					  error.insertAfter(element);
+
+			  },
+			  messages: {
+				  yearSem: '<spring:message code="prop.dps.extension.error.student.apply.form.yearSem"/>',
+				  reasonCode: '<spring:message code="prop.dps.extension.error.student.apply.form.reasonCode"/>',
+				  reasonOther: '<spring:message code="prop.dps.extension.error.student.apply.form.reasonOther"/>'
+				  
+			  }
+			});
+
+		
 		
 	});
 </script>

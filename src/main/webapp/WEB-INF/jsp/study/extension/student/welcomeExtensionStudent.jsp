@@ -8,6 +8,7 @@
 
 <%@include file="../../../ui/cssWelcome.jsp" %>
 <%@include file="../../../ui/js/study/extension/jsExtension.jsp" %>
+<%@include file="../../../ui/js/study/extension/jsValidationExtension.jsp" %>
 
 <portlet:renderURL var="varExtensionForm">
 	<portlet:param name="action" value="studentExtensionForm"/>
