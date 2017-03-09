@@ -43,4 +43,16 @@
     <servlet-name>ViewRendererServlet</servlet-name>
     <url-pattern>/WEB-INF/servlet/view</url-pattern>
   </servlet-mapping>
+  
+       <jsp-config>
+       <taglib>
+         <taglib-uri>
+           http://squ.dps/roleGlyph
+         </taglib-uri>
+         <taglib-location>
+           /WEB-INF/tags/RoleTagGlyphicon.tld
+         </taglib-location>
+       </taglib> 
+       </jsp-config>  
+  
 </web-app>
