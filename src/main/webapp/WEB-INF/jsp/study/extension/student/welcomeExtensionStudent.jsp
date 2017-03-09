@@ -4,6 +4,7 @@
 <%@ taglib prefix="spring"  uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form"    uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://squ.dps/roleGlyph" prefix="dps" %>
 
 <%@include file="../../../ui/cssWelcome.jsp" %>
 <%@include file="../../../ui/js/study/extension/jsExtension.jsp" %>
@@ -34,7 +35,7 @@
                 </tr>
                 <tr>
                   <th colspan="3"></th>
-                  <th><spring:message code="prop.dps.extension.student.applications.head.column.approver.suerpervisor.advisor"/></th>
+                  <th><spring:message code="prop.dps.extension.student.applications.head.column.approver.suerpervisor"/></th>
                   <th><spring:message code="prop.dps.extension.student.applications.head.column.approver.col.dean"/></th>
                   <th><spring:message code="prop.dps.extension.student.applications.head.column.approver.dps.dean"/></th>
                   <th></th>
@@ -42,22 +43,37 @@
               </thead>
               <tbody>
               	<c:forEach items="${extenstions}" var="ext">
+              		
               		<tr>
               			<td>${ext.activitiDate}</td>
               			<td>${ext.toCcYrCode}-${ext.toSemName}</td>
               			<td>${ext.reasonDesc}</td>
               			
-              			<td></td>
-              			<td></td>
-              			<td></td>
+              			<td>${ext.supervisor.roleStausIkon}</td>
+              			<td>${ext.collegeDean.roleStausIkon}</td>
+              			<td>${ext.dpsDean.roleStausIkon}</td>
               			
-              			<td>${ext.statusDesc}</td>
+              			<td>${ext.statusDesc} &nbsp;
+              					<c:if test="${ext.statusCodeName eq 'REJCT'}">
+              						<a href="#" class="clsMsgErr" msg=${ext.commentEng}>
+		              						<font color="default">
+		              							<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+		              						</font>
+              						</a>
+              					</c:if>
+              			
+              			
+              			</td>
               		</tr>
               	</c:forEach>
               </tbody>
             </table>
           </div>
         </div>
+      </div>
+      
+      <div class="row container-fluid" id="idRowMsg">
+
       </div>
     </div>
     

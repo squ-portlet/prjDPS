@@ -188,13 +188,14 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 			}
 			else
 			{
-				extensionDTOStudent.setStatusCodeName(Constants.CONST_SQL_STATUS_CODE_NAME_MODFY);
+				extensionDTOStudent.setStatusCodeName(Constants.CONST_SQL_STATUS_CODE_NAME_PROGRESS);
 			}
 		}
 		
 		extensionDTOStudent.setStudentNo(extensionDTOTr.getStudentNo());
 		extensionDTOStudent.setStdStatCode(extensionDTOTr.getStdStatCode());
 		extensionDTOStudent.setUserName(employee.getUserName());
+		extensionDTOStudent.setCommentEng(extensionDTOTr.getCommentEng());
 		
 		resultTr			=	extensionDbDao.setExtensionStatusOfStudent(extensionDTOStudent);
 		if(resultTr>0)

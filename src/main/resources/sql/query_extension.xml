@@ -47,6 +47,13 @@
 	        , EXTN.OTHER_REASON															AS		EXTENSION_OTHER_REASON							    
 	        , EXTN.EXTREQ_STATUSCD														AS		STATUS_CODE
 	        , (
+	        	SELECT
+	        		L_ABR_CODE
+	        	FROM SIS_CODES
+	            WHERE 
+	            	SISCODECD= EXTN.EXTREQ_STATUSCD
+	        	)																		AS		STATUS_CODE_NAME
+	        , (
 	            SELECT 
 	              DECODE 
 	              (
@@ -55,23 +62,36 @@
 	                )
 	              FROM SIS_CODES
 	              WHERE SISCODECD= EXTN.EXTREQ_STATUSCD
-	            ) 
-	            																		AS 		STATUS_DESC
+	            ) 																		AS 		STATUS_DESC
+	       , EXTN.COMMNT																AS		COMMENTS
+	            																		
           , FUNC_APPROVE_STATUS(
                             EXTN.STDNO,
                             :paramSupervisorRoleName, 
                             :paramFormName
-                            )                           								AS  SUPERVISOR_STATUS
+                            )                           								AS  	SUPERVISOR_STATUS
         , FUNC_APPROVE_STATUS(
                             EXTN.STDNO,
                             :paramColDeanRoleName, 
                             :paramFormName
-                            )                           								AS  COLLEGE_DEAN_STATUS
+                            )                           								AS  	COLLEGE_DEAN_STATUS
         , FUNC_APPROVE_STATUS(
                             EXTN.STDNO,
                             :paramDpsDeanRoleName, 
                             :paramFormName
-                            )                           								AS  DPS_DEAN_STATUS	        
+                            )                           								AS  	DPS_DEAN_STATUS	 
+		, FUNC_GET_APPROVALCODE(
+							:paramFormName,
+							:paramSupervisorRoleName
+							)															AS		SUPERVISOR_APPROVAL_CODE
+		, FUNC_GET_APPROVALCODE(
+							:paramFormName,
+							:paramColDeanRoleName
+							)															AS		COLLEGE_DEAN_APPROVAL_CODE
+		, FUNC_GET_APPROVALCODE(
+							:paramFormName,
+							:paramDpsDeanRoleName
+							)															AS		DPS_DEAN_APPROVAL_CODE														               
 	FROM 
 	    STD_EXTENSION EXTN,
 	    SIS_CODES     SISCD
@@ -128,6 +148,7 @@
 					                                    AND TYPES.SISCODETYPNM = 'APPROVAL_STATUS'
 					                                    AND CODES.L_ABR_CODE  = :paramStatusCodeName
 					                            )
+						  , COMMNT			= :paramComment					                            
 					      , USRACCTCD       = :paramUserName
 					      , UPDDTE          = SYSDATE
 					WHERE

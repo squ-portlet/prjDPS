@@ -207,6 +207,7 @@
 								              , APPROVER_USERNAME
 								              , CREATE_DATE
 								              , CREATE_USERNAME
+								              ,	COMMENTS
 								            )
 				      VALUES
 								            (
@@ -219,6 +220,7 @@
 								              , :paramUserName
 								              , SYSDATE
 								              , :paramUserName
+								              , :paramComments
 								            )
 		</entry>
 		

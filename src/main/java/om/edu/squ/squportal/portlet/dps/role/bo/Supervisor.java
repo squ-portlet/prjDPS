@@ -43,6 +43,8 @@ public class Supervisor
 	private	String	sequence;
 	private	String	rolecode;
 	private	String	approvalcode;
+	private	String	roleStatus;
+	private	String	roleStausIkon;
 	
 	/**
 	 * Getter Method	: getAccess
@@ -119,6 +121,47 @@ public class Supervisor
 	{
 		return this.approvalcode;
 	}
+	
+	/**
+	 * Getter Method	: getRoleStatus
+	 * @return the roleStatus
+	 * 
+	 * Date				: Mar 6, 2017
+	 */
+	public String getRoleStatus()
+	{
+		return this.roleStatus;
+	}
+	/**
+	 * Setter method : setRoleStatus
+	 * @param roleStatus the roleStatus to set
+	 * 
+	 * Date          : Mar 6, 2017 7:36:16 PM
+	 */
+	public void setRoleStatus(String roleStatus)
+	{
+		this.roleStatus = roleStatus;
+	}
+	/**
+	 * Getter Method	: getRoleStausIkon
+	 * @return the roleStausIkon
+	 * 
+	 * Date				: Mar 6, 2017
+	 */
+	public String getRoleStausIkon()
+	{
+		return this.roleStausIkon;
+	}
+	/**
+	 * Setter method : setRoleStausIkon
+	 * @param roleStausIkon the roleStausIkon to set
+	 * 
+	 * Date          : Mar 6, 2017 7:36:16 PM
+	 */
+	public void setRoleStausIkon(String roleStausIkon)
+	{
+		this.roleStausIkon = roleStausIkon;
+	}
 	/**
 	 * Setter method : setApprovalcode
 	 * @param approvalcode the approvalcode to set
@@ -137,7 +180,9 @@ public class Supervisor
 	{
 		return "Supervisor [access=" + this.access + ", sequence="
 				+ this.sequence + ", rolecode=" + this.rolecode
-				+ ", approvalcode=" + this.approvalcode + "]";
+				+ ", approvalcode=" + this.approvalcode + ", roleStatus="
+				+ this.roleStatus + ", roleStausIkon=" + this.roleStausIkon
+				+ "]";
 	}
 	
 	

@@ -40,8 +40,12 @@ import java.util.Properties;
 
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
+import om.edu.squ.squportal.portlet.dps.role.bo.CollegeDean;
+import om.edu.squ.squportal.portlet.dps.role.bo.DpsDean;
+import om.edu.squ.squportal.portlet.dps.role.bo.Supervisor;
 import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO;
 import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionReason;
+import om.edu.squ.squportal.portlet.dps.tags.RoleTagGlyphicon;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
 import org.slf4j.Logger;
@@ -190,6 +194,7 @@ public class ExtensionDbImpl implements ExtensionDbDao
 		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
 		namedParameterMap.put("paramStdNo", extensionDTO.getStudentNo());
 		namedParameterMap.put("paramStdStatCode", extensionDTO.getStdStatCode());
+		namedParameterMap.put("paramComment", extensionDTO.getCommentEng());
 		namedParameterMap.put("paramStatusCodeName", extensionDTO.getStatusCodeName());
 		namedParameterMap.put("paramUserName", extensionDTO.getUserName());
 		
@@ -219,6 +224,10 @@ public class ExtensionDbImpl implements ExtensionDbDao
 			public ExtensionDTO mapRow(ResultSet rs, int rowNum) throws SQLException
 			{
 				ExtensionDTO	extensionDTO	=	new ExtensionDTO();
+				Supervisor		supervisor		=	new Supervisor();
+				CollegeDean		collegeDean		=	new CollegeDean();
+				DpsDean			dpsDean			=	new DpsDean();
+				
 				extensionDTO.setActivitiDate(rs.getString(Constants.COST_COL_DPS_CREATE_DATE));
 				extensionDTO.setToCcYrCode(rs.getString(Constants.COST_COL_DPS_TO_COURSE_YEAR_CODE));
 				extensionDTO.setToSemCode(rs.getString(Constants.COST_COL_DPS_SEMESTER_CODE));
@@ -232,8 +241,28 @@ public class ExtensionDbImpl implements ExtensionDbDao
 				{
 					extensionDTO.setReasonDesc(rs.getString(Constants.CONST_COLMN_EXTENSION_REASON_NAME));
 				}
+				supervisor.setApprovalcode(rs.getString(Constants.CONST_COLMN_APPROVAL_CODE_SUPERVISOR));
+				supervisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_SUPERVISOR_STATUS));
+				supervisor.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_SUPERVISOR_STATUS)));
+				
+				collegeDean.setApprovalcode(rs.getString(Constants.CONST_COLMN_APPROVAL_CODE_COLLEGE_DEAN));
+				collegeDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_COLLEGE_DEAN_STATUS));
+				collegeDean.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_SUPERVISOR_STATUS)));
+				
+				dpsDean.setApprovalcode(rs.getString(Constants.CONST_COLMN_APPROVAL_CODE_DPS_DEAN));
+				dpsDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_DPS_DEAN_STATUS));
+				dpsDean.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_DPS_DEAN_STATUS)));
+				
+				extensionDTO.setSupervisor(supervisor);
+				extensionDTO.setCollegeDean(collegeDean);
+				extensionDTO.setDpsDean(dpsDean);
+
 				extensionDTO.setStatusCode(rs.getString(Constants.CONST_COLMN_STATUS_CODE));
+				extensionDTO.setStatusCodeName(rs.getString(Constants.CONST_COLMN_STATUS_CODE_NAME));
 				extensionDTO.setStatusDesc(rs.getString(Constants.CONST_COLMN_STATUS_DESC));
+				
+				extensionDTO.setCommentEng(rs.getString(Constants.CONST_COLMN_COMMENT));
+
 				return extensionDTO;
 			}
 		};
@@ -273,6 +302,10 @@ public class ExtensionDbImpl implements ExtensionDbDao
 			public ExtensionDTO mapRow(ResultSet rs, int rowNum) throws SQLException
 			{
 				ExtensionDTO	extensionDTO	=	new ExtensionDTO();
+				Supervisor		supervisor		=	new Supervisor();
+				CollegeDean		collegeDean		=	new CollegeDean();
+				DpsDean			dpsDean			=	new DpsDean();
+				
 				extensionDTO.setStudentId(rs.getString(Constants.CONST_COLMN_STUDENT_ID));
 				extensionDTO.setStudentNo(rs.getString(Constants.CONST_COLMN_STUDENT_NO));
 				//extensionDTO.setStatusCode(rs.getString(Constants.CONST_COLMN_STDSTATCD));
@@ -281,9 +314,11 @@ public class ExtensionDbImpl implements ExtensionDbDao
 				extensionDTO.setCohort(rs.getString(Constants.CONST_COLMN_COHORT));
 				extensionDTO.setCollegeName(rs.getString(Constants.CONST_COLMN_COLLEGE_NAME));
 				extensionDTO.setDegreeName(rs.getString(Constants.CONST_COLMN_DEGREE_NAME));
-				extensionDTO.setRoleStatusSupervisor(rs.getString(Constants.CONST_COLMN_ROLE_SUPERVISOR_STATUS));
-				extensionDTO.setRoleStatusCollegeDean(rs.getString(Constants.CONST_COLMN_ROLE_COLLEGE_DEAN_STATUS));
-				extensionDTO.setRoleStatusDpsDean(rs.getString(Constants.CONST_COLMN_ROLE_DPS_DEAN_STATUS));
+				
+				supervisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_SUPERVISOR_STATUS));
+				collegeDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_COLLEGE_DEAN_STATUS));
+				dpsDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_DPS_DEAN_STATUS));
+
 				if(rs.getString(Constants.CONST_COLMN_ROLE_IS_APPROVER).equals("Y"))
 				{
 					extensionDTO.setApprover(true);
@@ -292,6 +327,10 @@ public class ExtensionDbImpl implements ExtensionDbDao
 				{
 					extensionDTO.setApprover(false);
 				}
+				
+				extensionDTO.setSupervisor(supervisor);
+				extensionDTO.setCollegeDean(collegeDean);
+				extensionDTO.setDpsDean(dpsDean);
 				
 				return extensionDTO;
 			}

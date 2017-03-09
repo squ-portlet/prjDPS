@@ -168,6 +168,7 @@ public class ExtensionStudiesController
 			model.addAttribute("extensionStudentDataModel", extensionStudentDataModel);
 		}
 		
+		model.addAttribute("student", student);
 		model.addAttribute("currYearSem", dpsServiceDao.getCurrentYearSemester(locale));
 		model.addAttribute("nextYearSemester", dpsServiceDao.getNextYearSemester(locale));
 		model.addAttribute("reasonList", extensionServiceDao.getExtensionReasons(locale));
@@ -269,7 +270,6 @@ public class ExtensionStudiesController
 		{
 			employee = dpsServiceDao.getEmployee(getEmpNumber(request),locale);
 			List<ExtensionDTO> dtos	=	extensionServiceDao.getExtensionsForApprovers(roleNameValue.getRoleValue(), employee, locale);
-			//logger.info("dtos : "+gson.toJson(dtos));
 			response.getWriter().print(gson.toJson(dtos));
 		}
 		catch (ExceptionEmptyResultset ex)

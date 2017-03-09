@@ -88,8 +88,10 @@ public interface Constants
 	
 	public static final	String	CONST_COLMN_SISCODECD							=	"SISCODECD";
 	public static final	String	CONST_COLMN_STATUS_CODE							=	"STATUS_CODE";
+	public static final	String	CONST_COLMN_STATUS_CODE_NAME					=	"STATUS_CODE_NAME";
 	public static final	String	CONST_COLMN_STATUS_DESC							=	"STATUS_DESC";
 	public static final	String	CONST_COLMN_COHORT								=	"COHORT";
+	public static final	String	CONST_COLMN_COMMENT								=	"COMMENTS";
 	
 	public static final	String	CONST_COLMN_EXTENSION_REASON_CODE				=	"EXTENSION_REASON_CODE";
 	public static final	String	CONST_COLMN_EXTENSION_REASON_NAME				=	"EXTENSION_REASON_NAME";
@@ -99,6 +101,9 @@ public interface Constants
 	public static final	String	CONST_COLMN_APPROVER_ROLE_CODE					=	"APPROVER_ROLE_CODE";
 	public static final	String	CONST_COLMN_APPROVAL_SEQUENCE					=	"APPROVAL_SEQUENCE";
 	public static final	String	CONST_COLMN_APPROVAL_MAX_SEQUENCE				=	"APPROVAL_MAX_SEQUENCE";
+	public static final	String	CONST_COLMN_APPROVAL_CODE_SUPERVISOR			=	"SUPERVISOR_APPROVAL_CODE";
+	public static final	String	CONST_COLMN_APPROVAL_CODE_COLLEGE_DEAN			=	"COLLEGE_DEAN_APPROVAL_CODE";
+	public static final	String	CONST_COLMN_APPROVAL_CODE_DPS_DEAN				=	"DPS_DEAN_APPROVAL_CODE";
 	
 	public static final	String	CONST_COLMN_ROLE_SUPERVISOR_STATUS				=	"SUPERVISOR_STATUS";
 	public static final	String	CONST_COLMN_ROLE_COLLEGE_DEAN_STATUS			=	"COLLEGE_DEAN_STATUS";
@@ -109,6 +114,7 @@ public interface Constants
 	/******************************************************/
 	public static final	String	CONST_SQL_STATUS_CODE_PENDING					=	"5539";
 	public static final	String	CONST_SQL_STATUS_CODE_NAME_MODFY				=	"MODFY";
+	public static final	String	CONST_SQL_STATUS_CODE_NAME_PROGRESS				=	"PRGRS";
 	public static final	String	CONST_SQL_STATUS_CODE_NAME_PENDING				=	"PENDG";
 	public static final	String	CONST_SQL_STATUS_CODE_REJCT						=	"REJCT";
 	public static final	String	CONST_SQL_STATUS_CODE_ACCPT						=	"ACCPT";

@@ -74,7 +74,7 @@
 </c:if>
  <!-- link rel="stylesheet" type="text/css" href="${urlCssBootstrapMin}" /-->
 
- <link rel="stylesheet" type="text/css" href="${urlCssJQueryUiCustom}" />
+<%--  <link rel="stylesheet" type="text/css" href="${urlCssJQueryUiCustom}" /> --%>
 
 
 	<!-- ------------ datatable css implementation -->

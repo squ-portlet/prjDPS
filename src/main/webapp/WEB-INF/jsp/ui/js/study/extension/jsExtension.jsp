@@ -5,7 +5,27 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
+
 <script type="text/javascript">
+	$(function(){
+		$('.clsMsgErr').click(function(){
+			var messageAlert = $(this).attr('msg');
+			var htmlMsg='\
+						      <div class="alert alert-warning alert-dismissible" role="alert" id="msgAlert"> \
+								  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> \
+								 	<strong><spring:message code="prop.dps.extension.student.applications.head.column.action"/>!</strong>\
+								  		<hr> \
+						'+
+							messageAlert
+						 +'</div>';
+							
+						
+			
+			$('#idRowMsg').html(htmlMsg);
+			$('#idRowMsg').addClass('container-fluid');
+		});
+		
+	});
 	$(function(){
 	
 		var oTable;
@@ -80,6 +100,7 @@
 						$("#tblExtension").show();
 						
 						 oTable=$('#tblExtension').DataTable( {
+							"pagingType": 'full_numbers',
 							"aaData" : data,
 							rowId: 'studentId',
 							"aoColumns" : 
@@ -89,19 +110,19 @@
 									{ "mData": "cohort" },
 									{ "mData": "collegeName" },
 									{ "mData": "degreeName" },
-									{ "mData": "roleStatusSupervisor", 
+									{ "mData": "supervisor.roleStatus", 
 										"render" : function(data, type, full, meta)	
 										{
 											return getStatusIcon(data);
 										}
 									},
-									{ "mData": "roleStatusCollegeDean" ,
+									{ "mData": "collegeDean.roleStatus" ,
 										"render" : function(data, type, full, meta)	
 										{
 											return getStatusIcon(data);
 										}	
 									},
-									{ "mData": "roleStatusDpsDean",
+									{ "mData": "dpsDean.roleStatus",
 										"render" : function(data, type, full, meta)	
 										{
 											return getStatusIcon(data);
@@ -123,7 +144,7 @@
 							"iDisplayLength": 10,
 							destroy: true,
 							"bJQueryUI": true,
-							"sDom":  '<f><t><"col-sm-5"i><"col-sm-2"l><"col-sm-3"p>', 
+							"sDom":  '<f><t><"col-sm-5"i><"col-sm-2"l><"clearfix"><"col-sm-10"p>', 
 							"oLanguage": {
 								  "sUrl": "${urlCdn}/DataTables/language/lang_${rc.locale.language}.txt"
 								},
@@ -171,7 +192,12 @@
 				    else
 				    {
 				    	<spring:message code="prop.dps.role.reject.text" var="txtRole"/>
-				    	$('.modal-body').html('<spring:message code="prop.dps.extension.approver.modal.body.confirmation.text" arguments="${txtRole}"/>');
+				    	$('.modal-body').html('\
+				    							<div col="col-sm-10"><spring:message code="prop.dps.extension.approver.modal.body.confirmation.text" arguments="${txtRole}"/></div> \
+				    							<div col="clearfix"/>\
+				    							<div col="col-sm-2"><spring:message code="prop.dps.extension.approver.modal.body.approve.comment.text"></spring:message></div> \
+				    							<div col="col-sm-8"><textarea id="txtMessage" name="txtMessage" style="width: 90%;" required ></textarea></div> \
+				    						');
 				    }
 				    
 				    var tdata=oTable;
@@ -181,59 +207,63 @@
 		
 		
 		//start
-		
+
 		
 						    $('#linkSubmitApprove').click(function(event) {
-						    	event.preventDefault();
+						    	//event.preventDefault();
 		
-						    	var extensionDTO	= {
-										studentNo 		: rowData.studentNo,
-										stdStatCode		: rowData.stdStatCode,
-										statusCodeName	: $('#txtModalAppFormStatus').val(),
-										roleName		: varRoleName
-										
-									};
-						    	$('#modalApprovForm').modal('toggle');
-								var requestSent = false;
-								if(!requestSent) {
-									requestSent = true;
-										$.ajax({
-												url:	"${urlAjaxExtensionDataApprove}",
-												type:	'POST',
-												cache:	false,
-												data:	extensionDTO,
-												success:function(data)
-												{
-													//$(btnRadio).prop("checked", true);
-													var jsonReqBO=JSON.parse(data);
-													rowData.approver='';
-													rowData.roleStatusSupervisor=jsonReqBO.roleStatusSupervisor;
-													rowData.roleStatusCollegeDean=jsonReqBO.roleStatusCollegeDean;
-													rowData.roleStatusDpsDean=jsonReqBO.roleStatusDpsDean;
-													oTable.row(rowIndex).data(rowData).draw();
-												},
-												erorr:
-													{
-
-													},
-												complete:function()
-												{
-													requestSent = false;
+						    	if ($('#formModalApprover').valid()) {
+									    	var extensionDTO	= {
+													studentNo 		: rowData.studentNo,
+													stdStatCode		: rowData.stdStatCode,
+													statusCodeName	: $('#txtModalAppFormStatus').val(),
+													roleName		: varRoleName,
+													commentEng		: $('#txtMessage').val()
 													
-												}
-												
+												};
+									    	$('#modalApprovForm').modal('toggle');
+											var requestSent = false;
+											if(!requestSent) {
+												requestSent = true;
+													$.ajax({
+															url:	"${urlAjaxExtensionDataApprove}",
+															type:	'POST',
+															cache:	false,
+															data:	extensionDTO,
+															success:function(data)
+															{
+																//$(btnRadio).prop("checked", true);
+																var jsonReqBO=JSON.parse(data);
+																rowData.approver='';
+																rowData.supervisor.roleStatus=jsonReqBO.supervisor.roleStatus;
+																rowData.collegeDean.roleStatus=jsonReqBO.collegeDean.roleStatus;
+																rowData.dpsDean.roleStatus=jsonReqBO.dpsDean.roleStatus;
+																oTable.row(rowIndex).data(rowData).draw();
+															},
+															erorr:
+																{
+			
+																},
+															complete:function()
+															{
+																requestSent = false;
+																
+															}
+															
+														
+													});
+											}
 											
-										});
-								}
-								
-								extensionDTO = null;
-						
+											extensionDTO = null;
+				    	} 
 				    });
 		
 		
 		
 		//finish
 		
+		
+
 		
 		function getStatusIcon(status)
 		{

@@ -41,6 +41,8 @@ public class ApprovalTransactionDTO
 	private	String	statusCode;
 	private	String	appEmpNo;
 	private	String	appEmpName;
+	private	String	comments;
+	
 	/**
 	 * Getter Method	: getStudentNo
 	 * @return the studentNo
@@ -161,6 +163,27 @@ public class ApprovalTransactionDTO
 	{
 		this.appEmpName = appEmpName;
 	}
+	
+	/**
+	 * Getter Method	: getComments
+	 * @return the comments
+	 * 
+	 * Date				: Mar 6, 2017
+	 */
+	public String getComments()
+	{
+		return this.comments;
+	}
+	/**
+	 * Setter method : setComments
+	 * @param comments the comments to set
+	 * 
+	 * Date          : Mar 6, 2017 2:46:41 PM
+	 */
+	public void setComments(String comments)
+	{
+		this.comments = comments;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -171,7 +194,7 @@ public class ApprovalTransactionDTO
 				+ ", stdStatCode=" + this.stdStatCode + ", approvalCode="
 				+ this.approvalCode + ", statusCode=" + this.statusCode
 				+ ", appEmpNo=" + this.appEmpNo + ", appEmpName="
-				+ this.appEmpName + "]";
+				+ this.appEmpName + ", comments=" + this.comments + "]";
 	}
 	
 	

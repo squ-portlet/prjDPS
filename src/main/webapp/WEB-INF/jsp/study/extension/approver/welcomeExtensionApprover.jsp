@@ -21,6 +21,7 @@
 	</ul>
 	<%@include file="../../../ui/cssWelcome.jsp" %>	
 	<%@include file="../../../ui/js/study/extension/jsExtension.jsp" %>
+	<%@include file="../../../ui/js/study/extension/jsValidationExtension.jsp" %>
 
 
     <div class="section">
@@ -35,16 +36,16 @@
             <table id="tblExtension" class="table table-striped table-bordered dt-responsive nowrap collapsed"  width="100%" style="display: none;">
               <thead>
                 <tr>
-                  <th >Student Id</th>
-                  <th >Name</th>
-                  <th >Cohort</th>
-                  <th >College</th>
-                  <th >Program</th>
+                  <th ><spring:message code="prop.dps.student.student.id"/></th>
+                  <th ><spring:message code="prop.dps.student.student.name"/></th>
+                  <th ><spring:message code="prop.dps.student.student.cohort"/></th>
+                  <th ><spring:message code="prop.dps.student.student.college"/></th>
+                  <th ><spring:message code="prop.dps.student.student.program"/></th>
 <!--                   <th colspan="3">Approver</th> -->
-                  <th>Supervisor</th>
-                  <th>Col.Dean</th>
-                  <th>DPS Dean</th>
-                  <th >Action</th>
+                  <th><spring:message code="prop.dps.role.supervisor.text"/></th>
+                  <th><spring:message code="prop.dps.role.college.dean"/></th>
+                  <th><spring:message code="prop.dps.role.dps.dean"/></th>
+                  <th ><spring:message code="prop.dps.role.link.approve"/></th>
                 </tr>
 <!--                 <tr>
                   <th>Supervisor</th>
@@ -71,12 +72,18 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&nbsp;</button>
             <h4 class="modal-title"><spring:message code="prop.dps.extension.approver.modal.title.text"/> </h4>
           </div>
+          <form id="formModalApprover" name="formModalApprover">
           <div class="modal-body">
             <p><!--  spring:message code="prop.dps.extension.approver.modal.body.confirmation.text"/--> </p>
+            <p>
+            	<div col="col-sm-2"><spring:message code="prop.dps.extension.approver.modal.body.approve.comment.text"></spring:message></div>
+            	<div col="col-sm-8"><textarea id="txtMessage" rows="" cols=""></textarea></div>
+            </p>
           </div>
+          </form>
           <div class="modal-footer">
             <a class="btn btn-default"  data-dismiss="modal"><spring:message code="prop.dps.role.submit.no.text"/></a>
-            <a id="linkSubmitApprove" class="btn btn-primary"><spring:message code="prop.dps.role.submit.yes.text"/></a>
+            <button id="linkSubmitApprove" name="linkSubmitApprove" type="button" class="btn btn-primary"><spring:message code="prop.dps.role.submit.yes.text"/></button>
           </div>
           
         </div>

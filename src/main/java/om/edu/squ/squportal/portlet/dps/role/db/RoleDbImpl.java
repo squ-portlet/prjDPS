@@ -292,8 +292,6 @@ public class RoleDbImpl implements RoleDbDao
 		String	PROP_SQL_ROLE_STATUS_CODE		=	queryPropsCommonRole.getProperty(Constants.CONST_PROP_SQL_ROLE_STATUS_CODE);
 		Map<String, String> mapParamsRole	=	new HashMap<String, String>();
 		mapParamsRole.put("paramStatusCodeName", statusCodeName);
-//		logger.info("mapParamsRole : "+mapParamsRole);
-//		logger.info("PROP_SQL_ROLE_STATUS_CODE : "+PROP_SQL_ROLE_STATUS_CODE);
 		return nPJdbcTemplDps.queryForObject(PROP_SQL_ROLE_STATUS_CODE, mapParamsRole, String.class);
 	}
 	
@@ -322,6 +320,7 @@ public class RoleDbImpl implements RoleDbDao
 		mapParamsTransaction.put("paramStatusCode", transactionDTO.getStatusCode());
 		mapParamsTransaction.put("paramEmpNo", transactionDTO.getAppEmpNo().substring(1));
 		mapParamsTransaction.put("paramUserName",transactionDTO.getAppEmpName() );
+		mapParamsTransaction.put("paramComments",transactionDTO.getComments() );
 		
 		return nPJdbcTemplDps.update(PROP_SQL_ROLE_APPROVAL_TRANSACTION, mapParamsTransaction);
 	}

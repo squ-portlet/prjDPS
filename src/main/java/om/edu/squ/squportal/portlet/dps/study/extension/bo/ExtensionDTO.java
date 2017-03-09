@@ -30,6 +30,9 @@
 package om.edu.squ.squportal.portlet.dps.study.extension.bo;
 
 import om.edu.squ.squportal.portlet.dps.bo.Student;
+import om.edu.squ.squportal.portlet.dps.role.bo.CollegeDean;
+import om.edu.squ.squportal.portlet.dps.role.bo.DpsDean;
+import om.edu.squ.squportal.portlet.dps.role.bo.Supervisor;
 import om.edu.squ.squportal.portlet.dps.study.extension.model.ExtensionStudentDataModel;
 
 /**
@@ -62,9 +65,17 @@ public class ExtensionDTO
 	private	String	statusCode;
 	private	String	statusCodeName;
 	private	String	statusDesc;
+/*
 	private	String	roleStatusSupervisor;
 	private	String	roleStatusCollegeDean;
 	private	String	roleStatusDpsDean;
+	private	String	approvalCodeSupervisor;
+	private	String	approvalCodeCollegeDean;
+	private	String	approvalCodeDpsDean;
+*/
+	private	Supervisor	supervisor;
+	private	CollegeDean	collegeDean;
+	private	DpsDean		dpsDean;
 	private	boolean	approver;
 	private	String	roleName;
 	private	String	approvalCode;
@@ -585,67 +596,7 @@ public class ExtensionDTO
 		this.statusDesc = statusDesc;
 	}
 	
-	/**
-	 * Getter Method	: getRoleStatusSupervisor
-	 * @return the roleStatusSupervisor
-	 * 
-	 * Date				: Feb 18, 2017
-	 */
-	public String getRoleStatusSupervisor()
-	{
-		return this.roleStatusSupervisor;
-	}
-	/**
-	 * Setter method : setRoleStatusSupervisor
-	 * @param roleStatusSupervisor the roleStatusSupervisor to set
-	 * 
-	 * Date          : Feb 18, 2017 9:41:57 PM
-	 */
-	public void setRoleStatusSupervisor(String roleStatusSupervisor)
-	{
-		this.roleStatusSupervisor = roleStatusSupervisor;
-	}
-	/**
-	 * Getter Method	: getRoleStatusCollegeDean
-	 * @return the roleStatusCollegeDean
-	 * 
-	 * Date				: Feb 18, 2017
-	 */
-	public String getRoleStatusCollegeDean()
-	{
-		return this.roleStatusCollegeDean;
-	}
-	/**
-	 * Setter method : setRoleStatusCollegeDean
-	 * @param roleStatusCollegeDean the roleStatusCollegeDean to set
-	 * 
-	 * Date          : Feb 18, 2017 9:41:57 PM
-	 */
-	public void setRoleStatusCollegeDean(String roleStatusCollegeDean)
-	{
-		this.roleStatusCollegeDean = roleStatusCollegeDean;
-	}
-	/**
-	 * Getter Method	: getRoleStatusDpsDean
-	 * @return the roleStatusDpsDean
-	 * 
-	 * Date				: Feb 18, 2017
-	 */
-	public String getRoleStatusDpsDean()
-	{
-		return this.roleStatusDpsDean;
-	}
-	/**
-	 * Setter method : setRoleStatusDpsDean
-	 * @param roleStatusDpsDean the roleStatusDpsDean to set
-	 * 
-	 * Date          : Feb 18, 2017 9:41:57 PM
-	 */
-	public void setRoleStatusDpsDean(String roleStatusDpsDean)
-	{
-		this.roleStatusDpsDean = roleStatusDpsDean;
-	}
-	
+
 	/**
 	 * Getter Method	: isApprover
 	 * @return the approver
@@ -708,6 +659,67 @@ public class ExtensionDTO
 	{
 		this.approvalCode = approvalCode;
 	}
+	
+	/**
+	 * Getter Method	: getSupervisor
+	 * @return the supervisor
+	 * 
+	 * Date				: Mar 6, 2017
+	 */
+	public Supervisor getSupervisor()
+	{
+		return this.supervisor;
+	}
+	/**
+	 * Setter method : setSupervisor
+	 * @param supervisor the supervisor to set
+	 * 
+	 * Date          : Mar 6, 2017 7:43:44 PM
+	 */
+	public void setSupervisor(Supervisor supervisor)
+	{
+		this.supervisor = supervisor;
+	}
+	/**
+	 * Getter Method	: getCollegeDean
+	 * @return the collegeDean
+	 * 
+	 * Date				: Mar 6, 2017
+	 */
+	public CollegeDean getCollegeDean()
+	{
+		return this.collegeDean;
+	}
+	/**
+	 * Setter method : setCollegeDean
+	 * @param collegeDean the collegeDean to set
+	 * 
+	 * Date          : Mar 6, 2017 7:43:44 PM
+	 */
+	public void setCollegeDean(CollegeDean collegeDean)
+	{
+		this.collegeDean = collegeDean;
+	}
+	/**
+	 * Getter Method	: getDpsDean
+	 * @return the dpsDean
+	 * 
+	 * Date				: Mar 6, 2017
+	 */
+	public DpsDean getDpsDean()
+	{
+		return this.dpsDean;
+	}
+	/**
+	 * Setter method : setDpsDean
+	 * @param dpsDean the dpsDean to set
+	 * 
+	 * Date          : Mar 6, 2017 7:43:44 PM
+	 */
+	public void setDpsDean(DpsDean dpsDean)
+	{
+		this.dpsDean = dpsDean;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -729,10 +741,9 @@ public class ExtensionDTO
 				+ this.reasonCode + ", reasonDesc=" + this.reasonDesc
 				+ ", reasonOther=" + this.reasonOther + ", statusCode="
 				+ this.statusCode + ", statusCodeName=" + this.statusCodeName
-				+ ", statusDesc=" + this.statusDesc + ", roleStatusSupervisor="
-				+ this.roleStatusSupervisor + ", roleStatusCollegeDean="
-				+ this.roleStatusCollegeDean + ", roleStatusDpsDean="
-				+ this.roleStatusDpsDean + ", approver=" + this.approver
+				+ ", statusDesc=" + this.statusDesc + ", supervisor="
+				+ this.supervisor + ", collegeDean=" + this.collegeDean
+				+ ", dpsDean=" + this.dpsDean + ", approver=" + this.approver
 				+ ", roleName=" + this.roleName + ", approvalCode="
 				+ this.approvalCode + "]";
 	}

@@ -294,6 +294,7 @@ public class DpsServiceImpl implements DpsServiceDao
 		transactionDTO.setStatusCode(statusCode);
 		transactionDTO.setAppEmpNo(employee.getEmpNumber());
 		transactionDTO.setAppEmpName(employee.getUserName());
+		transactionDTO.setComments(extensionDTO.getCommentEng());
 		
 		int	result	=	roleService.setRoleTransaction(transactionDTO);
 		
