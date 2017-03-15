@@ -12,6 +12,17 @@ ACTIVE       NOT NULL VARCHAR2(1)
 UPDDTE       NOT NULL DATE         
 USRACCTCD    NOT NULL VARCHAR2(12) 
 
+DESC SIS_CODE_TYPES
+Name         Null     Type         
+------------ -------- ------------ 
+SISCODETYPCD NOT NULL NUMBER(3)    
+SISCODETYPNM NOT NULL VARCHAR2(80) 
+CODEWIDTH    NOT NULL NUMBER(2)    
+NAMEWIDTH    NOT NULL NUMBER(2)    
+LOCKED                VARCHAR2(1)  
+UPDDTE       NOT NULL DATE         
+USRACCTCD    NOT NULL VARCHAR2(12) 
+
 desc approval_transaction    
 Name              Null     Type         
 ----------------- -------- ------------ 
@@ -171,7 +182,7 @@ CREATE_USERNAME            VARCHAR2(20)
 UPDATE_DATE                DATE         
 UPDATE_USERNAME            VARCHAR2(20) 
 REQUESTCD                  NUMBER(10)
-
+COMMENTS                   VARCHAR2(1000) 
 
 DESC V_DEPT_MAJOR
 Name       Null     Type         
@@ -196,3 +207,19 @@ UPDDTE    NOT NULL DATE
 USRACCTCD NOT NULL VARCHAR2(12)  
 URL                VARCHAR2(120) 
 A_COMMNT           VARCHAR2(80) 
+
+
+
+DESC THESIS_DISCUSSION
+Name        Null     Type         
+----------- -------- ------------ 
+STDNO       NOT NULL NUMBER(9)    
+STDTHESISCD NOT NULL NUMBER(9)    
+DISC_DATE   NOT NULL DATE         
+ROOMNO               NUMBER(4)    
+DISC_TIME   NOT NULL VARCHAR2(5)  
+STATUS               VARCHAR2(1)  
+DISC_TYPE            NUMBER(4)    
+TITLE                VARCHAR2(60) 
+USRACCTCD            VARCHAR2(12) 
+UPDDTE               DATE 
