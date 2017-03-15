@@ -167,12 +167,14 @@ public class ExtensionStudiesController
 			ExtensionStudentDataModel	extensionStudentDataModel	=	new ExtensionStudentDataModel();
 			model.addAttribute("extensionStudentDataModel", extensionStudentDataModel);
 		}
+
 		
 		model.addAttribute("student", student);
 		model.addAttribute("currYearSem", dpsServiceDao.getCurrentYearSemester(locale));
 		model.addAttribute("nextYearSemester", dpsServiceDao.getNextYearSemester(locale));
 		model.addAttribute("reasonList", extensionServiceDao.getExtensionReasons(locale));
 		model.addAttribute("extenstions",extensionServiceDao.getExtensionsForStudents(student.getAcademicDetail().getStudentNo(), locale));
+		model.addAttribute("isRuleStudentComplete", extensionServiceDao.isRuleStudentComplete(student.getAcademicDetail().getStudentNo(),student.getAcademicDetail().getStdStatCode()));
 		return "study/extension/student/welcomeExtensionStudent";
 	}
 

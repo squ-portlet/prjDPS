@@ -62,21 +62,12 @@ public class DpsDbImpl implements DpsDbDao
 {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	private	NamedParameterJdbcTemplate	nPJdbcTemplHrms;
+//	private	NamedParameterJdbcTemplate	nPJdbcTemplHrms;
 	private	NamedParameterJdbcTemplate	nPJdbcTemplDps;
-	private	SimpleJdbcCall				simpleJdbcCallHrms;
+//	private	SimpleJdbcCall				simpleJdbcCallHrms;
 	private	SimpleJdbcCall				simpleJdbcCallDps;
 	private	Properties					queryProps;
-	/**
-	 * Setter method : setnPJdbcTemplHrms
-	 * @param nPJdbcTemplHrms the nPJdbcTemplHrms to set
-	 * 
-	 * Date          : Jan 5, 2017 4:46:41 PM
-	 */
-	public void setnPJdbcTemplHrms(NamedParameterJdbcTemplate nPJdbcTemplHrms)
-	{
-		this.nPJdbcTemplHrms = nPJdbcTemplHrms;
-	}
+
 	/**
 	 * Setter method : setnPJdbcTemplDps
 	 * @param nPJdbcTemplDps the nPJdbcTemplDps to set
@@ -87,16 +78,7 @@ public class DpsDbImpl implements DpsDbDao
 	{
 		this.nPJdbcTemplDps = nPJdbcTemplDps;
 	}
-	/**
-	 * Setter method : setSimpleJdbcCallHrms
-	 * @param simpleJdbcCallHrms the simpleJdbcCallHrms to set
-	 * 
-	 * Date          : Jan 5, 2017 4:46:41 PM
-	 */
-	public void setSimpleJdbcCallHrms(SimpleJdbcCall simpleJdbcCallHrms)
-	{
-		this.simpleJdbcCallHrms = simpleJdbcCallHrms;
-	}
+
 	/**
 	 * Setter method : setSimpleJdbcCallDps
 	 * @param simpleJdbcCallDps the simpleJdbcCallDps to set

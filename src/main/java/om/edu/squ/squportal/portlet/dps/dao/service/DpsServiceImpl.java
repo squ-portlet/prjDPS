@@ -48,6 +48,7 @@ import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.RoleNameValue;
 import om.edu.squ.squportal.portlet.dps.role.service.Role;
+import om.edu.squ.squportal.portlet.dps.rule.service.Rule;
 import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 import om.edu.squ.squportal.portlet.dps.utility.UserIdUtil;
@@ -74,6 +75,8 @@ public class DpsServiceImpl implements DpsServiceDao
 	UserIdUtil	userIdUtil;
 	@Autowired	
 	Role	roleService;
+	@Autowired
+	Rule	ruleService;
 
 	/**
 	 * 

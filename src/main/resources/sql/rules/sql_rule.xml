@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>DPS RULES </comment>
+    <entry key="sql.rule.student.join.close.time">
+    	<![CDATA[
+	    	SELECT 
+				  SS.STDSTATCD								AS		STDSTATCD
+				, SS.STDNO									AS		STUDENT_NO
+				, D.DEGRESTSEMGRD							AS		DGR_GRAD_ESTIMATE_SEM_COUNT
+				, SS.FROMCCYRCD								AS		FROMCCYRCD
+				, SS.FROMSEMCD 								AS		FROMSEMCD
+				, TO_NUMBER(TO_CHAR(SYSDATE,'YYYY'))     	AS    	CURRENT_YEAR
+			FROM 
+				  STD_DEGREE 	SD 
+				, DEGREE 		D
+				, STD_STATUS 	SS 
+			WHERE 
+						SD.DEGRCD		=	D.DEGRCD 
+				AND 	SS.STDSTATCD	=	SD.STDSTATCD 
+				AND 	SS.STDNO		=	:paramStdNo
+				AND   	SS.STDSTATCD  	= 	:paramStdStatCode
+    	]]>
+    </entry>
+    <entry key="sql.rule.student.count.postpone">
+	        SELECT
+	              		COUNT(STDNO)						AS		COUNT_REC
+	        FROM
+	              STD_POSTPONE
+	        WHERE
+	                  STDNO =  :paramStdNo
+	              AND STDSTATCD = :paramStdStatCode
+    </entry>
+    <entry key="sql.rule.current.year.semester">
+			SELECT 
+			      CCYRCD									AS		CURRENT_YEAR	 
+			  	, SEMCD 									AS		SEMCD
+			FROM 
+				CURRENT_YR_SEM    
+    </entry>
+    
+    <entry key="sql.rule.thesis.code">
+		    SELECT
+				   NVL( 
+				            (
+				              SELECT
+				                    STDTHESISCD
+				              FROM 
+				                  STD_THESIS T1
+				              WHERE
+				                  T1.STDNO     		= :paramStdNo
+				                  AND T1.STDSTATCD 	= :paramStdStatCode
+				            ) , 0
+				        )           						AS 		STDTHESISCD
+		FROM DUAL
+    </entry>
+ 	<entry key="sql.rule.seminar.complete.record.count">
+			SELECT
+			    COUNT(STDNO)								AS		COUNT_REC
+			FROM
+			      THESIS_DISCUSSION   TH
+			    , SIS_CODES           CODES
+			WHERE
+			        STDNO 				= :paramStdNo
+			    AND TH.DISC_TYPE  		= CODES.SISCODECD
+			    AND CODES.L_ABR_CODE 	= :paramSeminarAbrCode
+			    AND STDTHESISCD 		= :paramThesisCode
+			    AND
+			        (
+			                STATUS  IS NULL
+			            OR  
+				            STATUS  = (
+			                              SELECT
+			                                  CODE.SISCODECD
+			                              FROM
+			                                    SIS_CODES       CODE
+			                                  , SIS_CODE_TYPES  TYPS
+			                              WHERE
+			                                      CODE.L_ABR_CODE 	= 'COMP'
+			                                  AND CODE.SISCODETYPCD = TYPS.SISCODETYPCD
+			                                  AND TYPS.SISCODETYPNM = 'THESIS_DISC_TYPE_STATUS'
+			                          )
+			        ) 	
+ 	</entry>
+  	<entry key="sql.rule.current.date.in.specific.week">
+		  	 SELECT 
+		  	 		NVL(COUNT_REC,0)					AS		COUNT_REC
+			 FROM
+				  (
+				    SELECT 
+				        COUNT(*) COUNT_REC
+				    FROM 
+				        V_CURRENT_YRSEM_PORTAL
+				    WHERE
+				        SYSDATE >= SEMSTDTE+((:param_week-1)*7)
+				  ) 
+  	</entry>
+<!-- Service Specific Rules -->
+		<!-- Service Rules with Extension ** 
+				only one time student can extend therefore 
+				student data with specific stdstatcode will be inserted once in extension table 
+		-->
+ 	<entry key="sql.rule.service.extension.select.count.student">
+     SELECT
+            COUNT(EXTN.STDNO)   					AS 		COUNT_REC
+     FROM 
+            STD_EXTENSION   EXTN
+          , SIS_CODES       CODES
+          , SIS_CODE_TYPES  TYPS
+     WHERE
+              EXTN.EXTREQ_STATUSCD 		= 	CODES.SISCODECD
+          AND CODES.SISCODETYPCD		=	TYPS.SISCODETYPCD
+          AND CODES.L_ABR_CODE IN ('ACCPT','PENDG','PRGRS','MODFY')
+          AND TYPS.SISCODETYPNM 		= 'APPROVAL_STATUS'
+          AND EXTN.STDNO     			= :paramStdNo
+          AND EXTN.STDSTATCD			 = :paramStdStatCode
+  	</entry>
+ 
+  
+    
+</properties>

@@ -56,6 +56,10 @@ public interface Constants
 	
 	public static final	String	COST_COL_DPS_COURSE_YEAR						=	"CCYRCD";
 	public static final	String	COST_COL_DPS_SEMESTER_CODE						=	"SEMCD";
+	public static final	String	COST_COL_DPS_FROM_COURSE_YEAR_CODE				=	"FROMCCYRCD";
+	public static final	String	COST_COL_DPS_FROM_SEMESTER_CODE					=	"FROMSEMCD";
+	public static final	String	COST_COL_DPS_CURRENT_YEAR						=	"CURRENT_YEAR";
+	
 	public static final	String	COST_COL_DPS_ABR_SEM							=	"ABR_SEM";
 	public static final	String	COST_COL_DPS_SEMESTER_NAME						=	"SEM_NAME";
 	public static final	String	COST_COL_DPS_TO_COURSE_YEAR_CODE				=	"TOCCYRCD";
@@ -75,6 +79,7 @@ public interface Constants
 	public static final	String	CONST_COLMN_STUDENT_HOME_POSTALCD				=	"STUDENT_HOME_POSTALCD";
 	public static final	String	CONST_COLMN_STUDENT_PHONE						=	"STUDENT_PHONE";
 	public static final	String	CONST_COLMN_STUDENT_EMAIL						=	"STUDENT_EMAIL";
+	public static final	String	CONST_COLMN_DGR_GRAD_ESTIMATE_SEM_COUNT			=	"DGR_GRAD_ESTIMATE_SEM_COUNT";
 
 	public static final	String	CONST_COLMN_COLLEGE_NAME						=	"COLLEGE_NAME";             
 	public static final	String	CONST_COLMN_MAJOR_NAME							=	"MAJOR_NAME";  
@@ -162,6 +167,20 @@ public interface Constants
 	public	static	final	String	CONST_SQL_EXTENSION_SELECT_STUDENT_RECORDS	=	"dps.extension.select.student.records";
 	public	static	final	String	CONST_SQL_EXTENSION_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	"dps.extension.select.student.records.by.employee";
 	
+	
+
+	/* ---  SQL - DPS - Rule --------------------- */
+	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_JOIN_CLOSE_TIME	=	"sql.rule.student.join.close.time";	
+	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_POSTPONE_COUNT	=	"sql.rule.student.count.postpone";
+	public	static	final	String	CONST_PROP_SQL_RULE_CURRENT_YEAR_SEMESTER	=	"sql.rule.current.year.semester";
+	public	static	final	String	CONST_PROP_SQL_RULE_THESIS_CODE				=	"sql.rule.thesis.code";
+	public	static	final	String	CONST_PROP_SQL_RULE_SEMINAR_RECORD_COUNT	=	"sql.rule.seminar.complete.record.count";
+	public	static	final	String	CONST_PROP_SQL_RULE_CURR_DATE_IN_SPECIFIC_WEEK	=	"sql.rule.current.date.in.specific.week";
+	
+	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_EXTENSION_COUNT	=	"sql.rule.service.extension.select.count.student";
+	
+	
+	
 	/* ---  SQL - DPS - Role --------------------- */
 	public	static	final	String	CONST_PROP_SQL_ROLE_IS_SUPERVISOR			=	"sql.role.is.supervisor";
 	public	static	final	String	CONST_PROP_SQL_ROLE_IS_ADVISOR				=	"sql.role.is.advisor";
@@ -182,6 +201,10 @@ public interface Constants
 	public	static	final	String	CONST_ROLE_NAME_COL_DEAN					=	"DEAN";
 	public	static	final	String	CONST_ROLE_NAME_DPS_DEAN					=	"DEANP";
 	public	static	final	String	CONST_ROLE_NAME_DPS_STAFF					=	"DPS";
+	
+	
+	public	static	final	String	CONST_THESIS_SEMINAR_SEMINAR_01				=	"SEM1";
+	public	static	final	String	CONST_WEEK_10								=	"10";
 	
 	/** ================ DPS - ROLE ===================== */
 		/* ---  DPS - Role - xml file --------------------- */

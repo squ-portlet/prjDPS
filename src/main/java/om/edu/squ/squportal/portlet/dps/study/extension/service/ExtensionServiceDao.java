@@ -121,4 +121,19 @@ public interface ExtensionServiceDao
 	 * Date    		:	Feb 28, 2017 11:32:46 AM
 	 */
 	public ExtensionDTO setRoleTransaction(ExtensionDTO extensionDTO, Employee employee, Locale locale);
+	
+	/**
+	 * 
+	 * method name  : isRuleStudentComplete
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * ExtensionServiceImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		: Rules of extension service for students
+	 *
+	 * Date    		:	Mar 13, 2017 8:58:51 PM
+	 */
+	public boolean isRuleStudentComplete(String studentNo, String stdStatCode);
 }

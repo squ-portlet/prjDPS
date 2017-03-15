@@ -18,7 +18,9 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-2">
-            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalExtensionForm"><spring:message code="prop.dps.extension.student.apply"/></button>
+	            <c:if test="${isRuleStudentComplete}">
+	            	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalExtensionForm"><spring:message code="prop.dps.extension.student.apply"/></button>
+	            </c:if>
           </div>
         </div>
       </div>

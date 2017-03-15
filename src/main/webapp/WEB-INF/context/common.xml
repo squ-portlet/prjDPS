@@ -84,6 +84,11 @@
 	 <bean id="queryPropsCommonRole" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
     	<property name="locations" value="classpath:sql/sql_role.xml" />
 	</bean>
+	 <bean id="queryPropsCommonRule" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+    	<property name="locations" value="classpath:sql/rules/sql_rule.xml" />
+	</bean>
+
+
 
 <!-- Data Source from HRMS -->
 		<bean id="dataSourceHrms" class="org.springframework.jndi.JndiObjectFactoryBean"> 
@@ -115,8 +120,8 @@
 
 <!-- DI to DPS Common DB Dao -->			
 		<bean id="dpsDbDao"	class="om.edu.squ.squportal.portlet.dps.dao.db.DpsDbImpl">
-	 		<property name="nPJdbcTemplHrms" ref="namedParameterJdbcTemplateHrms"/> 
-	 		<property name="simpleJdbcCallHrms" ref="simpleJdbcCallHrms"/>
+<!-- 	 		<property name="nPJdbcTemplHrms" ref="namedParameterJdbcTemplateHrms"/> 
+	 		<property name="simpleJdbcCallHrms" ref="simpleJdbcCallHrms"/> -->
 	 		<property name="nPJdbcTemplDps" ref="namedParameterJdbcTemplateDps"/> 
 	 		<property name="simpleJdbcCallDps" ref="simpleJdbcCallDps"/>
 			<property name="queryProps" ref="queryProps" />
@@ -134,7 +139,6 @@
 		</bean>
 
 <!-- om.edu.squ.squportal.portlet.dps.role.service -->
-
 
 
 
@@ -166,25 +170,15 @@
 		<property name="unmarshaller" ref="jaxb2Marshaller" />
 	</bean>
 
-	
-<!--	
-	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean"> 
-    	<property name="jndiName" value="java:comp/env/jdbc/pool/dsnewlib"/> 
- 	</bean> 
-	<bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">  
-		<constructor-arg ref="dataSource"></constructor-arg>  
-	</bean>
+<!-- DI to DPS Common Rule Dao -->
+		<bean id="ruleDbDao" class="om.edu.squ.squportal.portlet.dps.rule.db.RuleDbImpl">
+			<property name="nPJdbcTemplDps" ref="namedParameterJdbcTemplateDps"/> 
+	 		<property name="queryPropsCommonRule" ref="queryPropsCommonRule" />
+		</bean>
 
-  	<bean id="libraryDbDao"	class="om.edu.squ.squportal.portlet.dps.dao.db.DpsDbImpl">
+		<bean id="ruleService" class="om.edu.squ.squportal.portlet.dps.rule.service.RuleServiceImpl">	
+		</bean>
 
- 		<property name="namedParameterJdbcTemplate" ref="namedParameterJdbcTemplate"/> 
-		<property name="queryProps" ref="queryProps" />
-
- 	</bean>	 
-
-	<bean id="libraryServiceDao"	class="om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceImpl"/>
-
--->
 
 <!-- LDAP - SQU Oracle Internet Directory Configuration -->
 	<!-- PRIMARY LDAP - SQU Oracle Internet Directory Configuration -->

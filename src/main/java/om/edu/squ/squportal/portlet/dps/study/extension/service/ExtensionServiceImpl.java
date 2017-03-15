@@ -36,6 +36,7 @@ import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
+import om.edu.squ.squportal.portlet.dps.rule.service.Rule;
 import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO;
 import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionReason;
 import om.edu.squ.squportal.portlet.dps.study.extension.db.ExtensionDbDao;
@@ -57,7 +58,9 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 	@Autowired
 	DpsServiceDao	dpsServiceDao;
 	@Autowired
-	ExtensionDbDao		extensionDbDao;
+	ExtensionDbDao	extensionDbDao;
+	@Autowired
+	Rule			ruleService;
 	
 	
 	/**
@@ -206,6 +209,70 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		
 		
 		return extensionDTOResult;
+	}
+	
+	/**
+	 * 
+	 * method name  : isRuleStudentComplete
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * ExtensionServiceImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		: Rules of extension service for students
+	 *
+	 * Date    		:	Mar 13, 2017 8:58:51 PM
+	 */
+	/*Rule 1 -- Student need to be in last semester*/
+	/*Rule 2 -- Student need to be in last semester*/
+	/*Rule 3 -- Student need to be in last semester*/
+	/*Rule 4 -- Student can apply only once for extension */
+	public boolean isRuleStudentComplete(String studentNo, String stdStatCode)
+	{
+		boolean	result 								= 	false;
+
+		boolean hasThesis 							= 	false;
+		boolean	isLastSemester 						=	false;
+		boolean isFirstSeminarCompletedApplicable	=	false;
+		boolean	isWeekSpecifiedAvailable			=	false;
+		boolean	isAlreadyExtensionApproved			=	false;
+		
+		hasThesis	=	ruleService.isStudentHasThesis(studentNo, stdStatCode);
+		
+		/*Rule 1*/
+		isLastSemester	= ruleService.lastSemester(studentNo, stdStatCode);
+		
+		/*Rule 2*/
+		if(hasThesis)
+		{
+			isFirstSeminarCompletedApplicable	=	ruleService.isSemesterCompleted(studentNo, stdStatCode, Constants.CONST_THESIS_SEMINAR_SEMINAR_01);
+		}
+		
+		/*Rule 3*/
+		isWeekSpecifiedAvailable	=	ruleService.isCurrentDateInSpecificWeek(Constants.CONST_WEEK_10);
+		
+		/*Rule 4  */
+		isAlreadyExtensionApproved				=	ruleService.isExtensionRecordAlreadyExist(studentNo, stdStatCode);
+		
+		if(!isAlreadyExtensionApproved)
+		{
+			if(hasThesis)
+			{
+				/* Applicable to student with thesis */
+				if(isLastSemester & isWeekSpecifiedAvailable & isFirstSeminarCompletedApplicable)
+				{
+					result = true;
+				}
+			}
+			/* Applicable to student without thesis*/
+			else if(isLastSemester & isWeekSpecifiedAvailable)
+			{
+				result = true;
+			}
+		}
+				
+		return result;
 	}
 	
 }

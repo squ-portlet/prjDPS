@@ -44,6 +44,10 @@ public class AcademicDetail
 	private	String	degree;
 	private	String	stdStatCode;
 	private	String	status;
+	private	int		estimatedSemesters;
+	private	int		fromCCYrCode;						// Course Start year code
+	private	int		fromSemCode;						// Course Start semester
+	
 	/**
 	 * Getter Method	: getId
 	 * @return the id
@@ -226,6 +230,67 @@ public class AcademicDetail
 	{
 		this.status = status;
 	}
+	
+	/**
+	 * Getter Method	: getEstimatedSemesters
+	 * @return the estimatedSemesters
+	 * 
+	 * Date				: Mar 13, 2017
+	 */
+	public int getEstimatedSemesters()
+	{
+		return this.estimatedSemesters;
+	}
+	/**
+	 * Setter method : setEstimatedSemesters
+	 * @param estimatedSemesters the estimatedSemesters to set
+	 * 
+	 * Date          : Mar 13, 2017 2:21:33 PM
+	 */
+	public void setEstimatedSemesters(int estimatedSemesters)
+	{
+		this.estimatedSemesters = estimatedSemesters;
+	}
+	/**
+	 * Getter Method	: getFromCCYrCode
+	 * @return the fromCCYrCode
+	 * 
+	 * Date				: Mar 13, 2017
+	 */
+	public int getFromCCYrCode()
+	{
+		return this.fromCCYrCode;
+	}
+	/**
+	 * Setter method : setFromCCYrCode
+	 * @param fromCCYrCode the fromCCYrCode to set
+	 * 
+	 * Date          : Mar 13, 2017 2:21:33 PM
+	 */
+	public void setFromCCYrCode(int fromCCYrCode)
+	{
+		this.fromCCYrCode = fromCCYrCode;
+	}
+	/**
+	 * Getter Method	: getFromSemCode
+	 * @return the fromSemCode
+	 * 
+	 * Date				: Mar 13, 2017
+	 */
+	public int getFromSemCode()
+	{
+		return this.fromSemCode;
+	}
+	/**
+	 * Setter method : setFromSemCode
+	 * @param fromSemCode the fromSemCode to set
+	 * 
+	 * Date          : Mar 13, 2017 2:21:33 PM
+	 */
+	public void setFromSemCode(int fromSemCode)
+	{
+		this.fromSemCode = fromSemCode;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -237,7 +302,9 @@ public class AcademicDetail
 				+ this.major + ", supervisorId=" + this.supervisorId
 				+ ", advisorId=" + this.advisorId + ", degree=" + this.degree
 				+ ", stdStatCode=" + this.stdStatCode + ", status="
-				+ this.status + "]";
+				+ this.status + ", estimatedSemesters="
+				+ this.estimatedSemesters + ", fromCCYrCode="
+				+ this.fromCCYrCode + ", fromSemCode=" + this.fromSemCode + "]";
 	}
 
 	
