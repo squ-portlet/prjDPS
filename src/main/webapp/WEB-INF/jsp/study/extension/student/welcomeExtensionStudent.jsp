@@ -27,50 +27,52 @@
       <div class="row">
         <div >
           <div class="container-fluid">
-            <table class="table table-striped table-bordered dt-responsive nowrap collapsed">
-              <thead>
-                <tr>
-                  <th><spring:message code="prop.dps.extension.student.applications.head.column.request.date"/></th>
-                  <th><spring:message code="prop.dps.extension.student.applications.head.column.year.sem"/></th>
-                 <th><spring:message code="prop.dps.extension.student.applications.head.column.reason"/></th>
-                  <th colspan="3"><spring:message code="prop.dps.extension.student.applications.head.column.approver"/></th>
-				  <th><spring:message code="prop.dps.extension.student.applications.head.column.action"/></th>
-                </tr>
-                <tr>
-                  <th colspan="3"></th>
-                  <th><spring:message code="prop.dps.extension.student.applications.head.column.approver.suerpervisor"/></th>
-                  <th><spring:message code="prop.dps.extension.student.applications.head.column.approver.col.dean"/></th>
-                  <th><spring:message code="prop.dps.extension.student.applications.head.column.approver.dps.dean"/></th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-              	<c:forEach items="${extenstions}" var="ext">
-              		
-              		<tr>
-              			<td>${ext.activitiDate}</td>
-              			<td>${ext.toCcYrCode}-${ext.toSemName}</td>
-              			<td>${ext.reasonDesc}</td>
-              			
-              			<td>${ext.supervisor.roleStausIkon}</td>
-              			<td>${ext.collegeDean.roleStausIkon}</td>
-              			<td>${ext.dpsDean.roleStausIkon}</td>
-              			
-              			<td>${ext.statusDesc} &nbsp;
-              					<c:if test="${ext.statusCodeName eq 'REJCT'}">
-              						<a href="#" class="clsMsgErr" msg=${ext.commentEng}>
-		              						<font color="default">
-		              							<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
-		              						</font>
-              						</a>
-              					</c:if>
-              			
-              			
-              			</td>
-              		</tr>
-              	</c:forEach>
-              </tbody>
-            </table>
+				<c:if test="${not empty extenstions}">          	
+		            <table class="table table-striped table-bordered dt-responsive nowrap collapsed">
+		              <thead>
+		                <tr>
+		                  <th><spring:message code="prop.dps.extension.student.applications.head.column.request.date"/></th>
+		                  <th><spring:message code="prop.dps.extension.student.applications.head.column.year.sem"/></th>
+		                 <th><spring:message code="prop.dps.extension.student.applications.head.column.reason"/></th>
+		                  <th colspan="3"><spring:message code="prop.dps.extension.student.applications.head.column.approver"/></th>
+						  <th><spring:message code="prop.dps.extension.student.applications.head.column.action"/></th>
+		                </tr>
+		                <tr>
+		                  <th colspan="3"></th>
+		                  <th><spring:message code="prop.dps.extension.student.applications.head.column.approver.suerpervisor"/></th>
+		                  <th><spring:message code="prop.dps.extension.student.applications.head.column.approver.col.dean"/></th>
+		                  <th><spring:message code="prop.dps.extension.student.applications.head.column.approver.dps.dean"/></th>
+		                  <th></th>
+		                </tr>
+		              </thead>
+		              <tbody>
+		              	<c:forEach items="${extenstions}" var="ext">
+		              		
+		              		<tr>
+		              			<td>${ext.activitiDate}</td>
+		              			<td>${ext.toCcYrCode}-${ext.toSemName}</td>
+		              			<td>${ext.reasonDesc}</td>
+		              			
+		              			<td>${ext.supervisor.roleStausIkon}</td>
+		              			<td>${ext.collegeDean.roleStausIkon}</td>
+		              			<td>${ext.dpsDean.roleStausIkon}</td>
+		              			
+		              			<td>${ext.statusDesc} &nbsp;
+		              					<c:if test="${ext.statusCodeName eq 'REJCT'}">
+		              						<a href="#" class="clsMsgErr" msg='${ext.commentEng}'>
+				              						<font color="default">
+				              							<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+				              						</font>
+		              						</a>
+		              					</c:if>
+		              			
+		              			
+		              			</td>
+		              		</tr>
+		              	</c:forEach>
+		              </tbody>
+		            </table>
+		        </c:if>
           </div>
         </div>
       </div>
