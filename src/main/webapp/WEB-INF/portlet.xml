@@ -24,25 +24,50 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  */
 --> 
-<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd">
-	<portlet>
-		<portlet-name>dpsExtensionStudies</portlet-name>
-		<portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" version="2.0">
+<!-- Study -->
+	<!-- Extension -->
+						<portlet>
+							<portlet-name>dpsExtensionStudies</portlet-name>
+							<portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+							
+							<init-param>
+					         <name>contextConfigLocation</name>
+					         <value>/WEB-INF/context/studyExtension-portlet.xml</value>
+					      	</init-param>
+					      	<expiration-cache>0</expiration-cache>
+							<supports>
+								<mime-type>text/html</mime-type>
+					         	<portlet-mode>view</portlet-mode>
+							</supports>
+							<supported-locale>en</supported-locale>
+					        <supported-locale>ar</supported-locale>		
+							<resource-bundle>extension</resource-bundle>
+							<portlet-info>
+								<title>Extension of Post Graduate Studies</title>
+							</portlet-info>
+						</portlet>
+<!-- Registration -->
+	<!-- Drop with W -->
 		
-		<init-param>
-         <name>contextConfigLocation</name>
-         <value>/WEB-INF/context/studyExtension-portlet.xml</value>
-      	</init-param>
-      	<expiration-cache>0</expiration-cache>
-		<supports>
-			<mime-type>text/html</mime-type>
-         	<portlet-mode>view</portlet-mode>
-		</supports>
-		<supported-locale>en</supported-locale>
-        <supported-locale>ar</supported-locale>		
-		<resource-bundle>extension</resource-bundle>
-		<portlet-info>
-			<title>Extension of Postgraduate Studies</title>
-		</portlet-info>
-	</portlet>
+						<portlet>
+							<portlet-name>dpsRegistrationDropWithW</portlet-name>
+							<portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+							
+							<init-param>
+					         <name>contextConfigLocation</name>
+					         <value>/WEB-INF/context/registrationDropWithW-portlet.xml</value>
+					      	</init-param>
+					      	<expiration-cache>0</expiration-cache>
+							<supports>
+								<mime-type>text/html</mime-type>
+					         	<portlet-mode>view</portlet-mode>
+							</supports>
+							<supported-locale>en</supported-locale>
+					        <supported-locale>ar</supported-locale>		
+							<resource-bundle>messages/registration/dropWithW/dropwithw</resource-bundle>
+							<portlet-info>
+								<title>Drop with W of Post Graduate Studies</title>
+							</portlet-info>
+						</portlet>	
 </portlet-app>

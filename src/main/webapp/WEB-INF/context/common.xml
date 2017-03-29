@@ -62,6 +62,7 @@
 			<list>
 				<value>messages</value>
 				<value>extension</value>
+				<value>messages/registration/dropWithW/dropwithw.properties</value>
 			</list>
 		</property>	
 	</bean>
