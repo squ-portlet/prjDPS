@@ -35,6 +35,7 @@ import java.util.Locale;
 
 import javax.portlet.PortletRequest;
 
+import om.edu.squ.portal.common.EmpCommon;
 import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.PersonalDetail;
@@ -239,7 +240,7 @@ public class DpsServiceImpl implements DpsServiceDao
 	 * Date    		:	Feb 13, 2017 9:50:17 PM
 	 * @throws ExceptionEmptyResultset 
 	 */
-	public Employee	getEmployee(String empNumber, Locale locale) throws ExceptionEmptyResultset
+	private Employee	getEmployee(String empNumber, Locale locale) throws ExceptionEmptyResultset
 	{
 		List<RoleNameValue> 	roleNameValues	=	new ArrayList<RoleNameValue>();
 		Employee				employee		=	dpsDbDao.getEmployee(empNumber);
@@ -280,6 +281,26 @@ public class DpsServiceImpl implements DpsServiceDao
 		return employee;
 	}
 
+	/**
+	 * 
+	 * method name  : getEmployee
+	 * @param request
+	 * @param locale
+	 * @return
+	 * @throws ExceptionEmptyResultset
+	 * DpsServiceImpl
+	 * return type  : Employee
+	 * 
+	 * purpose		: 
+	 *
+	 * Date    		:	Mar 27, 2017 4:24:34 PM
+	 */
+	public Employee getEmployee(PortletRequest request, Locale locale) throws ExceptionEmptyResultset
+	{
+		String 		empNumber	=	getEmpNumber(request);	
+		return 		getEmployee(empNumber, locale);
+	}
+	
 
 	/*
 	 * (non-Javadoc)
@@ -303,6 +324,47 @@ public class DpsServiceImpl implements DpsServiceDao
 		
 		
 		return approvalDTO;
+	}
+
+
+	/**
+	 * 
+	 * method name  : getEmpNumber
+	 * @param request
+	 * @return
+	 * DpsServiceImpl
+	 * return type  : String
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Mar 27, 2017 4:20:42 PM
+	 */
+    private  String getEmpNumber(PortletRequest request)
+	{
+
+	    if(request.getRemoteUser()==null || request.getRemoteUser()=="")
+	    {		    return null;
+	    }
+	    else 
+	    {
+			String strEmpNumber=null;
+			try
+			{
+				EmpCommon	empCommon	=	new EmpCommon();
+						strEmpNumber 	= 	empCommon.getEmployeeNumber(request.getRemoteUser());
+			}
+			catch(Exception ex)
+			{
+				logger.info("******* exception while getting emp no: " + ex.getMessage());
+			}
+			if(strEmpNumber==null || strEmpNumber=="")
+			{
+				return null;	
+			}
+			else return strEmpNumber;
+			    
+	    }
+	    
 	}
 	
 	

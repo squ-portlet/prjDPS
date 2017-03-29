@@ -152,7 +152,22 @@ public interface DpsServiceDao
 	 * Date    		:	Feb 13, 2017 9:50:17 PM
 	 * @throws ExceptionEmptyResultset 
 	 */
-	public Employee	getEmployee(String empNumber, Locale locale) throws ExceptionEmptyResultset;
+	//public Employee	getEmployee(String empNumber, Locale locale) throws ExceptionEmptyResultset;
+	/**
+	 * 
+	 * method name  : getEmployee
+	 * @param request
+	 * @param locale
+	 * @return
+	 * @throws ExceptionEmptyResultset
+	 * DpsServiceImpl
+	 * return type  : Employee
+	 * 
+	 * purpose		: Get Employee Details with Roles
+	 *
+	 * Date    		:	Mar 27, 2017 4:24:34 PM
+	 */
+	public Employee getEmployee(PortletRequest request, Locale locale) throws ExceptionEmptyResultset;
 	
 	/**
 	 * 

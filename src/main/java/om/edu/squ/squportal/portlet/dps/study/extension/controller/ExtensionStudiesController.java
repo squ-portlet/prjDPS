@@ -200,7 +200,7 @@ public class ExtensionStudiesController
 		Employee employee	=	null;
 		try
 		{
-			employee = dpsServiceDao.getEmployee(getEmpNumber(request),locale);
+			employee = dpsServiceDao.getEmployee(request,locale);
 			
 		}
 		catch (ExceptionEmptyResultset ex)
@@ -270,7 +270,7 @@ public class ExtensionStudiesController
 		Employee employee;
 		try
 		{
-			employee = dpsServiceDao.getEmployee(getEmpNumber(request),locale);
+			employee = dpsServiceDao.getEmployee(request,locale);
 			List<ExtensionDTO> dtos	=	extensionServiceDao.getExtensionsForApprovers(roleNameValue.getRoleValue(), employee, locale);
 			response.getWriter().print(gson.toJson(dtos));
 		}
@@ -308,7 +308,7 @@ public class ExtensionStudiesController
 			ExtensionDTO	extensionDTOResult		=	null;	
 			try
 			{
-				employee = dpsServiceDao.getEmployee(getEmpNumber(request),locale);
+				employee = dpsServiceDao.getEmployee(request,locale);
 				employee.setUserName(request.getRemoteUser());
 				
 				extensionDTOResult = extensionServiceDao.setRoleTransaction(extensionDTO, employee, locale);
@@ -326,45 +326,6 @@ public class ExtensionStudiesController
 	
 	
 
-	/**
-	 * 
-	 * method name  : getEmpNumber
-	 * @param request
-	 * @return
-	 * ExtensionStudiesController
-	 * return type  : String
-	 * 
-	 * purpose		: Get employee number
-	 *
-	 * Date    		:	Feb 13, 2017 6:52:23 PM
-	 */
-    private  String getEmpNumber(PortletRequest request)
-	{
-
-	    if(request.getRemoteUser()==null || request.getRemoteUser()=="")
-	    {		    return null;
-	    }
-	    else 
-	    {
-			String strEmpNumber=null;
-			try
-			{
-				EmpCommon	empCommon	=	new EmpCommon();
-						strEmpNumber 	= 	empCommon.getEmployeeNumber(request.getRemoteUser());
-			}
-			catch(Exception ex)
-			{
-				logger.info("******* exception while getting emp no: " + ex.getMessage());
-			}
-			if(strEmpNumber==null || strEmpNumber=="")
-			{
-				return null;	
-			}
-			else return strEmpNumber;
-			    
-	    }
-	    
-	}
 	
 	
 	
