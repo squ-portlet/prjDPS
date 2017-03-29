@@ -78,29 +78,22 @@
 			</list>
 		</property>
 	</bean>
-   
+ 
+<!-- Common SQL Query -->	   
 	 <bean id="queryProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
     	<property name="locations" value="classpath:sql/query.xml" />
 	</bean>
+	
+	
 	 <bean id="queryPropsCommonRole" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
     	<property name="locations" value="classpath:sql/sql_role.xml" />
 	</bean>
+<!-- Common SQL Rule Query -->	
 	 <bean id="queryPropsCommonRule" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
     	<property name="locations" value="classpath:sql/rules/sql_rule.xml" />
 	</bean>
 
-
-
-<!-- Data Source from HRMS -->
-		<bean id="dataSourceHrms" class="org.springframework.jndi.JndiObjectFactoryBean"> 
-	    	<property name="jndiName" value="java:comp/env/jdbc/hrmscl"/> 
-	 	</bean> 
-		<bean id="namedParameterJdbcTemplateHrms" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">  
-			<constructor-arg ref="dataSourceHrms"></constructor-arg>  
-		</bean>
-		<bean id="simpleJdbcCallHrms" class="org.springframework.jdbc.core.simple.SimpleJdbcCall">
-			<constructor-arg ref="dataSourceHrms"></constructor-arg>
-		</bean>
+ 		
 <!-- Data Source from DPS -->	
 		<bean id="dataSourceDps" class="org.springframework.jndi.JndiObjectFactoryBean"> 
     		<property name="jndiName" value="java:comp/env/jdbc/dpsTest"/> 
@@ -121,8 +114,6 @@
 
 <!-- DI to DPS Common DB Dao -->			
 		<bean id="dpsDbDao"	class="om.edu.squ.squportal.portlet.dps.dao.db.DpsDbImpl">
-<!-- 	 		<property name="nPJdbcTemplHrms" ref="namedParameterJdbcTemplateHrms"/> 
-	 		<property name="simpleJdbcCallHrms" ref="simpleJdbcCallHrms"/> -->
 	 		<property name="nPJdbcTemplDps" ref="namedParameterJdbcTemplateDps"/> 
 	 		<property name="simpleJdbcCallDps" ref="simpleJdbcCallDps"/>
 			<property name="queryProps" ref="queryProps" />
@@ -147,9 +138,7 @@
 
 
 	<bean id="userIdUtil"	class="om.edu.squ.squportal.portlet.dps.utility.UserIdUtil"/>
-<!-- 
-	<bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller"/> -->
-	
+
     <bean id="jaxb2Marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
         <property name="classesToBeBound">
             <list>
