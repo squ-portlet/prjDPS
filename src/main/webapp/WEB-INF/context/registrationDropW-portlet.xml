@@ -36,22 +36,22 @@
         
         <!-- scan spring components -->
 
-  <context:component-scan base-package="om.edu.squ.squportal.portlet.dps.study.registration" /> 
+  <context:component-scan base-package="om.edu.squ.squportal.portlet.dps.registration.dropw" /> 
   
   <!-- DI to DPS Extension of Study Property -->
-<!-- 		<bean id="queryExtensionProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-			<property name="locations" value="classpath:sql/query_extension.xml" />
-		</bean> -->
+		<bean id="queryDropWProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+			<property name="locations" value="classpath:sql/query_dropwithw.xml" />
+		</bean>
  
- <!-- DI to DPS Extension of Study DB Dao -->			
-<!-- 		<bean id="extensionDbDao"	class="om.edu.squ.squportal.portlet.dps.study.extension.db.ExtensionDbImpl">
-	 		<property name="nPJdbcTemplDpsExtension" ref="namedParameterJdbcTemplateDps"/> 
+ <!-- DI to DPS Drop with W of Registration DB Dao -->			
+		<bean id="dropWDBDao"	class="om.edu.squ.squportal.portlet.dps.registration.dropw.db.DropWDBImpl">
+	 		<property name="nPJdbcTemplDpsDropW" ref="namedParameterJdbcTemplateDps"/> 
 			<property name="queryProps" ref="queryProps" />
-			<property name="queryExtensionProps" ref="queryExtensionProps" />
-	 	</bean> -->
+			<property name="queryDropWProps" ref="queryDropWProps" />
+	 	</bean>
 		
-<!-- DI to DPS Extension of Study Service Dao -->
-<!-- 	<bean id="extensionServiceDao"	class="om.edu.squ.squportal.portlet.dps.study.extension.service.ExtensionServiceImpl"/> -->
+<!-- DI to DPS Drop with W of Registration Service Dao -->
+	<bean id="dropWService"	class="om.edu.squ.squportal.portlet.dps.registration.dropw.service.DropWServiceImpl"/>
  
  
  

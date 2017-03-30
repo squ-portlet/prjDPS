@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<entry key="dps.dropw.select.course.details">
+		SELECT 
+		  REG.STDNO							              	AS	STUDENT_NO
+		, REG.L_ABR_CRSNO                     				AS  COURSE_NO
+		, DECODE (
+              :paramLocale
+              ,'en',REG.CRSLNM
+              ,REG.A_CRSLNM
+             )                        						AS  COURSE_NAME
+		, REG.SECTNO                          				AS  SECTION_NO           
+		, REG.L_ABR_YRSEM                     				AS  YEAR_SEM
+		, DECODE(
+              MOD(REG.SECTNO,10)
+              , 0, REG.CRSCRED, 0
+            )                          						AS  CREDITS
+    , TO_CHAR(
+                REG.FIRSTWTHDTE, 'DD/MM/YYYY'
+              )                         					AS  FIRST_WITHDRAW_DATE
+    , TO_CHAR(
+                REG.SECONDWTHDTE-1, 'DD/MM/YYYY'
+             )                          					AS  SECOND_WITHDRAW_DATE
+    , TUFEE.FEE												AS	TUTION_FEE
+		   FROM
+                  V_STD_CURREG        REG
+                , TUITION_FEES_STD    TUFEE
+        WHERE 
+                REG.L_ABR_CRSNO = TUFEE.L_ABR_CRSNO(+)
+            AND REG.STDNO  = TUFEE.STDNO (+)
+            AND REG.SECTCD  = TUFEE.SECTCD (+)
+            
+            AND 
+                L_ABR_STDNO =  :paramStdId
+	
+	</entry>
+</properties>

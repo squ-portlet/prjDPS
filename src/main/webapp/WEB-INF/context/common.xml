@@ -105,6 +105,7 @@
 			<constructor-arg ref="dataSourceDps"></constructor-arg>
 		</bean>
 
+<!-- Transaction Manager from DPS -->	
 	<tx:annotation-driven proxy-target-class="true" transaction-manager="transactionManager"/>
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 	  <property name="dataSource" ref="dataSourceDps"/>

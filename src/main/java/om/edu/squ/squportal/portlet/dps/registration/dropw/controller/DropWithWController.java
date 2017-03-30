@@ -8,8 +8,8 @@
  *
  * FrameWork			:	Spring 4.0.8 (Annotation) Portlet
  * 
- * File Name			:	RegistrationDropWithWController.java
- * Package Name			:	om.edu.squ.squportal.portlet.dps.study.registration.controller
+ * File Name			:	DropWithWController.java
+ * Package Name			:	om.edu.squ.squportal.portlet.dps.registration.dropw.controller
  * Date of creation		:	Mar 27, 2017  4:09:21 PM
  * Date of modification :	
  * 
@@ -27,7 +27,7 @@
  *
  * 
  */
-package om.edu.squ.squportal.portlet.dps.study.registration.controller;
+package om.edu.squ.squportal.portlet.dps.registration.dropw.controller;
 
 import java.util.Locale;
 
@@ -38,6 +38,7 @@ import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
+import om.edu.squ.squportal.portlet.dps.registration.dropw.service.DropWService;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
 import org.slf4j.Logger;
@@ -53,11 +54,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("VIEW")
-public class RegistrationDropWithWController
+public class DropWithWController
 {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	DpsServiceDao	dpsServiceDao;
+	@Autowired
+	DropWService	dropWService;
 
 	/**
 	 * 
@@ -66,7 +69,7 @@ public class RegistrationDropWithWController
 	 * @param model
 	 * @param locale
 	 * @return
-	 * RegistrationDropWithWController
+	 * DropWithWController
 	 * return type  : String
 	 * 
 	 * purpose		:
@@ -76,6 +79,8 @@ public class RegistrationDropWithWController
 	@RequestMapping
 	private	String welcome(PortletRequest request, Model model, Locale locale)
 	{
+		logger.info("DropWithWController : ");
+		
 		User	user	=	dpsServiceDao.getUser(request);
 
 
@@ -98,7 +103,7 @@ public class RegistrationDropWithWController
 	 * @param model
 	 * @param locale
 	 * @return
-	 * RegistrationDropWithWController
+	 * DropWithWController
 	 * return type  : String
 	 * 
 	 * purpose		:
@@ -107,10 +112,10 @@ public class RegistrationDropWithWController
 	 */
 	private String studentWelcome(PortletRequest request, Model model, Locale locale)
 	{
-		String userName	=	request.getRemoteUser();
+		logger.info("method -- studentWelcome() ");
 		User	user	=	dpsServiceDao.getUser(request);
-		Student student	= dpsServiceDao.getStudent(user.getUserId(), new Locale("en"));
-		
+		logger.info(" user : "+user);
+		model.addAttribute("courseList", dropWService.getCourseList(user.getUserId(), locale));
 		return "/registration/dropWithW/student/welcomeDropWithWStudent";
 	}
 
@@ -121,7 +126,7 @@ public class RegistrationDropWithWController
 	 * @param model
 	 * @param locale
 	 * @return
-	 * RegistrationDropWithWController
+	 * DropWithWController
 	 * return type  : String
 	 * 
 	 * purpose		:

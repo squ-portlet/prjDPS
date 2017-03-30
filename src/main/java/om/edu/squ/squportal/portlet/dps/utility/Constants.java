@@ -90,7 +90,13 @@ public interface Constants
 	public static final	String	CONST_COLMN_STATUS_NAME							=	"STATUS_NAME";  
 	public static final	String	CONST_COLMN_MINOR_NAME							=	"MINOR_NAME";
 	public static final	String	CONST_COLMN_SPEC_NAME							=	"SPEC_NAME";
-	
+	public static final	String	CONST_COLMN_COURSE_NO							=	"COURSE_NO";
+	public static final	String	CONST_COLMN_COURSE_NAME							=	"COURSE_NAME";	
+	public static final	String	CONST_COLMN_SECTION_NO							=	"SECTION_NO";
+	public static final	String	CONST_COLMN_YEAR_SEM							=	"YEAR_SEM";
+	public static final	String	CONST_COLMN_CREDITS								=	"CREDITS";
+	public static final	String	CONST_COLMN_TUTION_FEE							=	"TUTION_FEE";
+
 	public static final	String	CONST_COLMN_SISCODECD							=	"SISCODECD";
 	public static final	String	CONST_COLMN_STATUS_CODE							=	"STATUS_CODE";
 	public static final	String	CONST_COLMN_STATUS_CODE_NAME					=	"STATUS_CODE_NAME";
@@ -101,6 +107,9 @@ public interface Constants
 	public static final	String	CONST_COLMN_EXTENSION_REASON_CODE				=	"EXTENSION_REASON_CODE";
 	public static final	String	CONST_COLMN_EXTENSION_REASON_NAME				=	"EXTENSION_REASON_NAME";
 	public static final	String	CONST_COLMN_EXTENSION_OTHER_REASON				=	"EXTENSION_OTHER_REASON";
+	
+	public static final	String	CONST_COLMN_FIRST_WITHDRAW_DATE					=	"FIRST_WITHDRAW_DATE";
+	public static final	String	CONST_COLMN_SECOND_WITHDRAW_DATE				=	"SECOND_WITHDRAW_DATE";
 	
 	public static final	String	CONST_COLMN_APPROVAL_CODE						=	"APPROVAL_CODE";
 	public static final	String	CONST_COLMN_APPROVER_ROLE_CODE					=	"APPROVER_ROLE_CODE";
@@ -127,10 +136,11 @@ public interface Constants
 	/************* SQL CONSTANT STATUS CODE ******************************/
 	
 	/************* SQL CONSTANT ROLE CODE ******************************/
+/*	
 	public static final	String	CONST_SQL_ROLE_SUPERVISOR						=	"2012";   // SUPRVS
 	public static final	String	CONST_SQL_ROLE_COL_DEAN							=	"1883";	  // DEAN
 	public static final	String	CONST_SQL_ROLE_DPS_DEAN							=	"5548";
-	
+*/	
 	public static final	String	CONST_SQL_ROLE_NAME_SUPERVISOR					=	"SUPRVS";   
 	public static final	String	CONST_SQL_ROLE_NAME_COL_DEAN					=	"DEAN";	  
 	public static final	String	CONST_SQL_ROLE_NAME_DPS_DEAN					=	"DEANP";
@@ -138,7 +148,8 @@ public interface Constants
 	/******************************************************/
 	
 	/************* SQL CONSTANT DPS FORM CODE ******************************/
-	public static final	String	CONST_FORM_DPS_EXTENSION_STUDY					=	"3413";
+//	public static final	String	CONST_FORM_DPS_EXTENSION_STUDY					=	"3413";
+
 	public static final	String	CONST_FORM_NAME_DPS_EXTENSION_STUDY				=	"DPS19";
 	
 	/************* PROPERTY FILE ******************************/
@@ -166,6 +177,9 @@ public interface Constants
 	public	static	final	String	CONST_SQL_EXTENSION_UPDATE_STATUS_STUDENT	=	"dps.extension.update.status.student";
 	public	static	final	String	CONST_SQL_EXTENSION_SELECT_STUDENT_RECORDS	=	"dps.extension.select.student.records";
 	public	static	final	String	CONST_SQL_EXTENSION_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	"dps.extension.select.student.records.by.employee";
+
+	/* ---  SQL - DPS - Drop With W property--------------------- */
+	public	static	final	String	CONST_SQL_DROPW_SELECT_COURSE_DETAILS		=	"dps.dropw.select.course.details";
 	
 	
 

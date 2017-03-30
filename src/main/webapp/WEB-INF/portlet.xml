@@ -56,7 +56,7 @@
 							
 							<init-param>
 					         <name>contextConfigLocation</name>
-					         <value>/WEB-INF/context/registrationDropWithW-portlet.xml</value>
+					         <value>/WEB-INF/context/registrationDropW-portlet.xml</value>
 					      	</init-param>
 					      	<expiration-cache>0</expiration-cache>
 							<supports>
