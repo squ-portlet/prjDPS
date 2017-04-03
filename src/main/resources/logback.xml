@@ -10,14 +10,14 @@
  
  <appender name="FILE"
 	class="ch.qos.logback.core.rolling.RollingFileAppender">
-	<file>${catalina.home}/logs/prjLibrary.log</file>
+	<file>${catalina.home}/logs/prjDPS.log</file>
 	<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 	   <Pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} [%thread] %-5level [line :%line] %logger{80} %method - %msg%n
            </Pattern>
 	</encoder>
  
 	<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-		<FileNamePattern>${catalina.home}/log/prjLibrary.%i.log.zip</FileNamePattern>
+		<FileNamePattern>${catalina.home}/log/prjDPS.%i.log.zip</FileNamePattern>
 		<MinIndex>1</MinIndex>
 		<MaxIndex>10</MaxIndex>
 	</rollingPolicy>
