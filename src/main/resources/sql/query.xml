@@ -133,8 +133,8 @@
            FROM        	V_STDINFO_PORTAL     SI 
                        ,V_STD_THESIS        STH
            WHERE       SI.STD_ID= :paramStudentId     
-                    AND  SI.STDNO(+) = STH.STDNO
-                    AND  SI.STDSTATCD(+) = STH.STDSTATCD 
+                    AND  SI.STDNO = STH.STDNO (+)
+                    AND  SI.STDSTATCD = STH.STDSTATCD (+)
     	 ]]>
     </entry>
     

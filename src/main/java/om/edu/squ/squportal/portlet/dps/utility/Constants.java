@@ -91,8 +91,10 @@ public interface Constants
 	public static final	String	CONST_COLMN_MINOR_NAME							=	"MINOR_NAME";
 	public static final	String	CONST_COLMN_SPEC_NAME							=	"SPEC_NAME";
 	public static final	String	CONST_COLMN_COURSE_NO							=	"COURSE_NO";
+	public static final	String	CONST_COLMN_L_ABR_CRSNO							=	"L_ABR_CRSNO";
 	public static final	String	CONST_COLMN_COURSE_NAME							=	"COURSE_NAME";	
 	public static final	String	CONST_COLMN_SECTION_NO							=	"SECTION_NO";
+	public static final	String	CONST_COLMN_SECT_CODE							=	"SECT_CODE";
 	public static final	String	CONST_COLMN_YEAR_SEM							=	"YEAR_SEM";
 	public static final	String	CONST_COLMN_CREDITS								=	"CREDITS";
 	public static final	String	CONST_COLMN_TUTION_FEE							=	"TUTION_FEE";
@@ -180,7 +182,7 @@ public interface Constants
 
 	/* ---  SQL - DPS - Drop With W property--------------------- */
 	public	static	final	String	CONST_SQL_DROPW_SELECT_COURSE_DETAILS		=	"dps.dropw.select.course.details";
-	
+	public	static	final	String	CONST_SQL_DROPW_INSERT_COURSE_TEMP			=	"dps.dropw.insert.course.temp.for.drop";
 	
 
 	/* ---  SQL - DPS - Rule --------------------- */

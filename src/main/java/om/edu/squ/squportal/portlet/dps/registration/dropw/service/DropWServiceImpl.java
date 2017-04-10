@@ -32,10 +32,14 @@ package om.edu.squ.squportal.portlet.dps.registration.dropw.service;
 import java.util.List;
 import java.util.Locale;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.db.DropWDBDao;
+import om.edu.squ.squportal.portlet.dps.registration.dropw.model.DropCourseModel;
 
 /**
  * @author Bhabesh
@@ -43,6 +47,8 @@ import om.edu.squ.squportal.portlet.dps.registration.dropw.db.DropWDBDao;
  */
 public class DropWServiceImpl implements DropWService
 {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	@Autowired
 	DropWDBDao	dropWDBDao;
 	
@@ -65,5 +71,28 @@ public class DropWServiceImpl implements DropWService
 		
 	}
 	
+	public Object setDropWCourse(Student student, DropCourseModel dropCourseModel)
+	{
+		setTempDropWCourse( student,  dropCourseModel);
+		return null;
+	}
+	
+
+	public int setTempDropWCourse(Student student, DropCourseModel dropCourseModel)
+	{
+		DropWDTO	dropWDTO	=	new DropWDTO();
+		dropWDTO.setStudentNo(student.getAcademicDetail().getStudentNo());
+		dropWDTO.setStudentStatCode(student.getAcademicDetail().getStdStatCode());
+		
+		
+		dropWDTO.setCourseNo(dropCourseModel.getCourseNo());
+		dropWDTO.setSectCode(dropCourseModel.getSectCode());
+		dropWDTO.setSectionNo(dropCourseModel.getSectNo());
+		dropWDTO.setUserName(student.getAcademicDetail().getStudentUserName());
+		
+		dropWDBDao.setTempDropWCourse(dropWDTO);
+		return 0;
+	}
+
 	
 }

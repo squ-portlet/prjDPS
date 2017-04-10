@@ -31,13 +31,19 @@ package om.edu.squ.squportal.portlet.dps.registration.dropw.controller;
 
 import java.util.Locale;
 
+import javax.portlet.EventRequest;
+import javax.portlet.EventResponse;
 import javax.portlet.PortletRequest;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 
+import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
+import om.edu.squ.squportal.portlet.dps.registration.dropw.model.DropCourseModel;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.service.DropWService;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
@@ -46,7 +52,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.portlet.bind.annotation.EventMapping;
+import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 /**
  * @author Bhabesh
@@ -79,8 +88,6 @@ public class DropWithWController
 	@RequestMapping
 	private	String welcome(PortletRequest request, Model model, Locale locale)
 	{
-		logger.info("DropWithWController : ");
-		
 		User	user	=	dpsServiceDao.getUser(request);
 
 
@@ -112,9 +119,15 @@ public class DropWithWController
 	 */
 	private String studentWelcome(PortletRequest request, Model model, Locale locale)
 	{
-		logger.info("method -- studentWelcome() ");
-		User	user	=	dpsServiceDao.getUser(request);
-		logger.info(" user : "+user);
+		DropCourseModel		dropCourseModel		=	null;
+		User				user	=	dpsServiceDao.getUser(request);
+		
+		
+		if(!model.containsAttribute("dropCourseModel"))
+		{
+				dropCourseModel	= new DropCourseModel();
+		}
+		model.addAttribute("dropCourseModel", dropCourseModel);
 		model.addAttribute("courseList", dropWService.getCourseList(user.getUserId(), locale));
 		return "/registration/dropWithW/student/welcomeDropWithWStudent";
 	}
@@ -148,5 +161,34 @@ public class DropWithWController
 		}
 		
 		return "/registration/dropWithW/approver/welcomeDropWithWApprover";
+	}
+
+	/**
+	 * 
+	 * method name  : dropWithWResource
+	 * @param dropCourseModel
+	 * @param request
+	 * @param response
+	 * DropWithWController
+	 * return type  : void
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Apr 10, 2017 4:28:08 PM
+	 */
+	@ResourceMapping(value="resourceAjaxDropWithW")
+	private void dropWithWResource(@ModelAttribute("dropCourseModel") DropCourseModel dropCourseModel, ResourceRequest request, ResourceResponse response, Locale locale)
+	{
+		User			user			=	dpsServiceDao.getUser(request);
+		Student			student			=	dpsServiceDao.getStudent(user.getUserId(), locale);
+
+		AcademicDetail	academicDetail	=	student.getAcademicDetail();
+		academicDetail.setStudentUserName(request.getRemoteUser());
+		student.setAcademicDetail(academicDetail);
+	
+
+
+		
+		dropWService.setDropWCourse(student,dropCourseModel);
 	}
 }

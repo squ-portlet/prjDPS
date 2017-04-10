@@ -40,6 +40,8 @@ import java.util.Properties;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
@@ -49,6 +51,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
  */
 public class DropWDBImpl implements DropWDBDao
 {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	private		Properties					queryProps;
 	private		Properties					queryDropWProps;
 	private		NamedParameterJdbcTemplate	nPJdbcTemplDpsDropW;
@@ -108,8 +112,10 @@ public class DropWDBImpl implements DropWDBDao
 			public DropWDTO mapRow(ResultSet rs, int rowNum) throws SQLException
 			{
 				DropWDTO	dropWDTO	=	new DropWDTO();
+				dropWDTO.setlAbrCourseNo(rs.getString(Constants.CONST_COLMN_L_ABR_CRSNO));
 				dropWDTO.setCourseNo(rs.getString(Constants.CONST_COLMN_COURSE_NO));
 				dropWDTO.setCourseName(rs.getString(Constants.CONST_COLMN_COURSE_NAME));
+				dropWDTO.setSectCode(rs.getString(Constants.CONST_COLMN_SECT_CODE));
 				dropWDTO.setSectionNo(rs.getString(Constants.CONST_COLMN_SECTION_NO));
 				dropWDTO.setYearSemester(rs.getString(Constants.CONST_COLMN_YEAR_SEM));
 				dropWDTO.setCredits(rs.getInt(Constants.CONST_COLMN_CREDITS));
@@ -124,6 +130,33 @@ public class DropWDBImpl implements DropWDBDao
 		
 		
 		return nPJdbcTemplDpsDropW.query(SQL_DROPW_SELECT_COURSE_DETAILS, paramMap, rowMapper);
+	}
+	
+	/**
+	 * 
+	 * method name  : setTempDropWCourse
+	 * @param dropWDTO
+	 * @return
+	 * DropWDBImpl
+	 * return type  : int
+	 * 
+	 * purpose		: Add a record in temporary table for further progress to drop the course 
+	 *
+	 * Date    		:	Apr 10, 2017 7:13:47 PM
+	 */
+	public int setTempDropWCourse(DropWDTO dropWDTO)
+	{
+		String	SQL_DROPW_INSERT_COURSE_TEMP		=	queryDropWProps.getProperty(Constants.CONST_SQL_DROPW_INSERT_COURSE_TEMP);
+		
+		Map<String, String> paramMap	=	new HashMap<String, String>();
+		paramMap.put("paramStdNo", dropWDTO.getStudentNo());
+		paramMap.put("paramStdStatCode", dropWDTO.getStudentStatCode());
+		paramMap.put("paramCourseNo", dropWDTO.getCourseNo());
+		paramMap.put("paramStdSectCode", dropWDTO.getSectCode());
+		paramMap.put("paramStdSectNo", dropWDTO.getSectionNo());
+		paramMap.put("paramStatusCode", Constants.CONST_SQL_STATUS_CODE_NAME_PENDING);
+		paramMap.put("paramUserCode", dropWDTO.getUserName());
+		return nPJdbcTemplDpsDropW.update(SQL_DROPW_INSERT_COURSE_TEMP, paramMap);
 	}
 	
 }

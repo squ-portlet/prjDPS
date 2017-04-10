@@ -60,8 +60,9 @@
 <c:url value="${urlCdn}/DataTables/1.10.11/Responsive-2.0.2/js/responsive.bootstrap.min.js" var="urlJsDataTableResponsiveBSMin"/>
 <c:url value="${urlCdn}/DataTables/1.10.11/RowReorder-1.1.1/js/dataTables.rowReorder.min.js" var="urlJsDataTableRowReorderBSMin"/>
 
-
-
+<!-- ------------ HandleBars js declaration -->
+<c:url value="${urlCdn}/handlebars/4.0.5/handlebars-v4.0.5.js" var="urlJsHandleBars"/>
+<%-- <c:url value="${urlCdn}/handlebars/4.0.5/handlebars.runtime-v4.0.5.js" var="urlJsHandleBarsRunTime"/> --%>
 
 <!-- ******************** CSS implementation************************ --> 
 <c:if test="${rc.locale.language == 'en'}" > 
@@ -105,6 +106,10 @@
 <script type="text/javascript" src="${urlJsDataTableResponsiveMin}"></script>
 <script type="text/javascript" src="${urlJsDataTableResponsiveBSMin}"></script>
 <script type="text/javascript" src="${urlJsDataTableRowReorderBSMin}"></script>
+
+	<!-- ------------ HandleBars js implementation -->
+<script type="text/javascript" src="${urlJsHandleBars}"></script>
+<script type="text/javascript" src="${urlJsHandleBarsRunTime}"></script>
 
 	 <c:if test="${rc.locale.language == 'en'}" >
 		 <c:set var="glphiconNext">

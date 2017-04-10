@@ -54,4 +54,18 @@ public interface DropWDBDao
 	 * Date    		:	Mar 30, 2017 8:20:37 AM
 	 */
 	public List<DropWDTO> getCourseList(String studentId, Locale locale);
+	
+	/**
+	 * 
+	 * method name  : setTempDropWCourse
+	 * @param dropWDTO
+	 * @return
+	 * DropWDBImpl
+	 * return type  : int
+	 * 
+	 * purpose		: Add a record in temporary table for further progress to drop the course 
+	 *
+	 * Date    		:	Apr 10, 2017 7:13:47 PM
+	 */
+	public int setTempDropWCourse(DropWDTO dropWDTO);
 }

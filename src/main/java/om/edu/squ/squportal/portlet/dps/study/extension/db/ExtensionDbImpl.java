@@ -161,7 +161,7 @@ public class ExtensionDbImpl implements ExtensionDbDao
 		namedParameterMap.put("paramUserCode", extensionDTO.getUserCode());
 		namedParameterMap.put("paramExtReasonCode", extensionDTO.getReasonCode());
 		namedParameterMap.put("paramExtReasonOther", extensionDTO.getReasonOther());
-		namedParameterMap.put("paramExtStatusCode", Constants.CONST_SQL_STATUS_CODE_PENDING);
+		namedParameterMap.put("paramExtStatusCode", Constants.CONST_SQL_STATUS_CODE_NAME_PENDING);
 
 		try
 		{

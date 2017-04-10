@@ -37,9 +37,77 @@ import om.edu.squ.squportal.portlet.dps.bo.Course;
  */
 public class DropWDTO extends Course
 {
+	private	String	studentNo;
+	private	String	studentStatCode;
+	private	String	userName;	
 	private	String	firstWithDrawDate;
 	private	String	secondWithDrawDate;
 	private	float	tutionFees;
+	
+	public DropWDTO()
+	{
+		super();
+	}
+	/**
+	 * Getter Method	: getStudentNo
+	 * @return the studentNo
+	 * 
+	 * Date				: Apr 10, 2017
+	 */
+	public String getStudentNo()
+	{
+		return this.studentNo;
+	}
+	/**
+	 * Setter method : setStudentNo
+	 * @param studentNo the studentNo to set
+	 * 
+	 * Date          : Apr 10, 2017 6:59:54 PM
+	 */
+	public void setStudentNo(String studentNo)
+	{
+		this.studentNo = studentNo;
+	}
+	/**
+	 * Getter Method	: getStudentStatCode
+	 * @return the studentStatCode
+	 * 
+	 * Date				: Apr 10, 2017
+	 */
+	public String getStudentStatCode()
+	{
+		return this.studentStatCode;
+	}
+	/**
+	 * Setter method : setStudentStatCode
+	 * @param studentStatCode the studentStatCode to set
+	 * 
+	 * Date          : Apr 10, 2017 6:59:54 PM
+	 */
+	public void setStudentStatCode(String studentStatCode)
+	{
+		this.studentStatCode = studentStatCode;
+	}
+	/**
+	 * Getter Method	: getUserName
+	 * @return the userName
+	 * 
+	 * Date				: Apr 10, 2017
+	 */
+	public String getUserName()
+	{
+		return this.userName;
+	}
+	/**
+	 * Setter method : setUserName
+	 * @param userName the userName to set
+	 * 
+	 * Date          : Apr 10, 2017 6:59:54 PM
+	 */
+	public void setUserName(String userName)
+	{
+		this.userName = userName;
+	}
 	/**
 	 * Getter Method	: getFirstWithDrawDate
 	 * @return the firstWithDrawDate
@@ -107,9 +175,14 @@ public class DropWDTO extends Course
 	@Override
 	public String toString()
 	{
-		return "DropWDTO [firstWithDrawDate=" + this.firstWithDrawDate
+		return "DropWDTO [studentNo=" + this.studentNo + ", studentStatCode="
+				+ this.studentStatCode + ", userName=" + this.userName
+				+ ", firstWithDrawDate=" + this.firstWithDrawDate
 				+ ", secondWithDrawDate=" + this.secondWithDrawDate
-				+ ", tutionFees=" + this.tutionFees + "]";
+				+ ", tutionFees=" + this.tutionFees + "]"
+				+
+				super.toString();
+				
 	}
 	
 	

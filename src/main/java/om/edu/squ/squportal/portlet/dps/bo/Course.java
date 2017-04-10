@@ -36,10 +36,27 @@ package om.edu.squ.squportal.portlet.dps.bo;
 public class Course
 {
 	private	String	courseNo;
+	private	String	lAbrCourseNo;
 	private	String	courseName;
+	private	String	sectCode;
 	private	String	sectionNo;
 	private	String	yearSemester;
 	private	int		credits;
+	
+	public Course(){}
+	public Course
+					(
+							String	courseNo,
+							String	sectCode,
+							String	sectionNo			
+					)
+	{
+		this.courseNo 	= 	courseNo;
+		this.sectCode 	=	sectCode;
+		this.sectionNo	=	sectionNo;			
+	}
+	
+	
 	/**
 	 * Getter Method	: getCourseNo
 	 * @return the courseNo
@@ -60,6 +77,27 @@ public class Course
 	{
 		this.courseNo = courseNo;
 	}
+
+	/**
+	 * Getter Method	: getlAbrCourseNo
+	 * @return the lAbrCourseNo
+	 * 
+	 * Date				: Apr 10, 2017
+	 */
+	public String getlAbrCourseNo()
+	{
+		return this.lAbrCourseNo;
+	}
+	/**
+	 * Setter method : setlAbrCourseNo
+	 * @param lAbrCourseNo the lAbrCourseNo to set
+	 * 
+	 * Date          : Apr 10, 2017 6:16:34 PM
+	 */
+	public void setlAbrCourseNo(String lAbrCourseNo)
+	{
+		this.lAbrCourseNo = lAbrCourseNo;
+	}
 	/**
 	 * Getter Method	: getCourseName
 	 * @return the courseName
@@ -79,6 +117,27 @@ public class Course
 	public void setCourseName(String courseName)
 	{
 		this.courseName = courseName;
+	}
+	
+	/**
+	 * Getter Method	: getSectCode
+	 * @return the sectCode
+	 * 
+	 * Date				: Apr 6, 2017
+	 */
+	public String getSectCode()
+	{
+		return this.sectCode;
+	}
+	/**
+	 * Setter method : setSectCode
+	 * @param sectCode the sectCode to set
+	 * 
+	 * Date          : Apr 6, 2017 6:01:29 PM
+	 */
+	public void setSectCode(String sectCode)
+	{
+		this.sectCode = sectCode;
 	}
 	/**
 	 * Getter Method	: getSectionNo
@@ -146,10 +205,11 @@ public class Course
 	@Override
 	public String toString()
 	{
-		return "Course [courseNo=" + this.courseNo + ", courseName="
-				+ this.courseName + ", sectionNo=" + this.sectionNo
-				+ ", yearSemester=" + this.yearSemester + ", credits="
-				+ this.credits + "]";
+		return "Course [courseNo=" + this.courseNo + ", lAbrCourseNo="
+				+ this.lAbrCourseNo + ", courseName=" + this.courseName
+				+ ", sectCode=" + this.sectCode + ", sectionNo="
+				+ this.sectionNo + ", yearSemester=" + this.yearSemester
+				+ ", credits=" + this.credits + "]";
 	}
 	
 	

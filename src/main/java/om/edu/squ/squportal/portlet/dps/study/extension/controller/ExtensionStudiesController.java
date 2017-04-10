@@ -323,10 +323,4 @@ public class ExtensionStudiesController
 
 		}
 	
-	
-	
-
-	
-	
-	
 }

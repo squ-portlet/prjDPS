@@ -37,6 +37,7 @@ public class PersonalDetail
 {
 	private	String	id;
 	private	String	studentNo;
+	private	String	studentUserName;
 	private	String	name;
 	private	String	phone;
 	private	String	email;
@@ -85,6 +86,27 @@ public class PersonalDetail
 	public void setStudentNo(String studentNo)
 	{
 		this.studentNo = studentNo;
+	}
+	
+	/**
+	 * Getter Method	: getStudentUserName
+	 * @return the studentUserName
+	 * 
+	 * Date				: Apr 10, 2017
+	 */
+	public String getStudentUserName()
+	{
+		return this.studentUserName;
+	}
+	/**
+	 * Setter method : setStudentUserName
+	 * @param studentUserName the studentUserName to set
+	 * 
+	 * Date          : Apr 10, 2017 6:42:20 PM
+	 */
+	public void setStudentUserName(String studentUserName)
+	{
+		this.studentUserName = studentUserName;
 	}
 	/**
 	 * Getter Method	: getName
@@ -253,11 +275,11 @@ public class PersonalDetail
 	public String toString()
 	{
 		return "PersonalDetail [id=" + this.id + ", studentNo="
-				+ this.studentNo + ", name=" + this.name + ", phone="
-				+ this.phone + ", email=" + this.email + ", region="
-				+ this.region + ", willayat=" + this.willayat + ", town="
-				+ this.town + ", poBox=" + this.poBox + ", postalCode="
-				+ this.postalCode + "]";
+				+ this.studentNo + ", studentUserName=" + this.studentUserName
+				+ ", name=" + this.name + ", phone=" + this.phone + ", email="
+				+ this.email + ", region=" + this.region + ", willayat="
+				+ this.willayat + ", town=" + this.town + ", poBox="
+				+ this.poBox + ", postalCode=" + this.postalCode + "]";
 	}
 
 	

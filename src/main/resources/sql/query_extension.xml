@@ -130,8 +130,18 @@
                             ,SYSDATE
                             ,:paramExtReasonCode
                             ,:paramExtReasonOther
-                            ,:paramExtStatusCode
-				          )
+                            ,(
+		                                SELECT
+		                                    CODES.SISCODECD	
+		                                FROM
+		                                        SIS_CODES       CODES
+		                                    ,   SIS_CODE_TYPES  TYPES
+		                                WHERE
+		                                        CODES.SISCODETYPCD =  TYPES.SISCODETYPCD
+		                                    AND TYPES.SISCODETYPNM = 'APPROVAL_STATUS'
+		                                    AND CODES.L_ABR_CODE  = :paramExtStatusCode
+                                	)
+				          ) 
   	</entry>
   	<entry key="dps.extension.update.status.student">
 					UPDATE

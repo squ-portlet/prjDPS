@@ -4,12 +4,15 @@
 	<entry key="dps.dropw.select.course.details">
 		SELECT 
 		  REG.STDNO							              	AS	STUDENT_NO
-		, REG.L_ABR_CRSNO                     				AS  COURSE_NO
+		, REG.STDSTATCD										AS  STDSTATCD
+		, REG.CRSNO											AS	COURSE_NO
+		, REG.L_ABR_CRSNO                     				AS  L_ABR_CRSNO
 		, DECODE (
               :paramLocale
               ,'en',REG.CRSLNM
               ,REG.A_CRSLNM
              )                        						AS  COURSE_NAME
+        , REG.SECTCD											AS	SECT_CODE
 		, REG.SECTNO                          				AS  SECTION_NO           
 		, REG.L_ABR_YRSEM                     				AS  YEAR_SEM
 		, DECODE(
@@ -35,4 +38,40 @@
                 L_ABR_STDNO =  :paramStdId
 	
 	</entry>
+	<entry key="dps.dropw.insert.course.temp.for.drop">
+		INSERT INTO 
+		            T_REG_DROPW
+		                        (
+		                            STDNO
+		                          , STDSTATCD
+		                          , CRSNO
+		                          , SECTCD
+		                          , SECTNO
+		                          , STATUSCD
+		                          , CREATE_DATE
+		                          , CREATE_USERNAME
+		                        )
+		      		VALUES  
+		                      (
+		                            :paramStdNo
+		                          , :paramStdStatCode
+		                          , :paramCourseNo
+		                          , :paramStdSectCode
+		                          , :paramStdSectNo
+		                          , (
+		                                SELECT
+		                                    CODES.SISCODECD	
+		                                FROM
+		                                        SIS_CODES       CODES
+		                                    ,   SIS_CODE_TYPES  TYPES
+		                                WHERE
+		                                        CODES.SISCODETYPCD =  TYPES.SISCODETYPCD
+		                                    AND TYPES.SISCODETYPNM = 'APPROVAL_STATUS'
+		                                    AND CODES.L_ABR_CODE  = :paramStatusCode
+                                	)
+		                          , SYSDATE
+		                          , :paramUserCode
+		                      )
+	</entry>
+	
 </properties>

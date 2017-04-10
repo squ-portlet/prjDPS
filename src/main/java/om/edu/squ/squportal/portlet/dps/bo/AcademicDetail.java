@@ -37,6 +37,7 @@ public class AcademicDetail
 {
 	private	String	id;
 	private	String	studentNo;
+	private	String	studentUserName;
 	private	String	college;
 	private	String	major;
 	private	String	supervisorId;
@@ -88,6 +89,27 @@ public class AcademicDetail
 	public void setStudentNo(String studentNo)
 	{
 		this.studentNo = studentNo;
+	}
+	
+	/**
+	 * Getter Method	: getStudentUserName
+	 * @return the studentUserName
+	 * 
+	 * Date				: Apr 10, 2017
+	 */
+	public String getStudentUserName()
+	{
+		return this.studentUserName;
+	}
+	/**
+	 * Setter method : setStudentUserName
+	 * @param studentUserName the studentUserName to set
+	 * 
+	 * Date          : Apr 10, 2017 6:41:24 PM
+	 */
+	public void setStudentUserName(String studentUserName)
+	{
+		this.studentUserName = studentUserName;
 	}
 	/**
 	 * Getter Method	: getCollege
@@ -298,13 +320,14 @@ public class AcademicDetail
 	public String toString()
 	{
 		return "AcademicDetail [id=" + this.id + ", studentNo="
-				+ this.studentNo + ", college=" + this.college + ", major="
-				+ this.major + ", supervisorId=" + this.supervisorId
-				+ ", advisorId=" + this.advisorId + ", degree=" + this.degree
-				+ ", stdStatCode=" + this.stdStatCode + ", status="
-				+ this.status + ", estimatedSemesters="
-				+ this.estimatedSemesters + ", fromCCYrCode="
-				+ this.fromCCYrCode + ", fromSemCode=" + this.fromSemCode + "]";
+				+ this.studentNo + ", studentUserName=" + this.studentUserName
+				+ ", college=" + this.college + ", major=" + this.major
+				+ ", supervisorId=" + this.supervisorId + ", advisorId="
+				+ this.advisorId + ", degree=" + this.degree + ", stdStatCode="
+				+ this.stdStatCode + ", status=" + this.status
+				+ ", estimatedSemesters=" + this.estimatedSemesters
+				+ ", fromCCYrCode=" + this.fromCCYrCode + ", fromSemCode="
+				+ this.fromSemCode + "]";
 	}
 
 	
