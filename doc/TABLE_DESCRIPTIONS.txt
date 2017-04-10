@@ -223,3 +223,76 @@ DISC_TYPE            NUMBER(4)
 TITLE                VARCHAR2(60) 
 USRACCTCD            VARCHAR2(12) 
 UPDDTE               DATE 
+
+
+desc TUITION_FEES_STD
+Name        Null     Type         
+----------- -------- ------------ 
+L_ABR_CRSNO          VARCHAR2(8)  
+STDNO       NOT NULL NUMBER       
+CREDITS              NUMBER(38)   
+FEE         NOT NULL NUMBER       
+WITHDRAWEN           VARCHAR2(1)  
+UPDATEDATE           DATE         
+USRACCTCD   NOT NULL VARCHAR2(12) 
+SECTNO      NOT NULL NUMBER(3)    
+SECTCD      NOT NULL NUMBER(8)    
+STDSTATUSCD          NUMBER       
+TUITIONCD            NUMBER       
+
+
+
+DESC V_STD_CURREG
+Name         Null     Type          
+------------ -------- ------------- 
+STDNO        NOT NULL NUMBER(9)     
+L_ABR_STDNO  NOT NULL NUMBER(9)     
+STDSTATCD    NOT NULL NUMBER(9)     
+CCYRCD       NOT NULL NUMBER(4)     
+SEMCD        NOT NULL NUMBER(2)     
+L_ABR_YRSEM  NOT NULL VARCHAR2(4)   
+L_ABR_CRSNO  NOT NULL VARCHAR2(8)   
+A_ABR_CRSNO           VARCHAR2(8)   
+CRSNO        NOT NULL NUMBER(8)     
+SECTCD       NOT NULL NUMBER(8)     
+SECTNO       NOT NULL NUMBER(3)     
+FIRSTWTHDTE  NOT NULL DATE          
+SECONDWTHDTE NOT NULL DATE          
+CRSCRED      NOT NULL NUMBER(4,1)   
+CRSLNM       NOT NULL VARCHAR2(100) 
+A_CRSLNM              VARCHAR2(100) 
+INSTRUCTOR            VARCHAR2(30)  
+CRSTYPCD     NOT NULL NUMBER(3)     
+L_ABR_CRSTYP NOT NULL VARCHAR2(5)   
+
+
+
+DESC SCHED_STD
+Name           Null     Type         
+-------------- -------- ------------ 
+STDNO          NOT NULL NUMBER(9)    
+L_ABR_CRSNO    NOT NULL VARCHAR2(8)  
+CRSNO          NOT NULL NUMBER(8)    
+CRSTYPCD       NOT NULL NUMBER(3)    
+SECTCD         NOT NULL NUMBER(8)    
+SECTNO         NOT NULL NUMBER(3)    
+HODAPROVALCD   NOT NULL NUMBER(4)    
+CONDREGCD      NOT NULL NUMBER(4)    
+ADVISAPROVALCD NOT NULL NUMBER(4)    
+AUDITFLAGCD    NOT NULL NUMBER(4)    
+GRADECD                 NUMBER(2)    
+USRACCTCD               VARCHAR2(12) 
+
+
+DESC T_REG_DROPW
+Name            Null     Type         
+--------------- -------- ------------ 
+STDNO           NOT NULL NUMBER(9)    
+STDSTATCD                NUMBER(9)    
+SECTCD          NOT NULL NUMBER(8)    
+SECTNO          NOT NULL NUMBER(3)    
+STATUSCD                 NUMBER(4)    
+CREATE_DATE     NOT NULL DATE         
+CREATE_USERNAME NOT NULL VARCHAR2(20) 
+UPDATE_DATE              DATE         
+UPDATE_USERNAME          DATE        
