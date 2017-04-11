@@ -12,7 +12,7 @@
               ,'en',REG.CRSLNM
               ,REG.A_CRSLNM
              )                        						AS  COURSE_NAME
-        , REG.SECTCD											AS	SECT_CODE
+        , REG.SECTCD										AS	SECT_CODE
 		, REG.SECTNO                          				AS  SECTION_NO           
 		, REG.L_ABR_YRSEM                     				AS  YEAR_SEM
 		, DECODE(
@@ -26,16 +26,33 @@
                 REG.SECONDWTHDTE-1, 'DD/MM/YYYY'
              )                          					AS  SECOND_WITHDRAW_DATE
     , TUFEE.FEE												AS	TUTION_FEE
+    ,(
+	            SELECT 
+	              DECODE 
+	              (
+	                :paramLocale
+	                ,'en', CODENM, A_CODENM
+	                )
+	              FROM SIS_CODES
+	              WHERE SISCODECD= T_DROP.STATUSCD
+	  )			 											AS 		STATUS_DESC
 		   FROM
                   V_STD_CURREG        REG
                 , TUITION_FEES_STD    TUFEE
+                , T_REG_DROPW         T_DROP
         WHERE 
-                REG.L_ABR_CRSNO = TUFEE.L_ABR_CRSNO(+)
-            AND REG.STDNO  = TUFEE.STDNO (+)
-            AND REG.SECTCD  = TUFEE.SECTCD (+)
+                REG.L_ABR_CRSNO = TUFEE.L_ABR_CRSNO	(+)
+            AND REG.STDNO  		= TUFEE.STDNO 		(+)
+            AND REG.SECTCD  	= TUFEE.SECTCD 		(+)
+            
+            AND REG.STDNO       = T_DROP.STDNO 		(+)
+            AND REG.STDSTATCD   = T_DROP.STDSTATCD 	(+)                  
+            AND REG.CRSNO       = T_DROP.CRSNO 		(+)
+            AND REG.SECTCD      = T_DROP.SECTCD 	(+)         
+            AND REG.SECTNO      = T_DROP.SECTNO 	(+)        
             
             AND 
-                L_ABR_STDNO =  :paramStdId
+                REG.L_ABR_STDNO =  :paramStdId
 	
 	</entry>
 	<entry key="dps.dropw.insert.course.temp.for.drop">
@@ -73,5 +90,36 @@
 		                          , :paramUserCode
 		                      )
 	</entry>
+	<entry key="dps.dropw.select.course.temp.for.drop">
+			SELECT 
+			        CRS.CRSNO								AS	COURSE_NO
+			      , CRS.L_ABR_CRSNO							AS  L_ABR_CRSNO
+			      , DECODE
+			            (
+			              :paramLocale,
+			              'en', CRS.CRSLNM, 
+			              		CRS.A_CRSLNM
+			            )									AS  COURSE_NAME
+			      , T_DROP.SECTNO							AS  SECTION_NO
+			      , CRS.CRSCRED 							AS  CREDITS
+			      ,(
+		                SELECT 
+		                  DECODE 
+		                  (
+		                    :paramLocale
+		                    ,'en', CODENM, A_CODENM
+		                    )
+		                  FROM SIS_CODES
+		                  WHERE SISCODECD= T_DROP.STATUSCD
+			      )			 								AS 	STATUS_DESC      
+			FROM
+			      T_REG_DROPW T_DROP
+			    , CRS_BASIC   CRS
+			WHERE
+			          T_DROP.CRSNO = CRS.CRSNO
+			      AND STDNO       = :paramStdNo
+			      AND STDSTATCD   = :paramStdStatCode	
+	</entry>
+	
 	
 </properties>

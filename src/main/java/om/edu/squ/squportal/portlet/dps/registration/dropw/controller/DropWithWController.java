@@ -29,6 +29,8 @@
  */
 package om.edu.squ.squportal.portlet.dps.registration.dropw.controller;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
 
 import javax.portlet.EventRequest;
@@ -43,6 +45,7 @@ import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
+import om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.model.DropCourseModel;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.service.DropWService;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
@@ -56,6 +59,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.EventMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
+import com.google.gson.Gson;
 
 /**
  * @author Bhabesh
@@ -179,6 +184,8 @@ public class DropWithWController
 	@ResourceMapping(value="resourceAjaxDropWithW")
 	private void dropWithWResource(@ModelAttribute("dropCourseModel") DropCourseModel dropCourseModel, ResourceRequest request, ResourceResponse response, Locale locale)
 	{
+		Gson			gson			=	new Gson();
+		List<DropWDTO>	dropWDTOs		=	null;
 		User			user			=	dpsServiceDao.getUser(request);
 		Student			student			=	dpsServiceDao.getStudent(user.getUserId(), locale);
 
@@ -186,9 +193,16 @@ public class DropWithWController
 		academicDetail.setStudentUserName(request.getRemoteUser());
 		student.setAcademicDetail(academicDetail);
 	
-
-
 		
-		dropWService.setDropWCourse(student,dropCourseModel);
+		try
+		{
+			dropWDTOs	=	dropWService.setDropWCourse(student,dropCourseModel, locale);
+			response.getWriter().print(dropWDTOs);
+		}
+		catch (IOException ex)
+		{
+			logger.error("Issues with json data processing. details : {}",ex.getMessage());
+		}
+
 	}
 }

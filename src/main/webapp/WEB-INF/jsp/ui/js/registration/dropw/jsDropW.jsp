@@ -28,6 +28,8 @@
 		
 		$('#bttnSubmitConsent').click(function(){
 			
+			$('#modalDropWForm').modal('toggle');
+			
 			var dropCourseModel = {
 					courseNo : $('#courseNo').val(),
 					sectCode : $('#sectCode').val(),
@@ -41,6 +43,7 @@
 					data : dropCourseModel,
 					success : function(data)
 					{
+						$('#status-'+dropCourseModel.sectCode).html('<span class="glyphicon glyphicon-ban-circle" ></span>');
 						console.log('success');
 					},
 					error : function(xhr, status)

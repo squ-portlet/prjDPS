@@ -31,7 +31,18 @@
 							<td>${course.sectionNo}</td>
 							<td>${course.credits }</td>
 							<td>${course.tutionFees}</td>
-							<td><a class="clsCourse" href="#" lAbrCourseNo=${course.lAbrCourseNo} courseNo=${course.courseNo} courseName="${course.courseName}" sectCode=${course.sectCode} sectionNo=${course.sectionNo} aria-hidden="true" data-toggle="modal" data-target="#modalDropWForm"><span class="glyphicon glyphicon-pencil"  ></span></a></td>
+							<td id='status-${course.sectCode}'>
+								<c:choose>
+									<c:when test="${empty course.statusDesc}">
+										<a class="clsCourse" href="#" lAbrCourseNo=${course.lAbrCourseNo} courseNo=${course.courseNo} courseName="${course.courseName}" sectCode=${course.sectCode} sectionNo=${course.sectionNo} aria-hidden="true" data-toggle="modal" data-target="#modalDropWForm">
+											<span class="glyphicon glyphicon-pencil"  ></span>
+										</a>
+									</c:when>
+									<c:otherwise>
+											<span class="glyphicon glyphicon-ban-circle" ></span>
+									</c:otherwise>
+								</c:choose>
+							</td>
 						</tr>											
 					
 					</c:forEach>

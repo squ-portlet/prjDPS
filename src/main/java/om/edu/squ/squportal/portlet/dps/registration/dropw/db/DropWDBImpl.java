@@ -120,6 +120,7 @@ public class DropWDBImpl implements DropWDBDao
 				dropWDTO.setYearSemester(rs.getString(Constants.CONST_COLMN_YEAR_SEM));
 				dropWDTO.setCredits(rs.getInt(Constants.CONST_COLMN_CREDITS));
 				dropWDTO.setTutionFees(rs.getFloat(Constants.CONST_COLMN_TUTION_FEE));
+				dropWDTO.setStatusDesc(rs.getString(Constants.CONST_COLMN_STATUS_DESC));
 				return dropWDTO;
 			}
 		};
@@ -130,6 +131,47 @@ public class DropWDBImpl implements DropWDBDao
 		
 		
 		return nPJdbcTemplDpsDropW.query(SQL_DROPW_SELECT_COURSE_DETAILS, paramMap, rowMapper);
+	}
+	
+	/**
+	 * 
+	 * method name  : getCourseList
+	 * @param studentNo
+	 * @param studentStatCode
+	 * @param locale
+	 * @return
+	 * DropWDBImpl
+	 * return type  : List<DropWDTO>
+	 * 
+	 * purpose		: Get list of courses relates with drop with w from temp/helper table
+	 *
+	 * Date    		:	Apr 11, 2017 5:33:34 PM
+	 */
+	public List<DropWDTO> getCourseList(String studentNo, String studentStatCode, Locale locale)
+	{
+		String	SQL_DROPW_SELECT_COURSE_TEMP	=	queryDropWProps.getProperty(Constants.CONST_SQL_DROPW_SELECT_COURSE_TEMP);
+		RowMapper<DropWDTO> rowMapper			=	new RowMapper<DropWDTO>()
+		{
+			
+			@Override
+			public DropWDTO mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				DropWDTO	dropWDTO	=	new DropWDTO();
+				dropWDTO.setlAbrCourseNo(rs.getString(Constants.CONST_COLMN_L_ABR_CRSNO));
+				dropWDTO.setCourseNo(rs.getString(Constants.CONST_COLMN_COURSE_NO));
+				dropWDTO.setCourseName(rs.getString(Constants.CONST_COLMN_COURSE_NAME));
+				dropWDTO.setSectionNo(rs.getString(Constants.CONST_COLMN_SECTION_NO));
+				dropWDTO.setCredits(rs.getInt(Constants.CONST_COLMN_CREDITS));
+				dropWDTO.setStatusDesc(rs.getString(Constants.CONST_COLMN_STATUS_DESC));
+				return dropWDTO;
+			}
+		};
+		
+		Map<String, String> paramMap	=	new HashMap<String, String>();
+		paramMap.put("paramStdNo",studentNo);
+		paramMap.put("paramStdStatCode",studentStatCode);
+		paramMap.put("paramLocale", locale.getLanguage());
+		return nPJdbcTemplDpsDropW.query(SQL_DROPW_SELECT_COURSE_TEMP, paramMap, rowMapper);
 	}
 	
 	/**
@@ -158,5 +200,7 @@ public class DropWDBImpl implements DropWDBDao
 		paramMap.put("paramUserCode", dropWDTO.getUserName());
 		return nPJdbcTemplDpsDropW.update(SQL_DROPW_INSERT_COURSE_TEMP, paramMap);
 	}
+	
+	
 	
 }

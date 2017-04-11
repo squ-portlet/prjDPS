@@ -43,6 +43,7 @@ public class DropWDTO extends Course
 	private	String	firstWithDrawDate;
 	private	String	secondWithDrawDate;
 	private	float	tutionFees;
+	private	String	statusDesc;
 	
 	public DropWDTO()
 	{
@@ -169,6 +170,27 @@ public class DropWDTO extends Course
 	{
 		this.tutionFees = tutionFees;
 	}
+	
+	/**
+	 * Getter Method	: getStatusDesc
+	 * @return the statusDesc
+	 * 
+	 * Date				: Apr 11, 2017
+	 */
+	public String getStatusDesc()
+	{
+		return this.statusDesc;
+	}
+	/**
+	 * Setter method : setStatusDesc
+	 * @param statusDesc the statusDesc to set
+	 * 
+	 * Date          : Apr 11, 2017 4:01:19 PM
+	 */
+	public void setStatusDesc(String statusDesc)
+	{
+		this.statusDesc = statusDesc;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -179,10 +201,8 @@ public class DropWDTO extends Course
 				+ this.studentStatCode + ", userName=" + this.userName
 				+ ", firstWithDrawDate=" + this.firstWithDrawDate
 				+ ", secondWithDrawDate=" + this.secondWithDrawDate
-				+ ", tutionFees=" + this.tutionFees + "]"
-				+
-				super.toString();
-				
+				+ ", tutionFees=" + this.tutionFees + ", statusDesc="
+				+ this.statusDesc + "]";
 	}
 	
 	

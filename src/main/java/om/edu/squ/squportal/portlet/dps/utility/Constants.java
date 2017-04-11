@@ -183,6 +183,7 @@ public interface Constants
 	/* ---  SQL - DPS - Drop With W property--------------------- */
 	public	static	final	String	CONST_SQL_DROPW_SELECT_COURSE_DETAILS		=	"dps.dropw.select.course.details";
 	public	static	final	String	CONST_SQL_DROPW_INSERT_COURSE_TEMP			=	"dps.dropw.insert.course.temp.for.drop";
+	public	static	final	String	CONST_SQL_DROPW_SELECT_COURSE_TEMP			=	"dps.dropw.select.course.temp.for.drop";
 	
 
 	/* ---  SQL - DPS - Rule --------------------- */

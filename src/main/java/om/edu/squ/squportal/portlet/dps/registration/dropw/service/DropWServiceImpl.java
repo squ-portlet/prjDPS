@@ -71,10 +71,24 @@ public class DropWServiceImpl implements DropWService
 		
 	}
 	
-	public Object setDropWCourse(Student student, DropCourseModel dropCourseModel)
+
+	public List<DropWDTO> setDropWCourse(Student student, DropCourseModel dropCourseModel, Locale locale)
 	{
-		setTempDropWCourse( student,  dropCourseModel);
-		return null;
+		int 			resultSetDropW 	= 	setTempDropWCourse( student,  dropCourseModel);
+		if(resultSetDropW > 0)
+		{
+			List<DropWDTO>	dropWDTOs		=	dropWDBDao.getCourseList(
+																			student.getAcademicDetail().getStudentNo(), 
+																			student.getAcademicDetail().getStdStatCode(), 
+																			locale
+																		);
+			return dropWDTOs;
+		}
+		else
+		{
+			logger.error("Database Insert is not successful at temporary/helper table for student no {}.",student.getAcademicDetail().getStudentNo());
+			return null;
+		}
 	}
 	
 
@@ -90,9 +104,10 @@ public class DropWServiceImpl implements DropWService
 		dropWDTO.setSectionNo(dropCourseModel.getSectNo());
 		dropWDTO.setUserName(student.getAcademicDetail().getStudentUserName());
 		
-		dropWDBDao.setTempDropWCourse(dropWDTO);
-		return 0;
+		
+		return dropWDBDao.setTempDropWCourse(dropWDTO);
 	}
+
 
 	
 }

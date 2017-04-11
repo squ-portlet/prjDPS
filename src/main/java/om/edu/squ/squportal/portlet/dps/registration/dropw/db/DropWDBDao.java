@@ -54,7 +54,21 @@ public interface DropWDBDao
 	 * Date    		:	Mar 30, 2017 8:20:37 AM
 	 */
 	public List<DropWDTO> getCourseList(String studentId, Locale locale);
-	
+	/**
+	 * 
+	 * method name  : getCourseList
+	 * @param studentNo
+	 * @param studentStatCode
+	 * @param locale
+	 * @return
+	 * DropWDBImpl
+	 * return type  : List<DropWDTO>
+	 * 
+	 * purpose		: Get list of courses relates with drop with w from temp/helper table
+	 *
+	 * Date    		:	Apr 11, 2017 5:33:34 PM
+	 */
+	public List<DropWDTO> getCourseList(String studentNo, String studentStatCode, Locale locale);
 	/**
 	 * 
 	 * method name  : setTempDropWCourse
