@@ -15,7 +15,6 @@
 		<c:when test="${not empty courseList}">
 			<table class="table table-bordered">
 					<tr>
-						<th>Seq. NO.</th>
 						<th>Course Code</th>
 						<th>Course Title</th>
 						<th>Section No</th>
@@ -25,11 +24,10 @@
 					</tr>
 					<c:forEach items="${courseList}" var="course" > 
 						<tr>
-							<td></td>
 							<td>${course.lAbrCourseNo}</td>
 							<td>${course.courseName}</td>
 							<td>${course.sectionNo}</td>
-							<td>${course.credits }</td>
+							<td>${course.credits}</td>
 							<td>${course.tutionFees}</td>
 							<td id='status-${course.sectCode}'>
 								<c:choose>
@@ -52,8 +50,11 @@
 		<c:otherwise></c:otherwise>
 	</c:choose>
 	
+
 	
-    <div class="modal fade" id="modalDropWForm" tabindex="-1" role="dialog" aria-labelledby="myModalStudentConsentForm" aria-hidden="true" >
+	<div id="tblDropCourses"></div>
+	
+    <div class="modal fade" id="modalDropWForm" tabindex="-1" role="dialog" aria-labelledby="myModalStudentDropWForm" aria-hidden="true" >
       <div class="modal-dialog modal-sm modal-xs">
         <div class="modal-content">
           <div class="modal-header">
@@ -74,7 +75,7 @@
 							</div>
 					  </div>
 					  <div class="panel-footer">
-					  	<button type="button" id="bttnSubmitConsent" class="btn btn-default">Submit Button</button>
+					  	<button type="button" id="bttnSubmitDrop" class="btn btn-default">Submit Button</button>
 					  </div>
 				  </form:form>
 			</div>
@@ -90,4 +91,30 @@
 			</div>	
 	</script>
 	
- -- This is Drop with W student page --
+	<script id="hbDropCourses" type="text/x-handlebars-template">
+
+		<p>
+			<ol class="breadcrumb">
+				<li><center>Based On action, possible dropped courses might listed below</center></li>
+			</ol>
+		</p>
+
+	<table class="table table-bordered">
+	  <tr>
+	    <th>Course Code</th>
+	    <th>Course Title</th>
+	    <th>Section No</th>
+	    <th>Credits</th>
+	    <th>Action - (Supervisor)</th>
+	  </tr>
+	{{#each .}}
+	  <tr>
+	    <td>{{lAbrCourseNo}}</td>
+	    <td>{{courseName}}</td>
+	    <td>{{sectionNo}}</td>
+	    <td>{{credits}}</td>
+	    <td>{{statusDesc}}</td>
+	  </tr>
+	{{/each}}
+	</table>
+	</script>

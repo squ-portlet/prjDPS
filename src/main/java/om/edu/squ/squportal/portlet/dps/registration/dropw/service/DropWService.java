@@ -40,4 +40,19 @@ public interface DropWService
 	 */
 	public List<DropWDTO> setDropWCourse(Student student, DropCourseModel dropCourseModel, Locale locale);
 	
+	/**
+	 * 
+	 * method name  : getDropWCourses
+	 * @param student
+	 * @param locale
+	 * @return
+	 * DropWServiceImpl
+	 * return type  : List<DropWDTO>
+	 * 
+	 * purpose		: get details of the courses opt to be dropped
+	 *
+	 * Date    		:	Apr 12, 2017 4:50:19 PM
+	 */
+	public List<DropWDTO>  getDropWCourses(Student student, Locale locale);
+	
 }

@@ -65,23 +65,20 @@ public class DropWServiceImpl implements DropWService
 	 *
 	 * Date    		:	Mar 30, 2017 8:20:37 AM
 	 */
+	@Override
 	public List<DropWDTO> getCourseList(String studentId, Locale locale)
 	{
 		return dropWDBDao.getCourseList(studentId, locale);
 		
 	}
 	
-
+	@Override
 	public List<DropWDTO> setDropWCourse(Student student, DropCourseModel dropCourseModel, Locale locale)
 	{
 		int 			resultSetDropW 	= 	setTempDropWCourse( student,  dropCourseModel);
 		if(resultSetDropW > 0)
 		{
-			List<DropWDTO>	dropWDTOs		=	dropWDBDao.getCourseList(
-																			student.getAcademicDetail().getStudentNo(), 
-																			student.getAcademicDetail().getStdStatCode(), 
-																			locale
-																		);
+			List<DropWDTO>	dropWDTOs		=	getDropWCourses(student,locale);
 			return dropWDTOs;
 		}
 		else
@@ -91,8 +88,45 @@ public class DropWServiceImpl implements DropWService
 		}
 	}
 	
+	/**
+	 * 
+	 * method name  : getDropWCourses
+	 * @param student
+	 * @param locale
+	 * @return
+	 * DropWServiceImpl
+	 * return type  : List<DropWDTO>
+	 * 
+	 * purpose		: get details of the courses opt to be dropped
+	 *
+	 * Date    		:	Apr 12, 2017 4:50:19 PM
+	 */
+	public List<DropWDTO>  getDropWCourses(Student student, Locale locale)
+	{
+		List<DropWDTO>	dropWDTOs	=	null;
+						dropWDTOs	=	dropWDBDao.getCourseList(
+																	student.getAcademicDetail().getStudentNo(), 
+																	student.getAcademicDetail().getStdStatCode(), 
+																	locale
+																);
+		return dropWDTOs;
+	}
+	
 
-	public int setTempDropWCourse(Student student, DropCourseModel dropCourseModel)
+	/**
+	 * 
+	 * method name  : setTempDropWCourse
+	 * @param student
+	 * @param dropCourseModel
+	 * @return
+	 * DropWServiceImpl
+	 * return type  : int
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Apr 12, 2017 3:26:06 PM
+	 */
+	private int setTempDropWCourse(Student student, DropCourseModel dropCourseModel)
 	{
 		DropWDTO	dropWDTO	=	new DropWDTO();
 		dropWDTO.setStudentNo(student.getAcademicDetail().getStudentNo());

@@ -125,15 +125,20 @@ public class DropWithWController
 	private String studentWelcome(PortletRequest request, Model model, Locale locale)
 	{
 		DropCourseModel		dropCourseModel		=	null;
-		User				user	=	dpsServiceDao.getUser(request);
+		List<DropWDTO>		dropWDTOs			=	null;
+		Gson				gson				=	new Gson();
 		
+		User				user			=	dpsServiceDao.getUser(request);
+		Student				student			=	dpsServiceDao.getStudent(user.getUserId(), locale);
 		
 		if(!model.containsAttribute("dropCourseModel"))
 		{
 				dropCourseModel	= new DropCourseModel();
 		}
+		
 		model.addAttribute("dropCourseModel", dropCourseModel);
 		model.addAttribute("courseList", dropWService.getCourseList(user.getUserId(), locale));
+		model.addAttribute("dropWDTOs", gson.toJson(dropWService.getDropWCourses(student, locale)));
 		return "/registration/dropWithW/student/welcomeDropWithWStudent";
 	}
 
@@ -197,7 +202,7 @@ public class DropWithWController
 		try
 		{
 			dropWDTOs	=	dropWService.setDropWCourse(student,dropCourseModel, locale);
-			response.getWriter().print(dropWDTOs);
+			response.getWriter().print(gson.toJson(dropWDTOs));
 		}
 		catch (IOException ex)
 		{

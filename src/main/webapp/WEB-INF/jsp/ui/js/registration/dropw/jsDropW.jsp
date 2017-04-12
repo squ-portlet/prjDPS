@@ -12,6 +12,12 @@
 
 <script type="text/javascript">
 	$(function() {
+		
+		var courses = ${dropWDTOs};
+		dropDataLoad(courses);
+		
+		
+		
 		$('.clsCourse').click(function(){
 			$('#sectCode').val(this.getAttribute("sectCode"));
 			$('#sectNo').val(this.getAttribute("sectionNo"));
@@ -26,7 +32,9 @@
 			$('.content-placeholder').html(template(context));
 		});
 		
-		$('#bttnSubmitConsent').click(function(){
+		
+		/* Action performed by student on available records*/
+		$('#bttnSubmitDrop').click(function(){
 			
 			$('#modalDropWForm').modal('toggle');
 			
@@ -43,8 +51,13 @@
 					data : dropCourseModel,
 					success : function(data)
 					{
-						$('#status-'+dropCourseModel.sectCode).html('<span class="glyphicon glyphicon-ban-circle" ></span>');
 						console.log('success');
+						$('#status-'+dropCourseModel.sectCode).html('<span class="glyphicon glyphicon-ban-circle" ></span>');
+						
+						var courses	=	JSON.parse(data);
+						
+						dropDataLoad(courses)
+						
 					},
 					error : function(xhr, status)
 					{
@@ -54,5 +67,21 @@
 			});
 			
 		});
+		
+		/* Filling data using handlebar template*/
+		function dropDataLoad(courses)
+		{
+			if ($.trim(courses))
+			{
+				var theAlertTemplate=$("#hbDropCourses").html();
+				var template = Handlebars.compile(theAlertTemplate);
+				$('#tblDropCourses').html(template(courses));
+			}
+			return true;
+			
+		}
+		
+		
+		
 	});
 </script>
