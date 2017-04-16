@@ -42,7 +42,6 @@
      http://www.springframework.org/schema/util
      http://www.springframework.org/schema/util/spring-util-3.0.xsd
      ">
-
 			<context:component-scan base-package="om.edu.squ.squportal.portlet.dps.utility" />
 			<context:component-scan base-package="om.edu.squ.squportal.portlet.preferences.dao.service" />
 			<context:component-scan base-package="om.edu.squ.squportal.portlet.preferences.dao.db" />

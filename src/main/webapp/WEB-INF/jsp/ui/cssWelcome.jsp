@@ -29,7 +29,7 @@
 
 <spring:message code="url.squ.cdn" var="urlCdn"/>
 <c:url value="/ui/images/calendar.gif" var="imgCalendar"/>
-
+<c:url value="/ui/ajax-loader.gif" var="imgAjaxLoader"/>	
 
 <!-- ******************** CSS Declaration************************ --> 
 <c:url value="${urlCdn}/bootstrap/3.3.6/dist/css/bootstrap.css" var="urlCssBootstrap"/>

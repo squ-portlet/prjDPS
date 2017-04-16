@@ -170,6 +170,10 @@ public class DropWithWController
 			logger.error("No records available. Probably user doesnot logged in ");
 		}
 		
+		model.addAttribute("employee", employee);
+		model.addAttribute("appApprove", Constants.CONST_SQL_STATUS_CODE_ACCPT);
+		model.addAttribute("appRecect", Constants.CONST_SQL_STATUS_CODE_REJCT);
+		
 		return "/registration/dropWithW/approver/welcomeDropWithWApprover";
 	}
 
