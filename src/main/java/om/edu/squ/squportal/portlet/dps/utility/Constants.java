@@ -121,6 +121,7 @@ public interface Constants
 	public static final	String	CONST_COLMN_APPROVAL_CODE_COLLEGE_DEAN			=	"COLLEGE_DEAN_APPROVAL_CODE";
 	public static final	String	CONST_COLMN_APPROVAL_CODE_DPS_DEAN				=	"DPS_DEAN_APPROVAL_CODE";
 	
+	public static final	String	CONST_COLMN_ROLE_ADVISOR_STATUS					=	"ADVISOR_STATUS";
 	public static final	String	CONST_COLMN_ROLE_SUPERVISOR_STATUS				=	"SUPERVISOR_STATUS";
 	public static final	String	CONST_COLMN_ROLE_COLLEGE_DEAN_STATUS			=	"COLLEGE_DEAN_STATUS";
 	public static final	String	CONST_COLMN_ROLE_DPS_DEAN_STATUS				=	"DPS_DEAN_STATUS";
@@ -143,6 +144,7 @@ public interface Constants
 	public static final	String	CONST_SQL_ROLE_COL_DEAN							=	"1883";	  // DEAN
 	public static final	String	CONST_SQL_ROLE_DPS_DEAN							=	"5548";
 */	
+	public static final	String	CONST_SQL_ROLE_NAME_ADVISOR						=	"ADVISOR";
 	public static final	String	CONST_SQL_ROLE_NAME_SUPERVISOR					=	"SUPRVS";   
 	public static final	String	CONST_SQL_ROLE_NAME_COL_DEAN					=	"DEAN";	  
 	public static final	String	CONST_SQL_ROLE_NAME_DPS_DEAN					=	"DEANP";
@@ -153,7 +155,7 @@ public interface Constants
 //	public static final	String	CONST_FORM_DPS_EXTENSION_STUDY					=	"3413";
 
 	public static final	String	CONST_FORM_NAME_DPS_EXTENSION_STUDY				=	"DPS19";
-	
+	public static final	String	CONST_FORM_NAME_DPS_DROP_W						=	"DPS7";
 	/************* PROPERTY FILE ******************************/
 	public	static	String	RESOURCE_PROPERTY_FILE_NAME							=	"messages";
 
@@ -184,7 +186,7 @@ public interface Constants
 	public	static	final	String	CONST_SQL_DROPW_SELECT_COURSE_DETAILS		=	"dps.dropw.select.course.details";
 	public	static	final	String	CONST_SQL_DROPW_INSERT_COURSE_TEMP			=	"dps.dropw.insert.course.temp.for.drop";
 	public	static	final	String	CONST_SQL_DROPW_SELECT_COURSE_TEMP			=	"dps.dropw.select.course.temp.for.drop";
-	
+	public	static	final	String	CONST_SQL_DROPW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	"dps.extension.select.student.records.by.employee";
 
 	/* ---  SQL - DPS - Rule --------------------- */
 	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_JOIN_CLOSE_TIME	=	"sql.rule.student.join.close.time";	

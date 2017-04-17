@@ -37,7 +37,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
+import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
+import om.edu.squ.squportal.portlet.dps.bo.Employee;
+import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO;
+import om.edu.squ.squportal.portlet.dps.role.bo.Advisor;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
 import org.slf4j.Logger;
@@ -201,6 +205,108 @@ public class DropWDBImpl implements DropWDBDao
 		return nPJdbcTemplDpsDropW.update(SQL_DROPW_INSERT_COURSE_TEMP, paramMap);
 	}
 	
+	
+	/**
+	 * 
+	 * method name  : getDropWForApprovers
+	 * @param roleType
+	 * @param employee
+	 * @param locale
+	 * @param studentNo
+	 * @return
+	 * DropWDBImpl
+	 * return type  : List<DropWDTO>
+	 * 
+	 * purpose		: Get List of student records for courses to be dropped 
+	 *
+	 * Date    		:	Apr 17, 2017 8:24:28 PM
+	 */
+	public List<DropWDTO> getDropWForApprovers(String roleType, Employee employee, Locale locale, String studentNo)
+	{
+		String	SQL_DROPW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	queryDropWProps.getProperty(Constants.CONST_SQL_DROPW_INSERT_COURSE_TEMP);
+		
+		RowMapper<DropWDTO> 	mapper		=	new RowMapper<DropWDTO>()
+		{
+			
+			@Override
+			public DropWDTO mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				DropWDTO		dropWDTO		=	new DropWDTO();
+				Advisor			advisor			=	new Advisor();
+				Student			student			=	new Student();
+				AcademicDetail	academicDetail	=	new AcademicDetail();
+				
+				academicDetail.setId(rs.getString(Constants.CONST_COLMN_STUDENT_ID));
+				academicDetail.setStudentNo(rs.getString(Constants.CONST_COLMN_STUDENT_NO));
+				academicDetail.setStdStatCode(rs.getString(Constants.CONST_COLMN_STDSTATCD));
+				academicDetail.setStudentName(rs.getString(Constants.CONST_COLMN_STUDENT_NAME));
+				academicDetail.setCohort(rs.getInt(Constants.CONST_COLMN_COHORT));
+				academicDetail.setCollege(rs.getString(Constants.CONST_COLMN_COLLEGE_NAME));
+				academicDetail.setDegree(rs.getString(Constants.CONST_COLMN_DEGREE_NAME));
+				
+				advisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS));
+				
+				if(rs.getString(Constants.CONST_COLMN_ROLE_IS_APPROVER).equals("Y"))
+				{
+					dropWDTO.setApprover(true);
+				}
+				else
+				{
+					dropWDTO.setApprover(false);
+				}
+				
+				student.setAcademicDetail(academicDetail);
+				dropWDTO.setStudent(student);
+				dropWDTO.setAdvisor(advisor);
+				
+				return dropWDTO;
+			}
+		};
+		
+		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+		namedParameterMap.put("paramLocale", locale.getLanguage());
+		namedParameterMap.put("paramStdNo", null);
+		namedParameterMap.put("paramColCode", null);
+		namedParameterMap.put("paramAdvisor", null);
+		namedParameterMap.put("paramSupervisor", null);
+		namedParameterMap.put("paramDeptCode", null);
+		namedParameterMap.put("paramRoleName", roleType);
+		namedParameterMap.put("paramFormName", Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY);
+		namedParameterMap.put("paramEmpNo", employee.getEmpNumber());
+		
+		namedParameterMap.put("paramAdvisorRoleName", Constants.CONST_SQL_ROLE_NAME_ADVISOR);
+
+		
+		namedParameterMap.put("paramFormName", Constants.CONST_FORM_NAME_DPS_DROP_W);
+		
+		switch (roleType)
+		{
+			case Constants.CONST_ROLE_NAME_ADVISOR:
+				namedParameterMap.put("paramAdvisor", employee.getEmpNumber());
+				break;
+			case Constants.CONST_ROLE_NAME_SUPERVISOR:
+				namedParameterMap.put("paramSupervisor", employee.getEmpNumber());
+				break;
+			case Constants.CONST_ROLE_NAME_HOD:
+				namedParameterMap.put("paramDeptCode", employee.getDepartment().getDeptCode());
+				break;
+			case Constants.CONST_ROLE_NAME_ASST_DEAN:
+				namedParameterMap.put("paramColCode", employee.getBranch().getBranchCode());
+				break;
+			case Constants.CONST_ROLE_NAME_COL_DEAN:
+				namedParameterMap.put("paramColCode", employee.getBranch().getBranchCode());
+				break;	
+			default:
+				break;
+		}
+		
+		if(null != studentNo)
+		{
+			namedParameterMap.put("paramStdNo", studentNo);
+		}
+		
+		return nPJdbcTemplDpsDropW.query(SQL_DROPW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE, namedParameterMap, mapper);
+	}
 	
 	
 }

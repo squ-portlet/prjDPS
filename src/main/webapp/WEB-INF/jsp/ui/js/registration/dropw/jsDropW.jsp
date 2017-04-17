@@ -101,6 +101,12 @@
 				};
 				$("#divAlertData").hide();
 				
+				
+				$("#tblApprover").hide();
+				$('#tblApprover').parents('div.dataTables_wrapper').first().hide();
+				
+				
+				
 			});
 		</c:forEach>
 		

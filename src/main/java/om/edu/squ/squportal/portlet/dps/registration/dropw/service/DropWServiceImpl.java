@@ -36,6 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.db.DropWDBDao;
@@ -143,5 +144,29 @@ public class DropWServiceImpl implements DropWService
 	}
 
 
+	/**
+	 * 
+	 * method name  : getDropWForApprovers
+	 * @param roleType
+	 * @param employee
+	 * @param locale
+	 * @return
+	 * DropWDBImpl
+	 * return type  : List<DropWDTO>
+	 * 
+	 * purpose		: Get List of student records for courses to be dropped 
+	 *
+	 * Date    		:	Apr 17, 2017 8:24:28 PM
+	 */
+	public List<DropWDTO> getDropWForApprovers(String roleType, Employee employee, Locale locale)
+	{
+		if(employee.getEmpNumber().substring(0,1).equals("e"))
+		{
+			employee.setEmpNumber(employee.getEmpNumber().substring(1));
+		}
+		
+		return dropWDBDao.getDropWForApprovers(roleType, employee, locale, null);
+	}
+	
 	
 }

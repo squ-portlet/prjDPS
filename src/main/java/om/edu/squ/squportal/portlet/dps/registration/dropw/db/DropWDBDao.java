@@ -32,6 +32,7 @@ package om.edu.squ.squportal.portlet.dps.registration.dropw.db;
 import java.util.List;
 import java.util.Locale;
 
+import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO;
 
 /**
@@ -82,4 +83,21 @@ public interface DropWDBDao
 	 * Date    		:	Apr 10, 2017 7:13:47 PM
 	 */
 	public int setTempDropWCourse(DropWDTO dropWDTO);
+	
+	/**
+	 * 
+	 * method name  : getDropWForApprovers
+	 * @param roleType
+	 * @param employee
+	 * @param locale
+	 * @param studentNo
+	 * @return
+	 * DropWDBImpl
+	 * return type  : List<DropWDTO>
+	 * 
+	 * purpose		: Get List of student records for courses to be dropped 
+	 *
+	 * Date    		:	Apr 17, 2017 8:24:28 PM
+	 */
+	public List<DropWDTO> getDropWForApprovers(String roleType, Employee employee, Locale locale, String studentNo);
 }

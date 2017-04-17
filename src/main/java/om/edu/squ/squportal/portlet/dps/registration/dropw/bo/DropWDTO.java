@@ -30,6 +30,8 @@
 package om.edu.squ.squportal.portlet.dps.registration.dropw.bo;
 
 import om.edu.squ.squportal.portlet.dps.bo.Course;
+import om.edu.squ.squportal.portlet.dps.bo.Student;
+import om.edu.squ.squportal.portlet.dps.role.bo.Advisor;
 
 /**
  * @author Bhabesh
@@ -44,6 +46,9 @@ public class DropWDTO extends Course
 	private	String	secondWithDrawDate;
 	private	float	tutionFees;
 	private	String	statusDesc;
+	private	Advisor	advisor;
+	private	Student	student;
+	private	boolean	approver;
 	
 	public DropWDTO()
 	{
@@ -191,6 +196,67 @@ public class DropWDTO extends Course
 	{
 		this.statusDesc = statusDesc;
 	}
+	
+	/**
+	 * Getter Method	: getAdvisor
+	 * @return the advisor
+	 * 
+	 * Date				: Apr 17, 2017
+	 */
+	public Advisor getAdvisor()
+	{
+		return this.advisor;
+	}
+	/**
+	 * Setter method : setAdvisor
+	 * @param advisor the advisor to set
+	 * 
+	 * Date          : Apr 17, 2017 8:16:46 PM
+	 */
+	public void setAdvisor(Advisor advisor)
+	{
+		this.advisor = advisor;
+	}
+	/**
+	 * Getter Method	: getStudent
+	 * @return the student
+	 * 
+	 * Date				: Apr 17, 2017
+	 */
+	public Student getStudent()
+	{
+		return this.student;
+	}
+	/**
+	 * Setter method : setStudent
+	 * @param student the student to set
+	 * 
+	 * Date          : Apr 17, 2017 8:16:46 PM
+	 */
+	public void setStudent(Student student)
+	{
+		this.student = student;
+	}
+	/**
+	 * Getter Method	: isApprover
+	 * @return the approver
+	 * 
+	 * Date				: Apr 17, 2017
+	 */
+	public boolean isApprover()
+	{
+		return this.approver;
+	}
+	/**
+	 * Setter method : setApprover
+	 * @param approver the approver to set
+	 * 
+	 * Date          : Apr 17, 2017 7:50:55 PM
+	 */
+	public void setApprover(boolean approver)
+	{
+		this.approver = approver;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -202,7 +268,8 @@ public class DropWDTO extends Course
 				+ ", firstWithDrawDate=" + this.firstWithDrawDate
 				+ ", secondWithDrawDate=" + this.secondWithDrawDate
 				+ ", tutionFees=" + this.tutionFees + ", statusDesc="
-				+ this.statusDesc + "]";
+				+ this.statusDesc + ", advisor=" + this.advisor + ", student="
+				+ this.student + ", approver=" + this.approver + "]";
 	}
 	
 	

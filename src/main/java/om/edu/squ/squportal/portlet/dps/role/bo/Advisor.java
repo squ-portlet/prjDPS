@@ -43,6 +43,8 @@ public class Advisor
 	private	String	sequence;
 	private	String	rolecode;
 	private	String	approvalcode;
+	private	String	roleStatus;
+	private	String	roleStausIkon;
 	
 	/**
 	 * Getter Method	: getAccess
@@ -129,6 +131,47 @@ public class Advisor
 	{
 		this.approvalcode = approvalcode;
 	}
+	
+	/**
+	 * Getter Method	: getRoleStatus
+	 * @return the roleStatus
+	 * 
+	 * Date				: Apr 17, 2017
+	 */
+	public String getRoleStatus()
+	{
+		return this.roleStatus;
+	}
+	/**
+	 * Setter method : setRoleStatus
+	 * @param roleStatus the roleStatus to set
+	 * 
+	 * Date          : Apr 17, 2017 8:34:32 PM
+	 */
+	public void setRoleStatus(String roleStatus)
+	{
+		this.roleStatus = roleStatus;
+	}
+	/**
+	 * Getter Method	: getRoleStausIkon
+	 * @return the roleStausIkon
+	 * 
+	 * Date				: Apr 17, 2017
+	 */
+	public String getRoleStausIkon()
+	{
+		return this.roleStausIkon;
+	}
+	/**
+	 * Setter method : setRoleStausIkon
+	 * @param roleStausIkon the roleStausIkon to set
+	 * 
+	 * Date          : Apr 17, 2017 8:34:32 PM
+	 */
+	public void setRoleStausIkon(String roleStausIkon)
+	{
+		this.roleStausIkon = roleStausIkon;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -137,7 +180,8 @@ public class Advisor
 	{
 		return "Advisor [access=" + this.access + ", sequence=" + this.sequence
 				+ ", rolecode=" + this.rolecode + ", approvalcode="
-				+ this.approvalcode + "]";
+				+ this.approvalcode + ", roleStatus=" + this.roleStatus
+				+ ", roleStausIkon=" + this.roleStausIkon + "]";
 	}
 	
 	

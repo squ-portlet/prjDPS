@@ -255,7 +255,7 @@ public class ExtensionStudiesController
 	 * ExtensionStudiesController
 	 * return type  : void
 	 * 
-	 * purpose		: Ajaj Resource Mapping to fetch student data by Employee Role
+	 * purpose		: Ajax Resource Mapping to fetch student data by Employee Role
 	 *
 	 * Date    		:	Feb 21, 2017 9:30:42 AM
 	 */

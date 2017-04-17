@@ -37,6 +37,7 @@ public class AcademicDetail
 {
 	private	String	id;
 	private	String	studentNo;
+	private	String	studentName;
 	private	String	studentUserName;
 	private	String	college;
 	private	String	major;
@@ -48,6 +49,7 @@ public class AcademicDetail
 	private	int		estimatedSemesters;
 	private	int		fromCCYrCode;						// Course Start year code
 	private	int		fromSemCode;						// Course Start semester
+	private	int		cohort;
 	
 	/**
 	 * Getter Method	: getId
@@ -91,6 +93,27 @@ public class AcademicDetail
 		this.studentNo = studentNo;
 	}
 	
+	
+	/**
+	 * Getter Method	: getStudentName
+	 * @return the studentName
+	 * 
+	 * Date				: Apr 17, 2017
+	 */
+	public String getStudentName()
+	{
+		return this.studentName;
+	}
+	/**
+	 * Setter method : setStudentName
+	 * @param studentName the studentName to set
+	 * 
+	 * Date          : Apr 17, 2017 8:29:46 PM
+	 */
+	public void setStudentName(String studentName)
+	{
+		this.studentName = studentName;
+	}
 	/**
 	 * Getter Method	: getStudentUserName
 	 * @return the studentUserName
@@ -313,6 +336,27 @@ public class AcademicDetail
 	{
 		this.fromSemCode = fromSemCode;
 	}
+	
+	/**
+	 * Getter Method	: getCohort
+	 * @return the cohort
+	 * 
+	 * Date				: Apr 17, 2017
+	 */
+	public int getCohort()
+	{
+		return this.cohort;
+	}
+	/**
+	 * Setter method : setCohort
+	 * @param cohort the cohort to set
+	 * 
+	 * Date          : Apr 17, 2017 7:49:40 PM
+	 */
+	public void setCohort(int cohort)
+	{
+		this.cohort = cohort;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -320,14 +364,15 @@ public class AcademicDetail
 	public String toString()
 	{
 		return "AcademicDetail [id=" + this.id + ", studentNo="
-				+ this.studentNo + ", studentUserName=" + this.studentUserName
-				+ ", college=" + this.college + ", major=" + this.major
-				+ ", supervisorId=" + this.supervisorId + ", advisorId="
-				+ this.advisorId + ", degree=" + this.degree + ", stdStatCode="
+				+ this.studentNo + ", studentName=" + this.studentName
+				+ ", studentUserName=" + this.studentUserName + ", college="
+				+ this.college + ", major=" + this.major + ", supervisorId="
+				+ this.supervisorId + ", advisorId=" + this.advisorId
+				+ ", degree=" + this.degree + ", stdStatCode="
 				+ this.stdStatCode + ", status=" + this.status
 				+ ", estimatedSemesters=" + this.estimatedSemesters
 				+ ", fromCCYrCode=" + this.fromCCYrCode + ", fromSemCode="
-				+ this.fromSemCode + "]";
+				+ this.fromSemCode + ", cohort=" + this.cohort + "]";
 	}
 
 	

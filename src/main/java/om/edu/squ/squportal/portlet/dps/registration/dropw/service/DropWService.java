@@ -3,6 +3,7 @@ package om.edu.squ.squportal.portlet.dps.registration.dropw.service;
 import java.util.List;
 import java.util.Locale;
 
+import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.model.DropCourseModel;
@@ -54,5 +55,21 @@ public interface DropWService
 	 * Date    		:	Apr 12, 2017 4:50:19 PM
 	 */
 	public List<DropWDTO>  getDropWCourses(Student student, Locale locale);
+	
+	/**
+	 * 
+	 * method name  : getDropWForApprovers
+	 * @param roleType
+	 * @param employee
+	 * @param locale
+	 * @return
+	 * DropWDBImpl
+	 * return type  : List<DropWDTO>
+	 * 
+	 * purpose		: Get List of student records for courses to be dropped 
+	 *
+	 * Date    		:	Apr 17, 2017 8:24:28 PM
+	 */
+	public List<DropWDTO> getDropWForApprovers(String roleType, Employee employee, Locale locale);
 	
 }

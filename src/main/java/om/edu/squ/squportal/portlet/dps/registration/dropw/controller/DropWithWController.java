@@ -48,6 +48,7 @@ import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.model.DropCourseModel;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.service.DropWService;
+import om.edu.squ.squportal.portlet.dps.role.bo.RoleNameValue;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
 import org.slf4j.Logger;
@@ -214,4 +215,42 @@ public class DropWithWController
 		}
 
 	}
+	
+	/**
+	 * 
+	 * method name  : getResourceDataEmpByRole
+	 * @param roleNameValue
+	 * @param request
+	 * @param response
+	 * @param locale
+	 * @throws IOException
+	 * DropWithWController
+	 * return type  : void
+	 * 
+	 * purpose		: Ajax Resource Mapping to fetch student data by Employee Role
+	 *
+	 * Date    		:	Apr 17, 2017 9:11:41 PM
+	 */
+	@ResourceMapping(value="ajaxDropWDataByRole")
+	private void getResourceDataEmpByRole(
+											@ModelAttribute("roleNameValue") RoleNameValue roleNameValue,
+											ResourceRequest request, ResourceResponse response, Locale locale
+											) throws IOException
+	{
+			Gson		gson		= 	new Gson();
+			Employee	employee	=	null;
+			try
+			{
+				employee					=	dpsServiceDao.getEmployee(request,locale);
+				List<DropWDTO>	dropWDTOs	=	dropWService.getDropWForApprovers(roleNameValue.getRoleValue(), employee, locale);
+				response.getWriter().print(gson.toJson(dropWDTOs));
+			}
+			catch(ExceptionEmptyResultset ex)
+			{
+				response.getWriter().print(gson.toJson(""));
+			}
+	}
+											
+											
+	
 }
