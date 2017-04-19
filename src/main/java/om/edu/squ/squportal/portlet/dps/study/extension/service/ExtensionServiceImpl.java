@@ -224,9 +224,9 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 	 *
 	 * Date    		:	Mar 13, 2017 8:58:51 PM
 	 */
-	/*Rule 1 -- Student need to be in last semester*/
-	/*Rule 2 -- Student need to be in last semester*/
-	/*Rule 3 -- Student need to be in last semester*/
+	/*Rule 1 -- Student need to be in last semester */
+	/*Rule 2 -- first seminar completed if program option reqire thesis */
+	/*Rule 3 -- Starting from week 10 */
 	/*Rule 4 -- Student can apply only once for extension */
 	public boolean isRuleStudentComplete(String studentNo, String stdStatCode)
 	{
@@ -243,11 +243,13 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		/*Rule 1*/
 		isLastSemester	= ruleService.lastSemester(studentNo, stdStatCode);
 		
+		
 		/*Rule 2*/
 		if(hasThesis)
 		{
 			isFirstSeminarCompletedApplicable	=	ruleService.isSemesterCompleted(studentNo, stdStatCode, Constants.CONST_THESIS_SEMINAR_SEMINAR_01);
 		}
+		
 		
 		/*Rule 3*/
 		isWeekSpecifiedAvailable	=	ruleService.isCurrentDateInSpecificWeek(Constants.CONST_WEEK_10);
@@ -257,8 +259,10 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		
 		if(!isAlreadyExtensionApproved)
 		{
+
 			if(hasThesis)
 			{
+				
 				/* Applicable to student with thesis */
 				if(isLastSemester & isWeekSpecifiedAvailable & isFirstSeminarCompletedApplicable)
 				{
@@ -271,7 +275,7 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 				result = true;
 			}
 		}
-				
+		
 		return result;
 	}
 	

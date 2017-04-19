@@ -17,10 +17,23 @@
     <div class="section">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-md-2">
-	            <c:if test="${isRuleStudentComplete}">
-	            	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalExtensionForm"><spring:message code="prop.dps.extension.student.apply"/></button>
-	            </c:if>
+          <div class="">
+          		<c:choose>
+          			<c:when test="${isRuleStudentComplete}">
+          				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalExtensionForm"><spring:message code="prop.dps.extension.student.apply"/></button>
+          			</c:when>
+          			<c:otherwise>
+          				<center>
+	          				<div class="alert alert-warning">
+	          							<spring:message code="prop.dps.extension.rule.text"/>
+								<br>	<spring:message code="prop.dps.extension.rule.01"/>
+								<br>	<spring:message code="prop.dps.extension.rule.02"/>
+								<br>	<spring:message code="prop.dps.extension.rule.03"/>
+								<br>	<spring:message code="prop.dps.extension.rule.04"/>									          				
+	          				</div>
+          				</center>
+          			</c:otherwise>
+          		</c:choose>
           </div>
         </div>
       </div>
