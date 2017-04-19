@@ -86,6 +86,7 @@
 		
 	});
 	
+	
 	/*Approver*/
 	$(function() {
 		
@@ -105,13 +106,59 @@
 				$("#tblApprover").hide();
 				$('#tblApprover').parents('div.dataTables_wrapper').first().hide();
 				
+				$("#imgAjaxLoading").show();
+				
+				$.ajax({
+						url		:	"${urlAjaxDropWDataByRole}",
+						type	:	'POST',
+						cache	:	false,
+						data	:	roleNameValue,
+						success	:	function(data)
+						{
+							$("#imgAjaxLoading").hide();
+							var students=JSON.parse(data);
+							dropDataLoad(students);
+						},
+						error	:	function(xhr, status)
+						{
+							$("#imgAjaxLoading").hide();
+						}
+				});
 				
 				
 			});
 		</c:forEach>
 		
 		
+		$(document).on("click", ".clsStudentCourse", function(){
+				var academicDetail = {
+						studentNo : this.getAttribute("studentNo"),
+						stdStatCode : this.getAttribute("stdStatCode")
+				};
+				
+				$("#imgAjaxLoading").show();
+				
+				$.ajax({
+						url 	:	"${urlAjaxCoursesToBeDropped}",
+						type	:	'POST',
+						cache	:	false,
+						data	:	academicDetail,
+						success	:	function(data)
+						{
+							$("#imgAjaxLoading").hide();
+							var courses = JSON.parse(data);
+							console.log("courses : "+courses);
+							
+						},
+						error	:	function(xhr, status)
+						{
+							$("#imgAjaxLoading").hide();
+						}
+				});
+			});
 		
+		
+	
 		
 		$("#idNav-home").click(function(){
 			$(".clsNavRole").removeClass("active");
@@ -124,6 +171,21 @@
 			$('#divAlertData').show();
 			$('#divAlertData').html('<spring:message code="prop.dps.role.home"/>');
 		});
+		
+		
+		
+		/* Filling data using handlebar template*/
+		function dropDataLoad(courses)
+		{
+			if ($.trim(courses))
+			{
+				var theAlertTemplate=$("#hbDropCourses").html();
+				var template = Handlebars.compile(theAlertTemplate);
+				$('#dropwCourses').html(template(courses));
+			}
+			return true;
+			
+		}
 		
 		
 		

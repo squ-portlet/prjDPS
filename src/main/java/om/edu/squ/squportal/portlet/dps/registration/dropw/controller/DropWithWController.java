@@ -243,6 +243,7 @@ public class DropWithWController
 			{
 				employee					=	dpsServiceDao.getEmployee(request,locale);
 				List<DropWDTO>	dropWDTOs	=	dropWService.getDropWForApprovers(roleNameValue.getRoleValue(), employee, locale);
+				logger.info("dropWDTOs : "+gson.toJson(dropWDTOs));
 				response.getWriter().print(gson.toJson(dropWDTOs));
 			}
 			catch(ExceptionEmptyResultset ex)
@@ -251,6 +252,37 @@ public class DropWithWController
 			}
 	}
 											
-											
+
+	/**
+	 * 
+	 * method name  : getResourceCoursesForDrop
+	 * @param academicDetail
+	 * @param request
+	 * @param response
+	 * @param locale
+	 * @throws IOException
+	 * DropWithWController
+	 * return type  : void
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Apr 19, 2017 9:12:57 PM
+	 */
+	@ResourceMapping(value="ajaxCoursesToBeDropped")
+	private	void getResourceCoursesForDrop( 
+												@ModelAttribute("academicDetail") AcademicDetail academicDetail,
+												ResourceRequest request, ResourceResponse response, Locale locale
+											) throws IOException
+	{
+			Gson	gson	=	new Gson();
+			Student	student	= 	new Student();
+			student.setAcademicDetail(academicDetail);
+			
+			List<DropWDTO> courses	=	dropWService.getDropWCourses(student, locale);
+			response.getWriter().print(gson.toJson(courses));
+			
+			logger.info("Student : "+student);
+	}
+			
 	
 }

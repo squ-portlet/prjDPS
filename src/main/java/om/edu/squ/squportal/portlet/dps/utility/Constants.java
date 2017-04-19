@@ -186,7 +186,7 @@ public interface Constants
 	public	static	final	String	CONST_SQL_DROPW_SELECT_COURSE_DETAILS		=	"dps.dropw.select.course.details";
 	public	static	final	String	CONST_SQL_DROPW_INSERT_COURSE_TEMP			=	"dps.dropw.insert.course.temp.for.drop";
 	public	static	final	String	CONST_SQL_DROPW_SELECT_COURSE_TEMP			=	"dps.dropw.select.course.temp.for.drop";
-	public	static	final	String	CONST_SQL_DROPW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	"dps.extension.select.student.records.by.employee";
+	public	static	final	String	CONST_SQL_DROPW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	"dps.dropw.select.student.records.by.employee";
 
 	/* ---  SQL - DPS - Rule --------------------- */
 	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_JOIN_CLOSE_TIME	=	"sql.rule.student.join.close.time";	

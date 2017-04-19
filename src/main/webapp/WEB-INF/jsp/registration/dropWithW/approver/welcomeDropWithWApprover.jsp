@@ -5,6 +5,8 @@
 <%@ taglib prefix="form"    uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+	<portlet:resourceURL id="ajaxDropWDataByRole" var="urlAjaxDropWDataByRole"></portlet:resourceURL>
+	<portlet:resourceURL id="ajaxCoursesToBeDropped" var="urlAjaxCoursesToBeDropped"></portlet:resourceURL>
 
 	<ul class="nav nav-tabs">
 		<li role="presentation" id="idNav-home" class="clsNavRole active"><a href="#">Home</a></li>
@@ -40,11 +42,9 @@
                   <th><spring:message code="prop.dps.role.advisor.text"/></th>
                   <th ><spring:message code="prop.dps.role.link.approve"/></th>
                 </tr>
-<!--                 <tr>
-                  <th>Supervisor</th>
-                  <th>Col.Dean</th>
-                  <th>DPS Dean</th>
-                </tr> -->
+                <tr>
+					
+                </tr>
               </thead>
               <tbody>
                 <tr></tr>
@@ -55,6 +55,30 @@
 		</div>
 	</div>
 
+	<div id="dropwCourses"></div>
     <div id="divAlertData" class="alert alert-warning" role="alert" ><spring:message code="prop.dps.role.home"/></div>
 
-This is Drop with W approver page
+	
+	
+
+	<script id="hbDropCourses" type="text/x-handlebars-template">
+	<table id="tblApprover" class="table table-striped table-bordered dt-responsive nowrap collapsed">
+		<tr>
+			<th><spring:message code="prop.dps.student.student.id"/></th>
+			<th><spring:message code="prop.dps.student.student.name"/></th>
+			<th><spring:message code="prop.dps.student.student.cohort"/></th>
+			<th><spring:message code="prop.dps.student.student.college"/></th>
+			<th><spring:message code="prop.dps.student.student.program"/></th>
+		</tr>
+		
+		{{#each .}}
+			<tr>
+				<td><a class="clsStudentCourse" href="#" studentNo={{student.academicDetail.studentNo}} stdStatCode={{student.academicDetail.stdStatCode}}>{{student.academicDetail.id}}</a></td>
+				<td>{{student.academicDetail.studentName}}</td>
+				<td>{{student.academicDetail.cohort}}</td>
+				<td>{{student.academicDetail.college}}</td>
+				<td>{{student.academicDetail.degree}}</td>
+			</tr>
+		{{/each}}
+	</table>
+	</script>

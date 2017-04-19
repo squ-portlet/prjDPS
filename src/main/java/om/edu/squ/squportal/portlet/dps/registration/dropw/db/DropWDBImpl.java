@@ -223,7 +223,7 @@ public class DropWDBImpl implements DropWDBDao
 	 */
 	public List<DropWDTO> getDropWForApprovers(String roleType, Employee employee, Locale locale, String studentNo)
 	{
-		String	SQL_DROPW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	queryDropWProps.getProperty(Constants.CONST_SQL_DROPW_INSERT_COURSE_TEMP);
+		String	SQL_DROPW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	queryDropWProps.getProperty(Constants.CONST_SQL_DROPW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE);
 		
 		RowMapper<DropWDTO> 	mapper		=	new RowMapper<DropWDTO>()
 		{
@@ -304,6 +304,8 @@ public class DropWDBImpl implements DropWDBDao
 		{
 			namedParameterMap.put("paramStdNo", studentNo);
 		}
+		
+		logger.info("namedParameterMap : "+namedParameterMap);
 		
 		return nPJdbcTemplDpsDropW.query(SQL_DROPW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE, namedParameterMap, mapper);
 	}

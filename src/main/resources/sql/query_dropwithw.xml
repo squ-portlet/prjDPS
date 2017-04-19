@@ -120,7 +120,7 @@
 		      AND STDNO       = :paramStdNo
 		      AND STDSTATCD   = :paramStdStatCode	
 	</entry>
-	<entry key="dps.extension.select.student.records.by.employee">
+	<entry key="dps.dropw.select.student.records.by.employee">
 		SELECT
 		      	DISTINCT
 				  	REG.STDNO							              	AS	STUDENT_NO
@@ -213,6 +213,7 @@
 					      OR  :paramStdNo IS NULL
 					)
 
+			ORDER BY PORTAL.COHORT DESC, IS_APPROVER DESC
 	</entry>
 	
 	
