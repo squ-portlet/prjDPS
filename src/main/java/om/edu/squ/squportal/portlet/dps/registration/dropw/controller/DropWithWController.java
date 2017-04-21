@@ -243,7 +243,6 @@ public class DropWithWController
 			{
 				employee					=	dpsServiceDao.getEmployee(request,locale);
 				List<DropWDTO>	dropWDTOs	=	dropWService.getDropWForApprovers(roleNameValue.getRoleValue(), employee, locale);
-				logger.info("dropWDTOs : "+gson.toJson(dropWDTOs));
 				response.getWriter().print(gson.toJson(dropWDTOs));
 			}
 			catch(ExceptionEmptyResultset ex)
@@ -281,7 +280,7 @@ public class DropWithWController
 			List<DropWDTO> courses	=	dropWService.getDropWCourses(student, locale);
 			response.getWriter().print(gson.toJson(courses));
 			
-			logger.info("Student : "+student);
+
 	}
 			
 	

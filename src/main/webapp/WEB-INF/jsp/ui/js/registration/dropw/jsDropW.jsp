@@ -52,7 +52,7 @@
 							data : dropCourseModel,
 							success : function(data)
 							{
-								console.log('success');
+	
 								$('#status-'+dropCourseModel.sectCode).html('<span class="glyphicon glyphicon-ban-circle" ></span>');
 								
 								var courses	=	JSON.parse(data);
@@ -62,7 +62,7 @@
 							},
 							error : function(xhr, status)
 							{
-								console.log('error');
+								
 							}
 						
 					});
@@ -135,7 +135,7 @@
 						studentNo : this.getAttribute("studentNo"),
 						stdStatCode : this.getAttribute("stdStatCode")
 				};
-				
+				var	approver = this.getAttribute("approver");
 				$("#imgAjaxLoading").show();
 				
 				$.ajax({
@@ -147,8 +147,10 @@
 						{
 							$("#imgAjaxLoading").hide();
 							var courses = JSON.parse(data);
-							console.log("courses : "+courses);
-							
+							courses.approverMain=approver;
+							data.approverMain=approver;
+			
+							dropDataLoadAction(courses, '#hbDropCoursesAction', '#dropwCoursesAction');
 						},
 						error	:	function(xhr, status)
 						{
@@ -187,6 +189,16 @@
 			
 		}
 		
+		function dropDataLoadAction(dataJson, hbTemplateId, tableId)
+		{
+			if ($.trim(dataJson))
+				{
+				var theAlertTemplate=$(hbTemplateId).html();
+				var template = Handlebars.compile(theAlertTemplate);
+				$(tableId).html(template(dataJson));
+				}
+			return true;
+		}
 		
 		
 	});

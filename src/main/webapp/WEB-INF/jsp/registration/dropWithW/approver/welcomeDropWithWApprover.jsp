@@ -56,6 +56,7 @@
 	</div>
 
 	<div id="dropwCourses"></div>
+	<div id="dropwCoursesAction"></div>
     <div id="divAlertData" class="alert alert-warning" role="alert" ><spring:message code="prop.dps.role.home"/></div>
 
 	
@@ -73,7 +74,7 @@
 		
 		{{#each .}}
 			<tr>
-				<td><a class="clsStudentCourse" href="#" studentNo={{student.academicDetail.studentNo}} stdStatCode={{student.academicDetail.stdStatCode}}>{{student.academicDetail.id}}</a></td>
+				<td><a class="clsStudentCourse" href="#" approver={{approver}} studentNo={{student.academicDetail.studentNo}} stdStatCode={{student.academicDetail.stdStatCode}}>{{student.academicDetail.id}}</a></td>
 				<td>{{student.academicDetail.studentName}}</td>
 				<td>{{student.academicDetail.cohort}}</td>
 				<td>{{student.academicDetail.college}}</td>
@@ -81,4 +82,48 @@
 			</tr>
 		{{/each}}
 	</table>
+	</script>
+	<script id="hbDropCoursesAction" type="text/x-handlebars-template">	
+
+			<table id="tblCoursesAction" class="table table-striped table-bordered dt-responsive nowrap collapsed">
+				<tr>
+					<th><spring:message code="prop.dps.course.code"/></th>
+					<th><spring:message code="prop.dps.course.title"/></th>
+					<th><spring:message code="prop.dps.course.section"/></th>
+					<th><spring:message code="prop.dps.course.credits"/></th>
+					<th><spring:message code="prop.dps.course.action"/></th>									
+				</tr>
+			{{#if approverMain}}
+				{{#each .}}
+					<tr>
+	    				<td>{{lAbrCourseNo}}</td>
+	    				<td>{{courseName}}</td>
+	    				<td>{{sectionNo}}</td>
+	    				<td>{{credits}}</td>
+	    				<td>
+							{{#if statusPending}}
+								  	<div class="col-xs-4"><label><input type="radio" class ="clsAppAction" name="appAction" id="appRadio1" value="${appApprove}" data-toggle="modal" data-target="#modalApprovForm"><spring:message code="prop.dps.role.approve.text"/></label> </div> 
+									<div class="col-xs-2"><label><input type="radio" class ="clsAppAction" name="appAction" id="appRadio2" value="${appRecect}" data-toggle="modal" data-target="#modalApprovForm"> <spring:message code="prop.dps.role.reject.text"/> </label></div> 
+							{{else}}
+								{{statusDesc}}
+							{{/if}}
+						</td>
+					</tr>
+			{{/each}} 
+			{{else}}
+					{{#each .}}
+						<tr>
+	    					<td>{{lAbrCourseNo}}</td>
+	    					<td>{{courseName}}</td>
+	    					<td>{{sectionNo}}</td>
+	    					<td>{{credits}}</td>
+	    					<td>
+								{{statusDesc}}
+							</td>
+						</tr>
+					{{/each}}
+			{{/if}}
+
+	
+			</table>
 	</script>

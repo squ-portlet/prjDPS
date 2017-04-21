@@ -8,19 +8,16 @@
 	<%@include file="../../../ui/cssWelcome.jsp" %>	
 	<%@include file="../../../ui/js/registration/dropw/jsDropW.jsp" %>
 	
-
-
-	
 	<c:choose>
 		<c:when test="${not empty courseList}">
 			<table class="table table-bordered">
 					<tr>
-						<th>Course Code</th>
-						<th>Course Title</th>
-						<th>Section No</th>
-						<th>Credits</th>
-						<th>Tution Fees</th>
-						<th>Action</th>
+						<th><spring:message code="prop.dps.course.code"/></th>
+						<th><spring:message code="prop.dps.course.title"/></th>
+						<th><spring:message code="prop.dps.course.section"/></th>
+						<th><spring:message code="prop.dps.course.credits"/></th>
+						<th><spring:message code="prop.dps.course.tution.fees"/></th>
+						<th><spring:message code="prop.dps.course.action"/></th>
 					</tr>
 					<c:forEach items="${courseList}" var="course" > 
 						<tr>
@@ -98,14 +95,13 @@
 				<li><center>Based On action, possible dropped courses might listed below</center></li>
 			</ol>
 		</p>
-
 	<table class="table table-bordered">
 	  <tr>
-	    <th>Course Code</th>
-	    <th>Course Title</th>
-	    <th>Section No</th>
-	    <th>Credits</th>
-	    <th>Action - (Supervisor)</th>
+	    <th><spring:message code="prop.dps.course.code"/></th>
+	    <th><spring:message code="prop.dps.course.title"/></th>
+	    <th><spring:message code="prop.dps.course.section"/></th>
+	    <th><spring:message code="prop.dps.course.credits"/></th>
+	    <th<spring:message code="prop.dps.course.tution.fees"/>(<spring:message code="prop.dps.role.supervisor.text"/>)</th>
 	  </tr>
 	{{#each .}}
 	  <tr>

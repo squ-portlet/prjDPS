@@ -167,6 +167,14 @@ public class DropWDBImpl implements DropWDBDao
 				dropWDTO.setSectionNo(rs.getString(Constants.CONST_COLMN_SECTION_NO));
 				dropWDTO.setCredits(rs.getInt(Constants.CONST_COLMN_CREDITS));
 				dropWDTO.setStatusDesc(rs.getString(Constants.CONST_COLMN_STATUS_DESC));
+				if(rs.getString(Constants.CONST_COLMN_STATUS_CODE_NAME).equals(Constants.CONST_SQL_STATUS_CODE_NAME_PENDING))
+				{
+					dropWDTO.setStatusPending(true);
+				}
+				else
+				{
+					dropWDTO.setStatusPending(false);
+				}
 				return dropWDTO;
 			}
 		};
@@ -305,8 +313,7 @@ public class DropWDBImpl implements DropWDBDao
 			namedParameterMap.put("paramStdNo", studentNo);
 		}
 		
-		logger.info("namedParameterMap : "+namedParameterMap);
-		
+	
 		return nPJdbcTemplDpsDropW.query(SQL_DROPW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE, namedParameterMap, mapper);
 	}
 	

@@ -111,7 +111,16 @@
 	                    )
 	                  FROM SIS_CODES
 	                  WHERE SISCODECD= T_DROP.STATUSCD
-		      )			 									AS 	STATUS_DESC      
+		      )			 									AS 	STATUS_DESC
+		       
+		     , (
+		      	SELECT
+		      			L_ABR_CODE
+                FROM 
+                		SIS_CODES
+       			WHERE 
+       					SISCODECD= T_DROP.STATUSCD 
+		      )  											AS 	STATUS_CODE_NAME    
 		FROM
 		      T_REG_DROPW T_DROP
 		    , CRS_BASIC   CRS
