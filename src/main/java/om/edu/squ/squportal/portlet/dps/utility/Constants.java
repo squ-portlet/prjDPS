@@ -233,6 +233,8 @@ public interface Constants
 	
 	public	static	final	String	CONST_THESIS_SEMINAR_SEMINAR_01				=	"SEM1";
 	public	static	final	String	CONST_WEEK_10								=	"10";
+
+	public	static	final	String	CONST_REQUEST_CODE_DEFAULT					=	"0";
 	
 	/** ================ DPS - ROLE ===================== */
 		/* ---  DPS - Role - xml file --------------------- */

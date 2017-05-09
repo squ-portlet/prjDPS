@@ -41,6 +41,7 @@ public class ApprovalTransactionDTO
 	private	String	statusCode;
 	private	String	appEmpNo;
 	private	String	appEmpName;
+	private	String	requestCode;
 	private	String	comments;
 	
 	/**
@@ -184,6 +185,26 @@ public class ApprovalTransactionDTO
 	{
 		this.comments = comments;
 	}
+	/**
+	 * Getter Method	: getRequestCode
+	 * @return the requestCode
+	 * 
+	 * Date				: May 9, 2017
+	 */
+	public String getRequestCode()
+	{
+		return this.requestCode;
+	}
+	/**
+	 * Setter method : setRequestCode
+	 * @param requestCode the requestCode to set
+	 * 
+	 * Date          : May 9, 2017 4:46:56 PM
+	 */
+	public void setRequestCode(String requestCode)
+	{
+		this.requestCode = requestCode;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -194,7 +215,8 @@ public class ApprovalTransactionDTO
 				+ ", stdStatCode=" + this.stdStatCode + ", approvalCode="
 				+ this.approvalCode + ", statusCode=" + this.statusCode
 				+ ", appEmpNo=" + this.appEmpNo + ", appEmpName="
-				+ this.appEmpName + ", comments=" + this.comments + "]";
+				+ this.appEmpName + ", requestCode=" + this.requestCode
+				+ ", comments=" + this.comments + "]";
 	}
 	
 	
