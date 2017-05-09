@@ -7,6 +7,7 @@
 
 	<portlet:resourceURL id="ajaxDropWDataByRole" var="urlAjaxDropWDataByRole"></portlet:resourceURL>
 	<portlet:resourceURL id="ajaxCoursesToBeDropped" var="urlAjaxCoursesToBeDropped"></portlet:resourceURL>
+	<portlet:resourceURL id="ajaxApproverAction" var="urlAjaxApproverAction"></portlet:resourceURL>
 
 	<ul class="nav nav-tabs">
 		<li role="presentation" id="idNav-home" class="clsNavRole active"><a href="#">Home</a></li>
@@ -61,6 +62,62 @@
 
 	
 	
+	<div class="modal fade" id="modalApprovForm" role="dialog" aria-labelledby="myModalLabelDropWForm" aria-hidden="true" >
+      <div class="modal-dialog">
+        <div class="modal-content">
+        	<input type="hidden" id="txtModalAppFormStatus" >
+        	
+        	<input type="hidden" id="studentNo">
+        	<input type="hidden" id="studentStatCode">
+        	<input type="hidden" id="courseNo">
+        	<input type="hidden" id="lAbrCourseNo">
+        	<input type="hidden" id="sectionNo">
+        	<input type="hidden" id="sectCode">
+        	<input type="hidden" id="statusApprove">
+        	
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&nbsp;</button>
+            <h4 class="modal-title"><spring:message code="prop.dps.dropw.approver.modal.title.text"/> </h4>
+          </div>
+          <form id="formModalApprover" name="formModalApprover">
+          <div class="modal-body">
+          	<div id="idApprovalMsg"></div>
+            <div id="idComment">
+            	<div class="col-sm-2"><spring:message code="prop.dps.dropw.approver.modal.body.approve.comment.text"></spring:message></div>
+            	<div class="col-sm-8"><textarea id="txtMessage" rows="" cols=""></textarea></div>
+            </div>
+          </div>
+          </form>
+          <div class="modal-footer">
+            <button id="linkBtnReset" class="btn btn-default"  data-dismiss="modal"><spring:message code="prop.dps.role.submit.no.text"/></button>
+            <button id="linkSubmitApprove" name="linkSubmitApprove" type="button" class="btn "><spring:message code="prop.dps.role.submit.yes.text"/></button>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+	
+	
+	
+	   <!-- Error Modal HTML -->
+    <div id="alertModal" class="modal" style="width: 20%;">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><font color="red"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></font> <spring:message code="prop.dps.alert.text"/></h4>
+                </div>
+                <div class="modal-body" id="modalAlertErrMsg">
+                    <p></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal"><spring:message code="prop.dps.modal.form.button.close.text"/></button>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+	
 
 	<script id="hbDropCourses" type="text/x-handlebars-template">
 	<table id="tblApprover" class="table table-striped table-bordered dt-responsive nowrap collapsed">
@@ -102,8 +159,8 @@
 	    				<td>{{credits}}</td>
 	    				<td>
 							{{#if statusPending}}
-								  	<div class="col-xs-4"><label><input type="radio" class ="clsAppAction" name="appAction" id="appRadio1" value="${appApprove}" data-toggle="modal" data-target="#modalApprovForm"><spring:message code="prop.dps.role.approve.text"/></label> </div> 
-									<div class="col-xs-2"><label><input type="radio" class ="clsAppAction" name="appAction" id="appRadio2" value="${appRecect}" data-toggle="modal" data-target="#modalApprovForm"> <spring:message code="prop.dps.role.reject.text"/> </label></div> 
+								  	<div class="col-xs-4"><label><input type="radio" courseNo={{courseNo}} lAbrCourseNo={{lAbrCourseNo}} sectionNo={{sectionNo}} sectCode={{sectCode}} class ="clsAppAction" name="appAction" id="appRadio1" value="${appApprove}" data-toggle="modal" data-target="#modalApprovForm"><spring:message code="prop.dps.role.approve.text"/></label> </div> 
+									<div class="col-xs-2"><label><input type="radio" courseNo={{courseNo}} lAbrCourseNo={{lAbrCourseNo}} sectionNo={{sectionNo}} sectCode={{sectCode}} class ="clsAppAction" name="appAction" id="appRadio2" value="${appRecect}" data-toggle="modal" data-target="#modalApprovForm"> <spring:message code="prop.dps.role.reject.text"/> </label></div> 
 							{{else}}
 								{{statusDesc}}
 							{{/if}}

@@ -17,8 +17,6 @@
 				var courses = ${dropWDTOs};
 				dropDataLoad(courses);
 				
-				
-				
 				$('.clsCourse').click(function(){
 					$('#sectCode').val(this.getAttribute("sectCode"));
 					$('#sectNo').val(this.getAttribute("sectionNo"));
@@ -89,6 +87,10 @@
 	
 	/*Approver*/
 	$(function() {
+		var varStudentNo;
+		var	varStdStatCode;
+		var	approver;
+		var idRadioBttn;
 		
 		<c:forEach items="${employee.myRoles}" var="myRole">
 			// Clicking on tabs to make it active (other than Home tab)
@@ -135,7 +137,10 @@
 						studentNo : this.getAttribute("studentNo"),
 						stdStatCode : this.getAttribute("stdStatCode")
 				};
-				var	approver = this.getAttribute("approver");
+				varStudentNo	=	this.getAttribute("studentNo");
+				varStdStatCode	=	this.getAttribute("stdStatCode");
+				
+				approver 		= this.getAttribute("approver");
 				$("#imgAjaxLoading").show();
 				
 				$.ajax({
@@ -159,8 +164,89 @@
 				});
 			});
 		
-		
+		/* click event on approve/reject radio button */		
+		$(document).on("click", ".clsAppAction", function(){
+
+			
+			//$('#modalApprovForm').modal('toggle');
+			
+			$('#studentNo').val(varStudentNo);
+			$('#studentStatCode').val(varStdStatCode);
+			$('#courseNo').val(this.getAttribute("courseNo"));
+			$('#lAbrCourseNo').val(this.getAttribute("lAbrCourseNo"));
+			$('#sectionNo').val(this.getAttribute("sectionNo"));
+			$('#sectCode').val(this.getAttribute("sectCode"));
+			$('#statusApprove').val($(this).val());
+			
+			if($(this).val() == 'ACCPT')
+			{
+				$('#idComment').hide();
+				$('#idApprovalMsg').html("<spring:message code='prop.dps.dropw.approver.approve.text'/>");
+				$('#linkSubmitApprove').addClass('btn-success').removeClass('btn-danger');
+			}
+			else
+			{
+				$('#idComment').show();
+				$('#idApprovalMsg').html("<spring:message code='prop.dps.dropw.approver.reject.text'/>");
+				$('#linkSubmitApprove').addClass('btn-danger').removeClass('btn-success');
+			}
+			
+			//idRadioBttn	=	$(this).attr('id');
+			
 	
+		});
+		
+		/* click event on submit button of modal-form from approver for approve/reject */
+		$('#linkSubmitApprove').click(function(){
+			$('#modalApprovForm').modal('toggle');
+			var dropWDTO = {
+					studentNo			:	varStudentNo,
+					studentStatCode		:	varStdStatCode,
+					courseNo			:	$('#courseNo').val(),
+					lAbrCourseNo		:	$('#lAbrCourseNo').val(),
+					sectionNo			:	$('#sectionNo').val(),
+					sectCode			:	$('#sectCode').val(),
+					statusApprove		:	$('#statusApprove').val(),
+					remarks				:	$('#txtMessage').val()
+			};
+			
+			
+			
+			$("#imgAjaxLoading").show();
+			$.ajax({
+						url 	:	 "${urlAjaxApproverAction}",
+						type	:	'POST',
+						data	:	dropWDTO,
+						success	:	function(data)
+						{
+							$("#imgAjaxLoading").hide();
+							var courses = JSON.parse(data);
+							courses.approverMain=approver;
+							dropDataLoadAction(courses, '#hbDropCoursesAction', '#dropwCoursesAction');
+						},
+						error	:	function(xhr, status, error)
+						{
+							$("#imgAjaxLoading").hide();
+							//console.log("error : xhr.responseText : "+xhr.responseText+" -- status : "+status+ " == error :"+error);
+							$("input:radio").attr("checked", false);
+							
+							$('#modalAlertErrMsg').html(xhr.responseText);
+							$('#alertModal').modal('toggle');
+							
+						}
+				
+			});
+			
+		});
+		
+
+		/* Click event on reset button */
+		$('#linkBtnReset').click(function(){
+			$("input:radio").attr("checked", false);
+		});
+		
+		
+		
 		
 		$("#idNav-home").click(function(){
 			$(".clsNavRole").removeClass("active");

@@ -50,6 +50,8 @@ public class DropWDTO extends Course
 	private	Student	student;
 	private	boolean	approver;
 	private	boolean	statusPending;
+	private	String	statusApprove;
+	private	String	remarks;
 	
 	public DropWDTO()
 	{
@@ -279,6 +281,49 @@ public class DropWDTO extends Course
 	{
 		this.statusPending = statusPending;
 	}
+	
+	/**
+	 * Getter Method	: getStatusApprove
+	 * @return the statusApprove
+	 * 
+	 * Date				: Apr 25, 2017
+	 */
+	public String getStatusApprove()
+	{
+		return this.statusApprove;
+	}
+	/**
+	 * Setter method : setStatusApprove
+	 * @param statusApprove the statusApprove to set
+	 * 
+	 * Date          : Apr 25, 2017 5:54:30 PM
+	 */
+	public void setStatusApprove(String statusApprove)
+	{
+		this.statusApprove = statusApprove;
+	}
+	
+	
+	/**
+	 * Getter Method	: getRemarks
+	 * @return the remarks
+	 * 
+	 * Date				: May 3, 2017
+	 */
+	public String getRemarks()
+	{
+		return this.remarks;
+	}
+	/**
+	 * Setter method : setRemarks
+	 * @param remarks the remarks to set
+	 * 
+	 * Date          : May 3, 2017 3:01:20 PM
+	 */
+	public void setRemarks(String remarks)
+	{
+		this.remarks = remarks;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -292,7 +337,9 @@ public class DropWDTO extends Course
 				+ ", tutionFees=" + this.tutionFees + ", statusDesc="
 				+ this.statusDesc + ", advisor=" + this.advisor + ", student="
 				+ this.student + ", approver=" + this.approver
-				+ ", statusPending=" + this.statusPending + "]";
+				+ ", statusPending=" + this.statusPending + ", statusApprove="
+				+ this.statusApprove + ", remarks=" + this.remarks + "]" 
+				+ super.toString();
 	}
 	
 	

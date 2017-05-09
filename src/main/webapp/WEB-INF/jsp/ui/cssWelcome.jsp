@@ -155,6 +155,7 @@ background-color:transparent;
 
 @media (max-width: @screen-xs-min) {
   .modal-xs { width: @modal-sm; }
+  .modal-sm {width: 350px;}
 }
 
 

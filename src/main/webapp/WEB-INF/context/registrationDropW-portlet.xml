@@ -46,6 +46,7 @@
  <!-- DI to DPS Drop with W of Registration DB Dao -->			
 		<bean id="dropWDBDao"	class="om.edu.squ.squportal.portlet.dps.registration.dropw.db.DropWDBImpl">
 	 		<property name="nPJdbcTemplDpsDropW" ref="namedParameterJdbcTemplateDps"/> 
+	 		<property name="simpleJdbcCallDpsDropW" ref="simpleJdbcCallDps"/>
 			<property name="queryProps" ref="queryProps" />
 			<property name="queryDropWProps" ref="queryDropWProps" />
 	 	</bean>

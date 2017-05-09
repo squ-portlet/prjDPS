@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Locale;
 
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotSuccessFulDBUpdate;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO;
 
 /**
@@ -82,7 +83,7 @@ public interface DropWDBDao
 	 *
 	 * Date    		:	Apr 10, 2017 7:13:47 PM
 	 */
-	public int setTempDropWCourse(DropWDTO dropWDTO);
+	public int setTempDropWCourseAdd(DropWDTO dropWDTO);
 	
 	/**
 	 * 
@@ -100,4 +101,19 @@ public interface DropWDBDao
 	 * Date    		:	Apr 17, 2017 8:24:28 PM
 	 */
 	public List<DropWDTO> getDropWForApprovers(String roleType, Employee employee, Locale locale, String studentNo);
+	
+	/**
+	 * 
+	 * method name  : setDropWCourseUpdate
+	 * @param dropWDTO
+	 * @return
+	 * DropWDBImpl
+	 * return type  : int
+	 * 
+	 * purpose		: update approver's action in drop w
+	 *
+	 * Date    		:	May 2, 2017 10:59:22 AM
+	 * @throws NotSuccessFulDBUpdate 
+	 */
+	public int setDropWCourseUpdate(DropWDTO dropWDTO) throws NotSuccessFulDBUpdate;
 }

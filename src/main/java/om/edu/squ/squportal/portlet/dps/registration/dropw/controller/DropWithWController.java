@@ -38,11 +38,13 @@ import javax.portlet.EventResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
+import javax.servlet.http.HttpServletResponse;
 
 import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotSuccessFulDBUpdate;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO;
@@ -50,6 +52,7 @@ import om.edu.squ.squportal.portlet.dps.registration.dropw.model.DropCourseModel
 import om.edu.squ.squportal.portlet.dps.registration.dropw.service.DropWService;
 import om.edu.squ.squportal.portlet.dps.role.bo.RoleNameValue;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
+import om.edu.squ.squportal.portlet.dps.utility.UtilProperty;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -206,7 +209,7 @@ public class DropWithWController
 		
 		try
 		{
-			dropWDTOs	=	dropWService.setDropWCourse(student,dropCourseModel, locale);
+			dropWDTOs	=	dropWService.setDropWCourseAdd(student,dropCourseModel, locale);
 			response.getWriter().print(gson.toJson(dropWDTOs));
 		}
 		catch (IOException ex)
@@ -252,6 +255,7 @@ public class DropWithWController
 	}
 											
 
+	
 	/**
 	 * 
 	 * method name  : getResourceCoursesForDrop
@@ -282,6 +286,52 @@ public class DropWithWController
 			
 
 	}
-			
+	
+	/**
+	 * 
+	 * method name  : setResourceApproverAction
+	 * @param dropWDTO
+	 * @param request
+	 * @param response
+	 * @param locale
+	 * DropWithWController
+	 * return type  : void
+	 * 
+	 * purpose		: 
+	 *
+	 * Date    		:	May 3, 2017 9:30:33 AM
+	 * @throws IOException 
+	 */
+	@ResourceMapping(value="ajaxApproverAction")
+	private void setResourceApproverAction(
+											@ModelAttribute("dropWDTOs") DropWDTO dropWDTO,
+											ResourceRequest request, ResourceResponse response, Locale locale
+											) throws IOException
+	{
+		List<DropWDTO> resultDropWDTOs	=	null;
+		Gson			gson			=	new Gson();
+		String			errMsg			=	null;
+		try
+			{
+				resultDropWDTOs	=	dropWService.setDropWCourseUpdate(dropWDTO, locale);
+			}
+		catch(NotSuccessFulDBUpdate ex)
+		{
+			logger.error("Droping is not successful");
+			/*We got the error but not throwing technical error to user screen*/
+			errMsg	=	ex.getMessage();
+		}
+		dropWDTO.setUserName(request.getRemoteUser());
+		if(null == resultDropWDTOs)
+		{
+			response.setProperty(ResourceResponse.HTTP_STATUS_CODE, Integer.toString(HttpServletResponse.SC_INTERNAL_SERVER_ERROR));
+			response.getWriter().print(UtilProperty.getMessage("err.dps.service.not.available.text", null, locale));
+		}
+		else
+		{
+			response.getWriter().print(gson.toJson(resultDropWDTOs));
+		}
+		
+	}
 	
 }

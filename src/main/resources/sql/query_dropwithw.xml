@@ -101,6 +101,7 @@
 		              		CRS.A_CRSLNM
 		            )										AS  COURSE_NAME
 		      , T_DROP.SECTNO								AS  SECTION_NO
+		      ,	T_DROP.SECTCD								AS	SECT_CODE
 		      , CRS.CRSCRED 								AS  CREDITS
 		      ,(
 	                SELECT 
@@ -225,5 +226,28 @@
 			ORDER BY PORTAL.COHORT DESC, IS_APPROVER DESC
 	</entry>
 	
-	
+	<entry key="dps.dropw.update.course.temp.for.drop">
+			UPDATE
+			        T_REG_DROPW
+			    SET STATUSCD = (
+			                      SELECT
+			                          CODES.SISCODECD	
+			                      FROM
+			                              SIS_CODES       CODES
+			                          ,   SIS_CODE_TYPES  TYPES
+			                      WHERE
+			                              CODES.SISCODETYPCD =  TYPES.SISCODETYPCD
+			                          AND TYPES.SISCODETYPNM = 'APPROVAL_STATUS'
+			                          AND CODES.L_ABR_CODE  = :paramStatusCode
+			                    )
+			    , UPDATE_DATE     = SYSDATE
+			    , UPDATE_USERNAME = :paramUserCode
+			    , COMMENTS		  =	:paramRemarks 			                    
+			WHERE
+			        STDNO = :paramStdNo
+			    AND STDSTATCD = :paramStdStatCode
+			    AND CRSNO = :paramCourseNo
+			    AND SECTCD = :paramSectCode
+			    AND SECTNO = :paramSectionNo	
+	</entry>
 </properties>

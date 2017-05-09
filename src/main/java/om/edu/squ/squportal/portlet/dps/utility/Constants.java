@@ -187,7 +187,16 @@ public interface Constants
 	public	static	final	String	CONST_SQL_DROPW_INSERT_COURSE_TEMP			=	"dps.dropw.insert.course.temp.for.drop";
 	public	static	final	String	CONST_SQL_DROPW_SELECT_COURSE_TEMP			=	"dps.dropw.select.course.temp.for.drop";
 	public	static	final	String	CONST_SQL_DROPW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	"dps.dropw.select.student.records.by.employee";
+	public	static	final	String	CONST_SQL_DROPW_UPDATE_COURSE_TEMP			=	"dps.dropw.update.course.temp.for.drop";
 
+	/* ---  SQL - DPS - Drop With W -- Stored Procedure -- --------------------- */	
+	public	static	final	String	CONST_PROC_DROPW_WITHDRAW_COURSE			=	"PROC_WITHDRAW_COURSE";
+	
+	public	static	final	String	CONST_PROC_COL_NAME_P_STDNO					=	"p_stdno";
+	public	static	final	String	CONST_PROC_COL_NAME_P_SECTCD				=	"p_sectcd";
+	public	static	final	String	CONST_PROC_COL_NAME_P_SECTNO				=	"p_sectno";
+	public	static	final	String	CONST_PROC_COL_NAME_P_USER					=	"p_user";
+	
 	/* ---  SQL - DPS - Rule --------------------- */
 	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_JOIN_CLOSE_TIME	=	"sql.rule.student.join.close.time";	
 	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_POSTPONE_COUNT	=	"sql.rule.student.count.postpone";

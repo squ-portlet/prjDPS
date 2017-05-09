@@ -31,23 +31,31 @@ package om.edu.squ.squportal.portlet.dps.registration.dropw.db;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.sql.DataSource;
+
 import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotSuccessFulDBUpdate;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.Advisor;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Bhabesh
@@ -60,6 +68,8 @@ public class DropWDBImpl implements DropWDBDao
 	private		Properties					queryProps;
 	private		Properties					queryDropWProps;
 	private		NamedParameterJdbcTemplate	nPJdbcTemplDpsDropW;
+	private		SimpleJdbcCall				simpleJdbcCallDpsDropW;		
+	
 	/**
 	 * Setter method : setQueryProps
 	 * @param queryProps the queryProps to set
@@ -91,7 +101,16 @@ public class DropWDBImpl implements DropWDBDao
 	{
 		this.nPJdbcTemplDpsDropW = nPJdbcTemplDpsDropW;
 	}
-	
+	/**
+	 * Setter method : setSimpleJdbcCallDpsDropW
+	 * @param simpleJdbcCallDpsDropW the simpleJdbcCallDpsDropW to set
+	 * 
+	 * Date          : May 7, 2017 11:35:09 AM
+	 */
+	public void setSimpleJdbcCallDpsDropW(SimpleJdbcCall simpleJdbcCallDpsDropW)
+	{
+		this.simpleJdbcCallDpsDropW = simpleJdbcCallDpsDropW;
+	}
 	/**
 	 * 
 	 * method name  : getCourseList
@@ -165,6 +184,7 @@ public class DropWDBImpl implements DropWDBDao
 				dropWDTO.setCourseNo(rs.getString(Constants.CONST_COLMN_COURSE_NO));
 				dropWDTO.setCourseName(rs.getString(Constants.CONST_COLMN_COURSE_NAME));
 				dropWDTO.setSectionNo(rs.getString(Constants.CONST_COLMN_SECTION_NO));
+				dropWDTO.setSectCode(rs.getString(Constants.CONST_COLMN_SECT_CODE));
 				dropWDTO.setCredits(rs.getInt(Constants.CONST_COLMN_CREDITS));
 				dropWDTO.setStatusDesc(rs.getString(Constants.CONST_COLMN_STATUS_DESC));
 				if(rs.getString(Constants.CONST_COLMN_STATUS_CODE_NAME).equals(Constants.CONST_SQL_STATUS_CODE_NAME_PENDING))
@@ -198,7 +218,7 @@ public class DropWDBImpl implements DropWDBDao
 	 *
 	 * Date    		:	Apr 10, 2017 7:13:47 PM
 	 */
-	public int setTempDropWCourse(DropWDTO dropWDTO)
+	public int setTempDropWCourseAdd(DropWDTO dropWDTO)
 	{
 		String	SQL_DROPW_INSERT_COURSE_TEMP		=	queryDropWProps.getProperty(Constants.CONST_SQL_DROPW_INSERT_COURSE_TEMP);
 		
@@ -316,6 +336,131 @@ public class DropWDBImpl implements DropWDBDao
 	
 		return nPJdbcTemplDpsDropW.query(SQL_DROPW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE, namedParameterMap, mapper);
 	}
+
+
+	/**
+	 * 
+	 * method name  : setDropWCourseUpdate
+	 * @param dropWDTO
+	 * @return
+	 * DropWDBImpl
+	 * return type  : int
+	 * 
+	 * purpose		: update approver's action in drop w
+	 *
+	 * Date    		:	May 2, 2017 10:59:22 AM
+	 */
+	@Transactional
+	public int setDropWCourseUpdate(DropWDTO dropWDTO) throws NotSuccessFulDBUpdate
+	{
+		int resultTempDrop	=	0;
+		Map	resultDropProc	=	null;
+		
+			
+			try
+			{
+				resultDropProc	=	setDropWCourseWithdrawProc(dropWDTO);
+			}
+			catch(NotSuccessFulDBUpdate ex)
+			{
+				logger.error("Course can not be dropped, Exception raised");
+				throw new NotSuccessFulDBUpdate(ex.getLocalizedMessage());
+			}
+			if(null != resultDropProc)
+			{
+				resultTempDrop	=	setTempDropWCourseUpdate(dropWDTO);
+				 
+			}
+		return resultTempDrop;
+	}
+	
+	
+	/**
+	 * 
+	 * method name  : setTempDropWCourseUpdate
+	 * @param dropWDTO
+	 * @return
+	 * DropWDBImpl
+	 * return type  : int
+	 * 
+	 * purpose		: update approver's action in temporary table
+	 *
+	 * Date    		:	May 2, 2017 9:35:38 AM
+	 */
+	@Transactional
+	private int setTempDropWCourseUpdate(DropWDTO dropWDTO)
+	{
+		String	SQL_DROPW_UPDATE_COURSE_TEMP		=	queryDropWProps.getProperty(Constants.CONST_SQL_DROPW_UPDATE_COURSE_TEMP);
+		
+				
+		Map<String, String> paramMap	=	new HashMap<String, String>();
+		paramMap.put("paramStdNo", dropWDTO.getStudentNo());
+		paramMap.put("paramStdStatCode", dropWDTO.getStudentStatCode());
+		paramMap.put("paramCourseNo", dropWDTO.getCourseNo());
+		paramMap.put("paramSectCode", dropWDTO.getSectCode());
+		paramMap.put("paramSectionNo", dropWDTO.getSectionNo());
+		paramMap.put("paramStatusCode", dropWDTO.getStatusApprove());
+		paramMap.put("paramUserCode", dropWDTO.getUserName());
+		paramMap.put("paramRemarks", dropWDTO.getRemarks());
+
+
+		
+		return nPJdbcTemplDpsDropW.update(SQL_DROPW_UPDATE_COURSE_TEMP, paramMap);
+
+	}
+
+	
+	/**
+	 * 
+	 * method name  : setDropWCourseWithdrawProc
+	 * @param dropWDTO
+	 * @return
+	 * DropWDBImpl
+	 * return type  : int
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	May 7, 2017 10:36:17 AM
+	 */
+	@Transactional
+	private	Map setDropWCourseWithdrawProc(DropWDTO dropWDTO) throws NotSuccessFulDBUpdate
+	{
+		Map		resultProc		=	null;
+		
+		simpleJdbcCallDpsDropW.withProcedureName(Constants.CONST_PROC_DROPW_WITHDRAW_COURSE);
+		simpleJdbcCallDpsDropW.withoutProcedureColumnMetaDataAccess();
+		simpleJdbcCallDpsDropW.useInParameterNames	(
+												Constants.CONST_PROC_COL_NAME_P_STDNO,
+												Constants.CONST_PROC_COL_NAME_P_SECTCD,
+												Constants.CONST_PROC_COL_NAME_P_SECTNO,
+												Constants.CONST_PROC_COL_NAME_P_USER
+											);
+		simpleJdbcCallDpsDropW.declareParameters(
+												new SqlParameter(Constants.CONST_PROC_COL_NAME_P_STDNO, Types.NUMERIC),
+												new SqlParameter(Constants.CONST_PROC_COL_NAME_P_SECTCD, Types.NUMERIC),
+												new SqlParameter(Constants.CONST_PROC_COL_NAME_P_SECTNO, Types.NUMERIC),
+												new SqlParameter(Constants.CONST_PROC_COL_NAME_P_USER, Types.VARCHAR)
+												
+										);
+		Map<String, Object>		paramMap	=	new HashMap<String, Object>();
+		paramMap.put(Constants.CONST_PROC_COL_NAME_P_STDNO, dropWDTO.getStudentNo());
+		paramMap.put(Constants.CONST_PROC_COL_NAME_P_SECTCD, dropWDTO.getSectCode());
+		paramMap.put(Constants.CONST_PROC_COL_NAME_P_SECTNO, dropWDTO.getSectionNo());
+		paramMap.put(Constants.CONST_PROC_COL_NAME_P_USER, dropWDTO.getUserName());
+		try
+		{
+			resultProc	=	simpleJdbcCallDpsDropW.execute(paramMap);
+		}
+		catch(UncategorizedSQLException exception)
+		{
+			logger.error("Course drop not successful for student no : {}, course no {} . Details : {} - {}",dropWDTO.getStudentNo(), dropWDTO.getCourseNo(),exception.getSQLException().getErrorCode(),exception.getSQLException().getMessage());
+			throw new NotSuccessFulDBUpdate(exception.getMessage());
+			
+		}
+		
+		return resultProc;
+	}
+	
 	
 	
 }

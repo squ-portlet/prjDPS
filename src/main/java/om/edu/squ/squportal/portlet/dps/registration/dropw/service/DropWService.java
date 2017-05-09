@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotSuccessFulDBUpdate;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.model.DropCourseModel;
 
@@ -27,7 +28,7 @@ public interface DropWService
 	
 	/**
 	 * 
-	 * method name  : setDropWCourse
+	 * method name  : setDropWCourseAdd
 	 * @param student
 	 * @param dropCourseModel
 	 * @param locale
@@ -39,7 +40,7 @@ public interface DropWService
 	 *
 	 * Date    		:	Apr 11, 2017 5:45:53 PM
 	 */
-	public List<DropWDTO> setDropWCourse(Student student, DropCourseModel dropCourseModel, Locale locale);
+	public List<DropWDTO> setDropWCourseAdd(Student student, DropCourseModel dropCourseModel, Locale locale);
 	
 	/**
 	 * 
@@ -71,5 +72,21 @@ public interface DropWService
 	 * Date    		:	Apr 17, 2017 8:24:28 PM
 	 */
 	public List<DropWDTO> getDropWForApprovers(String roleType, Employee employee, Locale locale);
+	
+	/**
+	 * 
+	 * method name  : setDropWCourseUpdate
+	 * @param dropWDTO
+	 * @param locale TODO
+	 * @return
+	 * DropWDBImpl
+	 * return type  : int
+	 * 
+	 * purpose		: update approver's action in drop w
+	 *
+	 * Date    		:	May 2, 2017 10:59:22 AM
+	 * @throws NotSuccessFulDBUpdate 
+	 */
+	public List<DropWDTO> setDropWCourseUpdate(DropWDTO dropWDTO, Locale locale) throws NotSuccessFulDBUpdate;
 	
 }

@@ -36,8 +36,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotSuccessFulDBUpdate;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.db.DropWDBDao;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.model.DropCourseModel;
@@ -74,9 +76,9 @@ public class DropWServiceImpl implements DropWService
 	}
 	
 	@Override
-	public List<DropWDTO> setDropWCourse(Student student, DropCourseModel dropCourseModel, Locale locale)
+	public List<DropWDTO> setDropWCourseAdd(Student student, DropCourseModel dropCourseModel, Locale locale)
 	{
-		int 			resultSetDropW 	= 	setTempDropWCourse( student,  dropCourseModel);
+		int 			resultSetDropW 	= 	setTempDropWCourseAdd( student,  dropCourseModel);
 		if(resultSetDropW > 0)
 		{
 			List<DropWDTO>	dropWDTOs		=	getDropWCourses(student,locale);
@@ -116,7 +118,7 @@ public class DropWServiceImpl implements DropWService
 
 	/**
 	 * 
-	 * method name  : setTempDropWCourse
+	 * method name  : setTempDropWCourseAdd
 	 * @param student
 	 * @param dropCourseModel
 	 * @return
@@ -127,7 +129,7 @@ public class DropWServiceImpl implements DropWService
 	 *
 	 * Date    		:	Apr 12, 2017 3:26:06 PM
 	 */
-	private int setTempDropWCourse(Student student, DropCourseModel dropCourseModel)
+	private int setTempDropWCourseAdd(Student student, DropCourseModel dropCourseModel)
 	{
 		DropWDTO	dropWDTO	=	new DropWDTO();
 		dropWDTO.setStudentNo(student.getAcademicDetail().getStudentNo());
@@ -140,7 +142,7 @@ public class DropWServiceImpl implements DropWService
 		dropWDTO.setUserName(student.getAcademicDetail().getStudentUserName());
 		
 		
-		return dropWDBDao.setTempDropWCourse(dropWDTO);
+		return dropWDBDao.setTempDropWCourseAdd(dropWDTO);
 	}
 
 
@@ -168,5 +170,38 @@ public class DropWServiceImpl implements DropWService
 		return dropWDBDao.getDropWForApprovers(roleType, employee, locale, null);
 	}
 	
+	
+	/**
+	 * 
+	 * method name  : setDropWCourseUpdate
+	 * @param dropWDTO
+	 * @return
+	 * DropWDBImpl
+	 * return type  : int
+	 * 
+	 * purpose		: update approver's action in drop w
+	 *
+	 * Date    		:	May 2, 2017 10:59:22 AM
+	 * @throws NotSuccessFulDBUpdate 
+	 */
+	public List<DropWDTO> setDropWCourseUpdate(DropWDTO dropWDTO, Locale locale) throws NotSuccessFulDBUpdate
+	{
+		int				resultUpdate	=	0;
+		AcademicDetail	academicDetail	=	new AcademicDetail();
+		Student			student			=	new Student();
+		academicDetail.setStudentNo(dropWDTO.getStudentNo());
+		academicDetail.setStdStatCode(dropWDTO.getStudentStatCode());
+		student.setAcademicDetail(academicDetail);
+		
+		resultUpdate	=	dropWDBDao.setDropWCourseUpdate(dropWDTO);
+		if(resultUpdate >  0)
+		{
+			return getDropWCourses(student,locale);
+		}
+		else
+		{
+			return null;
+		}
+	}
 	
 }
