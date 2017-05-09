@@ -19,6 +19,7 @@
 	</ul>
 	<%@include file="../../../ui/cssWelcome.jsp" %>	
 	<%@include file="../../../ui/js/registration/dropw/jsDropW.jsp" %>
+	<%@include file="../../../ui/js/registration/dropw/jsValidationDropW.jsp" %>
 
 
     <div class="section">
@@ -84,7 +85,7 @@
           	<div id="idApprovalMsg"></div>
             <div id="idComment">
             	<div class="col-sm-2"><spring:message code="prop.dps.dropw.approver.modal.body.approve.comment.text"></spring:message></div>
-            	<div class="col-sm-8"><textarea id="txtMessage" rows="" cols=""></textarea></div>
+            	<div class="col-sm-8" id="idCommentTxtArea"><textarea id="txtMessage" name="txtMessage" rows="" cols=""></textarea></div>
             </div>
           </div>
           </form>

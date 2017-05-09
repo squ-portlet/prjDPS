@@ -356,20 +356,26 @@ public class DropWDBImpl implements DropWDBDao
 		int resultTempDrop	=	0;
 		Map	resultDropProc	=	null;
 		
-			
-			try
-			{
-				resultDropProc	=	setDropWCourseWithdrawProc(dropWDTO);
-			}
-			catch(NotSuccessFulDBUpdate ex)
-			{
-				logger.error("Course can not be dropped, Exception raised");
-				throw new NotSuccessFulDBUpdate(ex.getLocalizedMessage());
-			}
-			if(null != resultDropProc)
+			if(dropWDTO.getStatusApprove().equals(Constants.CONST_SQL_STATUS_CODE_REJCT))
 			{
 				resultTempDrop	=	setTempDropWCourseUpdate(dropWDTO);
-				 
+			}
+			else
+			{
+				try
+				{
+					resultDropProc	=	setDropWCourseWithdrawProc(dropWDTO);
+				}
+				catch(NotSuccessFulDBUpdate ex)
+				{
+					logger.error("Course can not be dropped, Exception raised");
+					throw new NotSuccessFulDBUpdate(ex.getLocalizedMessage());
+				}
+				if(null != resultDropProc)
+				{
+					resultTempDrop	=	setTempDropWCourseUpdate(dropWDTO);
+					 
+				}
 			}
 		return resultTempDrop;
 	}

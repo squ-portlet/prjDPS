@@ -31,6 +31,7 @@ package om.edu.squ.squportal.portlet.dps.dao.db;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLRecoverableException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -149,8 +150,9 @@ public class DpsDbImpl implements DpsDbDao
 		{
 			logger.error("Empty resultset error. Details : "+ex.getMessage());
 			throw new ExceptionEmptyResultset(ex.getMessage());
-			
 		}
+
+		
 	}
 	
 	

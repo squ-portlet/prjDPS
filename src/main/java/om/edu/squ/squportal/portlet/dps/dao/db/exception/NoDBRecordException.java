@@ -13,7 +13,7 @@
  * Date of creation		:	09-January-2017
  * Date of modification :	
  * 
- * Summary				:	
+ * Summary				:	Generally this Exception used to address for non availability of records from Data base
  *
  *
  * Copyright 2015 the original author or authors and Organization.

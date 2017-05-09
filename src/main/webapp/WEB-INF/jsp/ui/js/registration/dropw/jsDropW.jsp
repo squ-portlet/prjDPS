@@ -165,8 +165,8 @@
 			});
 		
 		/* click event on approve/reject radio button */		
-		$(document).on("click", ".clsAppAction", function(){
-
+		$(document).on("click", ".clsAppAction", function(event){
+			event.preventDefault();
 			
 			//$('#modalApprovForm').modal('toggle');
 			
@@ -181,12 +181,14 @@
 			if($(this).val() == 'ACCPT')
 			{
 				$('#idComment').hide();
+				$('#idCommentTxtArea').html('');
 				$('#idApprovalMsg').html("<spring:message code='prop.dps.dropw.approver.approve.text'/>");
 				$('#linkSubmitApprove').addClass('btn-success').removeClass('btn-danger');
 			}
 			else
 			{
 				$('#idComment').show();
+				$('#idCommentTxtArea').html('<textarea id="txtMessage" name="txtMessage" rows="" cols="" required></textarea>');
 				$('#idApprovalMsg').html("<spring:message code='prop.dps.dropw.approver.reject.text'/>");
 				$('#linkSubmitApprove').addClass('btn-danger').removeClass('btn-success');
 			}
@@ -197,45 +199,50 @@
 		});
 		
 		/* click event on submit button of modal-form from approver for approve/reject */
-		$('#linkSubmitApprove').click(function(){
-			$('#modalApprovForm').modal('toggle');
-			var dropWDTO = {
-					studentNo			:	varStudentNo,
-					studentStatCode		:	varStdStatCode,
-					courseNo			:	$('#courseNo').val(),
-					lAbrCourseNo		:	$('#lAbrCourseNo').val(),
-					sectionNo			:	$('#sectionNo').val(),
-					sectCode			:	$('#sectCode').val(),
-					statusApprove		:	$('#statusApprove').val(),
-					remarks				:	$('#txtMessage').val()
+		$('#linkSubmitApprove').click(function(event){
+			
+			if ($('#formModalApprover').valid()) {
+				
+					$('#modalApprovForm').modal('toggle');
+					var dropWDTO = {
+							studentNo			:	varStudentNo,
+							studentStatCode		:	varStdStatCode,
+							courseNo			:	$('#courseNo').val(),
+							lAbrCourseNo		:	$('#lAbrCourseNo').val(),
+							sectionNo			:	$('#sectionNo').val(),
+							sectCode			:	$('#sectCode').val(),
+							statusApprove		:	$('#statusApprove').val(),
+							remarks				:	$('#txtMessage').val()
+					};
+					
+					
+					
+					$("#imgAjaxLoading").show();
+					$.ajax({
+								url 	:	 "${urlAjaxApproverAction}",
+								type	:	'POST',
+								data	:	dropWDTO,
+								success	:	function(data)
+								{
+									$("#imgAjaxLoading").hide();
+									var courses = JSON.parse(data);
+									courses.approverMain=approver;
+									dropDataLoadAction(courses, '#hbDropCoursesAction', '#dropwCoursesAction');
+								},
+								error	:	function(xhr, status, error)
+								{
+									$("#imgAjaxLoading").hide();
+									//console.log("error : xhr.responseText : "+xhr.responseText+" -- status : "+status+ " == error :"+error);
+									$("input:radio").attr("checked", false);
+									
+									$('#modalAlertErrMsg').html(xhr.responseText);
+									$('#alertModal').modal('toggle');
+									
+								}
+						
+					});
 			};
 			
-			
-			
-			$("#imgAjaxLoading").show();
-			$.ajax({
-						url 	:	 "${urlAjaxApproverAction}",
-						type	:	'POST',
-						data	:	dropWDTO,
-						success	:	function(data)
-						{
-							$("#imgAjaxLoading").hide();
-							var courses = JSON.parse(data);
-							courses.approverMain=approver;
-							dropDataLoadAction(courses, '#hbDropCoursesAction', '#dropwCoursesAction');
-						},
-						error	:	function(xhr, status, error)
-						{
-							$("#imgAjaxLoading").hide();
-							//console.log("error : xhr.responseText : "+xhr.responseText+" -- status : "+status+ " == error :"+error);
-							$("input:radio").attr("checked", false);
-							
-							$('#modalAlertErrMsg').html(xhr.responseText);
-							$('#alertModal').modal('toggle');
-							
-						}
-				
-			});
 			
 		});
 		
