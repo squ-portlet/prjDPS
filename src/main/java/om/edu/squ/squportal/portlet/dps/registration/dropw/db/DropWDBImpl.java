@@ -195,6 +195,16 @@ public class DropWDBImpl implements DropWDBDao
 				{
 					dropWDTO.setStatusPending(false);
 				}
+				if(rs.getString(Constants.CONST_COLMN_STATUS_CODE_NAME).equals(Constants.CONST_SQL_STATUS_CODE_REJCT))
+				{
+					dropWDTO.setStatusReject(true);
+				}
+				else
+				{
+					dropWDTO.setStatusReject(false);
+				}
+
+				dropWDTO.setRemarks(rs.getString(Constants.CONST_COLMN_COMMENT));
 				return dropWDTO;
 			}
 		};

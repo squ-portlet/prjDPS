@@ -174,7 +174,10 @@ public class ExtensionStudiesController
 		model.addAttribute("nextYearSemester", dpsServiceDao.getNextYearSemester(locale));
 		model.addAttribute("reasonList", extensionServiceDao.getExtensionReasons(locale));
 		model.addAttribute("extenstions",extensionServiceDao.getExtensionsForStudents(student.getAcademicDetail().getStudentNo(), locale));
-		model.addAttribute("isRuleStudentComplete", extensionServiceDao.isRuleStudentComplete(student.getAcademicDetail().getStudentNo(),student.getAcademicDetail().getStdStatCode()));
+		/* TODO for Apply RULE uncomment the following statement */
+		model.addAttribute("isRuleStudentComplete", true);
+		//model.addAttribute("isRuleStudentComplete", extensionServiceDao.isRuleStudentComplete(student.getAcademicDetail().getStudentNo(),student.getAcademicDetail().getStdStatCode()));
+		
 		return "study/extension/student/welcomeExtensionStudent";
 	}
 

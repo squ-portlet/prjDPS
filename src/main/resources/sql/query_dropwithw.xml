@@ -121,7 +121,8 @@
                 		SIS_CODES
        			WHERE 
        					SISCODECD= T_DROP.STATUSCD 
-		      )  											AS 	STATUS_CODE_NAME    
+		      )  											AS 	STATUS_CODE_NAME
+		   	, COMMENTS										AS	COMMENTS		    
 		FROM
 		      T_REG_DROPW T_DROP
 		    , CRS_BASIC   CRS

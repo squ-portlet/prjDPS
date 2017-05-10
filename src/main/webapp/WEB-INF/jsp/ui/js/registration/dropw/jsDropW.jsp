@@ -55,7 +55,7 @@
 								
 								var courses	=	JSON.parse(data);
 								
-								dropDataLoad(courses)
+								dropDataLoad(courses);
 								
 							},
 							error : function(xhr, status)
@@ -82,6 +82,25 @@
 		
 	</c:if>	
 		
+	
+	$(document).on("click", ".clsMsgErr", function(){
+		var messageAlert = $(this).attr('msg');
+		dropDataLoadActionStudent(messageAlert, '#hbDropStatAlert', '#divDropStatAlert');
+		
+	});
+	
+	function dropDataLoadActionStudent(dataJson, hbTemplateId, tableId)
+	{
+		if ($.trim(dataJson))
+			{
+			var theAlertTemplate=$(hbTemplateId).html();
+			var template = Handlebars.compile(theAlertTemplate);
+			$(tableId).html(template(dataJson));
+			}
+		return true;
+	}
+	
+	
 	});
 	
 	
@@ -295,6 +314,7 @@
 		
 		
 	});
+	
 	
 	
 </script>

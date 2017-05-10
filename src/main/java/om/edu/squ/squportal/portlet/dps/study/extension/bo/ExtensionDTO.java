@@ -65,14 +65,7 @@ public class ExtensionDTO
 	private	String	statusCode;
 	private	String	statusCodeName;
 	private	String	statusDesc;
-/*
-	private	String	roleStatusSupervisor;
-	private	String	roleStatusCollegeDean;
-	private	String	roleStatusDpsDean;
-	private	String	approvalCodeSupervisor;
-	private	String	approvalCodeCollegeDean;
-	private	String	approvalCodeDpsDean;
-*/
+
 	private	Supervisor	supervisor;
 	private	CollegeDean	collegeDean;
 	private	DpsDean		dpsDean;

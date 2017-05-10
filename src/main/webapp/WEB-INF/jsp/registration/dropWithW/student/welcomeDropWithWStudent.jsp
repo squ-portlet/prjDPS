@@ -50,6 +50,8 @@
 
 	
 	<div id="tblDropCourses"></div>
+	<div id="divDropStatAlert"></div>
+	
 	
     <div class="modal fade" id="modalDropWForm" tabindex="-1" role="dialog" aria-labelledby="myModalStudentDropWForm" aria-hidden="true" >
       <div class="modal-dialog modal-sm modal-xs">
@@ -109,8 +111,27 @@
 	    <td>{{courseName}}</td>
 	    <td>{{sectionNo}}</td>
 	    <td>{{credits}}</td>
-	    <td>{{statusDesc}}</td>
+	    <td>
+			{{statusDesc}}
+			{{#if statusReject}}
+					<a href="#" class="clsMsgErr" msg='{{remarks}}'>
+				         <font color="default">
+				           	<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+				         </font>
+		           </a>
+			{{/if}}
+		</td>
 	  </tr>
 	{{/each}}
 	</table>
+	</script>
+	
+	<script id="hbDropStatAlert" type="text/x-handlebars-template">
+	<div class="alert alert-warning alert-dismissible" role="alert" id="msgAlert"> 
+	  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
+	 	<strong><spring:message code="prop.dps.extension.student.applications.head.column.action"/>!</strong>
+	  		<hr> 
+				{{messageAlert}}
+			</div>'	
+	
 	</script>

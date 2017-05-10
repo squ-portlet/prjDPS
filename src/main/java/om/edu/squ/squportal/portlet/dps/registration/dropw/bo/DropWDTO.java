@@ -45,13 +45,16 @@ public class DropWDTO extends Course
 	private	String	firstWithDrawDate;
 	private	String	secondWithDrawDate;
 	private	float	tutionFees;
+	private	String	statusCodeName;
 	private	String	statusDesc;
 	private	Advisor	advisor;
 	private	Student	student;
 	private	boolean	approver;
 	private	boolean	statusPending;
+	private	boolean	statusReject;
 	private	String	statusApprove;
 	private	String	remarks;
+	
 	
 	public DropWDTO()
 	{
@@ -180,6 +183,26 @@ public class DropWDTO extends Course
 	}
 	
 	/**
+	 * Getter Method	: getStatusCodeName
+	 * @return the statusCodeName
+	 * 
+	 * Date				: May 10, 2017
+	 */
+	public String getStatusCodeName()
+	{
+		return this.statusCodeName;
+	}
+	/**
+	 * Setter method : setStatusCodeName
+	 * @param statusCodeName the statusCodeName to set
+	 * 
+	 * Date          : May 10, 2017 3:52:21 PM
+	 */
+	public void setStatusCodeName(String statusCodeName)
+	{
+		this.statusCodeName = statusCodeName;
+	}
+	/**
 	 * Getter Method	: getStatusDesc
 	 * @return the statusDesc
 	 * 
@@ -283,6 +306,26 @@ public class DropWDTO extends Course
 	}
 	
 	/**
+	 * Getter Method	: isStatusReject
+	 * @return the statusReject
+	 * 
+	 * Date				: May 10, 2017
+	 */
+	public boolean isStatusReject()
+	{
+		return this.statusReject;
+	}
+	/**
+	 * Setter method : setStatusReject
+	 * @param statusReject the statusReject to set
+	 * 
+	 * Date          : May 10, 2017 4:20:37 PM
+	 */
+	public void setStatusReject(boolean statusReject)
+	{
+		this.statusReject = statusReject;
+	}
+	/**
 	 * Getter Method	: getStatusApprove
 	 * @return the statusApprove
 	 * 
@@ -334,11 +377,13 @@ public class DropWDTO extends Course
 				+ this.studentStatCode + ", userName=" + this.userName
 				+ ", firstWithDrawDate=" + this.firstWithDrawDate
 				+ ", secondWithDrawDate=" + this.secondWithDrawDate
-				+ ", tutionFees=" + this.tutionFees + ", statusDesc="
-				+ this.statusDesc + ", advisor=" + this.advisor + ", student="
-				+ this.student + ", approver=" + this.approver
-				+ ", statusPending=" + this.statusPending + ", statusApprove="
-				+ this.statusApprove + ", remarks=" + this.remarks + "]" 
+				+ ", tutionFees=" + this.tutionFees + ", statusCodeName="
+				+ this.statusCodeName + ", statusDesc=" + this.statusDesc
+				+ ", advisor=" + this.advisor + ", student=" + this.student
+				+ ", approver=" + this.approver + ", statusPending="
+				+ this.statusPending + ", statusReject=" + this.statusReject
+				+ ", statusApprove=" + this.statusApprove + ", remarks="
+				+ this.remarks + "]"
 				+ super.toString();
 	}
 	
