@@ -132,7 +132,7 @@
 		
 		{{#each .}}
 			<tr>
-				<td><a class="clsStudentCourse" href="#" approver={{approver}} studentNo={{student.academicDetail.studentNo}} stdStatCode={{student.academicDetail.stdStatCode}}>{{student.academicDetail.id}}</a></td>
+				<td><a class="clsStudentCourse" href="#" approver={{approver}} studentNo={{student.academicDetail.studentNo}} stdStatCode={{student.academicDetail.stdStatCode}} studentId={{student.academicDetail.id}} studentName="{{student.academicDetail.studentName}}">{{student.academicDetail.id}}</a></td>
 				<td>{{student.academicDetail.studentName}}</td>
 				<td>{{student.academicDetail.cohort}}</td>
 				<td>{{student.academicDetail.college}}</td>
@@ -142,6 +142,13 @@
 	</table>
 	</script>
 	<script id="hbDropCoursesAction" type="text/x-handlebars-template">	
+		
+	{{#if approverMain}}
+		<p>
+				<ol class="breadcrumb">
+					<li><center><spring:message code="prop.dps.dropw.approver.breadcrumb.student"/> (<b>{{studentName}} / {{studentId}}</b>) </center></li>
+				</ol>
+		</p>
 
 			<table id="tblCoursesAction" class="table table-striped table-bordered dt-responsive nowrap collapsed">
 				<tr>
@@ -151,7 +158,7 @@
 					<th><spring:message code="prop.dps.course.credits"/></th>
 					<th><spring:message code="prop.dps.course.action"/></th>									
 				</tr>
-			{{#if approverMain}}
+
 				{{#each .}}
 					<tr>
 	    				<td>{{lAbrCourseNo}}</td>
@@ -180,8 +187,7 @@
 							</td>
 						</tr>
 					{{/each}}
-			{{/if}}
-
 	
 			</table>
+	{{/if}}
 	</script>

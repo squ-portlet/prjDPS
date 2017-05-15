@@ -179,7 +179,8 @@
 			
 			    
 		FROM
-				  V_STD_CURREG REG
+				  V_STD_CURREG 	REG
+				, T_REG_DROPW	T_DROP	
 				, V_STDINFO_PORTAL  PORTAL
 				 ,COL_CEN            COL
 				, STD_THESIS        THESIS
@@ -187,6 +188,7 @@
 				, COL_DEPT          DEPT
 		WHERE 
 			          REG.STDNO     = PORTAL.STDNO
+			      AND REG.STDNO		=	T_DROP.STDNO	
 			      AND REG.STDSTATCD = PORTAL.STDSTATCD
 			      AND DEPT.COLCENCD     = COL.COLCENCD
 			      AND DEPT_MAJ.DEPTNO   = DEPT.DEPTNO (+)

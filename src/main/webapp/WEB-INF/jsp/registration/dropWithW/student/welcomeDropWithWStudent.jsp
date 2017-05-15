@@ -132,6 +132,6 @@
 	 	<strong><spring:message code="prop.dps.extension.student.applications.head.column.action"/>!</strong>
 	  		<hr> 
 				{{messageAlert}}
-			</div>'	
+			</div>	
 	
 	</script>

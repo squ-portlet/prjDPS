@@ -84,8 +84,9 @@
 		
 	
 	$(document).on("click", ".clsMsgErr", function(){
-		var messageAlert = $(this).attr('msg');
-		dropDataLoadActionStudent(messageAlert, '#hbDropStatAlert', '#divDropStatAlert');
+		var message = {};
+		message.messageAlert = $(this).attr('msg');
+		dropDataLoadActionStudent(message, '#hbDropStatAlert', '#divDropStatAlert');
 		
 	});
 	
@@ -158,6 +159,9 @@
 				};
 				varStudentNo	=	this.getAttribute("studentNo");
 				varStdStatCode	=	this.getAttribute("stdStatCode");
+				var studentId	=	this.getAttribute("studentId");
+				var	studentName	=	this.getAttribute("studentName");
+				
 				
 				approver 		= this.getAttribute("approver");
 				$("#imgAjaxLoading").show();
@@ -169,16 +173,31 @@
 						data	:	academicDetail,
 						success	:	function(data)
 						{
+							console.log("data : "+data);
 							$("#imgAjaxLoading").hide();
 							var courses = JSON.parse(data);
-							courses.approverMain=approver;
-							data.approverMain=approver;
-			
-							dropDataLoadAction(courses, '#hbDropCoursesAction', '#dropwCoursesAction');
+								courses.approverMain=approver;
+								courses.studentId=studentId;
+								courses.studentName=studentName;
+								data.approverMain=approver;
+							if($.trim(courses))
+							{
+								
+								dropDataLoadAction(courses, '#hbDropCoursesAction', '#dropwCoursesAction');
+							}
+							else
+							{
+								courses.approverMain=false;
+								$('#modalAlertErrMsg').html("<spring:message code='prop.dps.dropw.warn.approver.no.courses.found'/>");
+								$('#alertModal').modal('toggle');
+								
+								dropDataLoadAction(courses, '#hbDropCoursesAction', '#dropwCoursesAction');
+							}
 						},
 						error	:	function(xhr, status)
 						{
 							$("#imgAjaxLoading").hide();
+							dropDataLoadAction({}, '#hbDropCoursesAction', '#dropwCoursesAction');
 						}
 				});
 			});
