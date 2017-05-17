@@ -7,51 +7,65 @@
 
 	<%@include file="../../../ui/cssWelcome.jsp" %>	
 	<%@include file="../../../ui/js/registration/dropw/jsDropW.jsp" %>
-	
-	<c:choose>
-		<c:when test="${not empty courseList}">
-			<table class="table table-bordered">
-					<tr>
-						<th><spring:message code="prop.dps.course.code"/></th>
-						<th><spring:message code="prop.dps.course.title"/></th>
-						<th><spring:message code="prop.dps.course.section"/></th>
-						<th><spring:message code="prop.dps.course.credits"/></th>
-						<th><spring:message code="prop.dps.course.tution.fees"/></th>
-						<th><spring:message code="prop.dps.course.action"/></th>
-					</tr>
-					<c:forEach items="${courseList}" var="course" > 
-						<tr>
-							<td>${course.lAbrCourseNo}</td>
-							<td>${course.courseName}</td>
-							<td>${course.sectionNo}</td>
-							<td>${course.credits}</td>
-							<td>${course.tutionFees}</td>
-							<td id='status-${course.sectCode}'>
-								<c:choose>
-									<c:when test="${empty course.statusDesc}">
-										<a class="clsCourse" href="#" lAbrCourseNo=${course.lAbrCourseNo} courseNo=${course.courseNo} courseName="${course.courseName}" sectCode=${course.sectCode} sectionNo=${course.sectionNo} aria-hidden="true" data-toggle="modal" data-target="#modalDropWForm">
-											<span class="glyphicon glyphicon-pencil"  ></span>
-										</a>
-									</c:when>
-									<c:otherwise>
-											<span class="glyphicon glyphicon-ban-circle" ></span>
-									</c:otherwise>
-								</c:choose>
-							</td>
-						</tr>											
-					
-					</c:forEach>
-			</table>
+<c:choose>
+		<c:when test="${isRuleStudentComplete}">	
+			<c:choose>
+				<c:when test="${not empty courseList}">
+					<table class="table table-bordered">
+							<tr>
+								<th><spring:message code="prop.dps.course.code"/></th>
+								<th><spring:message code="prop.dps.course.title"/></th>
+								<th><spring:message code="prop.dps.course.section"/></th>
+								<th><spring:message code="prop.dps.course.credits"/></th>
+								<th><spring:message code="prop.dps.course.tution.fees"/></th>
+								<th><spring:message code="prop.dps.course.action"/></th>
+							</tr>
+							<c:forEach items="${courseList}" var="course" > 
+								<tr>
+									<td>${course.lAbrCourseNo}</td>
+									<td>${course.courseName}</td>
+									<td>${course.sectionNo}</td>
+									<td>${course.credits}</td>
+									<td>${course.tutionFees}</td>
+									<td id='status-${course.sectCode}'>
+										<c:choose>
+											<c:when test="${empty course.statusDesc}">
+												<a class="clsCourse" href="#" lAbrCourseNo=${course.lAbrCourseNo} courseNo=${course.courseNo} courseName="${course.courseName}" sectCode=${course.sectCode} sectionNo=${course.sectionNo} aria-hidden="true" data-toggle="modal" data-target="#modalDropWForm">
+													<span class="glyphicon glyphicon-pencil"  ></span>
+												</a>
+											</c:when>
+											<c:otherwise>
+													<span class="glyphicon glyphicon-ban-circle" ></span>
+											</c:otherwise>
+										</c:choose>
+									</td>
+								</tr>											
+							
+							</c:forEach>
+					</table>
+				
+				</c:when>
+				<c:otherwise>
+					<div class="alert alert-warning">
+							<spring:message code="prop.dps.dropw.warn.approver.no.courses.found"/>
+					</div>
+				
+				</c:otherwise>
+			</c:choose>
 		
+		
+			
+			<div id="tblDropCourses"></div>
+			<div id="divDropStatAlert"></div>
 		</c:when>
-		<c:otherwise></c:otherwise>
-	</c:choose>
-	
+		<c:otherwise>
+			<div class="alert alert-warning">
+				
+			</div>
+		</c:otherwise>
+		
+</c:choose>
 
-	
-	<div id="tblDropCourses"></div>
-	<div id="divDropStatAlert"></div>
-	
 	
     <div class="modal fade" id="modalDropWForm" tabindex="-1" role="dialog" aria-labelledby="myModalStudentDropWForm" aria-hidden="true" >
       <div class="modal-dialog modal-sm modal-xs">
@@ -132,6 +146,6 @@
 	 	<strong><spring:message code="prop.dps.extension.student.applications.head.column.action"/>!</strong>
 	  		<hr> 
 				{{messageAlert}}
-			</div>	
+	</div>	
 	
 	</script>

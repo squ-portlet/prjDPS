@@ -114,7 +114,7 @@ public class DropWDBImpl implements DropWDBDao
 	/**
 	 * 
 	 * method name  : getCourseList
-	 * @param studentId
+	 * @param student
 	 * @param locale
 	 * @return
 	 * DropWDBImpl
@@ -124,7 +124,7 @@ public class DropWDBImpl implements DropWDBDao
 	 *
 	 * Date    		:	Mar 30, 2017 8:20:37 AM
 	 */
-	public List<DropWDTO> getCourseList(String studentId, Locale locale)
+	public List<DropWDTO> getCourseList(Student student, Locale locale, String studentMode, String isWithdrawPeriodRule)
 	{
 		String	SQL_DROPW_SELECT_COURSE_DETAILS		=	queryDropWProps.getProperty(Constants.CONST_SQL_DROPW_SELECT_COURSE_DETAILS);
 		
@@ -149,8 +149,11 @@ public class DropWDBImpl implements DropWDBDao
 		};
 		
 		Map<String, String> paramMap	=	new HashMap<String, String>();
-		paramMap.put("paramStdId", studentId);
+		paramMap.put("paramStdId", student.getAcademicDetail().getId());
 		paramMap.put("paramLocale", locale.getLanguage());
+		paramMap.put("paramMode", studentMode);
+		paramMap.put("paramDropTimeApplied", isWithdrawPeriodRule);
+		
 		
 		
 		return nPJdbcTemplDpsDropW.query(SQL_DROPW_SELECT_COURSE_DETAILS, paramMap, rowMapper);
@@ -463,6 +466,9 @@ public class DropWDBImpl implements DropWDBDao
 		paramMap.put(Constants.CONST_PROC_COL_NAME_P_SECTCD, dropWDTO.getSectCode());
 		paramMap.put(Constants.CONST_PROC_COL_NAME_P_SECTNO, dropWDTO.getSectionNo());
 		paramMap.put(Constants.CONST_PROC_COL_NAME_P_USER, dropWDTO.getUserName());
+		
+		logger.info("paramMap : "+paramMap);
+		
 		try
 		{
 			resultProc	=	simpleJdbcCallDpsDropW.execute(paramMap);

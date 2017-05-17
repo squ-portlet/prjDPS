@@ -332,7 +332,29 @@ public class DpsDbImpl implements DpsDbDao
 		return  nPJdbcTemplDps.queryForObject(SQL_DPS_NEXT_YR_SEM, namedParameterMap, mapper);
 	}	
 	
-	
+	/**
+	 * 
+	 * method name  : getStudentMode
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * DpsDbImpl
+	 * return type  : String
+	 * 
+	 * purpose		: Get Study mode of the student (Full Time/Part Time) etc.
+	 *
+	 * Date    		:	May 16, 2017 11:06:05 PM
+	 */
+	public String	getStudentMode(String studentNo, String stdStatCode)
+	{
+		String	SQL_STUDENT_MODE	=	queryProps.getProperty(Constants.CONST_SQL_STUDENT_MODE);
+		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+		namedParameterMap.put("paramStdNo", studentNo);
+		namedParameterMap.put("paramStdStatCode", stdStatCode);
+		
+		return nPJdbcTemplDps.queryForObject(SQL_STUDENT_MODE, namedParameterMap, String.class);
+		
+	}
 	
 }
 

@@ -183,4 +183,19 @@ public interface DpsServiceDao
 	 * Date    		:	Mar 1, 2017 5:45:32 PM
 	 */
 	public ApprovalDTO setRoleTransaction(ExtensionDTO extensionDTO, Employee employee);
+	
+	/**
+	 * 
+	 * method name  : getStudentMode
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * DpsDbImpl
+	 * return type  : String
+	 * 
+	 * purpose		: Get Study mode of the student (Full Time/Part Time) etc.
+	 *
+	 * Date    		:	May 16, 2017 11:06:05 PM
+	 */
+	public String	getStudentMode(String studentNo, String stdStatCode);
 }

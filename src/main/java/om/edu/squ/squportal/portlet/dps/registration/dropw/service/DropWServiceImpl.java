@@ -40,9 +40,11 @@ import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotSuccessFulDBUpdate;
+import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.db.DropWDBDao;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.model.DropCourseModel;
+import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
 /**
  * @author Bhabesh
@@ -50,17 +52,22 @@ import om.edu.squ.squportal.portlet.dps.registration.dropw.model.DropCourseModel
  */
 public class DropWServiceImpl implements DropWService
 {
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private final Logger 	logger 						= 	LoggerFactory.getLogger(this.getClass());
+	private		  boolean	stdModeCreditApplied		=	false;  
+	
+	private		  String	dropWTimeApplied			=	Constants.CONST_RULE_DROP_W_PERIOD_NOT_APPLIED;
 	
 	@Autowired
 	DropWDBDao	dropWDBDao;
+	@Autowired
+	DpsServiceDao	dpsServiceDao;
 	
 	/**
 	 * 
 	 * method name  : getCourseList
-	 * @param studentId
+	 * @param student
 	 * @param locale
-	 * @return
+	 * @return 
 	 * DropWDBImpl
 	 * return type  : List<DropWDTO>
 	 * 
@@ -69,12 +76,29 @@ public class DropWServiceImpl implements DropWService
 	 * Date    		:	Mar 30, 2017 8:20:37 AM
 	 */
 	@Override
-	public List<DropWDTO> getCourseList(String studentId, Locale locale)
+	public List<DropWDTO> getCourseList(Student student, Locale locale)
 	{
-		return dropWDBDao.getCourseList(studentId, locale);
+		String studentMode	=	null;
+		if(stdModeCreditApplied)
+		{
+			studentMode = dpsServiceDao.getStudentMode(
+							student.getAcademicDetail().getStudentNo(), 
+							student.getAcademicDetail().getStdStatCode()
+						);
+		}
+		else
+		{
+			studentMode = Constants.CONST_RULE_DROP_W_STUDENT_MODE_NOT_APPLIED;
+		}
+		
+		 
+		return dropWDBDao.getCourseList(student, locale, studentMode, this.dropWTimeApplied);
 		
 	}
-	
+
+	/**
+	 * 
+	 */
 	@Override
 	public List<DropWDTO> setDropWCourseAdd(Student student, DropCourseModel dropCourseModel, Locale locale)
 	{
@@ -202,6 +226,38 @@ public class DropWServiceImpl implements DropWService
 		{
 			return null;
 		}
+	}
+
+	
+	/**
+	 * 
+	 * method name  : isRuleStudentComplete
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * DropWServiceImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		: Rule for Droping the course with W
+	 *
+	 * Date    		:	May 17, 2017 3:11:11 PM
+	 */
+	public boolean isRuleStudentComplete(String studentNo, String stdStatCode)
+	{
+		/*Rule 1 : 	Full Time need 12 Credit
+		 * 			Part Time need 3 Credit
+		 * Rule 2 : Period within Drop W Period 
+		 * */
+		
+		/*Rule 1 */
+		this.stdModeCreditApplied	=	true;
+		/*Rule 2 */
+		//this.dropWTimeApplied		= 	Constants.CONST_RULE_DROP_W_PERIOD_APPLIED; // Rule - Drop W period applied
+		
+		this.dropWTimeApplied		=	Constants.CONST_RULE_DROP_W_PERIOD_NOT_APPLIED; // Rule - Drop W period not applied
+
+		//TODO : Do not change result of the rule
+		return true;
 	}
 	
 }

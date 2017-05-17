@@ -141,7 +141,8 @@ public class DropWithWController
 		}
 		
 		model.addAttribute("dropCourseModel", dropCourseModel);
-		model.addAttribute("courseList", dropWService.getCourseList(user.getUserId(), locale));
+		model.addAttribute("isRuleStudentComplete", dropWService.isRuleStudentComplete(student.getAcademicDetail().getStudentNo(), student.getAcademicDetail().getStdStatCode()));
+		model.addAttribute("courseList", dropWService.getCourseList(student, locale));
 		model.addAttribute("dropWDTOs", gson.toJson(dropWService.getDropWCourses(student, locale)));
 		return "/registration/dropWithW/student/welcomeDropWithWStudent";
 	}
@@ -311,6 +312,8 @@ public class DropWithWController
 		List<DropWDTO> resultDropWDTOs	=	null;
 		Gson			gson			=	new Gson();
 		String			errMsg			=	null;
+		
+		dropWDTO.setUserName(request.getRemoteUser());
 		try
 			{
 				resultDropWDTOs	=	dropWService.setDropWCourseUpdate(dropWDTO, locale);
@@ -321,7 +324,7 @@ public class DropWithWController
 			/*We got the error but not throwing technical error to user screen*/
 			errMsg	=	ex.getMessage();
 		}
-		dropWDTO.setUserName(request.getRemoteUser());
+		
 		if(null == resultDropWDTOs)
 		{
 			response.setProperty(ResourceResponse.HTTP_STATUS_CODE, Integer.toString(HttpServletResponse.SC_INTERNAL_SERVER_ERROR));

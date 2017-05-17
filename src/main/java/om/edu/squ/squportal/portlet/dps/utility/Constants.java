@@ -98,6 +98,7 @@ public interface Constants
 	public static final	String	CONST_COLMN_YEAR_SEM							=	"YEAR_SEM";
 	public static final	String	CONST_COLMN_CREDITS								=	"CREDITS";
 	public static final	String	CONST_COLMN_TUTION_FEE							=	"TUTION_FEE";
+	public static final	String	CONST_COLMN_STUDENT_MODE						=	"STD_MODE";
 
 	public static final	String	CONST_COLMN_SISCODECD							=	"SISCODECD";
 	public static final	String	CONST_COLMN_STATUS_CODE							=	"STATUS_CODE";
@@ -135,6 +136,10 @@ public interface Constants
 	public static final	String	CONST_SQL_STATUS_CODE_NAME_PENDING				=	"PENDG";
 	public static final	String	CONST_SQL_STATUS_CODE_REJCT						=	"REJCT";
 	public static final	String	CONST_SQL_STATUS_CODE_ACCPT						=	"ACCPT";
+	
+	public static final	String	CONST_RULE_DROP_W_PERIOD_APPLIED				=	"1";
+	public static final	String	CONST_RULE_DROP_W_PERIOD_NOT_APPLIED			=	"0";
+	public static final	String	CONST_RULE_DROP_W_STUDENT_MODE_NOT_APPLIED		=	"NOT_AVAILABLE";
 	
 	/************* SQL CONSTANT STATUS CODE ******************************/
 	
@@ -174,6 +179,7 @@ public interface Constants
 	public 	static	final	String	COST_SQL_DPS_EMPLOYEE_DETAIL				=	"dps.select.employee.detail";
 	public	static 	final	String	SQL_PERSONAL_DETAIL_STUDENT					=	"personal.details.of.student";
 	public	static	final	String	SQL_ACADEMIC_DETAIL_STUDENT					=	"academic.details.of.student";
+	public	static	final	String	CONST_SQL_STUDENT_MODE						=	"dps.select.student.mode";				//Full Time / Part Time etc
 	
 	/* ---  SQL - DPS - Extension property--------------------- */
 	public	static	final	String	CONST_SQL_EXTENSION_REASONS					=	"dps.extension.select.extension.reasons";

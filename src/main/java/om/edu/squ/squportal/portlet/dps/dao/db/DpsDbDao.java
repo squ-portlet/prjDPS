@@ -120,4 +120,19 @@ public interface DpsDbDao
 	 * Date    		:	Jan 9, 2017 11:22:11 AM
 	 */
 	public AcademicDetail	getStudentAcademicDetail(String studentId, Locale locale ) throws NoDBRecordException;
+	
+	/**
+	 * 
+	 * method name  : getStudentMode
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * DpsDbImpl
+	 * return type  : String
+	 * 
+	 * purpose		: Get Study mode of the student (Full Time/Part Time) etc.
+	 *
+	 * Date    		:	May 16, 2017 11:06:05 PM
+	 */
+	public String	getStudentMode(String studentNo, String stdStatCode);
 }

@@ -19,6 +19,26 @@
               MOD(REG.SECTNO,10)
               , 0, REG.CRSCRED, 0
             )                          						AS  CREDITS
+	    , DECODE(
+	              :paramMode
+	              ,'FULL',  CASE 
+	                               WHEN ( DECODE(
+	                                MOD(REG.SECTNO,10)
+	                                , 0, REG.CRSCRED, 0
+	                                  ) - 12) 
+	                             >=0  THEN 'Y'
+	                            ELSE 'N'
+	                         END   
+	              ,'PART',  CASE 
+	                               WHEN ( DECODE(
+	                                MOD(REG.SECTNO,10)
+	                                , 0, REG.CRSCRED, 0
+	                                  ) - 3) 
+	                             >=0  THEN 'Y'
+	                            ELSE 'N'
+	                         END  
+	              ,'Y'
+	         )                                       		AS  CREDIT_DROP_ALLOWED            
     , TO_CHAR(
                 REG.FIRSTWTHDTE, 'DD/MM/YYYY'
               )                         					AS  FIRST_WITHDRAW_DATE
@@ -50,10 +70,14 @@
             AND REG.CRSNO       = T_DROP.CRSNO 		(+)
             AND REG.SECTCD      = T_DROP.SECTCD 	(+)         
             AND REG.SECTNO      = T_DROP.SECTNO 	(+)        
-            
+            AND	
+           	  (
+			         SYSDATE between to_date(FIRSTWTHDTE) and to_date(SECONDWTHDTE)
+			         OR :paramDropTimeApplied = 0
+   			)
             AND 
                 REG.L_ABR_STDNO =  :paramStdId
-	
+			
 	</entry>
 	<entry key="dps.dropw.insert.course.temp.for.drop">
 		INSERT INTO 

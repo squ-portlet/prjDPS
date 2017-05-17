@@ -327,7 +327,26 @@ public class DpsServiceImpl implements DpsServiceDao
 		return approvalDTO;
 	}
 
-
+	
+	/**
+	 * 
+	 * method name  : getStudentMode
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * DpsDbImpl
+	 * return type  : String
+	 * 
+	 * purpose		: Get Study mode of the student (Full Time/Part Time) etc.
+	 *
+	 * Date    		:	May 16, 2017 11:06:05 PM
+	 */
+	public String	getStudentMode(String studentNo, String stdStatCode)
+	{
+		return dpsDbDao.getStudentMode(studentNo, stdStatCode);
+	}
+	
+	
 	/**
 	 * 
 	 * method name  : getEmpNumber

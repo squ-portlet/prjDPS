@@ -14,7 +14,7 @@ public interface DropWService
 	/**
 	 * 
 	 * method name  : getCourseList
-	 * @param studentId
+	 * @param student
 	 * @param locale
 	 * @return
 	 * DropWDBImpl
@@ -24,7 +24,7 @@ public interface DropWService
 	 *
 	 * Date    		:	Mar 30, 2017 8:20:37 AM
 	 */
-	public List<DropWDTO> getCourseList(String studentId, Locale locale);
+	public List<DropWDTO> getCourseList(Student student, Locale locale);
 	
 	/**
 	 * 
@@ -88,5 +88,20 @@ public interface DropWService
 	 * @throws NotSuccessFulDBUpdate 
 	 */
 	public List<DropWDTO> setDropWCourseUpdate(DropWDTO dropWDTO, Locale locale) throws NotSuccessFulDBUpdate;
+	
+	/**
+	 * 
+	 * method name  : isRuleStudentComplete
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * DropWServiceImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		: Rule for Droping the course with W
+	 *
+	 * Date    		:	May 17, 2017 3:11:11 PM
+	 */
+	public boolean isRuleStudentComplete(String studentNo, String stdStatCode);
 	
 }

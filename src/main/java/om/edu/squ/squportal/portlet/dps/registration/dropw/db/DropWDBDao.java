@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Locale;
 
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
+import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotSuccessFulDBUpdate;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO;
 
@@ -45,8 +46,10 @@ public interface DropWDBDao
 	/**
 	 * 
 	 * method name  : getCourseList
-	 * @param studentId
+	 * @param student
 	 * @param locale
+	 * @param studentMode TODO
+	 * @param isWithdrawPeriodRule TODO
 	 * @return
 	 * DropWDBImpl
 	 * return type  : List<DropWDTO>
@@ -55,7 +58,7 @@ public interface DropWDBDao
 	 *
 	 * Date    		:	Mar 30, 2017 8:20:37 AM
 	 */
-	public List<DropWDTO> getCourseList(String studentId, Locale locale);
+	public List<DropWDTO> getCourseList(Student student, Locale locale, String studentMode, String isWithdrawPeriodRule);
 	/**
 	 * 
 	 * method name  : getCourseList

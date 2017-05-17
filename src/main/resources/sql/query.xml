@@ -137,5 +137,24 @@
                     AND  SI.STDSTATCD = STH.STDSTATCD (+)
     	 ]]>
     </entry>
+    <entry key="dps.select.student.mode">
+			SELECT
+			      		CODES.L_ABR_CODE													AS		STD_MODE												
+			FROM
+			      		SIS_CODES CODES
+			    	,   STD_SPNSR SPNSR
+			WHERE
+			        	SPNSR.RELEASETYPECD = CODES.SISCODECD
+			    	AND SPNSR.STDNO = :paramStdNo
+			    	AND SPNSR.STDSTATCD = :paramStdStatCode
+			   		AND SPNSR.FROMDTE = (
+				                            SELECT 
+				                              MAX(FROMDTE) 
+				                            FROM
+				                              STD_SPNSR
+				                            WHERE STDNO = :paramStdNo
+				                            AND   STDSTATCD = :paramStdStatCode
+			                        	)    
+    </entry>
     
 </properties>
