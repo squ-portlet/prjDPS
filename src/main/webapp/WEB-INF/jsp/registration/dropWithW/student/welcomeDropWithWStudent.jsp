@@ -7,6 +7,7 @@
 
 	<%@include file="../../../ui/cssWelcome.jsp" %>	
 	<%@include file="../../../ui/js/registration/dropw/jsDropW.jsp" %>
+	
 <c:choose>
 		<c:when test="${isRuleStudentComplete}">	
 			<c:choose>
@@ -49,6 +50,15 @@
 					<div class="alert alert-warning">
 							<spring:message code="prop.dps.dropw.warn.approver.no.courses.found"/>
 					</div>
+					<hr>
+					    <center>
+	          				<div class="alert alert-warning">
+	          							<spring:message code="prop.dps.dropw.rule.text"/>
+								<br>	<spring:message code="prop.dps.dropw.rule.01"/>
+								<br>	<spring:message code="prop.dps.dropw.rule.02"/>
+								<br>	<spring:message code="prop.dps.dropw.rule.03"/>
+	          				</div>
+          				</center>
 				
 				</c:otherwise>
 			</c:choose>
