@@ -129,6 +129,8 @@ public interface Constants
 	
 	public static final	String	CONST_COLMN_ROLE_IS_APPROVER					=	"IS_APPROVER";
 	
+	public static final	String	CONST_COLMN_POSTPONE_REASON_NAME				=	"POSTPONE_REASON_NAME";
+	
 	/******************************************************/
 	public static final	String	CONST_SQL_STATUS_CODE_PENDING					=	"5539";
 	public static final	String	CONST_SQL_STATUS_CODE_NAME_MODFY				=	"MODFY";

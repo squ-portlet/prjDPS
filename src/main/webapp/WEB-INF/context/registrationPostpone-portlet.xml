@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!--  
  * Project 				:	prjDPS
  * Organization 		:	Sultan Qaboos University
@@ -6,15 +5,15 @@
  * Department 			:	Web & E-Services
  * Author				:	Bhabesh
  * 
- * FrameWork			:	Spring 3.2.3 (Annotation) Portlet
+ * FrameWork			:	Spring 4.0.8 (Annotation) Portlet
  * 
- * File Name			:	registrationDropW-portlet.xml
+ * File Name			:	registrationPostpone-portlet.xml
  * 
- * Date of Modification	:	22-December-2016
+ * Date of Modification	:	22-May-2017
  *  
  * Summary				:	web context file
  *
- * Copyright 2012 the original author or authors.
+ * Copyright 2017 the original author or authors.
  *
  * Licensed under the SQU, CIS policy
  * you may not use this file except in compliance with the License.
@@ -33,28 +32,23 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
         
-        
-        <!-- scan spring components -->
-
-  <context:component-scan base-package="om.edu.squ.squportal.portlet.dps.registration.dropw" /> 
-  
+              <!-- scan spring components -->
+	  <context:component-scan base-package="om.edu.squ.squportal.portlet.dps.registration.postpone" />   
+	  
+	    
   <!-- DI to DPS Drop with W Property -->
-		<bean id="queryDropWProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-			<property name="locations" value="classpath:sql/query_dropwithw.xml" />
+		<bean id="queryPostpone" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+			<property name="locations" value="classpath:sql/query_postpone.xml" />
 		</bean>
- 
- <!-- DI to DPS Drop with W of Registration DB Dao -->			
-		<bean id="dropWDBDao"	class="om.edu.squ.squportal.portlet.dps.registration.dropw.db.DropWDBImpl">
+	  
+ <!-- DI to Postponement of studies Registration DB Dao -->			
+		<bean id="postponeDBDao"	class="om.edu.squ.squportal.portlet.dps.registration.postpone.db.PostponeDBImpl">
 	 		<property name="nPJdbcTemplDpsDropW" ref="namedParameterJdbcTemplateDps"/> 
-	 		<property name="simpleJdbcCallDpsDropW" ref="simpleJdbcCallDps"/>
 			<property name="queryProps" ref="queryProps" />
-			<property name="queryDropWProps" ref="queryDropWProps" />
+			<property name="queryPostpone" ref="queryPostpone" />
 	 	</bean>
-		
+
 <!-- DI to DPS Drop with W of Registration Service Dao -->
-	<bean id="dropWService"	class="om.edu.squ.squportal.portlet.dps.registration.dropw.service.DropWServiceImpl"/>
- 
- 
- 
- 
- </beans>
+	<bean id="postponeService"	class="om.edu.squ.squportal.portlet.dps.registration.postpone.service.PostponeServiceImpl"/>
+
+</beans>        

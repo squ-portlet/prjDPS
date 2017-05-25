@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>DPS Postponement Queries</comment>
+    <entry key="dps.postpone.select.postpone.reasons">
+    	SELECT 
+			CODE.SISCODECD										AS		SISCODECD	
+			,DECODE 
+					(
+					  :paramLocale,
+					  'en', CODE.CODENM, CODE.A_CODENM
+					)     										AS		POSTPONE_REASON_NAME
+		FROM 
+		    SIS_CODES CODE,
+        	SIS_CODE_TYPES CODE_TYPE
+		WHERE
+        		CODE.SISCODETYPCD = CODE_TYPE.SISCODETYPCD
+		    AND CODE_TYPE.SISCODETYPNM = 'PST_REASON'
+    </entry>
+</properties>

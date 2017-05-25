@@ -31,5 +31,6 @@
 	<category name="SQU Academic/DPS">
 		<portlet id="dpsExtensionStudies" />
 		<portlet id="dpsRegistrationDropWithW" />
+		<portlet id="dpsRegistrationPostpone" />
 	</category>
 </display>
