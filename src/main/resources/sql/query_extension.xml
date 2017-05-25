@@ -5,16 +5,18 @@
   	<entry key="dps.extension.select.extension.reasons">
   	<![CDATA[
 		SELECT 
-			SISCODECD										AS		SISCODECD	
+			CODE.SISCODECD										AS		SISCODECD	
 			,DECODE 
 					(
 					  :paramLocale,
-					  'en', CODENM, A_CODENM
-					)     									AS		EXTENSION_REASON_NAME
+					  'en', CODE.CODENM, CODE.A_CODENM
+					)     										AS		EXTENSION_REASON_NAME
 		FROM 
-		    SIS_CODES
+		    SIS_CODES 		CODE,
+        	SIS_CODE_TYPES 	CODE_TYPE
 		WHERE
-		    SISCODETYPCD=291
+        		CODE.SISCODETYPCD = CODE_TYPE.SISCODETYPCD
+		    AND CODE_TYPE.SISCODETYPNM = 'EXT_REASON'
   	]]>
 
   	</entry>
