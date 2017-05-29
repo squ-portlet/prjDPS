@@ -122,7 +122,7 @@
 <!-- 						          <div class="col-md-6"> -->
 						              <div class="form-group">
 						                <div class="col-sm-2">
-						                  <label for="inputEmail3" class="control-label">Semester to be extended</label>
+						                  <label for="inputEmail3" class="control-label"><spring:message code="prop.dps.extension.student.applications.form.semester.tobe.extended"/></label>
 						                </div>
 						                <div class="col-sm-8">
 						                  <label class="radio-inline">
