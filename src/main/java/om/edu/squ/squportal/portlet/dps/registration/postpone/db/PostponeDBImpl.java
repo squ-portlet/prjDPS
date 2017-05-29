@@ -29,10 +29,20 @@
  */
 package om.edu.squ.squportal.portlet.dps.registration.postpone.db;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Properties;
+
+import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeReason;
+import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 
@@ -46,7 +56,7 @@ public class PostponeDBImpl implements PostponeDBDao
 	
 	private		Properties					queryProps;
 	private		Properties					queryPostpone;
-	private		NamedParameterJdbcTemplate	nPJdbcTemplDpsDropW;
+	private		NamedParameterJdbcTemplate	nPJdbcTemplDpsPostpone;
 
 	/**
 	 * Setter method : setQueryProps
@@ -69,17 +79,50 @@ public class PostponeDBImpl implements PostponeDBDao
 		this.queryPostpone = queryPostpone;
 	}
 	/**
-	 * Setter method : setnPJdbcTemplDpsDropW
-	 * @param nPJdbcTemplDpsDropW the nPJdbcTemplDpsDropW to set
+	 * Setter method : setnPJdbcTemplDpsPostpone
+	 * @param nPJdbcTemplDpsPostpone the nPJdbcTemplDpsPostpone to set
 	 * 
-	 * Date          : May 25, 2017 2:20:08 PM
+	 * Date          : May 25, 2017 4:14:10 PM
 	 */
-	public void setnPJdbcTemplDpsDropW(
-			NamedParameterJdbcTemplate nPJdbcTemplDpsDropW)
+	public void setnPJdbcTemplDpsPostpone(
+			NamedParameterJdbcTemplate nPJdbcTemplDpsPostpone)
 	{
-		this.nPJdbcTemplDpsDropW = nPJdbcTemplDpsDropW;
+		this.nPJdbcTemplDpsPostpone = nPJdbcTemplDpsPostpone;
 	}
-
 	
+	/**
+	 * 
+	 * method name  : getPostponeReasons
+	 * @param locale
+	 * @return
+	 * PostponeDBImpl
+	 * return type  : List<PostponeReason>
+	 * 
+	 * purpose		: Get list of default reasons for postpone 
+	 *
+	 * Date    		:	May 25, 2017 4:15:05 PM
+	 */
+	public List<PostponeReason> getPostponeReasons(Locale locale)
+	{
+		String	SQL_POSTPONE_REASONS		=	queryPostpone.getProperty(Constants.CONST_SQL_POSTPONE_REASONS);
+		
+		RowMapper<PostponeReason> rowMapper	=	new RowMapper<PostponeReason>()
+		{
+			
+			@Override
+			public PostponeReason mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				PostponeReason	postponeReason	=	new PostponeReason();
+				postponeReason.setSiscodecd(rs.getString(Constants.CONST_COLMN_SISCODECD));
+				postponeReason.setReasonName(rs.getString(Constants.CONST_COLMN_POSTPONE_REASON_NAME));
+				return postponeReason;
+			}
+		};
+		
+		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+		namedParameterMap.put("paramLocale", locale.getLanguage());
+		
+		return nPJdbcTemplDpsPostpone.query(SQL_POSTPONE_REASONS,namedParameterMap,rowMapper);
+	}
 	
 }

@@ -36,19 +36,19 @@
 	  <context:component-scan base-package="om.edu.squ.squportal.portlet.dps.registration.postpone" />   
 	  
 	    
-  <!-- DI to DPS Drop with W Property -->
+  <!-- DI to DPS Postponement of studies Property -->
 		<bean id="queryPostpone" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
 			<property name="locations" value="classpath:sql/query_postpone.xml" />
 		</bean>
 	  
  <!-- DI to Postponement of studies Registration DB Dao -->			
 		<bean id="postponeDBDao"	class="om.edu.squ.squportal.portlet.dps.registration.postpone.db.PostponeDBImpl">
-	 		<property name="nPJdbcTemplDpsDropW" ref="namedParameterJdbcTemplateDps"/> 
+	 		<property name="nPJdbcTemplDpsPostpone" ref="namedParameterJdbcTemplateDps"/> 
 			<property name="queryProps" ref="queryProps" />
 			<property name="queryPostpone" ref="queryPostpone" />
 	 	</bean>
 
-<!-- DI to DPS Drop with W of Registration Service Dao -->
+<!-- DI to DPS Postponement of studies of Registration Service Dao -->
 	<bean id="postponeService"	class="om.edu.squ.squportal.portlet.dps.registration.postpone.service.PostponeServiceImpl"/>
 
 </beans>        

@@ -161,8 +161,10 @@ public interface Constants
 	/************* SQL CONSTANT DPS FORM CODE ******************************/
 //	public static final	String	CONST_FORM_DPS_EXTENSION_STUDY					=	"3413";
 
-	public static final	String	CONST_FORM_NAME_DPS_EXTENSION_STUDY				=	"DPS19";
 	public static final	String	CONST_FORM_NAME_DPS_DROP_W						=	"DPS7";
+	public static final	String	CONST_FORM_NAME_DPS_POSTPONE_STUDY				=	"DPS13";
+	public static final	String	CONST_FORM_NAME_DPS_EXTENSION_STUDY				=	"DPS19";	
+	
 	/************* PROPERTY FILE ******************************/
 	public	static	String	RESOURCE_PROPERTY_FILE_NAME							=	"messages";
 
@@ -196,6 +198,9 @@ public interface Constants
 	public	static	final	String	CONST_SQL_DROPW_SELECT_COURSE_TEMP			=	"dps.dropw.select.course.temp.for.drop";
 	public	static	final	String	CONST_SQL_DROPW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	"dps.dropw.select.student.records.by.employee";
 	public	static	final	String	CONST_SQL_DROPW_UPDATE_COURSE_TEMP			=	"dps.dropw.update.course.temp.for.drop";
+	
+	/* ---  SQL - DPS - Postponement of Studies property--------------------- */
+	public	static	final	String	CONST_SQL_POSTPONE_REASONS					=	"dps.postpone.select.postpone.reasons";
 
 	/* ---  SQL - DPS - Drop With W -- Stored Procedure -- --------------------- */	
 	public	static	final	String	CONST_PROC_DROPW_WITHDRAW_COURSE			=	"PROC_WITHDRAW_COURSE";

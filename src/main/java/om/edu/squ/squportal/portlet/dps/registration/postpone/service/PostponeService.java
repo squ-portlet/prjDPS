@@ -29,11 +29,28 @@
  */
 package om.edu.squ.squportal.portlet.dps.registration.postpone.service;
 
+import java.util.List;
+import java.util.Locale;
+
+import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeReason;
+
 /**
  * @author Bhabesh
  *
  */
 public interface PostponeService
 {
-	
+	/**
+	 * 
+	 * method name  : getPostponeReasons
+	 * @param locale
+	 * @return
+	 * PostponeDBImpl
+	 * return type  : List<PostponeReason>
+	 * 
+	 * purpose		: Get list of default reasons for postpone 
+	 *
+	 * Date    		:	May 25, 2017 4:15:05 PM
+	 */
+	public List<PostponeReason> getPostponeReasons(Locale locale);
 }

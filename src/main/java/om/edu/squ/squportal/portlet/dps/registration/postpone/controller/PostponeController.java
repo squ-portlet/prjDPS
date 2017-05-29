@@ -36,6 +36,8 @@ import javax.portlet.PortletRequest;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
+import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentDataModel;
+import om.edu.squ.squportal.portlet.dps.registration.postpone.service.PostponeService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,16 +58,25 @@ public class PostponeController
 	
 	@Autowired
 	DpsServiceDao	dpsServiceDao;
+	@Autowired
+	PostponeService	postponeService;
 	
 	@RequestMapping
 	private	String studentWelcome(PortletRequest request, Model model, Locale locale)
 	{
 		User	user	=	dpsServiceDao.getUser(request);
 		Student student	= dpsServiceDao.getStudent(user.getUserId(), new Locale("en"));
+		
+		if(!model.containsAttribute("postponeStudentDataModel"))
+		{
+			PostponeStudentDataModel	postponeStudentDataModel	=	new PostponeStudentDataModel();
+			model.addAttribute("postponeStudentDataModel", postponeStudentDataModel);
+		}
+		
 		model.addAttribute("student", student);
 		model.addAttribute("currYearSem", dpsServiceDao.getCurrentYearSemester(locale));
 		model.addAttribute("nextYearSemester", dpsServiceDao.getNextYearSemester(locale));
-		
+		model.addAttribute("reasonList", postponeService.getPostponeReasons(locale));
 		
 		return "/registration/postpone/student/welcomePostponeStudent";
 	}

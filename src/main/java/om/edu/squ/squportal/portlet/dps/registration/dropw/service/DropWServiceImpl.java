@@ -252,9 +252,10 @@ public class DropWServiceImpl implements DropWService
 		/*Rule 1 */
 		this.stdModeCreditApplied	=	true;
 		/*Rule 2 */
-		//this.dropWTimeApplied		= 	Constants.CONST_RULE_DROP_W_PERIOD_APPLIED; // Rule - Drop W period applied
+		//TODO
+		//this.dropWTimeApplied		= 	Constants.CONST_RULE_DROP_W_PERIOD_APPLIED; // Rule - Drop W period applied -- APPLIED DROP 'W' TIME - PRODUCTION USE
 		
-		this.dropWTimeApplied		=	Constants.CONST_RULE_DROP_W_PERIOD_NOT_APPLIED; // Rule - Drop W period not applied
+		this.dropWTimeApplied		=	Constants.CONST_RULE_DROP_W_PERIOD_NOT_APPLIED; // Rule - Drop W period not applied  -- This statement for tesing only
 
 		//TODO : Do not change result of the rule
 		return true;

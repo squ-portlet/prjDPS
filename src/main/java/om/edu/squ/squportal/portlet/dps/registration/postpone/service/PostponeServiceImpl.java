@@ -29,11 +29,45 @@
  */
 package om.edu.squ.squportal.portlet.dps.registration.postpone.service;
 
+import java.util.List;
+import java.util.Locale;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
+import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeReason;
+import om.edu.squ.squportal.portlet.dps.registration.postpone.db.PostponeDBDao;
+
 /**
  * @author Bhabesh
  *
  */
 public class PostponeServiceImpl implements PostponeService
 {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
+	@Autowired
+	DpsServiceDao	dpsServiceDao;
+	@Autowired
+	PostponeDBDao	postponeDBDao;
+	
+	
+	/**
+	 * 
+	 * method name  : getPostponeReasons
+	 * @param locale
+	 * @return
+	 * PostponeDBImpl
+	 * return type  : List<PostponeReason>
+	 * 
+	 * purpose		: Get list of default reasons for postpone 
+	 *
+	 * Date    		:	May 25, 2017 4:15:05 PM
+	 */
+	public List<PostponeReason> getPostponeReasons(Locale locale)
+	{
+		return postponeDBDao.getPostponeReasons(locale);
+	}
 }
