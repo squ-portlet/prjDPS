@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotSuccessFulDBUpdate;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.model.DropCourseModel;
@@ -70,8 +71,9 @@ public interface DropWService
 	 * purpose		: Get List of student records for courses to be dropped 
 	 *
 	 * Date    		:	Apr 17, 2017 8:24:28 PM
+	 * @throws NoDBRecordException 
 	 */
-	public List<DropWDTO> getDropWForApprovers(String roleType, Employee employee, Locale locale);
+	public List<DropWDTO> getDropWForApprovers(String roleType, Employee employee, Locale locale) throws NoDBRecordException;
 	
 	/**
 	 * 

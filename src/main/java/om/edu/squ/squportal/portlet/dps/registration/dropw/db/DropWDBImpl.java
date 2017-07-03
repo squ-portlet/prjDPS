@@ -43,6 +43,7 @@ import javax.sql.DataSource;
 import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotSuccessFulDBUpdate;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.Advisor;
@@ -50,6 +51,7 @@ import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
@@ -262,7 +264,7 @@ public class DropWDBImpl implements DropWDBDao
 	 *
 	 * Date    		:	Apr 17, 2017 8:24:28 PM
 	 */
-	public List<DropWDTO> getDropWForApprovers(String roleType, Employee employee, Locale locale, String studentNo)
+	public List<DropWDTO> getDropWForApprovers(String roleType, Employee employee, Locale locale, String studentNo) throws NoDBRecordException
 	{
 		String	SQL_DROPW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	queryDropWProps.getProperty(Constants.CONST_SQL_DROPW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE);
 		
@@ -346,8 +348,16 @@ public class DropWDBImpl implements DropWDBDao
 			namedParameterMap.put("paramStdNo", studentNo);
 		}
 		
-	
-		return nPJdbcTemplDpsDropW.query(SQL_DROPW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE, namedParameterMap, mapper);
+		try
+		{
+			return nPJdbcTemplDpsDropW.query(SQL_DROPW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE, namedParameterMap, mapper);
+		}
+		catch(UncategorizedSQLException sqlEx)
+		{
+			logger.error("Error occur to find Approver");
+			throw new NoDBRecordException(sqlEx.getMessage());
+		}
+		
 	}
 
 
@@ -472,6 +482,11 @@ public class DropWDBImpl implements DropWDBDao
 		try
 		{
 			resultProc	=	simpleJdbcCallDpsDropW.execute(paramMap);
+		}
+		catch(BadSqlGrammarException badGrException)
+		{
+			logger.error("Might be a grammatical issue in stored procedure");
+			throw new NotSuccessFulDBUpdate(badGrException.getMessage());
 		}
 		catch(UncategorizedSQLException exception)
 		{

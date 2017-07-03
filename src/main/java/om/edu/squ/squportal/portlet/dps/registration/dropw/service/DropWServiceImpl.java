@@ -39,6 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotSuccessFulDBUpdate;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO;
@@ -184,7 +185,7 @@ public class DropWServiceImpl implements DropWService
 	 *
 	 * Date    		:	Apr 17, 2017 8:24:28 PM
 	 */
-	public List<DropWDTO> getDropWForApprovers(String roleType, Employee employee, Locale locale)
+	public List<DropWDTO> getDropWForApprovers(String roleType, Employee employee, Locale locale) throws NoDBRecordException
 	{
 		if(employee.getEmpNumber().substring(0,1).equals("e"))
 		{

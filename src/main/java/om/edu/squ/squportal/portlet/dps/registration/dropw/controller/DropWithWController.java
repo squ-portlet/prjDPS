@@ -44,6 +44,7 @@ import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotSuccessFulDBUpdate;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
@@ -98,8 +99,6 @@ public class DropWithWController
 	private	String welcome(PortletRequest request, Model model, Locale locale)
 	{
 		User	user	=	dpsServiceDao.getUser(request);
-
-
 
 		if(user.getUserType().equals(Constants.USER_TYPE_STUDENT))
 		{
@@ -239,7 +238,7 @@ public class DropWithWController
 	private void getResourceDataEmpByRole(
 											@ModelAttribute("roleNameValue") RoleNameValue roleNameValue,
 											ResourceRequest request, ResourceResponse response, Locale locale
-											) throws IOException
+											) throws IOException, NoDBRecordException
 	{
 			Gson		gson		= 	new Gson();
 			Employee	employee	=	null;
