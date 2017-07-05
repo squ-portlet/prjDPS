@@ -54,6 +54,7 @@ import om.edu.squ.squportal.portlet.dps.activiti.dao.db.ActivitiDbImpl;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
 import om.edu.squ.squportal.portlet.dps.role.bo.RoleExtension;
@@ -108,9 +109,10 @@ public class ExtensionStudiesController
 	 *
 	 * Date    		:	Jan 2, 2017 11:15:24 AM
 	 * @throws IOException 
+	 * @throws NotCorrectDBRecordException 
 	 */
 	@RequestMapping
-	private String welcome(PortletRequest request, Model model, Locale locale) throws IOException
+	private String welcome(PortletRequest request, Model model, Locale locale) throws IOException, NotCorrectDBRecordException
 	{
 		
 		
@@ -155,12 +157,22 @@ public class ExtensionStudiesController
 	 * purpose		: Student Welcome
 	 *
 	 * Date    		:	Jan 12, 2017 3:03:12 PM
+	 * @throws NotCorrectDBRecordException 
 	 */
-	private String studentWelcome(PortletRequest request, Model model, Locale locale)
+	private String studentWelcome(PortletRequest request, Model model, Locale locale) throws NotCorrectDBRecordException
 	{
 		String userName	=	request.getRemoteUser();
 		User	user	=	dpsServiceDao.getUser(request);
 		Student student	= dpsServiceDao.getStudent(user.getUserId(), new Locale("en"));
+		List<ExtensionDTO>	extensions = null;
+		if(null == extensionServiceDao.getExtensionsForStudents(student.getAcademicDetail().getStudentNo(), locale))
+		{ 
+			
+		}
+		else
+		{
+			extensions = extensionServiceDao.getExtensionsForStudents(student.getAcademicDetail().getStudentNo(), locale);
+		}
 		
 		if(!model.containsAttribute("extensionStudentDataModel"))
 		{
@@ -173,7 +185,8 @@ public class ExtensionStudiesController
 		model.addAttribute("currYearSem", dpsServiceDao.getCurrentYearSemester(locale));
 		model.addAttribute("nextYearSemester", dpsServiceDao.getNextYearSemester(locale));
 		model.addAttribute("reasonList", extensionServiceDao.getExtensionReasons(locale));
-		model.addAttribute("extenstions",extensionServiceDao.getExtensionsForStudents(student.getAcademicDetail().getStudentNo(), locale));
+		
+		model.addAttribute("extenstions",extensions);
 		/* TODO for Apply RULE uncomment the following statement */
 		model.addAttribute("isRuleStudentComplete", true);
 		//model.addAttribute("isRuleStudentComplete", extensionServiceDao.isRuleStudentComplete(student.getAcademicDetail().getStudentNo(),student.getAcademicDetail().getStdStatCode()));
@@ -233,11 +246,12 @@ public class ExtensionStudiesController
 	 * purpose		: Add a record in extension table as student
 	 *
 	 * Date    		:	Jan 24, 2017 3:30:43 PM
+	 * @throws NotCorrectDBRecordException 
 	 */
 	@RequestMapping(params="action=studentFormAction")
 	private	void submitStudentExtension(ActionRequest request, ActionResponse response,
 			@ModelAttribute("extensionStudentDataModel")ExtensionStudentDataModel extensionStudentDataModel,
-			BindingResult result,Locale locale,Model model)
+			BindingResult result,Locale locale,Model model) throws NotCorrectDBRecordException
 	{
 		String userName	=	request.getRemoteUser();
 		User	user	=	dpsServiceDao.getUser(request);

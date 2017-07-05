@@ -44,12 +44,14 @@ import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.PersonalDetail;
 import om.edu.squ.squportal.portlet.dps.bo.YearSemester;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
@@ -224,7 +226,7 @@ public class DpsDbImpl implements DpsDbDao
 	 *
 	 * Date    		:	Jan 9, 2017 11:22:11 AM
 	 */
-	public AcademicDetail	getStudentAcademicDetail(String studentId, Locale locale ) throws NoDBRecordException
+	public AcademicDetail	getStudentAcademicDetail(String studentId, Locale locale ) throws NoDBRecordException, NotCorrectDBRecordException
 	{
 		String SQL_ACADEMIC_DETAIL_STUDENT		=	queryProps.getProperty(Constants.SQL_ACADEMIC_DETAIL_STUDENT);
 		RowMapper<AcademicDetail> mapper	=	new RowMapper<AcademicDetail>() {
@@ -257,6 +259,11 @@ public class DpsDbImpl implements DpsDbDao
 		catch(EmptyResultDataAccessException ex)
 		{
 			throw new NoDBRecordException(ex.getMessage()); 
+		}
+		catch(IncorrectResultSizeDataAccessException exNotCorrectResultSize)
+		{
+			logger.error("DB Error : Error Thrown and to be catched in Service layer");
+			throw new NotCorrectDBRecordException(exNotCorrectResultSize.getMessage());
 		}
 	}
 	

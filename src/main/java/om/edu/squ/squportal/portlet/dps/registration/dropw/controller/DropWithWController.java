@@ -45,6 +45,7 @@ import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotSuccessFulDBUpdate;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
@@ -94,9 +95,10 @@ public class DropWithWController
 	 * purpose		:
 	 *
 	 * Date    		:	Mar 27, 2017 4:30:05 PM
+	 * @throws NotCorrectDBRecordException 
 	 */
 	@RequestMapping
-	private	String welcome(PortletRequest request, Model model, Locale locale)
+	private	String welcome(PortletRequest request, Model model, Locale locale) throws NotCorrectDBRecordException
 	{
 		User	user	=	dpsServiceDao.getUser(request);
 
@@ -124,8 +126,9 @@ public class DropWithWController
 	 * purpose		:
 	 *
 	 * Date    		:	Mar 27, 2017 4:29:58 PM
+	 * @throws NotCorrectDBRecordException 
 	 */
-	private String studentWelcome(PortletRequest request, Model model, Locale locale)
+	private String studentWelcome(PortletRequest request, Model model, Locale locale) throws NotCorrectDBRecordException
 	{
 		DropCourseModel		dropCourseModel		=	null;
 		List<DropWDTO>		dropWDTOs			=	null;
@@ -193,9 +196,10 @@ public class DropWithWController
 	 * purpose		:
 	 *
 	 * Date    		:	Apr 10, 2017 4:28:08 PM
+	 * @throws NotCorrectDBRecordException 
 	 */
 	@ResourceMapping(value="resourceAjaxDropWithW")
-	private void dropWithWResource(@ModelAttribute("dropCourseModel") DropCourseModel dropCourseModel, ResourceRequest request, ResourceResponse response, Locale locale)
+	private void dropWithWResource(@ModelAttribute("dropCourseModel") DropCourseModel dropCourseModel, ResourceRequest request, ResourceResponse response, Locale locale) throws NotCorrectDBRecordException
 	{
 		Gson			gson			=	new Gson();
 		List<DropWDTO>	dropWDTOs		=	null;

@@ -35,6 +35,7 @@ import javax.portlet.PortletRequest;
 
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentDataModel;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.service.PostponeService;
@@ -62,7 +63,7 @@ public class PostponeController
 	PostponeService	postponeService;
 	
 	@RequestMapping
-	private	String studentWelcome(PortletRequest request, Model model, Locale locale)
+	private	String studentWelcome(PortletRequest request, Model model, Locale locale) throws NotCorrectDBRecordException
 	{
 		User	user	=	dpsServiceDao.getUser(request);
 		Student student	= dpsServiceDao.getStudent(user.getUserId(), new Locale("en"));

@@ -44,6 +44,7 @@ import om.edu.squ.squportal.portlet.dps.bo.User;
 import om.edu.squ.squportal.portlet.dps.bo.YearSemester;
 import om.edu.squ.squportal.portlet.dps.dao.db.DpsDbDao;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
@@ -162,6 +163,7 @@ public class DpsServiceImpl implements DpsServiceDao
 	 * @param studentId
 	 * @param locale
 	 * @return
+	 * @throws NotCorrectDBRecordException 
 	 * @throws NoDBRecordException
 	 * DpsDbImpl
 	 * return type  : AcademicDetail
@@ -170,7 +172,7 @@ public class DpsServiceImpl implements DpsServiceDao
 	 *
 	 * Date    		:	Jan 9, 2017 11:22:11 AM
 	 */
-	public AcademicDetail	getStudentAcademicDetail(String studentId, Locale locale )
+	public AcademicDetail	getStudentAcademicDetail(String studentId, Locale locale )  
 	{
 		AcademicDetail	academicDetail	=	null;
 		try
@@ -180,6 +182,10 @@ public class DpsServiceImpl implements DpsServiceDao
 		catch (NoDBRecordException ex)
 		{
 			 logger.error("Error to get Student academic Detail : {}",ex.getMessage());
+		}
+		catch(NotCorrectDBRecordException exNotCorrectRs)
+		{
+			logger.error("Error to get Student academic Detail : {}",exNotCorrectRs.getMessage());
 		}
 		return academicDetail;
 	}
@@ -215,8 +221,9 @@ public class DpsServiceImpl implements DpsServiceDao
 	 * purpose		:
 	 *
 	 * Date    		:	Jan 9, 2017 12:12:47 PM
+	 * @throws NotCorrectDBRecordException 
 	 */
-	public Student	getStudent(String studentId,  Locale locale)
+	public Student	getStudent(String studentId,  Locale locale) throws NotCorrectDBRecordException
 	{
 		Student			student			=	new	Student();
 		PersonalDetail	personalDetail	=	getStudentPersonalDetail(studentId, locale);

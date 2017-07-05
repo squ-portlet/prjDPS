@@ -39,6 +39,7 @@ import om.edu.squ.squportal.portlet.dps.bo.PersonalDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
 import om.edu.squ.squportal.portlet.dps.bo.YearSemester;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO;
@@ -106,8 +107,9 @@ public interface DpsServiceDao
 	 * purpose		:
 	 *
 	 * Date    		:	Jan 9, 2017 11:56:00 AM
+	 * @throws NotCorrectDBRecordException 
 	 */
-	public AcademicDetail	getStudentAcademicDetail(String studentId, Locale locale );
+	public AcademicDetail	getStudentAcademicDetail(String studentId, Locale locale ) throws NotCorrectDBRecordException;
 	
 	/**
 	 * 
@@ -135,8 +137,9 @@ public interface DpsServiceDao
 	 * purpose		:
 	 *
 	 * Date    		:	Jan 9, 2017 12:12:47 PM
+	 * @throws NotCorrectDBRecordException 
 	 */
-	public Student	getStudent(String studentId,  Locale locale);
+	public Student	getStudent(String studentId,  Locale locale) throws NotCorrectDBRecordException;
 	
 	/**
 	 * 
