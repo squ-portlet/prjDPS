@@ -136,7 +136,7 @@
                        	NVL(DECODE(:paramLocale,'en',SI.SPECNAME, SI.A_SPECNAME ),'')   	AS 		SPEC_NAME,
                        	STH.SUPVISREMPNO                                                   	AS	    SUPERVISOR_ID
            FROM        	V_STDINFO_PORTAL     SI 
-                       ,V_STD_THESIS        STH
+                       ,STD_THESIS        STH
            WHERE       SI.STD_ID= :paramStudentId     
                     AND  SI.STDNO = STH.STDNO (+)
                     AND  SI.STDSTATCD = STH.STDSTATCD (+)
