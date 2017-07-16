@@ -32,6 +32,7 @@ package om.edu.squ.squportal.portlet.dps.dao.db;
 import java.util.Locale;
 
 import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
+import om.edu.squ.squportal.portlet.dps.bo.Approver;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.PersonalDetail;
 import om.edu.squ.squportal.portlet.dps.bo.YearSemester;
@@ -94,6 +95,7 @@ public interface DpsDbDao
 	 * 
 	 * method name  : getStudentPersonalDetail
 	 * @param studentId
+	 * @param studentNo TODO
 	 * @param locale
 	 * @return
 	 * @throws NoDBRecordException
@@ -104,12 +106,13 @@ public interface DpsDbDao
 	 *
 	 * Date    		:	Jan 9, 2017 11:21:56 AM
 	 */
-	public PersonalDetail	getStudentPersonalDetail(String studentId, Locale locale ) throws NoDBRecordException;
+	public PersonalDetail	getStudentPersonalDetail(String studentId, String studentNo, Locale locale ) throws NoDBRecordException;
 	
 	/**
 	 * 
 	 * method name  : getStudentAcademicDetail
 	 * @param studentId
+	 * @param studentNo TODO
 	 * @param locale
 	 * @return
 	 * @throws NoDBRecordException
@@ -121,7 +124,7 @@ public interface DpsDbDao
 	 * Date    		:	Jan 9, 2017 11:22:11 AM
 	 * @throws NotCorrectDBRecordException 
 	 */
-	public AcademicDetail	getStudentAcademicDetail(String studentId, Locale locale ) throws NoDBRecordException, NotCorrectDBRecordException;
+	public AcademicDetail	getStudentAcademicDetail(String studentId, String studentNo, Locale locale ) throws NoDBRecordException, NotCorrectDBRecordException;
 	
 	/**
 	 * 
@@ -137,4 +140,21 @@ public interface DpsDbDao
 	 * Date    		:	May 16, 2017 11:06:05 PM
 	 */
 	public String	getStudentMode(String studentNo, String stdStatCode);
+	
+	/**
+	 * 
+	 * method name  : getHigherApprover
+	 * @param studentNo
+	 * @param formName
+	 * @param roleName
+	 * @param isSequenceRequired
+	 * @return
+	 * DpsDbImpl
+	 * return type  : Approver
+	 * 
+	 * purpose		: Get higher approver (at intial and final case it's same approver)
+	 *
+	 * Date    		:	Jul 16, 2017 11:59:33 AM
+	 */
+	public Approver getHigherApprover(String studentNo, String formName, String roleName, String isSequenceRequired);
 }

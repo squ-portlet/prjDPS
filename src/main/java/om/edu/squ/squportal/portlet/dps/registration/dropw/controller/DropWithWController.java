@@ -135,7 +135,7 @@ public class DropWithWController
 		Gson				gson				=	new Gson();
 		
 		User				user			=	dpsServiceDao.getUser(request);
-		Student				student			=	dpsServiceDao.getStudent(user.getUserId(), locale);
+		Student				student			=	dpsServiceDao.getStudent(user.getUserId(), null, locale);
 		
 		if(!model.containsAttribute("dropCourseModel"))
 		{
@@ -204,7 +204,7 @@ public class DropWithWController
 		Gson			gson			=	new Gson();
 		List<DropWDTO>	dropWDTOs		=	null;
 		User			user			=	dpsServiceDao.getUser(request);
-		Student			student			=	dpsServiceDao.getStudent(user.getUserId(), locale);
+		Student			student			=	dpsServiceDao.getStudent(user.getUserId(), null, locale);
 
 		AcademicDetail	academicDetail	=	student.getAcademicDetail();
 		academicDetail.setStudentUserName(request.getRemoteUser());

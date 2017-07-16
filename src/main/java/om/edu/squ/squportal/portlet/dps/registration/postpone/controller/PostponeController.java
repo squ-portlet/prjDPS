@@ -66,7 +66,7 @@ public class PostponeController
 	private	String studentWelcome(PortletRequest request, Model model, Locale locale) throws NotCorrectDBRecordException
 	{
 		User	user	=	dpsServiceDao.getUser(request);
-		Student student	= dpsServiceDao.getStudent(user.getUserId(), new Locale("en"));
+		Student student	= dpsServiceDao.getStudent(user.getUserId(), null, new Locale("en"));
 		
 		if(!model.containsAttribute("postponeStudentDataModel"))
 		{

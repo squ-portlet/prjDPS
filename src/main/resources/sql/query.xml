@@ -95,7 +95,8 @@
     </entry>
     <entry key="personal.details.of.student">
     	<![CDATA[ 
-   	        SELECT     SI.STD_ID 															AS 		STUDENT_ID,              
+   	        SELECT     SI.STD_ID 															AS 		STUDENT_ID, 
+   	                   SI.STDNO                                                          	AS	    STUDENT_NO,  
                        NVL(DECODE(:paramLocale,'en',SI.STD_NAME,SI.A_STD_NAME),'-') 		AS 		STUDENT_NAME,
                        NVL(DECODE(:paramLocale,'en',SI.HOME_REGION,SI.AHOME_REGION),'-') 	AS 		STUDENT_HOME_REGION,
                        NVL(DECODE(:paramLocale,'en',SI.HOME_WILLAYAT,SI.AHOME_WILAYAT),'-') AS 		STUDENT_HOME_WILAYAT,
@@ -105,7 +106,7 @@
                        NVL(SI.STD_PHONE,NULL) 												AS 		STUDENT_PHONE,
                        NVL(SI.STD_EMAIL,'-') 												AS 		STUDENT_EMAIL
            FROM        V_STDINFO_PORTAL     SI         
-           WHERE       SI.STD_ID= :paramStudentId
+           WHERE       (SI.STD_ID= :paramStudentId OR SI.STDNO = :paramStudentNo)
 		            AND  ( 
 		                          DEG_NUMBER IN (2,4,10)
 		                          OR (DEG_NUMBER = 6 AND MAJOR_CODE='PODT')
@@ -137,7 +138,7 @@
                        	STH.SUPVISREMPNO                                                   	AS	    SUPERVISOR_ID
            FROM        	V_STDINFO_PORTAL     SI 
                        ,STD_THESIS        STH
-           WHERE       SI.STD_ID= :paramStudentId     
+           WHERE       	(SI.STD_ID= :paramStudentId     OR SI.STDNO = :paramStudentNo)     
                     AND  SI.STDNO = STH.STDNO (+)
                     AND  SI.STDSTATCD = STH.STDSTATCD (+)
                     AND  ( 
@@ -165,6 +166,10 @@
 				                            WHERE STDNO = :paramStdNo
 				                            AND   STDSTATCD = :paramStdStatCode
 			                        	)    
+    </entry>
+    
+    <entry key="dps.stored.procedure.sp.approver.next">
+    	SP_APPROVER_NEXT
     </entry>
     
 </properties>

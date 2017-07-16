@@ -32,12 +32,14 @@ package om.edu.squ.squportal.portlet.dps.role.service;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import javax.xml.transform.stream.StreamSource;
 
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
+import om.edu.squ.squportal.portlet.dps.role.bo.RoleNameValue;
 import om.edu.squ.squportal.portlet.dps.role.db.RoleDbDao;
 
 import org.slf4j.Logger;
@@ -95,6 +97,22 @@ public class RoleServiceImpl implements Role
 			return unmarshaller.unmarshal(new StreamSource(inputStream));
 	}
 	
+	/**
+	 * 
+	 * method name  : getRoles
+	 * @param formName
+	 * @return
+	 * RoleDbImpl
+	 * return type  : List<RoleNameValue>
+	 * 
+	 * purpose		: Get list of Roles for a particular form
+	 *
+	 * Date    		:	Jul 16, 2017 3:24:28 PM
+	 */
+	public List<RoleNameValue> getRoles(String formName)
+	{
+		return roleDbDao.getRoles(formName);
+	}
 	
 	/**
 	 * 

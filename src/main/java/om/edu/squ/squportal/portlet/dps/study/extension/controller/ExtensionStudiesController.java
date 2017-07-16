@@ -163,7 +163,7 @@ public class ExtensionStudiesController
 	{
 		String userName	=	request.getRemoteUser();
 		User	user	=	dpsServiceDao.getUser(request);
-		Student student	= dpsServiceDao.getStudent(user.getUserId(), new Locale("en"));
+		Student student	= dpsServiceDao.getStudent(user.getUserId(), null, new Locale("en"));
 		List<ExtensionDTO>	extensions = null;
 		if(null == extensionServiceDao.getExtensionsForStudents(student.getAcademicDetail().getStudentNo(), locale))
 		{ 
@@ -255,7 +255,7 @@ public class ExtensionStudiesController
 	{
 		String userName	=	request.getRemoteUser();
 		User	user	=	dpsServiceDao.getUser(request);
-		Student student	= dpsServiceDao.getStudent(user.getUserId(), new Locale("en"));
+		Student student	= dpsServiceDao.getStudent(user.getUserId(), null, new Locale("en"));
 		
 		extensionServiceDao.setExtensionByStudent(student, extensionStudentDataModel, userName);
 	}

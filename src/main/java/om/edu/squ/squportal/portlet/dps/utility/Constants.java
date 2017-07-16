@@ -116,6 +116,7 @@ public interface Constants
 	
 	public static final	String	CONST_COLMN_APPROVAL_CODE						=	"APPROVAL_CODE";
 	public static final	String	CONST_COLMN_APPROVER_ROLE_CODE					=	"APPROVER_ROLE_CODE";
+	public static final	String	CONST_COLMN_APPROVER_ROLE_NAME					=	"APPROVER_ROLE_NAME";
 	public static final	String	CONST_COLMN_APPROVAL_SEQUENCE					=	"APPROVAL_SEQUENCE";
 	public static final	String	CONST_COLMN_APPROVAL_MAX_SEQUENCE				=	"APPROVAL_MAX_SEQUENCE";
 	public static final	String	CONST_COLMN_APPROVAL_CODE_SUPERVISOR			=	"SUPERVISOR_APPROVAL_CODE";
@@ -130,6 +131,21 @@ public interface Constants
 	public static final	String	CONST_COLMN_ROLE_IS_APPROVER					=	"IS_APPROVER";
 	
 	public static final	String	CONST_COLMN_POSTPONE_REASON_NAME				=	"POSTPONE_REASON_NAME";
+	
+	public static final String	CONST_PARAM_NAME_STUDENT_NO						=	"paramStudentNo";
+	public static final String	CONST_PARAM_NAME_FORM_NAME						=	"paramFormName";
+	public static final String	CONST_PARAM_NAME_ROLE_NAME						=	"paramRoleName";
+	public static final String	CONST_PARAM_NAME_IS_SEQUENCE_REQUIRED			=	"paramNextSequence";
+	public static final	String	CONST_PARAM_NAME_APPROVER_NAME_ENG				=	"paramApproverNameEng";
+	public static final	String	CONST_PARAM_NAME_APPROVER_NAME_AR				=	"paramApproverNameAr";
+	public static final	String	CONST_PARAM_NAME_APPROVER_EMAIL					=	"paramApproverEmail";
+	public static final String	CONST_PARAM_NAME_APPROVER_PHONE					=	"paramApproverPhone";
+	public static final	String	CONST_PARAM_NAME_ROLE_NAME_ENG					=	"paramApproverRoleEn";
+	public static final	String	CONST_PARAM_NAME_ROLE_NAME_AR					=	"paramApproverRoleAr";
+	public static final	String	CONST_PARAM_NAME_IS_HIGHER_APPROVER				=	"paramApproverIsNext";
+	
+	public static final String	CONST_YES										=	"Y";
+	public static final String	CONST_NO										=	"N";
 	
 	/******************************************************/
 	public static final	String	CONST_SQL_STATUS_CODE_PENDING					=	"5539";
@@ -185,6 +201,8 @@ public interface Constants
 	public	static	final	String	SQL_ACADEMIC_DETAIL_STUDENT					=	"academic.details.of.student";
 	public	static	final	String	CONST_SQL_STUDENT_MODE						=	"dps.select.student.mode";				//Full Time / Part Time etc
 	
+	public static 	final	String	CONST_SP_APPROVER_NEXT						=	"dps.stored.procedure.sp.approver.next";
+	
 	/* ---  SQL - DPS - Extension property--------------------- */
 	public	static	final	String	CONST_SQL_EXTENSION_REASONS					=	"dps.extension.select.extension.reasons";
 	public	static	final	String	CONST_SQL_EXTENSION_INSERT_STUDENT			=	"dps.extension.insert.student";
@@ -223,6 +241,7 @@ public interface Constants
 	
 	
 	/* ---  SQL - DPS - Role --------------------- */
+	public	static	final	String	CONST_PROP_SQL_ROLE_LIST_FORM				=	"sql.role.sequence.rolename.list.by.form";
 	public	static	final	String	CONST_PROP_SQL_ROLE_IS_SUPERVISOR			=	"sql.role.is.supervisor";
 	public	static	final	String	CONST_PROP_SQL_ROLE_IS_ADVISOR				=	"sql.role.is.advisor";
 	public	static	final	String	CONST_PROP_SQL_ROLE_IS_HOD					=	"sql.role.is.hod";

@@ -37,7 +37,9 @@ import javax.portlet.PortletRequest;
 
 import om.edu.squ.portal.common.EmpCommon;
 import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
+import om.edu.squ.squportal.portlet.dps.bo.Approver;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
+import om.edu.squ.squportal.portlet.dps.bo.NotifierPeople;
 import om.edu.squ.squportal.portlet.dps.bo.PersonalDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
@@ -141,12 +143,12 @@ public class DpsServiceImpl implements DpsServiceDao
 	 *
 	 * Date    		:	Jan 9, 2017 11:21:56 AM
 	 */
-	public PersonalDetail	getStudentPersonalDetail(String studentId, Locale locale ) 
+	public PersonalDetail	getStudentPersonalDetail(String studentId, String studentNo, Locale locale ) 
 	{
 		PersonalDetail		personalDetail		=	null;
 		try
 		{
-			personalDetail	=	 dpsDbDao.getStudentPersonalDetail(studentId, locale);
+			personalDetail	=	 dpsDbDao.getStudentPersonalDetail(studentId, studentNo, locale);
 		}
 		catch (NoDBRecordException ex)
 		{
@@ -172,12 +174,12 @@ public class DpsServiceImpl implements DpsServiceDao
 	 *
 	 * Date    		:	Jan 9, 2017 11:22:11 AM
 	 */
-	public AcademicDetail	getStudentAcademicDetail(String studentId, Locale locale )  
+	public AcademicDetail	getStudentAcademicDetail(String studentId, String studentNo, Locale locale )  
 	{
 		AcademicDetail	academicDetail	=	null;
 		try
 		{
-			academicDetail	=	dpsDbDao.getStudentAcademicDetail(studentId, locale);
+			academicDetail	=	dpsDbDao.getStudentAcademicDetail(studentId, studentNo, locale);
 		}
 		catch (NoDBRecordException ex)
 		{
@@ -223,11 +225,11 @@ public class DpsServiceImpl implements DpsServiceDao
 	 * Date    		:	Jan 9, 2017 12:12:47 PM
 	 * @throws NotCorrectDBRecordException 
 	 */
-	public Student	getStudent(String studentId,  Locale locale) throws NotCorrectDBRecordException
+	public Student	getStudent(String studentId,  String studentNo, Locale locale) throws NotCorrectDBRecordException
 	{
 		Student			student			=	new	Student();
-		PersonalDetail	personalDetail	=	getStudentPersonalDetail(studentId, locale);
-		AcademicDetail	academicDetail	=	getStudentAcademicDetail(studentId, locale);
+		PersonalDetail	personalDetail	=	getStudentPersonalDetail(studentId, studentNo, locale);
+		AcademicDetail	academicDetail	=	getStudentAcademicDetail(studentId, studentNo, locale);
 		student.setPersonalDetail(personalDetail);
 		student.setAcademicDetail(academicDetail);
 		return student;
@@ -351,6 +353,51 @@ public class DpsServiceImpl implements DpsServiceDao
 	public String	getStudentMode(String studentNo, String stdStatCode)
 	{
 		return dpsDbDao.getStudentMode(studentNo, stdStatCode);
+	}
+
+	/**
+	 * 
+	 * method name  : getNotifierPeople
+	 * @param studentNo
+	 * @param formName
+	 * @param roleName
+	 * @param isHigherApproverRequired
+	 * @param locale
+	 * @return
+	 * @throws NotCorrectDBRecordException
+	 * DpsServiceImpl
+	 * return type  : NotifierPeople
+	 * 
+	 * purpose		: Get list of people to notify
+	 *
+	 * Date    		:	Jul 16, 2017 2:08:56 PM
+	 */
+	public NotifierPeople getNotifierPeople(
+												String studentNo, 
+												String formName, 
+												String roleName, 
+												boolean isHigherApproverRequired,
+												Locale locale 
+											) throws NotCorrectDBRecordException
+	{
+		NotifierPeople	notifierPeople	=	new NotifierPeople();
+		
+		Student		student			=	getStudent(null, studentNo, locale);
+		Approver	approver		=	null;
+		Approver	approverHigher	=	null;
+		if(isHigherApproverRequired)
+		{
+					approverHigher	=	dpsDbDao.getHigherApprover(studentNo, formName, roleName, Constants.CONST_YES);
+		}
+					approver		=	dpsDbDao.getHigherApprover(studentNo, formName, roleName, Constants.CONST_NO);
+
+		notifierPeople.setStudent(student);
+		notifierPeople.setApprover(approver);
+		notifierPeople.setApproverHigher(approverHigher);
+		notifierPeople.setRoles(roleService.getRoles(formName));
+		
+		
+		return notifierPeople;
 	}
 	
 	

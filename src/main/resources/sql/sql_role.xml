@@ -2,7 +2,7 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
     <comment>DPS ROLE Queries</comment>
-    <entry key="">
+    <entry key="sql.role.sequence.rolecode.list.by.form">
     	<![CDATA[
 			SELECT 
 			        APP_M.APPROVER_ROLECD													AS	ROLE_CODE
@@ -16,6 +16,25 @@
 			ORDER BY   APPROVAL_SEQUENCE 		
     	
     	]]>
+    </entry>
+    <entry key="sql.role.sequence.rolename.list.by.form">
+			SELECT 
+			        APP.APPROVAL_SEQUENCE 													AS APPROVAL_SEQUENCE
+			      , DECODE (
+			                  :paramLocale
+			                  ,'ar',A_CODENM,CODES.CODENM 
+			                  
+			                ) 																AS APPROVER_ROLE_NAME
+			                
+			FROM
+			        APPROVAL_MASTER APP
+			      , SIS_CODES     CODES
+			      , SIS_OBJECT    OBJ
+			  WHERE
+			          APP.FORMCD          =  OBJ.OBJECTCD
+			      AND APP.APPROVER_ROLECD = CODES.SISCODECD
+			      AND OBJ.OBJECTNM        = :paramFormName 
+			      ORDER BY APP.APPROVAL_SEQUENCE   
     </entry>
 		<entry key="sql.role.is.supervisor">
 			SELECT 
@@ -192,6 +211,28 @@
 				    AND TYPES.SISCODETYPNM = 'APPROVAL_STATUS'
 				    AND CODES.L_ABR_CODE  = :paramStatusCodeName
 		</entry>
+		<entry key="sql.role.status.name.for.form.and.role">
+				SELECT 
+				         DECODE (
+				                  :paramLocale
+				                  ,'ar',CODES.A_CODENM,CODES.CODENM 
+				                  
+				                ) 															AS 	STATUS_DESC
+				FROM
+				        APPROVAL_MASTER APP
+				      , SIS_CODES     CODES
+				      , SIS_CODES     CODES_F
+				      , SIS_OBJECT    OBJ
+				      , APPROVAL_TRANSACTION APP_T
+				WHERE
+				          APP.FORMCD          =  OBJ.OBJECTCD
+				      AND APP.APPROVALCD      = APP_T.APPROVALCD
+				      AND APP_T.APPROVAL_STATUSCD = CODES.SISCODECD
+				      AND OBJ.OBJECTNM        = :paramFormName
+				      AND APP.APPROVER_ROLECD = CODES_F.SISCODECD
+				      AND CODES_F.L_ABR_CODE  = :paramRoleName
+		</entry>
+		
 		
 		<entry key="sql.role.approval_transaction.insert">
 				INSERT 

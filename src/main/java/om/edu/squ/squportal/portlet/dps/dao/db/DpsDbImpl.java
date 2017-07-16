@@ -32,12 +32,14 @@ package om.edu.squ.squportal.portlet.dps.dao.db;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLRecoverableException;
+import java.sql.Types;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
 import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
+import om.edu.squ.squportal.portlet.dps.bo.Approver;
 import om.edu.squ.squportal.portlet.dps.bo.Branch;
 import om.edu.squ.squportal.portlet.dps.bo.Department;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
@@ -53,6 +55,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.SqlOutParameter;
+import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 
@@ -172,7 +176,7 @@ public class DpsDbImpl implements DpsDbDao
 	 *
 	 * Date    		:	Jan 9, 2017 11:21:56 AM
 	 */
-	public PersonalDetail	getStudentPersonalDetail(String studentId, Locale locale ) throws NoDBRecordException
+	public PersonalDetail	getStudentPersonalDetail(String studentId, String studentNo, Locale locale ) throws NoDBRecordException
 	{
 	
 		String SQL_PERSONAL_DETAIL_STUDENT		=	queryProps.getProperty(Constants.SQL_PERSONAL_DETAIL_STUDENT);
@@ -199,6 +203,7 @@ public class DpsDbImpl implements DpsDbDao
 		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
 		namedParameterMap.put("paramLocale", locale.getLanguage());
 		namedParameterMap.put("paramStudentId", studentId);
+		namedParameterMap.put("paramStudentNo", studentNo);
 		try
 		{
 			return nPJdbcTemplDps.queryForObject(SQL_PERSONAL_DETAIL_STUDENT, namedParameterMap, mapper);
@@ -226,7 +231,7 @@ public class DpsDbImpl implements DpsDbDao
 	 *
 	 * Date    		:	Jan 9, 2017 11:22:11 AM
 	 */
-	public AcademicDetail	getStudentAcademicDetail(String studentId, Locale locale ) throws NoDBRecordException, NotCorrectDBRecordException
+	public AcademicDetail	getStudentAcademicDetail(String studentId, String studentNo, Locale locale ) throws NoDBRecordException, NotCorrectDBRecordException
 	{
 		String SQL_ACADEMIC_DETAIL_STUDENT		=	queryProps.getProperty(Constants.SQL_ACADEMIC_DETAIL_STUDENT);
 		RowMapper<AcademicDetail> mapper	=	new RowMapper<AcademicDetail>() {
@@ -252,6 +257,8 @@ public class DpsDbImpl implements DpsDbDao
 		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
 		namedParameterMap.put("paramLocale", locale.getLanguage());
 		namedParameterMap.put("paramStudentId", studentId);
+		namedParameterMap.put("paramStudentNo", studentNo);
+
 		try
 			{
 				return nPJdbcTemplDps.queryForObject(SQL_ACADEMIC_DETAIL_STUDENT, namedParameterMap, mapper);
@@ -361,6 +368,78 @@ public class DpsDbImpl implements DpsDbDao
 		
 		return nPJdbcTemplDps.queryForObject(SQL_STUDENT_MODE, namedParameterMap, String.class);
 		
+	}
+	
+	
+	/**
+	 * 
+	 * method name  : getHigherApprover
+	 * @param studentNo
+	 * @param formName
+	 * @param roleName
+	 * @param isSequenceRequired
+	 * @return
+	 * DpsDbImpl
+	 * return type  : Approver
+	 * 
+	 * purpose		: Get higher approver (at intial and final case it's same approver)
+	 *
+	 * Date    		:	Jul 16, 2017 11:59:33 AM
+	 */
+	public Approver getHigherApprover(String studentNo, String formName, String roleName, String isSequenceRequired)
+	{
+		String 		SP_APPROVER_NEXT				=	queryProps.getProperty(Constants.CONST_SP_APPROVER_NEXT);
+		Map			resultProc						=	null;
+		Approver	approver						=	new Approver();
+		
+		simpleJdbcCallDps.withProcedureName(SP_APPROVER_NEXT);
+		simpleJdbcCallDps.withoutProcedureColumnMetaDataAccess();
+		simpleJdbcCallDps.useInParameterNames(
+													Constants.CONST_PARAM_NAME_STUDENT_NO
+												,	Constants.CONST_PARAM_NAME_FORM_NAME
+												,	Constants.CONST_PARAM_NAME_ROLE_NAME
+												,	Constants.CONST_PARAM_NAME_IS_SEQUENCE_REQUIRED
+											  );
+		simpleJdbcCallDps.declareParameters(
+													new SqlParameter(Constants.CONST_PARAM_NAME_STUDENT_NO,Types.VARCHAR)
+												,	new SqlParameter(Constants.CONST_PARAM_NAME_FORM_NAME,Types.VARCHAR)
+												,	new SqlParameter(Constants.CONST_PARAM_NAME_ROLE_NAME,Types.VARCHAR)
+												,	new SqlParameter(Constants.CONST_PARAM_NAME_IS_SEQUENCE_REQUIRED,Types.VARCHAR)
+												,	new SqlOutParameter(Constants.CONST_PARAM_NAME_APPROVER_NAME_ENG,Types.VARCHAR)
+												,	new SqlOutParameter(Constants.CONST_PARAM_NAME_APPROVER_NAME_AR,Types.VARCHAR)
+												,	new SqlOutParameter(Constants.CONST_PARAM_NAME_APPROVER_EMAIL,Types.VARCHAR)
+												,	new SqlOutParameter(Constants.CONST_PARAM_NAME_APPROVER_PHONE,Types.VARCHAR)
+												,	new SqlOutParameter(Constants.CONST_PARAM_NAME_ROLE_NAME_ENG,Types.VARCHAR)
+												,	new SqlOutParameter(Constants.CONST_PARAM_NAME_ROLE_NAME_AR,Types.VARCHAR)
+												,	new SqlOutParameter(Constants.CONST_PARAM_NAME_IS_HIGHER_APPROVER,Types.VARCHAR)
+											);
+		
+		Map<String,String>	paramIn		=	new HashMap<String, String>();
+							paramIn.put(Constants.CONST_PARAM_NAME_STUDENT_NO, studentNo);
+							paramIn.put(Constants.CONST_PARAM_NAME_FORM_NAME, formName);
+							paramIn.put(Constants.CONST_PARAM_NAME_ROLE_NAME, roleName);
+							paramIn.put(Constants.CONST_PARAM_NAME_IS_SEQUENCE_REQUIRED, isSequenceRequired);
+							
+							resultProc	=	simpleJdbcCallDps.execute(paramIn);
+							
+							
+							approver.setNameEng((String)resultProc.get(Constants.CONST_PARAM_NAME_APPROVER_NAME_ENG));
+							approver.setNameAr((String)resultProc.get(Constants.CONST_PARAM_NAME_APPROVER_NAME_AR));
+							approver.setEmail((String)resultProc.get(Constants.CONST_PARAM_NAME_APPROVER_EMAIL));
+							approver.setRoleNameEng((String)resultProc.get(Constants.CONST_PARAM_NAME_ROLE_NAME_ENG));
+							approver.setRoleNameAr((String)resultProc.get(Constants.CONST_PARAM_NAME_ROLE_NAME_AR));
+							if(((String)resultProc.get(Constants.CONST_PARAM_NAME_IS_HIGHER_APPROVER)).equals(Constants.CONST_YES))
+							{
+								approver.setHigherSequence(true);
+							}
+							else
+							{
+								approver.setHigherSequence(false);
+							}
+							
+							resultProc = null;
+		
+		return approver;
 	}
 	
 }

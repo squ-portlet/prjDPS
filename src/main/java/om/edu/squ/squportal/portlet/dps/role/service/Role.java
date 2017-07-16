@@ -31,12 +31,14 @@ package om.edu.squ.squportal.portlet.dps.role.service;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 
 import javax.xml.transform.stream.StreamSource;
 
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
+import om.edu.squ.squportal.portlet.dps.role.bo.RoleNameValue;
 
 /**
  * @author Bhabesh
@@ -58,6 +60,20 @@ public interface Role
 	 * Date    		:	Feb 8, 2017 2:17:51 PM
 	 */
 	public Object getXmlToRoleObject(String xmlFile) throws IOException;
+	
+	/**
+	 * 
+	 * method name  : getRoles
+	 * @param formName
+	 * @return
+	 * RoleDbImpl
+	 * return type  : List<RoleNameValue>
+	 * 
+	 * purpose		: Get list of Roles for a particular form
+	 *
+	 * Date    		:	Jul 16, 2017 3:24:28 PM
+	 */
+	public List<RoleNameValue> getRoles(String formName);
 	
 	/**
 	 * 

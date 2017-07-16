@@ -26,7 +26,7 @@
 -->
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
   <display-name>prjDPS</display-name>
-  <description>Test Portlet</description>
+  <description>DPS Portlet</description>
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>/WEB-INF/context/common.xml</param-value>

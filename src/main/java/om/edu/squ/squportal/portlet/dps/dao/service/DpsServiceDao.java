@@ -84,6 +84,7 @@ public interface DpsServiceDao
 	 * 
 	 * method name  : getStudentPersonalDetail
 	 * @param studentId
+	 * @param studentNo TODO
 	 * @param locale
 	 * @return
 	 * DpsServiceDao
@@ -93,12 +94,13 @@ public interface DpsServiceDao
 	 *
 	 * Date    		:	Jan 9, 2017 11:55:56 AM
 	 */
-	public PersonalDetail	getStudentPersonalDetail(String studentId, Locale locale );
+	public PersonalDetail	getStudentPersonalDetail(String studentId, String studentNo, Locale locale );
 	
 	/**
 	 * 
 	 * method name  : getStudentAcademicDetail
 	 * @param studentId
+	 * @param studentNo TODO
 	 * @param locale
 	 * @return
 	 * DpsServiceDao
@@ -109,7 +111,7 @@ public interface DpsServiceDao
 	 * Date    		:	Jan 9, 2017 11:56:00 AM
 	 * @throws NotCorrectDBRecordException 
 	 */
-	public AcademicDetail	getStudentAcademicDetail(String studentId, Locale locale ) throws NotCorrectDBRecordException;
+	public AcademicDetail	getStudentAcademicDetail(String studentId, String studentNo, Locale locale ) throws NotCorrectDBRecordException;
 	
 	/**
 	 * 
@@ -129,6 +131,7 @@ public interface DpsServiceDao
 	 * 
 	 * method name  : getStudent
 	 * @param studentId
+	 * @param studentNo TODO
 	 * @param locale
 	 * @return
 	 * DpsServiceImpl
@@ -139,7 +142,7 @@ public interface DpsServiceDao
 	 * Date    		:	Jan 9, 2017 12:12:47 PM
 	 * @throws NotCorrectDBRecordException 
 	 */
-	public Student	getStudent(String studentId,  Locale locale) throws NotCorrectDBRecordException;
+	public Student	getStudent(String studentId,  String studentNo, Locale locale) throws NotCorrectDBRecordException;
 	
 	/**
 	 * 

@@ -32,14 +32,18 @@ package om.edu.squ.squportal.portlet.dps.role.db;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
+import om.edu.squ.squportal.portlet.dps.role.bo.RoleNameValue;
 import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
+
+
 
 
 
@@ -96,6 +100,44 @@ public class RoleDbImpl implements RoleDbDao
 	public void setQueryPropsCommonRole(Properties queryPropsCommonRole)
 	{
 		this.queryPropsCommonRole = queryPropsCommonRole;
+	}
+	
+	
+	/**
+	 * 
+	 * method name  : getRoles
+	 * @param formName
+	 * @return
+	 * RoleDbImpl
+	 * return type  : List<RoleNameValue>
+	 * 
+	 * purpose		: Get list of Roles for a particular form
+	 *
+	 * Date    		:	Jul 16, 2017 3:24:28 PM
+	 */
+	public List<RoleNameValue> getRoles(String formName)
+	{
+		String PROP_SQL_ROLE_LIST_FORM		=	queryPropsCommonRole.getProperty(Constants.CONST_PROP_SQL_ROLE_LIST_FORM);
+		
+		RowMapper<RoleNameValue> 	mapper	=	new RowMapper<RoleNameValue>()
+		{
+			
+			@Override
+			public RoleNameValue mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				RoleNameValue	roleNameValue	=	new RoleNameValue(
+																			rs.getString(Constants.CONST_COLMN_APPROVER_ROLE_NAME)
+																		,	rs.getString(Constants.CONST_COLMN_APPROVAL_SEQUENCE)
+																	 );
+				
+				return roleNameValue;
+			}
+		};
+		
+		Map<String, String> mapParamsRole	=	new HashMap<String, String>();
+		mapParamsRole.put("paramFormName", formName);
+		
+		return nPJdbcTemplDps.query(PROP_SQL_ROLE_LIST_FORM, mapParamsRole, mapper);
 	}
 	
 	
