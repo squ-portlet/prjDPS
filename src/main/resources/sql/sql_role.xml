@@ -211,26 +211,52 @@
 				    AND TYPES.SISCODETYPNM = 'APPROVAL_STATUS'
 				    AND CODES.L_ABR_CODE  = :paramStatusCodeName
 		</entry>
-		<entry key="sql.role.status.name.for.form.and.role">
-				SELECT 
-				         DECODE (
-				                  :paramLocale
-				                  ,'ar',CODES.A_CODENM,CODES.CODENM 
-				                  
-				                ) 															AS 	STATUS_DESC
-				FROM
-				        APPROVAL_MASTER APP
-				      , SIS_CODES     CODES
-				      , SIS_CODES     CODES_F
-				      , SIS_OBJECT    OBJ
-				      , APPROVAL_TRANSACTION APP_T
-				WHERE
-				          APP.FORMCD          =  OBJ.OBJECTCD
-				      AND APP.APPROVALCD      = APP_T.APPROVALCD
-				      AND APP_T.APPROVAL_STATUSCD = CODES.SISCODECD
-				      AND OBJ.OBJECTNM        = :paramFormName
-				      AND APP.APPROVER_ROLECD = CODES_F.SISCODECD
-				      AND CODES_F.L_ABR_CODE  = :paramRoleName
+		<entry key="sql.role.status.description.for.form.and.role">
+				<![CDATA[
+						SELECT 
+						      STATUS_DESC
+						FROM      
+						(    
+								SELECT 
+				
+								         DECODE (
+								                  :paramLocale
+								                  ,'ar',CODES.A_CODENM,CODES.CODENM 
+								                  
+								                ) 															AS 	STATUS_DESC
+								FROM
+								        APPROVAL_MASTER 		APP
+								      , SIS_CODES     			CODES
+								      , SIS_CODES     			CODES_F
+								      , SIS_OBJECT    			OBJ
+								      , APPROVAL_TRANSACTION 	APP_T
+								WHERE
+								          APP.FORMCD          		=  OBJ.OBJECTCD
+								      AND APP.APPROVALCD      		= APP_T.APPROVALCD
+								      AND APP_T.APPROVAL_STATUSCD 	= CODES.SISCODECD
+								      AND OBJ.OBJECTNM        		= :paramFormName
+								      AND APP.APPROVER_ROLECD 		= CODES_F.SISCODECD
+								      AND CODES_F.L_ABR_CODE  		= :paramRoleName
+								      AND APP_T.STDNO 				= :paramStudentNo
+						      
+						 	UNION
+						 
+							 	SELECT 
+							        	 DECODE (
+								                  :paramLocale
+								                  ,'ar',CODES.A_CODENM,CODES.CODENM 
+											                  
+											     ) 															AS 	STATUS_DESC
+							 	FROM
+							          SIS_CODES     			CODES
+							          ,SIS_CODE_TYPES     TYP
+								WHERE
+							          CODES.SISCODETYPCD = TYP.SISCODETYPCD
+							         AND TYP.SISCODETYPNM = 'APPROVAL_STATUS'
+							         AND CODES.L_ABR_CODE='PENDG'
+						 )
+						 WHERE ROWNUM = 1
+				]]>
 		</entry>
 		
 		

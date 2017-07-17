@@ -30,7 +30,8 @@ APP_EMP_NUM   VARCHAR2(10);
 CURRENT_SEQUENCE  NUMBER;
 MAX_SEQUENCE      NUMBER;
 NEXT_SEQUENCE     NUMBER;
-T_ROLENAME      VARCHAR2(60);
+T_ROLE_ABBR      VARCHAR2(60);
+
 
 BEGIN
   /* Get current sequence of approver of a particular approver and form*/
@@ -69,7 +70,8 @@ BEGIN
   CASE paramNextSequence
     WHEN 'N' THEN
         BEGIN
-          APP_EMP_NUM := FUNC_STUDENT_APPROVER(paramStudentNo,paramRoleName);
+          T_ROLE_ABBR := paramRoleName;
+          APP_EMP_NUM := FUNC_STUDENT_APPROVER(paramStudentNo,T_ROLE_ABBR);
           paramApproverIsNext := 'N';
         END;
     WHEN 'Y' THEN
@@ -83,7 +85,7 @@ BEGIN
         END IF;
             SELECT 
                    CODES.L_ABR_CODE
-                   INTO T_ROLENAME
+                   INTO T_ROLE_ABBR
             FROM
                 APPROVAL_MASTER APP_M
               , SIS_CODES       CODES  
@@ -94,7 +96,7 @@ BEGIN
               AND   APP_M.APPROVAL_SEQUENCE = NEXT_SEQUENCE
               AND  APP_M.APPROVER_ROLECD = CODES.SISCODECD ;
               
-             APP_EMP_NUM := FUNC_STUDENT_APPROVER(paramStudentNo,T_ROLENAME); 
+             APP_EMP_NUM := FUNC_STUDENT_APPROVER(paramStudentNo,T_ROLE_ABBR); 
       END;
   END CASE;
 
@@ -102,20 +104,38 @@ BEGIN
             (TODO) Employee phone is not available at this moment. 
         */
 
+
+  /* Fetch role name*/
+  SELECT
+        CODES.CODENM
+      , CODES.A_CODENM
+        INTO paramApproverRoleEn, paramApproverRoleAr
+  FROM
+        SIS_CODES         CODES
+      , APPROVAL_MASTER   APP_M
+      , SIS_OBJECT      OBJ
+      
+  WHERE
+            CODES.SISCODECD = APP_M.APPROVER_ROLECD
+        AND APP_M.FORMCD =  OBJ.OBJECTCD
+        AND OBJ.OBJECTNM  =  paramFormName
+        AND CODES.L_ABR_CODE = T_ROLE_ABBR;
+
+
+  /* Fetch Employee name , email*/
   SELECT
             (FAC.EMPFIRNM || ' ' || FAC.EMPTRIBLNM)       
           , (FAC.A_EMPFIRNM || ' ' || FAC.A_EMPTRIBLNM)   
           , USR.EMAIL 
-          , CODES.CODENM
-          , CODES.A_CODENM
-          INTO paramApproverNameEng, paramApproverNameAr, paramApproverEmail,paramApproverRoleEn,paramApproverRoleAr
+
+          INTO paramApproverNameEng, paramApproverNameAr, paramApproverEmail 
   FROM
         FAC_SURNM  FAC
       , SIS_USERS  USR
-      , SIS_CODES  CODES
+ --     , SIS_CODES  CODES
   WHERE
           LTRIM(USR.USERNAME,'e')=TO_CHAR(FAC.EMPNO)
-          AND CODES.SISCODECD = USR.USERCATEGORY
+ --         AND CODES.SISCODECD = USR.USERCATEGORY
           AND FAC.EMPNO = APP_EMP_NUM;
       
 EXCEPTION

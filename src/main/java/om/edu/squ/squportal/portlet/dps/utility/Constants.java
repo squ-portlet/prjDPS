@@ -241,6 +241,7 @@ public interface Constants
 	
 	
 	/* ---  SQL - DPS - Role --------------------- */
+	public	static	final	String	CONST_PROP_SQL_ROLE_STATUS_DESCRIPTION		=	"sql.role.status.description.for.form.and.role";
 	public	static	final	String	CONST_PROP_SQL_ROLE_LIST_FORM				=	"sql.role.sequence.rolename.list.by.form";
 	public	static	final	String	CONST_PROP_SQL_ROLE_IS_SUPERVISOR			=	"sql.role.is.supervisor";
 	public	static	final	String	CONST_PROP_SQL_ROLE_IS_ADVISOR				=	"sql.role.is.advisor";

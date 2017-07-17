@@ -30,7 +30,9 @@
 package om.edu.squ.squportal.portlet.dps.role.db;
 
 import java.util.List;
+import java.util.Locale;
 
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.RoleNameValue;
@@ -46,6 +48,7 @@ public interface RoleDbDao
 	 * 
 	 * method name  : getRoles
 	 * @param formName
+	 * @param locale TODO
 	 * @return
 	 * RoleDbImpl
 	 * return type  : List<RoleNameValue>
@@ -54,7 +57,28 @@ public interface RoleDbDao
 	 *
 	 * Date    		:	Jul 16, 2017 3:24:28 PM
 	 */
-	public List<RoleNameValue> getRoles(String formName);
+	public List<RoleNameValue> getRoles(String formName, Locale locale);
+
+	/**
+	 * 
+	 * method name  : getRoleStatus
+	 * @param studentNo
+	 * @param formName
+	 * @param roleName
+	 * @param locale
+	 * @return
+	 * RoleDbImpl
+	 * return type  : String
+	 * 
+	 * purpose		: Get Role Status Description 
+	 * 				  of a particular student 
+	 * 				  for a particular form 
+	 * 				  and a particular role of an approver
+	 *
+	 * Date    		:	Jul 17, 2017 12:00:24 PM
+	 * @throws NotCorrectDBRecordException 
+	 */
+	public String	getRoleStatus(String studentNo, String formName, String roleName, Locale locale) throws NotCorrectDBRecordException;
 	
 	/**
 	 * 

@@ -61,18 +61,19 @@ public interface ExtensionServiceDao
 	/**
 	 * 
 	 * method name  : setExtensionByStudent
-	 * @param request TODO
+	 * @param student
 	 * @param extensionStudentDataModel
 	 * @param userName
+	 * @param locale
 	 * @return
-	 * ExtensionServiceImpl
+	 * ExtensionServiceDao
 	 * return type  : int
 	 * 
 	 * purpose		: Insert to extension as student
 	 *
-	 * Date    		:	Jan 24, 2017 2:30:32 PM
+	 * Date    		:	Jul 17, 2017 12:53:06 PM
 	 */
-	public int setExtensionByStudent(Student student, ExtensionStudentDataModel extensionStudentDataModel, String userName);
+	public int setExtensionByStudent(Student student, ExtensionStudentDataModel extensionStudentDataModel, String userName, Locale locale);
 	
 	/**
 	 * 

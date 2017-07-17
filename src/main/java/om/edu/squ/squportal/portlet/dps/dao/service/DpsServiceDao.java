@@ -35,6 +35,7 @@ import javax.portlet.PortletRequest;
 
 import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
+import om.edu.squ.squportal.portlet.dps.bo.NotifierPeople;
 import om.edu.squ.squportal.portlet.dps.bo.PersonalDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
@@ -204,4 +205,29 @@ public interface DpsServiceDao
 	 * Date    		:	May 16, 2017 11:06:05 PM
 	 */
 	public String	getStudentMode(String studentNo, String stdStatCode);
+	
+	/**
+	 * 
+	 * method name  : getNotifierPeople
+	 * @param studentNo
+	 * @param formName
+	 * @param roleName
+	 * @param isHigherApproverRequired
+	 * @param locale
+	 * @return
+	 * @throws NotCorrectDBRecordException
+	 * DpsServiceImpl
+	 * return type  : NotifierPeople
+	 * 
+	 * purpose		: Get list of people to notify
+	 *
+	 * Date    		:	Jul 16, 2017 2:08:56 PM
+	 */
+	public NotifierPeople getNotifierPeople(
+												String studentNo, 
+												String formName, 
+												String roleName, 
+												boolean isHigherApproverRequired,
+												Locale locale 
+											) throws NotCorrectDBRecordException;
 }

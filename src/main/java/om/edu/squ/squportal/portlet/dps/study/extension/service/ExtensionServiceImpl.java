@@ -33,7 +33,9 @@ import java.util.List;
 import java.util.Locale;
 
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
+import om.edu.squ.squportal.portlet.dps.bo.NotifierPeople;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.rule.service.Rule;
@@ -84,11 +86,41 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 	/**
 	 * 
 	 */
-	public int setExtensionByStudent(Student student, ExtensionStudentDataModel extensionStudentDataModel, String userName)
+	public int setExtensionByStudent(Student student, ExtensionStudentDataModel extensionStudentDataModel, String userName, Locale locale)
 	{
-
+		int result = 0;
 		ExtensionDTO	extensionDTO	=	new ExtensionDTO(student, extensionStudentDataModel, userName);
-		return extensionDbDao.setExtensionByStudent(extensionDTO);
+		result	=	extensionDbDao.setExtensionByStudent(extensionDTO);
+
+		
+if(result > 0)
+{
+		/* -- Notification -- Start --*/
+		try
+		{
+			NotifierPeople notifierPeople = dpsServiceDao.getNotifierPeople(
+																				extensionDTO.getStudentNo(), 
+																				Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY, 
+																				Constants.CONST_SQL_ROLE_NAME_SUPERVISOR, 
+																				false, 
+																				locale
+																			);
+			logger.info("NotifierPeople : "+notifierPeople.toString());
+			
+			
+		}
+		catch (NotCorrectDBRecordException ex)
+		{
+
+			logger.error("Error in Notification : "+ex.getMessage());
+		}
+		/* -- Notification -- end --*/
+}
+		
+		
+		return result;
+		
+		
 	}
 
 
@@ -204,6 +236,26 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		if(resultTr>0)
 						{
 							extensionDTOResult	=	getExtensionsForApprovers(extensionDTOTr.getRoleName(),employee,extensionDTOTr.getStudentNo(),locale);
+							/* -- Notification -- Start --*/
+							try
+							{
+								NotifierPeople notifierPeople = dpsServiceDao.getNotifierPeople(
+																									extensionDTOTr.getStudentNo(), 
+																									Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY, 
+																									extensionDTOTr.getRoleName(), 
+																									true, 
+																									locale
+																								);
+								logger.info("NotifierPeople : "+notifierPeople.toString());
+								
+								
+							}
+							catch (NotCorrectDBRecordException ex)
+							{
+								// TODO Auto-generated catch block
+								ex.printStackTrace();
+							}
+							/* -- Notification -- end --*/
 						}
 		
 		

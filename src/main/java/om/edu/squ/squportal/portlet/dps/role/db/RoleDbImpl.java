@@ -33,10 +33,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.RoleNameValue;
@@ -51,8 +53,14 @@ import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
 
 
+
+
+
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
@@ -115,7 +123,7 @@ public class RoleDbImpl implements RoleDbDao
 	 *
 	 * Date    		:	Jul 16, 2017 3:24:28 PM
 	 */
-	public List<RoleNameValue> getRoles(String formName)
+	public List<RoleNameValue> getRoles(String formName, Locale locale)
 	{
 		String PROP_SQL_ROLE_LIST_FORM		=	queryPropsCommonRole.getProperty(Constants.CONST_PROP_SQL_ROLE_LIST_FORM);
 		
@@ -136,10 +144,54 @@ public class RoleDbImpl implements RoleDbDao
 		
 		Map<String, String> mapParamsRole	=	new HashMap<String, String>();
 		mapParamsRole.put("paramFormName", formName);
+		mapParamsRole.put("paramLocale", locale.getLanguage());
 		
 		return nPJdbcTemplDps.query(PROP_SQL_ROLE_LIST_FORM, mapParamsRole, mapper);
 	}
 	
+	/**
+	 * 
+	 * method name  : getRoleStatus
+	 * @param studentNo
+	 * @param formName
+	 * @param roleName
+	 * @param locale
+	 * @return
+	 * RoleDbImpl
+	 * return type  : String
+	 * 
+	 * purpose		: Get Role Status Description 
+	 * 				  of a particular student 
+	 * 				  for a particular form 
+	 * 				  and a particular role of an approver
+	 *
+	 * Date    		:	Jul 17, 2017 12:00:24 PM
+	 * @throws NotCorrectDBRecordException 
+	 */
+	public String	getRoleStatus(String studentNo, String formName, String roleName, Locale locale) throws NotCorrectDBRecordException
+	{
+		String	PROP_SQL_ROLE_STATUS_DESCRIPTION	=	queryPropsCommonRole.getProperty(Constants.CONST_PROP_SQL_ROLE_STATUS_DESCRIPTION);
+		Map<String, String> mapParamsRole	=	new HashMap<String, String>();
+		mapParamsRole.put("paramFormName", formName);
+		mapParamsRole.put("paramRoleName", roleName);
+		mapParamsRole.put("paramStudentNo", studentNo);
+		mapParamsRole.put("paramLocale", locale.getLanguage());
+		
+		try
+		{
+			return nPJdbcTemplDps.queryForObject(PROP_SQL_ROLE_STATUS_DESCRIPTION, mapParamsRole, String.class);
+		}
+		catch(DataIntegrityViolationException ex)
+		{
+			logger.error("DB Error: Data Integrity Violation Exception -- throws at DB layer and catched at service" );
+			throw new NotCorrectDBRecordException(ex.getMessage());
+		}
+		catch(EmptyResultDataAccessException ex)
+		{
+			logger.error("DB Error: Empty Result DataAccess Exception -- throws at DB layer and catched at service" );
+			throw new NotCorrectDBRecordException(ex.getMessage());
+		}
+	}
 	
 	/**
 	 * 

@@ -43,6 +43,7 @@ public class NotifierPeople
 	private Approver			approver;
 	private	Approver			approverHigher;
 	private	List<RoleNameValue>	roles;
+	private	String				roleStatus;
 	
 	
 	/**
@@ -126,6 +127,27 @@ public class NotifierPeople
 	{
 		this.roles = roles;
 	}
+	
+	/**
+	 * Getter Method	: getRoleStatus
+	 * @return the roleStatus
+	 * 
+	 * Date				: Jul 17, 2017
+	 */
+	public String getRoleStatus()
+	{
+		return this.roleStatus;
+	}
+	/**
+	 * Setter method : setRoleStatus
+	 * @param roleStatus the roleStatus to set
+	 * 
+	 * Date          : Jul 17, 2017 12:09:39 PM
+	 */
+	public void setRoleStatus(String roleStatus)
+	{
+		this.roleStatus = roleStatus;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -134,7 +156,8 @@ public class NotifierPeople
 	{
 		return "NotifierPeople [student=" + this.student + ", approver="
 				+ this.approver + ", approverHigher=" + this.approverHigher
-				+ ", roles=" + this.roles + "]";
+				+ ", roles=" + this.roles + ", roleStatus=" + this.roleStatus
+				+ "]";
 	}
 	
 	

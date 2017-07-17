@@ -394,8 +394,10 @@ public class DpsServiceImpl implements DpsServiceDao
 		notifierPeople.setStudent(student);
 		notifierPeople.setApprover(approver);
 		notifierPeople.setApproverHigher(approverHigher);
-		notifierPeople.setRoles(roleService.getRoles(formName));
+		notifierPeople.setRoles(roleService.getRoles(formName, locale));
 		
+		//TODO - Need to get actual status from all multiple roles
+		notifierPeople.setRoleStatus(roleService.getRoleStatus(studentNo, formName, roleName, locale));
 		
 		return notifierPeople;
 	}

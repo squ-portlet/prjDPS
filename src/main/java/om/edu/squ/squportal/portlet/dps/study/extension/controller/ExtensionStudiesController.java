@@ -257,7 +257,7 @@ public class ExtensionStudiesController
 		User	user	=	dpsServiceDao.getUser(request);
 		Student student	= dpsServiceDao.getStudent(user.getUserId(), null, new Locale("en"));
 		
-		extensionServiceDao.setExtensionByStudent(student, extensionStudentDataModel, userName);
+		extensionServiceDao.setExtensionByStudent(student, extensionStudentDataModel, userName, locale);
 	}
 	
 
