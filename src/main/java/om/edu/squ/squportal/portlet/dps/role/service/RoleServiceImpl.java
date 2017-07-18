@@ -40,6 +40,7 @@ import javax.xml.transform.stream.StreamSource;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
+import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalStatus;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.RoleNameValue;
 import om.edu.squ.squportal.portlet.dps.role.db.RoleDbDao;
@@ -118,16 +119,16 @@ public class RoleServiceImpl implements Role
 	
 	/**
 	 * 
-	 * method name  : getRoleStatus
+	 * method name  : getApprovalStatus
 	 * @param studentNo
 	 * @param formName
 	 * @param roleName
 	 * @param locale
 	 * @return
 	 * RoleDbImpl
-	 * return type  : String
+	 * return type  : ApprovalStatus
 	 * 
-	 * purpose		: Get Role Status Description 
+	 * purpose		: Get Approval Status Description 
 	 * 				  of a particular student 
 	 * 				  for a particular form 
 	 * 				  and a particular role of an approver
@@ -135,9 +136,26 @@ public class RoleServiceImpl implements Role
 	 * Date    		:	Jul 17, 2017 12:00:24 PM
 	 * @throws NotCorrectDBRecordException 
 	 */
-	public String	getRoleStatus(String studentNo, String formName, String roleName, Locale locale) throws NotCorrectDBRecordException
+	public ApprovalStatus	getApprovalStatus(String studentNo, String formName, String roleName, Locale locale) throws NotCorrectDBRecordException
 	{
-		return roleDbDao.getRoleStatus(studentNo, formName, roleName, locale);
+		return roleDbDao.getApprovalStatus(studentNo, formName, roleName, locale);
+	}
+	
+	/**
+	 * 
+	 * method name  : getApprovalStatusDescription
+	 * @param statusCodeName
+	 * @return
+	 * RoleDbImpl
+	 * return type  : ApprovalStatus
+	 * 
+	 * purpose		: Get description of status with respective to status code name (Abbreviation)
+	 *
+	 * Date    		:	Jul 18, 2017 4:26:31 PM
+	 */
+	public ApprovalStatus	getApprovalStatusDescription(String statusCodeName)
+	{
+		return roleDbDao.getApprovalStatusDescription(statusCodeName);
 	}
 	
 	/**

@@ -49,6 +49,7 @@ import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
+import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalStatus;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.RoleNameValue;
 import om.edu.squ.squportal.portlet.dps.role.service.Role;
@@ -382,22 +383,80 @@ public class DpsServiceImpl implements DpsServiceDao
 	{
 		NotifierPeople	notifierPeople	=	new NotifierPeople();
 		
-		Student		student			=	getStudent(null, studentNo, locale);
-		Approver	approver		=	null;
-		Approver	approverHigher	=	null;
+		Student				student				=	getStudent(null, studentNo, locale);
+		Approver			approver			=	null;
+		Approver			approverHigher		=	null;
+		List<RoleNameValue> roleList			=	null;
+		String				statusDescriptionEng=	null;
+		String				statusDescriptionAr	=	null;
+		
+		
 		if(isHigherApproverRequired)
 		{
 					approverHigher	=	dpsDbDao.getHigherApprover(studentNo, formName, roleName, Constants.CONST_YES);
 		}
 					approver		=	dpsDbDao.getHigherApprover(studentNo, formName, roleName, Constants.CONST_NO);
 
+		roleList	=	roleService.getRoles(formName, locale);
 		notifierPeople.setStudent(student);
 		notifierPeople.setApprover(approver);
 		notifierPeople.setApproverHigher(approverHigher);
-		notifierPeople.setRoles(roleService.getRoles(formName, locale));
+		notifierPeople.setRoles(roleList);
+		
 		
 		//TODO - Need to get actual status from all multiple roles
-		notifierPeople.setRoleStatus(roleService.getRoleStatus(studentNo, formName, roleName, locale));
+		int count = 0;
+		for(RoleNameValue role : roleList)
+		{
+			count++;
+			
+			ApprovalStatus approvalStatus = roleService.getApprovalStatus(studentNo, formName, role.getRoleName(), locale);
+			
+			if(
+					approvalStatus.getStatusCodeName().equals(Constants.CONST_SQL_STATUS_CODE_NAME_PENDING) ||
+					approvalStatus.getStatusCodeName().equals(Constants.CONST_SQL_STATUS_CODE_REJCT)
+			)
+			{
+				statusDescriptionEng 	= approvalStatus.getStatusDescEng();
+				statusDescriptionAr		=	approvalStatus.getStatusDescAr();
+				break;
+			} else
+			{
+				if(count == roleList.size())
+				{
+					if(approvalStatus.getStatusCodeName().equals(Constants.CONST_SQL_STATUS_CODE_ACCPT))
+					{
+						statusDescriptionEng 	= approvalStatus.getStatusDescEng();
+						statusDescriptionAr		=	approvalStatus.getStatusDescAr();
+					}
+					
+				}
+				else
+				{
+					if(approvalStatus.getStatusCodeName().equals(Constants.CONST_SQL_STATUS_CODE_ACCPT))
+					{
+						
+						ApprovalStatus 	approvalStatusDesc		=	roleService.getApprovalStatusDescription(Constants.CONST_SQL_STATUS_CODE_NAME_PROGRESS);
+										statusDescriptionEng	=	approvalStatusDesc.getStatusDescEng();
+										statusDescriptionAr		=	approvalStatusDesc.getStatusDescAr();
+						
+					}
+				}
+			
+			}
+			
+			if(roleName.equals(role.getRoleName()))
+			{
+				break;
+			}
+			
+		}
+		
+		
+		
+		notifierPeople.setStatusDescEng(statusDescriptionEng);
+		notifierPeople.setStatusDescAr(statusDescriptionAr);
+		
 		
 		return notifierPeople;
 	}

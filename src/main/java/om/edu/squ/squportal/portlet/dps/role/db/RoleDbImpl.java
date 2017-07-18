@@ -40,10 +40,12 @@ import java.util.Properties;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
+import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalStatus;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.RoleNameValue;
 import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
+
 
 
 
@@ -134,8 +136,9 @@ public class RoleDbImpl implements RoleDbDao
 			public RoleNameValue mapRow(ResultSet rs, int rowNum) throws SQLException
 			{
 				RoleNameValue	roleNameValue	=	new RoleNameValue(
-																			rs.getString(Constants.CONST_COLMN_APPROVER_ROLE_NAME)
-																		,	rs.getString(Constants.CONST_COLMN_APPROVAL_SEQUENCE)
+																			rs.getInt(Constants.CONST_COLMN_APPROVAL_SEQUENCE)
+																		,	rs.getString(Constants.CONST_COLMN_APPROVER_ROLE_CODE)
+																		,	rs.getString(Constants.CONST_COLMN_APPROVER_ROLE_NAME)
 																	 );
 				
 				return roleNameValue;
@@ -151,16 +154,16 @@ public class RoleDbImpl implements RoleDbDao
 	
 	/**
 	 * 
-	 * method name  : getRoleStatus
+	 * method name  : getApprovalStatus
 	 * @param studentNo
 	 * @param formName
 	 * @param roleName
 	 * @param locale
 	 * @return
 	 * RoleDbImpl
-	 * return type  : String
+	 * return type  : ApprovalStatus
 	 * 
-	 * purpose		: Get Role Status Description 
+	 * purpose		: Get Approval Status Description 
 	 * 				  of a particular student 
 	 * 				  for a particular form 
 	 * 				  and a particular role of an approver
@@ -168,9 +171,25 @@ public class RoleDbImpl implements RoleDbDao
 	 * Date    		:	Jul 17, 2017 12:00:24 PM
 	 * @throws NotCorrectDBRecordException 
 	 */
-	public String	getRoleStatus(String studentNo, String formName, String roleName, Locale locale) throws NotCorrectDBRecordException
+	public ApprovalStatus	getApprovalStatus(String studentNo, String formName, String roleName, Locale locale) throws NotCorrectDBRecordException
 	{
 		String	PROP_SQL_ROLE_STATUS_DESCRIPTION	=	queryPropsCommonRole.getProperty(Constants.CONST_PROP_SQL_ROLE_STATUS_DESCRIPTION);
+		
+		RowMapper<ApprovalStatus> rowMapper	=	new RowMapper<ApprovalStatus>()
+		{
+			
+			@Override
+			public ApprovalStatus mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				ApprovalStatus	approvalStatus	=	new ApprovalStatus();
+				approvalStatus.setStatusCodeName(rs.getString(Constants.CONST_COLMN_STATUS_CODE_NAME));
+				approvalStatus.setStatusDescription(rs.getString(Constants.CONST_COLMN_STATUS_DESC));
+				approvalStatus.setStatusDescEng(rs.getString(Constants.CONST_COLMN_STATUS_DESC_EN));
+				approvalStatus.setStatusDescAr(rs.getString(Constants.CONST_COLMN_STATUS_DESC_AR));
+				return approvalStatus;
+			}
+		};
+
 		Map<String, String> mapParamsRole	=	new HashMap<String, String>();
 		mapParamsRole.put("paramFormName", formName);
 		mapParamsRole.put("paramRoleName", roleName);
@@ -179,7 +198,7 @@ public class RoleDbImpl implements RoleDbDao
 		
 		try
 		{
-			return nPJdbcTemplDps.queryForObject(PROP_SQL_ROLE_STATUS_DESCRIPTION, mapParamsRole, String.class);
+			return nPJdbcTemplDps.queryForObject(PROP_SQL_ROLE_STATUS_DESCRIPTION, mapParamsRole, rowMapper);
 		}
 		catch(DataIntegrityViolationException ex)
 		{
@@ -191,6 +210,45 @@ public class RoleDbImpl implements RoleDbDao
 			logger.error("DB Error: Empty Result DataAccess Exception -- throws at DB layer and catched at service" );
 			throw new NotCorrectDBRecordException(ex.getMessage());
 		}
+	}
+	
+	
+	/**
+	 * 
+	 * method name  : getApprovalStatusDescription
+	 * @param statusCodeName
+	 * @return
+	 * RoleDbImpl
+	 * return type  : ApprovalStatus
+	 * 
+	 * purpose		: Get description of status with respective to status code name (Abbreviation)
+	 *
+	 * Date    		:	Jul 18, 2017 4:26:31 PM
+	 */
+	public ApprovalStatus	getApprovalStatusDescription(String statusCodeName)
+	{
+		String	PROP_SQL_STATUS_DESCRIPTION			=	queryPropsCommonRole.getProperty(Constants.CONST_PROP_SQL_STATUS_DESCRIPTION);
+		
+		RowMapper<ApprovalStatus> rowMapper	=	new RowMapper<ApprovalStatus>()
+				{
+					
+					@Override
+					public ApprovalStatus mapRow(ResultSet rs, int rowNum) throws SQLException
+					{
+						ApprovalStatus	approvalStatus	=	new ApprovalStatus();
+						approvalStatus.setStatusCodeName(rs.getString(Constants.CONST_COLMN_STATUS_CODE_NAME));
+						approvalStatus.setStatusDescEng(rs.getString(Constants.CONST_COLMN_STATUS_DESC_EN));
+						approvalStatus.setStatusDescAr(rs.getString(Constants.CONST_COLMN_STATUS_DESC_AR));
+						return approvalStatus;
+					}
+				};
+
+		Map<String, String> mapParamsRole	=	new HashMap<String, String>();
+		mapParamsRole.put("paramStatusAbbr", statusCodeName);
+		
+		
+		
+		return nPJdbcTemplDps.queryForObject(PROP_SQL_STATUS_DESCRIPTION, mapParamsRole, rowMapper);
 	}
 	
 	/**

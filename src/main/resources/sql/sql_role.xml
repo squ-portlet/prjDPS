@@ -20,6 +20,7 @@
     <entry key="sql.role.sequence.rolename.list.by.form">
 			SELECT 
 			        APP.APPROVAL_SEQUENCE 													AS APPROVAL_SEQUENCE
+			      , CODES.L_ABR_CODE 														APPROVER_ROLE_CODE   
 			      , DECODE (
 			                  :paramLocale
 			                  ,'ar',A_CODENM,CODES.CODENM 
@@ -214,16 +215,22 @@
 		<entry key="sql.role.status.description.for.form.and.role">
 				<![CDATA[
 						SELECT 
-						      STATUS_DESC
+						      	STATUS_CODE_NAME														 	AS	STATUS_CODE_NAME
+						      , STATUS_DESC																	AS	STATUS_DESC
+						      , STATUS_DESC_EN																AS	STATUS_DESC_EN
+						      ,	STATUS_DESC_AR																AS	STATUS_DESC_AR
 						FROM      
 						(    
 								SELECT 
-				
-								         DECODE (
+				 							CODES.L_ABR_CODE                    							AS  STATUS_CODE_NAME
+								        , 	DECODE (
 								                  :paramLocale
 								                  ,'ar',CODES.A_CODENM,CODES.CODENM 
 								                  
 								                ) 															AS 	STATUS_DESC
+										,	CODES.CODENM													AS	STATUS_DESC_EN
+										,	CODES.A_CODENM													AS	STATUS_DESC_AR
+								                
 								FROM
 								        APPROVAL_MASTER 		APP
 								      , SIS_CODES     			CODES
@@ -241,12 +248,15 @@
 						      
 						 	UNION
 						 
-							 	SELECT 
-							        	 DECODE (
+							 	SELECT
+							 	 		 	CODES.L_ABR_CODE                    								AS  STATUS_CODE_NAME 
+							        	,	DECODE (
 								                  :paramLocale
 								                  ,'ar',CODES.A_CODENM,CODES.CODENM 
 											                  
 											     ) 															AS 	STATUS_DESC
+										,	CODES.CODENM													AS	STATUS_DESC_EN
+										,	CODES.A_CODENM													AS	STATUS_DESC_AR											     
 							 	FROM
 							          SIS_CODES     			CODES
 							          ,SIS_CODE_TYPES     TYP
@@ -257,6 +267,20 @@
 						 )
 						 WHERE ROWNUM = 1
 				]]>
+		</entry>
+		
+		<entry key="sql.status.description">
+					 	SELECT
+					 	 		 	CODES.L_ABR_CODE    		               								AS  STATUS_CODE_NAME 
+								,	CODES.CODENM															AS	STATUS_DESC_EN
+								,	CODES.A_CODENM															AS	STATUS_DESC_AR											     
+					 	FROM
+					          	SIS_CODES     			CODES
+					          ,	SIS_CODE_TYPES     		TYP
+						WHERE
+					          CODES.SISCODETYPCD 	= 	TYP.SISCODETYPCD
+					         AND TYP.SISCODETYPNM 	= 	'APPROVAL_STATUS'
+					         AND CODES.L_ABR_CODE	=	:paramStatusAbbr		
 		</entry>
 		
 		

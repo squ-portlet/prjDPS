@@ -37,6 +37,7 @@ public class RoleNameValue
 {
 	private		String	roleName;
 	private		String	roleValue;
+	private		int		sequenceNo;
 	
 	public RoleNameValue()	{}
 	
@@ -45,6 +46,12 @@ public class RoleNameValue
 		this.roleName	=	roleName;
 		this.roleValue	=	roleVale;
 	}
+	public RoleNameValue(int sequenceNo, String roleName, String roleVale)
+	{
+		this.sequenceNo	=	sequenceNo;
+		this.roleName	=	roleName;
+		this.roleValue	=	roleVale;
+	}	
 	/**
 	 * Getter Method	: getRoleName
 	 * @return the roleName
@@ -85,6 +92,29 @@ public class RoleNameValue
 	{
 		this.roleValue = roleValue;
 	}
+	
+	/**
+	 * Getter Method	: getSequenceNo
+	 * @return the sequenceNo
+	 * 
+	 * Date				: Jul 18, 2017
+	 */
+	public int getSequenceNo()
+	{
+		return this.sequenceNo;
+	}
+
+	/**
+	 * Setter method : setSequenceNo
+	 * @param sequenceNo the sequenceNo to set
+	 * 
+	 * Date          : Jul 18, 2017 2:16:21 PM
+	 */
+	public void setSequenceNo(int sequenceNo)
+	{
+		this.sequenceNo = sequenceNo;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -92,7 +122,7 @@ public class RoleNameValue
 	public String toString()
 	{
 		return "RoleNameValue [roleName=" + this.roleName + ", roleValue="
-				+ this.roleValue + "]";
+				+ this.roleValue + ", sequenceNo=" + this.sequenceNo + "]";
 	}
 	
 	

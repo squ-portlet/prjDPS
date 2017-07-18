@@ -43,7 +43,9 @@ public class NotifierPeople
 	private Approver			approver;
 	private	Approver			approverHigher;
 	private	List<RoleNameValue>	roles;
-	private	String				roleStatus;
+	private	String				statusDescEng;
+	private	String				statusDescAr;
+	
 	
 	
 	/**
@@ -128,25 +130,47 @@ public class NotifierPeople
 		this.roles = roles;
 	}
 	
+	
+	
 	/**
-	 * Getter Method	: getRoleStatus
-	 * @return the roleStatus
+	 * Getter Method	: getStatusDescEng
+	 * @return the statusDescEng
 	 * 
-	 * Date				: Jul 17, 2017
+	 * Date				: Jul 18, 2017
 	 */
-	public String getRoleStatus()
+	public String getStatusDescEng()
 	{
-		return this.roleStatus;
+		return this.statusDescEng;
 	}
 	/**
-	 * Setter method : setRoleStatus
-	 * @param roleStatus the roleStatus to set
+	 * Setter method : setStatusDescEng
+	 * @param statusDescEng the statusDescEng to set
 	 * 
-	 * Date          : Jul 17, 2017 12:09:39 PM
+	 * Date          : Jul 18, 2017 3:58:14 PM
 	 */
-	public void setRoleStatus(String roleStatus)
+	public void setStatusDescEng(String statusDescEng)
 	{
-		this.roleStatus = roleStatus;
+		this.statusDescEng = statusDescEng;
+	}
+	/**
+	 * Getter Method	: getStatusDescAr
+	 * @return the statusDescAr
+	 * 
+	 * Date				: Jul 18, 2017
+	 */
+	public String getStatusDescAr()
+	{
+		return this.statusDescAr;
+	}
+	/**
+	 * Setter method : setStatusDescAr
+	 * @param statusDescAr the statusDescAr to set
+	 * 
+	 * Date          : Jul 18, 2017 3:58:14 PM
+	 */
+	public void setStatusDescAr(String statusDescAr)
+	{
+		this.statusDescAr = statusDescAr;
 	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
@@ -156,7 +180,8 @@ public class NotifierPeople
 	{
 		return "NotifierPeople [student=" + this.student + ", approver="
 				+ this.approver + ", approverHigher=" + this.approverHigher
-				+ ", roles=" + this.roles + ", roleStatus=" + this.roleStatus
+				+ ", roles=" + this.roles + ", statusDescEng="
+				+ this.statusDescEng + ", statusDescAr=" + this.statusDescAr
 				+ "]";
 	}
 	

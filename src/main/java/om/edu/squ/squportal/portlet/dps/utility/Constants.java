@@ -104,6 +104,8 @@ public interface Constants
 	public static final	String	CONST_COLMN_STATUS_CODE							=	"STATUS_CODE";
 	public static final	String	CONST_COLMN_STATUS_CODE_NAME					=	"STATUS_CODE_NAME";
 	public static final	String	CONST_COLMN_STATUS_DESC							=	"STATUS_DESC";
+	public static final	String	CONST_COLMN_STATUS_DESC_EN						=	"STATUS_DESC_EN";
+	public static final	String	CONST_COLMN_STATUS_DESC_AR						=	"STATUS_DESC_AR";
 	public static final	String	CONST_COLMN_COHORT								=	"COHORT";
 	public static final	String	CONST_COLMN_COMMENT								=	"COMMENTS";
 	
@@ -241,6 +243,7 @@ public interface Constants
 	
 	
 	/* ---  SQL - DPS - Role --------------------- */
+	public	static	final	String	CONST_PROP_SQL_STATUS_DESCRIPTION			=	"sql.status.description";
 	public	static	final	String	CONST_PROP_SQL_ROLE_STATUS_DESCRIPTION		=	"sql.role.status.description.for.form.and.role";
 	public	static	final	String	CONST_PROP_SQL_ROLE_LIST_FORM				=	"sql.role.sequence.rolename.list.by.form";
 	public	static	final	String	CONST_PROP_SQL_ROLE_IS_SUPERVISOR			=	"sql.role.is.supervisor";
