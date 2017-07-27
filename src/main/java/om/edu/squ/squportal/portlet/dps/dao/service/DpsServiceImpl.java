@@ -32,6 +32,7 @@ package om.edu.squ.squportal.portlet.dps.dao.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.portlet.PortletRequest;
 
@@ -82,6 +83,8 @@ public class DpsServiceImpl implements DpsServiceDao
 	Role	roleService;
 	@Autowired
 	Rule	ruleService;
+
+
 
 	/**
 	 * 
@@ -404,7 +407,6 @@ public class DpsServiceImpl implements DpsServiceDao
 		notifierPeople.setRoles(roleList);
 		
 		
-		//TODO - Need to get actual status from all multiple roles
 		int count = 0;
 		for(RoleNameValue role : roleList)
 		{
@@ -417,6 +419,9 @@ public class DpsServiceImpl implements DpsServiceDao
 					approvalStatus.getStatusCodeName().equals(Constants.CONST_SQL_STATUS_CODE_REJCT)
 			)
 			{
+				notifierPeople.setPending((approvalStatus.getStatusCodeName().equals(Constants.CONST_SQL_STATUS_CODE_NAME_PENDING)?true:false));
+				notifierPeople.setReject((approvalStatus.getStatusCodeName().equals(Constants.CONST_SQL_STATUS_CODE_REJCT)?true:false));
+				
 				statusDescriptionEng 	= approvalStatus.getStatusDescEng();
 				statusDescriptionAr		=	approvalStatus.getStatusDescAr();
 				break;
@@ -426,6 +431,7 @@ public class DpsServiceImpl implements DpsServiceDao
 				{
 					if(approvalStatus.getStatusCodeName().equals(Constants.CONST_SQL_STATUS_CODE_ACCPT))
 					{
+						notifierPeople.setAccept(approvalStatus.getStatusCodeName().equals(Constants.CONST_SQL_STATUS_CODE_ACCPT)?true:false);
 						statusDescriptionEng 	= approvalStatus.getStatusDescEng();
 						statusDescriptionAr		=	approvalStatus.getStatusDescAr();
 					}
@@ -435,7 +441,7 @@ public class DpsServiceImpl implements DpsServiceDao
 				{
 					if(approvalStatus.getStatusCodeName().equals(Constants.CONST_SQL_STATUS_CODE_ACCPT))
 					{
-						
+						notifierPeople.setProgress(approvalStatus.getStatusCodeName().equals(Constants.CONST_SQL_STATUS_CODE_ACCPT)?true:false);
 						ApprovalStatus 	approvalStatusDesc		=	roleService.getApprovalStatusDescription(Constants.CONST_SQL_STATUS_CODE_NAME_PROGRESS);
 										statusDescriptionEng	=	approvalStatusDesc.getStatusDescEng();
 										statusDescriptionAr		=	approvalStatusDesc.getStatusDescAr();
@@ -456,7 +462,6 @@ public class DpsServiceImpl implements DpsServiceDao
 		
 		notifierPeople.setStatusDescEng(statusDescriptionEng);
 		notifierPeople.setStatusDescAr(statusDescriptionAr);
-		
 		
 		return notifierPeople;
 	}

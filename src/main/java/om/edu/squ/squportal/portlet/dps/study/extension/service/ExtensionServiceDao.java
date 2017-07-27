@@ -120,8 +120,9 @@ public interface ExtensionServiceDao
 	 * purpose		: add record for approval 
 	 *
 	 * Date    		:	Feb 28, 2017 11:32:46 AM
+	 * @throws Exception 
 	 */
-	public ExtensionDTO setRoleTransaction(ExtensionDTO extensionDTO, Employee employee, Locale locale);
+	public ExtensionDTO setRoleTransaction(ExtensionDTO extensionDTO, Employee employee, Locale locale) throws Exception;
 	
 	/**
 	 * 

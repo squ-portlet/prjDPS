@@ -239,8 +239,7 @@ public interface Constants
 	public	static	final	String	CONST_PROP_SQL_RULE_CURR_DATE_IN_SPECIFIC_WEEK	=	"sql.rule.current.date.in.specific.week";
 	
 	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_EXTENSION_COUNT	=	"sql.rule.service.extension.select.count.student";
-	
-	
+
 	
 	/* ---  SQL - DPS - Role --------------------- */
 	public	static	final	String	CONST_PROP_SQL_STATUS_DESCRIPTION			=	"sql.status.description";
@@ -277,4 +276,24 @@ public interface Constants
 	public	static	final	String	CONST_FILE_ROLE_EXTENTION					=	"role/role_extension.xml";
 	
 	/******************************************************/
+	
+	/************* DPS - NOTIFICATION ******************************/
+	public	static	final	String	CONST_NOTIFICATION_TYPE_EMAIL				=	"EMAIL";
+	public	static	final	String	CONST_NOTIFICATION_TYPE_SMS					=	"SMS";
+	
+	public	static	final	String	CONST_NOTIFICATION_FORM_TYPE_GENERAL		=	"GEN";
+	public	static	final	String	CONST_NOTIFICATION_FORM_TYPE_EXTENSION		=	"EXT";
+	
+	public	static	final	String	TEMPLATE_NOTIFICATION_STUDENT_EMAIL			=	"TEMPLATE_EMAIL_STUDENT";
+	public	static	final	String	TEMPLATE_NOTIFICATION_APPROVER_EMAIL		=	"TEMPLATE_EMAIL_APPROVER";
+	public	static	final	String	TEMPLATE_NOTIFICATION_HIGHER_APPROVER_EMAIL	=	"TEMPLATE_EMAIL_HIGHER_APPROVER";
+	
+	
+	
+	public	static	final	boolean	CONST_TEST_ENVIRONMENT						=	true;
+	public	static	final	String	CONST_EMAIL_FROM							=	"portal_feedback@squ.edu.om";
+	public	static	final	String	CONST_DUMMY_USER_EMAIL_TO					=	"bhabesh@squ.edu.om";
+	
+	
+	
 }

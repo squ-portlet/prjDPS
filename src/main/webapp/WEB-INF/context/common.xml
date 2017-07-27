@@ -45,6 +45,14 @@
 			<context:component-scan base-package="om.edu.squ.squportal.portlet.dps.utility" />
 			<context:component-scan base-package="om.edu.squ.squportal.portlet.preferences.dao.service" />
 			<context:component-scan base-package="om.edu.squ.squportal.portlet.preferences.dao.db" />
+			<!-- For notification -->
+<!-- 			<context:component-scan base-package="om.edu.squ.squportal.notification" /> -->
+
+	<context:annotation-config/>
+<!-- 	<bean name="AppConfig" class="om.edu.squ.squportal.notification.config.AppConfig"/> -->
+	<!-- be sure to include the JavaConfig bean post-processor -->
+<!--     <bean class="org.springframework.config.java.process.ConfigurationPostProcessor"/> -->
+	
 
     	<!-- View resolver -->
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -122,6 +130,25 @@
 		
 <!-- DI to DPS Common Service Dao -->
 	<bean id="dpsServiceDao"	class="om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceImpl"/>
+	
+
+	<bean id="dpsNotification" class="om.edu.squ.squportal.portlet.dps.notification.DPSNotificationServiceImpl">
+		<property name="stringTemplateGroup"> 
+	        <bean id="stringTemplateGroup" class="org.antlr.stringtemplate.StringTemplateGroup">
+	            <constructor-arg type="java.lang.String" value="GroupName"/>
+	        </bean>
+	    </property>
+		<property name="emailTemplateMap">
+	        <map>
+	            <entry key="TEMPLATE_EMAIL_STUDENT" 
+	                value="/emailTemplate/student/studentTemplate"/>
+   	            <entry key="TEMPLATE_EMAIL_APPROVER" 
+			       value="/emailTemplate/approver/approverTemplate"/>
+   	            <entry key="TEMPLATE_EMAIL_HIGHER_APPROVER" 
+				   value="/emailTemplate/approver/higherApproverTemplate"/>
+	        </map>
+	    </property>
+	</bean>
 
 
 <!-- DI to DPS Common Role Dao -->
@@ -132,11 +159,6 @@
 		</bean>
 
 <!-- om.edu.squ.squportal.portlet.dps.role.service -->
-
-
-
-
-
 
 	<bean id="userIdUtil"	class="om.edu.squ.squportal.portlet.dps.utility.UserIdUtil"/>
 
@@ -169,7 +191,16 @@
 
 		<bean id="ruleService" class="om.edu.squ.squportal.portlet.dps.rule.service.RuleServiceImpl">	
 		</bean>
+		
+	<!-- SMS Notification -->
+ 	<bean id="notificationService" class="om.edu.squ.squportal.notification.service.core.NotificationServiceCoreImpl">
+ 		<property name="smsUserId" value="cis-sms-live"/>
+ 		<property name="smsPassword" value="evil-sms-sic135"/>
+ 	</bean>
 
+
+
+ 	
 
 <!-- LDAP - SQU Oracle Internet Directory Configuration -->
 	<!-- PRIMARY LDAP - SQU Oracle Internet Directory Configuration -->

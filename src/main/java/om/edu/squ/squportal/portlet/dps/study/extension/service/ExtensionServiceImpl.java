@@ -32,11 +32,14 @@ package om.edu.squ.squportal.portlet.dps.study.extension.service;
 import java.util.List;
 import java.util.Locale;
 
+import om.edu.squ.squportal.notification.service.NotificationService;
+import om.edu.squ.squportal.notification.service.core.NotificationServiceCore;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.NotifierPeople;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
+import om.edu.squ.squportal.portlet.dps.notification.DPSNotification;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.rule.service.Rule;
 import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO;
@@ -44,6 +47,7 @@ import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionReason;
 import om.edu.squ.squportal.portlet.dps.study.extension.db.ExtensionDbDao;
 import om.edu.squ.squportal.portlet.dps.study.extension.model.ExtensionStudentDataModel;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
+import om.edu.squ.squportal.portlet.dps.utility.UtilProperty;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,12 +62,13 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
-	DpsServiceDao	dpsServiceDao;
+	DpsServiceDao			dpsServiceDao;
 	@Autowired
-	ExtensionDbDao	extensionDbDao;
+	ExtensionDbDao			extensionDbDao;
 	@Autowired
-	Rule			ruleService;
-	
+	Rule					ruleService;
+	@Autowired
+	DPSNotification			dpsNotification;
 	
 	/**
 	 * 
@@ -105,9 +110,17 @@ if(result > 0)
 																				false, 
 																				locale
 																			);
-			logger.info("NotifierPeople : "+notifierPeople.toString());
+
+			notifierPeople.setFormNameEng(UtilProperty.getMessage("prop.dps.form.name.extension", null));
+			notifierPeople.setFormNameAr(UtilProperty.getMessage("prop.dps.form.name.extension", null, new Locale("ar")));
+			notifierPeople.setServiceUrl(UtilProperty.getMessage("prop.dps.url.extension", null));
 			
-			
+			dpsNotification.sendNotification(
+													UtilProperty.getMessage("prop.dps.extension.notification.subject", new String[]{notifierPeople.getStudent().getPersonalDetail().getId()})
+												, 	notifierPeople
+												, 	"null"
+												, 	Constants.CONST_TEST_ENVIRONMENT
+											);
 		}
 		catch (NotCorrectDBRecordException ex)
 		{
@@ -115,6 +128,11 @@ if(result > 0)
 			logger.error("Error in Notification : "+ex.getMessage());
 		}
 		/* -- Notification -- end --*/
+		catch (Exception ex)
+		{
+			// TODO Auto-generated catch block
+			ex.printStackTrace();
+		}
 }
 		
 		
@@ -203,8 +221,9 @@ if(result > 0)
 	 * Note			: This function relates with two different transactional statements
 	 *
 	 * Date    		:	Feb 28, 2017 11:32:46 AM
+	 * @throws Exception 
 	 */
-	public ExtensionDTO setRoleTransaction(ExtensionDTO extensionDTOTr, Employee employee, Locale locale)
+	public ExtensionDTO setRoleTransaction(ExtensionDTO extensionDTOTr, Employee employee, Locale locale) throws Exception
 	{
 		int 			resultTr			=	0;		
 		ExtensionDTO	extensionDTOStudent	=	new ExtensionDTO();
@@ -246,7 +265,16 @@ if(result > 0)
 																									true, 
 																									locale
 																								);
-								logger.info("NotifierPeople : "+notifierPeople.toString());
+								notifierPeople.setFormNameEng(UtilProperty.getMessage("prop.dps.form.name.extension", null));
+								notifierPeople.setFormNameAr(UtilProperty.getMessage("prop.dps.form.name.extension", null, new Locale("ar")));
+								notifierPeople.setServiceUrl(UtilProperty.getMessage("prop.dps.url.extension", null));
+								
+								dpsNotification.sendNotification(
+																		UtilProperty.getMessage("prop.dps.extension.notification.subject", new String[]{notifierPeople.getStudent().getPersonalDetail().getId()})
+																	, 	notifierPeople
+																	, 	"null"
+																	, 	Constants.CONST_TEST_ENVIRONMENT
+																);								
 								
 								
 							}

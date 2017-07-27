@@ -306,19 +306,13 @@ public class ExtensionStudiesController
 	 * @param request
 	 * @param response
 	 * @param locale
-	 * @throws IOException
-	 * ExtensionStudiesController
-	 * return type  : void
-	 * 
-	 * purpose		:
-	 *
-	 * Date    		:	Feb 27, 2017 3:31:31 PM
+	 * @throws Exception 
 	 */
 	@ResourceMapping(value="ajaxExtensionDataApprove")
 	private	void getResourceDataForApprove(
 			@ModelAttribute("extensionDTO") ExtensionDTO extensionDTO,
 			ResourceRequest request, ResourceResponse response,Locale locale
-		) throws IOException
+		) throws Exception
 		{
 			Gson			gson					=	new Gson();
 			Employee		employee;
