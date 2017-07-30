@@ -288,12 +288,14 @@ public interface Constants
 	public	static	final	String	TEMPLATE_NOTIFICATION_APPROVER_EMAIL		=	"TEMPLATE_EMAIL_APPROVER";
 	public	static	final	String	TEMPLATE_NOTIFICATION_HIGHER_APPROVER_EMAIL	=	"TEMPLATE_EMAIL_HIGHER_APPROVER";
 	
+	public	static	final	String	TEMPLATE_NOTIFICATION_STUDENT_SMS			=	"TEMPLATE_SMS_STUDENT";
+	
 	
 	
 	public	static	final	boolean	CONST_TEST_ENVIRONMENT						=	true;
 	public	static	final	String	CONST_EMAIL_FROM							=	"portal_feedback@squ.edu.om";
 	public	static	final	String	CONST_DUMMY_USER_EMAIL_TO					=	"bhabesh@squ.edu.om";
-	
+	public	static	final	String	CONST_DUMMY_USER_SMS_TO						=	"97259245";
 	
 	
 }

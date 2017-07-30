@@ -1,6 +1,6 @@
-package om.edu.squ.squportal.portlet.dps.notification;
+package om.edu.squ.squportal.portlet.dps.notification.service;
 
-import om.edu.squ.squportal.portlet.dps.bo.NotifierPeople;
+import om.edu.squ.squportal.portlet.dps.notification.bo.NotifierPeople;
 
 public interface DPSNotification
 {

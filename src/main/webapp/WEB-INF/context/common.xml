@@ -132,7 +132,7 @@
 	<bean id="dpsServiceDao"	class="om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceImpl"/>
 	
 
-	<bean id="dpsNotification" class="om.edu.squ.squportal.portlet.dps.notification.DPSNotificationServiceImpl">
+	<bean id="dpsNotification" class="om.edu.squ.squportal.portlet.dps.notification.service.DPSNotificationServiceImpl">
 		<property name="stringTemplateGroup"> 
 	        <bean id="stringTemplateGroup" class="org.antlr.stringtemplate.StringTemplateGroup">
 	            <constructor-arg type="java.lang.String" value="GroupName"/>
@@ -141,11 +141,18 @@
 		<property name="emailTemplateMap">
 	        <map>
 	            <entry key="TEMPLATE_EMAIL_STUDENT" 
-	                value="/emailTemplate/student/studentTemplate"/>
+	                value="/notificationTemplate/emailTemplate/student/studentTemplate"/>
    	            <entry key="TEMPLATE_EMAIL_APPROVER" 
-			       value="/emailTemplate/approver/approverTemplate"/>
+			       value="/notificationTemplate/emailTemplate/approver/approverTemplate"/>
    	            <entry key="TEMPLATE_EMAIL_HIGHER_APPROVER" 
-				   value="/emailTemplate/approver/higherApproverTemplate"/>
+				   value="/notificationTemplate/emailTemplate/approver/higherApproverTemplate"/>
+	        </map>
+	    </property>
+	    <property name="smsTemplateMap">
+	        <map>
+	        	<entry 	key="TEMPLATE_SMS_STUDENT" 
+	        			value="/notificationTemplate/smsTemplate/student/studentTemplateSMS"/>
+	        	
 	        </map>
 	    </property>
 	</bean>

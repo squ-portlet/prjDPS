@@ -35,13 +35,13 @@ import javax.portlet.PortletRequest;
 
 import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
-import om.edu.squ.squportal.portlet.dps.bo.NotifierPeople;
 import om.edu.squ.squportal.portlet.dps.bo.PersonalDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
 import om.edu.squ.squportal.portlet.dps.bo.YearSemester;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
+import om.edu.squ.squportal.portlet.dps.notification.bo.NotifierPeople;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO;
 

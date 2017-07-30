@@ -27,7 +27,7 @@
  *
  * 
  */
-package om.edu.squ.squportal.portlet.dps.bo;
+package om.edu.squ.squportal.portlet.dps.notification.bo;
 
 import java.util.List;
 import java.util.Map;
@@ -36,6 +36,8 @@ import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 
 import om.edu.squ.squportal.notification.service.core.NotificationServiceCore;
+import om.edu.squ.squportal.portlet.dps.bo.Approver;
+import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.role.bo.RoleNameValue;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
