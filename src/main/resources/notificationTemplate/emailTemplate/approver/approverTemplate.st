@@ -3,8 +3,7 @@
 <body>
 
 <p>
-	Dear 
-	Approver ($data.approver.nameEng$), 
+	Dear $data.approver.roleNameEng$ [$data.approver.nameEng$], 
 			<br />Detail Status of&nbsp; application is mentioned below :  
 </p>
 <ul class="auto-style1">

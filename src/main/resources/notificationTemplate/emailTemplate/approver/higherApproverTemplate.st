@@ -3,8 +3,7 @@
 <body>
 
 <p>
-	Dear 
-	Approver ($data.approverHigher.nameEng$), 
+	Dear $data.approverHigher.roleNameEng$ [$data.approverHigher.nameEng$], 
 			<br />Detail Status of&nbsp; application is mentioned below :  
 </p>
 <ul class="auto-style1">
@@ -29,7 +28,7 @@
 	<li>List of Approvers&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :<strong>&nbsp; $data.roles 
 	: {x | $x.sequenceNo$.$x.roleValue$  &nbsp;} $ </strong>
 	</li>
-	<li>Current Approver							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 
+	<li>Previous Approver							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 
 			<strong>$data.approver.roleNameEng$</strong> </li>
 	<li>Status										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 				: <strong>$data.statusDescEng$</strong> </li>
