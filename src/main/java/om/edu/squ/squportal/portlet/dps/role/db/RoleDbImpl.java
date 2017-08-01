@@ -174,7 +174,6 @@ public class RoleDbImpl implements RoleDbDao
 	public ApprovalStatus	getApprovalStatus(String studentNo, String formName, String roleName, Locale locale) throws NotCorrectDBRecordException
 	{
 		String	PROP_SQL_ROLE_STATUS_DESCRIPTION	=	queryPropsCommonRole.getProperty(Constants.CONST_PROP_SQL_ROLE_STATUS_DESCRIPTION);
-		
 		RowMapper<ApprovalStatus> rowMapper	=	new RowMapper<ApprovalStatus>()
 		{
 			

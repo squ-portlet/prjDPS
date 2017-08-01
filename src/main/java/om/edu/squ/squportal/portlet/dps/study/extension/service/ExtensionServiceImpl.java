@@ -32,6 +32,7 @@ package om.edu.squ.squportal.portlet.dps.study.extension.service;
 import java.util.List;
 import java.util.Locale;
 
+import om.edu.squ.squportal.notification.exception.NotificationException;
 import om.edu.squ.squportal.notification.service.NotificationService;
 import om.edu.squ.squportal.notification.service.core.NotificationServiceCore;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
@@ -98,42 +99,41 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		result	=	extensionDbDao.setExtensionByStudent(extensionDTO);
 
 		
-if(result > 0)
-{
-		/* -- Notification -- Start --*/
-		try
+		if(result > 0)
 		{
-			NotifierPeople notifierPeople = dpsServiceDao.getNotifierPeople(
-																				extensionDTO.getStudentNo(), 
-																				Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY, 
-																				Constants.CONST_SQL_ROLE_NAME_SUPERVISOR, 
-																				false, 
-																				locale
-																			);
-
-			notifierPeople.setFormNameEng(UtilProperty.getMessage("prop.dps.form.name.extension", null));
-			notifierPeople.setFormNameAr(UtilProperty.getMessage("prop.dps.form.name.extension", null, new Locale("ar")));
-			notifierPeople.setServiceUrl(UtilProperty.getMessage("prop.dps.url.extension", null));
-			
-			dpsNotification.sendNotification(
-													UtilProperty.getMessage("prop.dps.extension.notification.subject", new String[]{notifierPeople.getStudent().getPersonalDetail().getId()})
-												, 	notifierPeople
-												, 	"null"
-												, 	Constants.CONST_TEST_ENVIRONMENT
-											);
+				/* -- Notification -- Start --*/
+				try
+				{
+					NotifierPeople notifierPeople = dpsServiceDao.getNotifierPeople(
+																						extensionDTO.getStudentNo(), 
+																						Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY, 
+																						Constants.CONST_SQL_ROLE_NAME_SUPERVISOR, 
+																						false, 
+																						locale
+																					);
+		
+					notifierPeople.setFormNameEng(UtilProperty.getMessage("prop.dps.form.name.extension", null));
+					notifierPeople.setFormNameAr(UtilProperty.getMessage("prop.dps.form.name.extension", null, new Locale("ar")));
+					notifierPeople.setServiceUrl(UtilProperty.getMessage("prop.dps.url.extension", null));
+					
+					dpsNotification.sendNotification(
+															UtilProperty.getMessage("prop.dps.extension.notification.subject", new String[]{notifierPeople.getStudent().getPersonalDetail().getId()})
+														, 	notifierPeople
+														, 	"null"
+														, 	Constants.CONST_TEST_ENVIRONMENT
+													);
+				}
+				catch (NotCorrectDBRecordException ex)
+				{
+		
+					logger.error("Error in Notification : "+ex.getMessage());
+				}
+				/* -- Notification -- end --*/
+				catch (Exception ex)
+				{
+					logger.error("Error in  notification for student submit at Extension of Service : {}",ex.getMessage());
+				}
 		}
-		catch (NotCorrectDBRecordException ex)
-		{
-
-			logger.error("Error in Notification : "+ex.getMessage());
-		}
-		/* -- Notification -- end --*/
-		catch (Exception ex)
-		{
-			// TODO Auto-generated catch block
-			ex.printStackTrace();
-		}
-}
 		
 		
 		return result;
@@ -223,7 +223,7 @@ if(result > 0)
 	 * Date    		:	Feb 28, 2017 11:32:46 AM
 	 * @throws Exception 
 	 */
-	public ExtensionDTO setRoleTransaction(ExtensionDTO extensionDTOTr, Employee employee, Locale locale) throws Exception
+	public ExtensionDTO setRoleTransaction(ExtensionDTO extensionDTOTr, Employee employee, Locale locale) 
 	{
 		int 			resultTr			=	0;		
 		ExtensionDTO	extensionDTOStudent	=	new ExtensionDTO();
@@ -252,39 +252,42 @@ if(result > 0)
 		extensionDTOStudent.setCommentEng(extensionDTOTr.getCommentEng());
 		
 		resultTr			=	extensionDbDao.setExtensionStatusOfStudent(extensionDTOStudent);
-		if(resultTr>0)
-						{
-							extensionDTOResult	=	getExtensionsForApprovers(extensionDTOTr.getRoleName(),employee,extensionDTOTr.getStudentNo(),locale);
-							/* -- Notification -- Start --*/
-							try
+		try
+		{
+			if(resultTr>0)
 							{
-								NotifierPeople notifierPeople = dpsServiceDao.getNotifierPeople(
-																									extensionDTOTr.getStudentNo(), 
-																									Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY, 
-																									extensionDTOTr.getRoleName(), 
-																									true, 
-																									locale
-																								);
-								notifierPeople.setFormNameEng(UtilProperty.getMessage("prop.dps.form.name.extension", null));
-								notifierPeople.setFormNameAr(UtilProperty.getMessage("prop.dps.form.name.extension", null, new Locale("ar")));
-								notifierPeople.setServiceUrl(UtilProperty.getMessage("prop.dps.url.extension", null));
-								
-								dpsNotification.sendNotification(
-																		UtilProperty.getMessage("prop.dps.extension.notification.subject", new String[]{notifierPeople.getStudent().getPersonalDetail().getId()})
-																	, 	notifierPeople
-																	, 	"null"
-																	, 	Constants.CONST_TEST_ENVIRONMENT
-																);								
-								
-								
+								extensionDTOResult	=	getExtensionsForApprovers(extensionDTOTr.getRoleName(),employee,extensionDTOTr.getStudentNo(),locale);
+								/* -- Notification -- Start --*/
+
+									NotifierPeople notifierPeople = dpsServiceDao.getNotifierPeople(
+																										extensionDTOTr.getStudentNo(), 
+																										Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY, 
+																										extensionDTOTr.getRoleName(), 
+																										true, 
+																										locale
+																									);
+									notifierPeople.setFormNameEng(UtilProperty.getMessage("prop.dps.form.name.extension", null));
+									notifierPeople.setFormNameAr(UtilProperty.getMessage("prop.dps.form.name.extension", null, new Locale("ar")));
+									notifierPeople.setServiceUrl(UtilProperty.getMessage("prop.dps.url.extension", null));
+									
+									dpsNotification.sendNotification(
+																			UtilProperty.getMessage("prop.dps.extension.notification.subject", new String[]{notifierPeople.getStudent().getPersonalDetail().getId()})
+																		, 	notifierPeople
+																		, 	"null"
+																		, 	Constants.CONST_TEST_ENVIRONMENT
+																	);								
+	
+								/* -- Notification -- end --*/
 							}
-							catch (NotCorrectDBRecordException ex)
-							{
-								// TODO Auto-generated catch block
-								ex.printStackTrace();
-							}
-							/* -- Notification -- end --*/
-						}
+		}
+		catch (NotCorrectDBRecordException ex)
+		{
+			logger.error("Error in Notification : "+ex.getMessage());
+		}
+		catch(NotificationException exNotification)
+		{
+			logger.error("Error in  notification for approving at Extension of Service 1 : {}",exNotification.getMessage());
+		}
 		
 		
 		

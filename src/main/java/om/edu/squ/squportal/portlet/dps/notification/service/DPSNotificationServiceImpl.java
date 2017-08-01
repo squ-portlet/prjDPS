@@ -31,6 +31,7 @@ package om.edu.squ.squportal.portlet.dps.notification.service;
 
 import java.util.Map;
 
+import om.edu.squ.squportal.notification.exception.NotificationException;
 import om.edu.squ.squportal.notification.service.core.NotificationServiceCore;
 import om.edu.squ.squportal.portlet.dps.notification.bo.NotifierPeople;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
@@ -40,11 +41,15 @@ import org.antlr.stringtemplate.StringTemplateGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+
+import com.sun.mail.smtp.SMTPSendFailedException;
 
 /**
  * @author Bhabesh
  *
  */
+@Async
 public class DPSNotificationServiceImpl implements DPSNotification
 {
 
@@ -93,10 +98,25 @@ public class DPSNotificationServiceImpl implements DPSNotification
 	{
 		this.smsTemplateMap = smsTemplateMap;
 	}
+
+
 	/**
 	 * 
+	 * method name  : sendNotification
+	 * @param emailSubject
+	 * @param notifierPeople
+	 * @param formType
+	 * @param isTest
+	 * @return
+	 * @throws Exception
+	 * DPSNotification
+	 * return type  : String
+	 * 
+	 * purpose		: Send notification (SMS & E-mail to student and approvers)
+	 *
+	 * Date    		:	Jul 27, 2017 9:20:09 AM
 	 */
-	public String sendNotification( String emailSubject, NotifierPeople notifierPeople,   String formType, boolean isTest) throws Exception
+	public String sendNotification( String emailSubject, NotifierPeople notifierPeople,   String formType, boolean isTest)  throws NotificationException
 	{
 		String[] 			toSenderEmail				= 	null;
 		String				toSenderSMS					=	null;
@@ -125,9 +145,11 @@ public class DPSNotificationServiceImpl implements DPSNotification
 							smsTextStudent				=	stringSMSTemplateStudent.toString();
 		
 
-			/* Mail sending to Student */
+			/* Mail / SMS sending to Student */
+							
 			toSenderEmail 	= 	(isTest)? new String[]{Constants.CONST_DUMMY_USER_EMAIL_TO}:new String[]{notifierPeople.getStudent().getPersonalDetail().getEmail()};
 			toSenderSMS		=	(isTest)? Constants.CONST_DUMMY_USER_SMS_TO:notifierPeople.getStudent().getPersonalDetail().getPhone();
+
 			notificationService.sendEMail(Constants.CONST_EMAIL_FROM, toSenderEmail, null, emailSubject, emailBodyStudent, null);
 			notificationService.sendSingleSMS(toSenderSMS, smsTextStudent, "e", null, null);
 
@@ -136,7 +158,7 @@ public class DPSNotificationServiceImpl implements DPSNotification
 			notificationService.sendEMail(Constants.CONST_EMAIL_FROM, toSenderEmail, null, emailSubject, emailBodyApprover, null);
 
 			
-			if(null !=notifierPeople.getApproverHigher() && !(notifierPeople.isAccept()))
+			if(!(notifierPeople.isReject()) && ( null !=notifierPeople.getApproverHigher() && !(notifierPeople.isAccept())))
 			{
 				/* Mail sending to Higher Approver */
 				toSenderEmail = (isTest)? new String[]{Constants.CONST_DUMMY_USER_EMAIL_TO}:new String[]{notifierPeople.getApproverHigher().getEmail()};
