@@ -14,6 +14,21 @@ create or replace FUNCTION FUNC_STUDENT_APPROVER
 APP_EMP_NUM   VARCHAR2(10);
 BEGIN
   CASE ParamRoleName
+      WHEN 'ADVISOR' THEN
+            SELECT 
+                  ADVISOR
+                  INTO APP_EMP_NUM
+            FROM
+                  V_STDINFO_PORTAL
+            WHERE
+                    STDNO = paramStudentNo
+                AND ACTIVE = 'Y'
+                AND (
+                          DEG_NUMBER IN (2,4,10)
+                      OR  (DEG_NUMBER = 6 AND MAJOR_CODE='PODT')
+                    );
+                
+          
       WHEN 'SUPRVS' THEN 
                         SELECT 
                             THESIS.SUPVISREMPNO
@@ -28,10 +43,14 @@ BEGIN
                                                      STD_THESIS
                                                 WHERE
                                                       STDNO = paramStudentNo);
+                                                                     
       WHEN 'DEAN' THEN
+               SELECT USERNAME
+               INTO APP_EMP_NUM
+               FROM 
+               (
                       SELECT 
-                            LTRIM(USERS.USERNAME,'e')
-                            INTO APP_EMP_NUM
+                            LTRIM(USERS.USERNAME,'e') AS USERNAME
                       FROM    
                             SIS_USERS           USERS
                             , SIS_CODES         CODES
@@ -43,7 +62,11 @@ BEGIN
                            AND USERS.STATUSACTIVE='Y'
                            AND  COLCEN.L_ABR_CC = PORTAL.COLLEGE_CODE
                            AND  COLCEN.COLCENCD = USERS.COLCENCD
-                           AND  PORTAL.STDNO = paramStudentNo;
+                           AND  PORTAL.STDNO = paramStudentNo
+                           ORDER BY UPDTDTE DESC
+                )
+                WHERE
+                      ROWNUM = 1;
  
        WHEN 'DEANP' THEN
                       SELECT 
