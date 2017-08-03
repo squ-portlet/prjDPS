@@ -61,7 +61,17 @@ begin
                                  AND  APP_TX.STDNO          = paramStudentNo
                                  AND  APP_M.APPROVALCD      = APP_TX.APPROVALCD
                                  AND  CODES.L_ABR_CODE      = paramRoleName
-                                 AND  OBJ.OBJECTNM          = paramFormName;                    
+                                 AND  OBJ.OBJECTNM          = paramFormName
+                                 AND   TRANSACTION_DATE     = (
+                                                                SELECT 
+                                                                      MAX(TRANSACTION_DATE)
+                                                                FROM 
+                                                                      APPROVAL_TRANSACTION
+                                                                WHERE 
+                                                                          STDNO          = paramStudentNo
+                                                                      AND APPROVALCD     =  APP_M.APPROVALCD
+                                                                )
+                                  AND   ROWNUM              =   1;                   
                 end;
             END IF;
           end;
