@@ -315,8 +315,13 @@ public class DropWithWController
 		List<DropWDTO> resultDropWDTOs	=	null;
 		Gson			gson			=	new Gson();
 		String			errMsg			=	null;
+		String			employeeNumber	=	null;
+		
+
 		
 		dropWDTO.setUserName(request.getRemoteUser());
+		dropWDTO.setEmpNumber(dpsServiceDao.getEmpNumber(request));
+		dropWDTO.setRoleName(Constants.CONST_SQL_ROLE_NAME_ADVISOR);
 		try
 			{
 				resultDropWDTOs	=	dropWService.setDropWCourseUpdate(dropWDTO, locale);
@@ -324,10 +329,12 @@ public class DropWithWController
 		catch(NotSuccessFulDBUpdate ex)
 		{
 			logger.error("Droping is not successful");
-			/*We got the error but not throwing technical error to user screen*/
+			/*We catch the error but not throwing technical error to user screen*/
 			errMsg	=	ex.getMessage();
 		}
-		
+
+	
+
 		if(null == resultDropWDTOs)
 		{
 			response.setProperty(ResourceResponse.HTTP_STATUS_CODE, Integer.toString(HttpServletResponse.SC_INTERNAL_SERVER_ERROR));

@@ -9,6 +9,7 @@ import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotSuccessFulDBUpdate;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.model.DropCourseModel;
+import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 
 public interface DropWService
 {
@@ -105,5 +106,19 @@ public interface DropWService
 	 * Date    		:	May 17, 2017 3:11:11 PM
 	 */
 	public boolean isRuleStudentComplete(String studentNo, String stdStatCode);
+	
+	/**
+	 * 
+	 * method name  : setRoleTransaction
+	 * @param dropWDTO
+	 * @return
+	 * DropWServiceImpl
+	 * return type  : ApprovalDTO
+	 * 
+	 * purpose		: Add records to approval transaction table
+	 *
+	 * Date    		:	Aug 1, 2017 5:40:55 PM
+	 */
+	public ApprovalDTO setRoleTransaction(DropWDTO dropWDTO, Locale locale);
 	
 }

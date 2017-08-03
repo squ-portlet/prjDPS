@@ -37,11 +37,12 @@ import om.edu.squ.squportal.portlet.dps.role.bo.Advisor;
  * @author Bhabesh
  *
  */
-public class DropWDTO extends Course
+public class DropWDTO extends Course implements Cloneable
 {
 	private	String	studentNo;
 	private	String	studentStatCode;
-	private	String	userName;	
+	private	String	userName;
+	private	String	empNumber;
 	private	String	firstWithDrawDate;
 	private	String	secondWithDrawDate;
 	private	float	tutionFees;
@@ -54,6 +55,7 @@ public class DropWDTO extends Course
 	private	boolean	statusReject;
 	private	String	statusApprove;
 	private	String	remarks;
+	private	String	roleName;
 	
 	
 	public DropWDTO()
@@ -119,6 +121,26 @@ public class DropWDTO extends Course
 	public void setUserName(String userName)
 	{
 		this.userName = userName;
+	}
+	/**
+	 * Getter Method	: getEmpNumber
+	 * @return the empNumber
+	 * 
+	 * Date				: Aug 1, 2017
+	 */
+	public String getEmpNumber()
+	{
+		return this.empNumber;
+	}
+	/**
+	 * Setter method : setEmpNumber
+	 * @param empNumber the empNumber to set
+	 * 
+	 * Date          : Aug 1, 2017 4:17:14 PM
+	 */
+	public void setEmpNumber(String empNumber)
+	{
+		this.empNumber = empNumber;
 	}
 	/**
 	 * Getter Method	: getFirstWithDrawDate
@@ -367,6 +389,33 @@ public class DropWDTO extends Course
 	{
 		this.remarks = remarks;
 	}
+	
+	/**
+	 * Getter Method	: getRoleName
+	 * @return the roleName
+	 * 
+	 * Date				: Aug 1, 2017
+	 */
+	public String getRoleName()
+	{
+		return this.roleName;
+	}
+	/**
+	 * Setter method : setRoleName
+	 * @param roleName the roleName to set
+	 * 
+	 * Date          : Aug 1, 2017 5:17:43 PM
+	 */
+	public void setRoleName(String roleName)
+	{
+		this.roleName = roleName;
+	}
+	
+	public Object clone() throws CloneNotSupportedException
+	{
+		return super.clone();
+		
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -375,16 +424,16 @@ public class DropWDTO extends Course
 	{
 		return "DropWDTO [studentNo=" + this.studentNo + ", studentStatCode="
 				+ this.studentStatCode + ", userName=" + this.userName
-				+ ", firstWithDrawDate=" + this.firstWithDrawDate
-				+ ", secondWithDrawDate=" + this.secondWithDrawDate
-				+ ", tutionFees=" + this.tutionFees + ", statusCodeName="
-				+ this.statusCodeName + ", statusDesc=" + this.statusDesc
-				+ ", advisor=" + this.advisor + ", student=" + this.student
-				+ ", approver=" + this.approver + ", statusPending="
-				+ this.statusPending + ", statusReject=" + this.statusReject
-				+ ", statusApprove=" + this.statusApprove + ", remarks="
-				+ this.remarks + "]"
-				+ super.toString();
+				+ ", empNumber=" + this.empNumber + ", firstWithDrawDate="
+				+ this.firstWithDrawDate + ", secondWithDrawDate="
+				+ this.secondWithDrawDate + ", tutionFees=" + this.tutionFees
+				+ ", statusCodeName=" + this.statusCodeName + ", statusDesc="
+				+ this.statusDesc + ", advisor=" + this.advisor + ", student="
+				+ this.student + ", approver=" + this.approver
+				+ ", statusPending=" + this.statusPending + ", statusReject="
+				+ this.statusReject + ", statusApprove=" + this.statusApprove
+				+ ", remarks=" + this.remarks + ", roleName=" + this.roleName
+				+ "]";
 	}
 	
 	

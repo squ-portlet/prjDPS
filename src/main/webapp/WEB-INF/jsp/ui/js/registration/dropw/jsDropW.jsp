@@ -173,7 +173,6 @@
 						data	:	academicDetail,
 						success	:	function(data)
 						{
-							console.log("data : "+data);
 							$("#imgAjaxLoading").hide();
 							var courses = JSON.parse(data);
 								courses.approverMain=approver;

@@ -40,12 +40,18 @@ import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotSuccessFulDBUpdate;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
+import om.edu.squ.squportal.portlet.dps.notification.bo.NotifierPeople;
+import om.edu.squ.squportal.portlet.dps.notification.service.DPSNotification;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.db.DropWDBDao;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.model.DropCourseModel;
+import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
+import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
+import om.edu.squ.squportal.portlet.dps.utility.UtilProperty;
 
 /**
  * @author Bhabesh
@@ -62,6 +68,8 @@ public class DropWServiceImpl implements DropWService
 	DropWDBDao	dropWDBDao;
 	@Autowired
 	DpsServiceDao	dpsServiceDao;
+	@Autowired
+	DPSNotification			dpsNotification;
 	
 	/**
 	 * 
@@ -107,6 +115,41 @@ public class DropWServiceImpl implements DropWService
 		if(resultSetDropW > 0)
 		{
 			List<DropWDTO>	dropWDTOs		=	getDropWCourses(student,locale);
+			/* -- Notification -- Start --*/
+			try
+			{
+				NotifierPeople notifierPeople = dpsServiceDao.getNotifierPeople(
+																					student.getAcademicDetail().getStudentNo(), 
+																					Constants.CONST_FORM_NAME_DPS_DROP_W, 
+																					Constants.CONST_SQL_ROLE_NAME_ADVISOR, 
+																					false, 
+																					locale
+																				);
+	
+				notifierPeople.setFormNameEng(UtilProperty.getMessage("prop.dps.form.name.dropw", null));
+				notifierPeople.setFormNameAr(UtilProperty.getMessage("prop.dps.form.name.dropw", null, new Locale("ar")));
+				notifierPeople.setServiceUrl(UtilProperty.getMessage("prop.dps.url.dropw", null));
+				
+				dpsNotification.sendNotification(
+														UtilProperty.getMessage("prop.dps.dropw.notification.subject", new String[]{notifierPeople.getStudent().getPersonalDetail().getId()})
+													, 	notifierPeople
+													, 	"null"
+													, 	Constants.CONST_TEST_ENVIRONMENT
+												);
+			}
+			catch (NotCorrectDBRecordException ex)
+			{
+	
+				logger.error("Error in Notification : "+ex.getMessage());
+			}
+			
+			catch (Exception ex)
+			{
+				logger.error("Error in  notification for student submit at Drop with W Service : {}",ex.getMessage());
+			}
+			/* -- Notification -- end --*/
+			
+			
 			return dropWDTOs;
 		}
 		else
@@ -211,16 +254,33 @@ public class DropWServiceImpl implements DropWService
 	 */
 	public List<DropWDTO> setDropWCourseUpdate(DropWDTO dropWDTO, Locale locale) throws NotSuccessFulDBUpdate
 	{
-		int				resultUpdate	=	0;
-		AcademicDetail	academicDetail	=	new AcademicDetail();
-		Student			student			=	new Student();
+		int						resultUpdate		=	0;
+		AcademicDetail			academicDetail		=	new AcademicDetail();
+		Student					student				=	new Student();
+		ApprovalDTO				approvalDTO			=	null;
+		
+		DropWDTO				dropWDTOTransaction	=	null;
+		
+		
+		try
+		{
+			dropWDTOTransaction	=	(DropWDTO)dropWDTO.clone();
+		}
+		catch (CloneNotSupportedException ex)
+		{
+			logger.error("Error in Object cloning. Details {}",ex.getMessage());
+		}
+		
+		
 		academicDetail.setStudentNo(dropWDTO.getStudentNo());
 		academicDetail.setStdStatCode(dropWDTO.getStudentStatCode());
 		student.setAcademicDetail(academicDetail);
-		
+	
 		resultUpdate	=	dropWDBDao.setDropWCourseUpdate(dropWDTO);
+	
 		if(resultUpdate >  0)
 		{
+			approvalDTO		=	setRoleTransaction(dropWDTOTransaction, locale);
 			return getDropWCourses(student,locale);
 		}
 		else
@@ -229,6 +289,82 @@ public class DropWServiceImpl implements DropWService
 		}
 	}
 
+	/**
+	 * 
+	 * method name  : setRoleTransaction
+	 * @param dropWDTO
+	 * @return
+	 * DropWServiceImpl
+	 * return type  : ApprovalDTO
+	 * 
+	 * purpose		: Add records to approval transaction table
+	 *
+	 * Date    		:	Aug 1, 2017 5:40:55 PM
+	 */
+	public ApprovalDTO setRoleTransaction(DropWDTO dropWDTO, Locale locale)
+	{
+		ApprovalTransactionDTO	transactionDTO		=	new ApprovalTransactionDTO();
+		
+		transactionDTO.setStudentNo(dropWDTO.getStudentNo());
+		transactionDTO.setStdStatCode(dropWDTO.getStudentStatCode());
+		transactionDTO.setAppEmpNo(dropWDTO.getEmpNumber());
+		transactionDTO.setAppEmpName(dropWDTO.getUserName());
+		transactionDTO.setComments(dropWDTO.getRemarks());
+		transactionDTO.setRequestCode(Constants.CONST_REQUEST_CODE_DEFAULT);
+		
+		ApprovalDTO	approvalDTO				= 	dpsServiceDao.setRoleTransaction(
+																						transactionDTO
+																					, 	Constants.CONST_FORM_NAME_DPS_DROP_W
+																					, 	dropWDTO.getRoleName()
+																					, 	dropWDTO.getStatusApprove()
+																				);
+		
+		
+		
+		/* -- Notification -- Start --*/
+		
+			try
+			{
+
+				NotifierPeople notifierPeople = dpsServiceDao.getNotifierPeople(
+																					dropWDTO.getStudentNo(), 
+																					Constants.CONST_FORM_NAME_DPS_DROP_W, 
+																					Constants.CONST_SQL_ROLE_NAME_ADVISOR, 
+																					true, 
+																					locale
+																				);
+	
+				
+				
+				notifierPeople.setFormNameEng(UtilProperty.getMessage("prop.dps.form.name.dropw", null));
+				notifierPeople.setFormNameAr(UtilProperty.getMessage("prop.dps.form.name.dropw", null, new Locale("ar")));
+				notifierPeople.setServiceUrl(UtilProperty.getMessage("prop.dps.url.dropw", null));
+				
+				dpsNotification.sendNotification(
+														UtilProperty.getMessage("prop.dps.dropw.notification.subject", new String[]{notifierPeople.getStudent().getPersonalDetail().getId()})
+													, 	notifierPeople
+													, 	"null"
+													, 	Constants.CONST_TEST_ENVIRONMENT
+												);
+
+			}
+			catch (NotCorrectDBRecordException ex)
+			{
+				logger.error("Error in Notification : "+ex.getMessage());
+			}
+			
+			catch (Exception ex)
+			{
+				logger.error("Error in  notification for student submit at Drop with W Service : {}",ex.getMessage());
+
+			}
+			
+		/* -- Notification -- end --*/
+		
+		
+		return approvalDTO;
+	}
+	
 	
 	/**
 	 * 

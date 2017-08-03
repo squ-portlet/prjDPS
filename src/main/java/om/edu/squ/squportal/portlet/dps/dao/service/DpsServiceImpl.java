@@ -55,7 +55,6 @@ import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.RoleNameValue;
 import om.edu.squ.squportal.portlet.dps.role.service.Role;
 import om.edu.squ.squportal.portlet.dps.rule.service.Rule;
-import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 import om.edu.squ.squportal.portlet.dps.utility.UserIdUtil;
 import om.edu.squ.squportal.portlet.dps.utility.UtilProperty;
@@ -319,23 +318,16 @@ public class DpsServiceImpl implements DpsServiceDao
 	 * (non-Javadoc)
 	 * @see om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao#setRoleTransaction(om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO, om.edu.squ.squportal.portlet.dps.bo.Employee)
 	 */
-	public ApprovalDTO setRoleTransaction(ExtensionDTO extensionDTO, Employee employee)
+	public ApprovalDTO setRoleTransaction(ApprovalTransactionDTO transactionDTO, String formName, String roleName, String statusCodeName)
 	{
-		ApprovalTransactionDTO	transactionDTO	=	new ApprovalTransactionDTO();
-		ApprovalDTO	approvalDTO		=	roleService.getApprovalCode(Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY,extensionDTO.getRoleName());
-		String	statusCode			=	roleService.getStatusCode(extensionDTO.getStatusCodeName());
 		
-		transactionDTO.setStudentNo(extensionDTO.getStudentNo());
-		transactionDTO.setStdStatCode(extensionDTO.getStdStatCode());
+		ApprovalDTO	approvalDTO		=	roleService.getApprovalCode(formName,roleName);
+		String	statusCode			=	roleService.getStatusCode(statusCodeName);
+
 		transactionDTO.setApprovalCode(approvalDTO.getApprovalCode());
 		transactionDTO.setStatusCode(statusCode);
-		transactionDTO.setAppEmpNo(employee.getEmpNumber());
-		transactionDTO.setAppEmpName(employee.getUserName());
-		transactionDTO.setComments(extensionDTO.getCommentEng());
-		transactionDTO.setRequestCode(Constants.CONST_REQUEST_CODE_DEFAULT);
-		
+
 		int	result	=	roleService.setRoleTransaction(transactionDTO);
-		
 		
 		return approvalDTO;
 	}
@@ -479,7 +471,7 @@ public class DpsServiceImpl implements DpsServiceDao
 	 *
 	 * Date    		:	Mar 27, 2017 4:20:42 PM
 	 */
-    private  String getEmpNumber(PortletRequest request)
+    public  String getEmpNumber(PortletRequest request)
 	{
 
 	    if(request.getRemoteUser()==null || request.getRemoteUser()=="")

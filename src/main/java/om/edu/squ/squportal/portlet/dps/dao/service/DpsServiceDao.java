@@ -43,7 +43,7 @@ import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordExcep
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
 import om.edu.squ.squportal.portlet.dps.notification.bo.NotifierPeople;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
-import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO;
+import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
 
 /**
  * @author Bhabesh
@@ -179,8 +179,10 @@ public interface DpsServiceDao
 	/**
 	 * 
 	 * method name  : setRoleTransaction
-	 * @param extensionDTO
-	 * @param employee
+	 * @param transactionDTO
+	 * @param formName TODO
+	 * @param roleName TODO
+	 * @param statusCodeName TODO
 	 * @return
 	 * DpsServiceDao
 	 * return type  : ApprovalDTO
@@ -189,7 +191,7 @@ public interface DpsServiceDao
 	 *
 	 * Date    		:	Mar 1, 2017 5:45:32 PM
 	 */
-	public ApprovalDTO setRoleTransaction(ExtensionDTO extensionDTO, Employee employee);
+	public ApprovalDTO setRoleTransaction(ApprovalTransactionDTO transactionDTO, String formName, String roleName, String statusCodeName);
 	
 	/**
 	 * 
@@ -205,6 +207,21 @@ public interface DpsServiceDao
 	 * Date    		:	May 16, 2017 11:06:05 PM
 	 */
 	public String	getStudentMode(String studentNo, String stdStatCode);
+	
+	/**
+	 * 
+	 * method name  : getEmpNumber
+	 * @param request
+	 * @return
+	 * DpsServiceImpl
+	 * return type  : String
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Mar 27, 2017 4:20:42 PM
+	 */
+    public  String getEmpNumber(PortletRequest request);
+	
 	
 	/**
 	 * 
