@@ -42,6 +42,7 @@ import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.notification.bo.NotifierPeople;
 import om.edu.squ.squportal.portlet.dps.notification.service.DPSNotification;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
+import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
 import om.edu.squ.squportal.portlet.dps.rule.service.Rule;
 import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO;
 import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionReason;
@@ -91,6 +92,18 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 	
 	/**
 	 * 
+	 * method name  : setExtensionByStudent
+	 * @param student
+	 * @param extensionStudentDataModel
+	 * @param userName
+	 * @param locale
+	 * @return
+	 * ExtensionServiceDao
+	 * return type  : int
+	 * 
+	 * purpose		: Insert to extension as student
+	 *
+	 * Date    		:	Jul 17, 2017 12:53:06 PM
 	 */
 	public int setExtensionByStudent(Student student, ExtensionStudentDataModel extensionStudentDataModel, String userName, Locale locale)
 	{
@@ -128,11 +141,12 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		
 					logger.error("Error in Notification : "+ex.getMessage());
 				}
-				/* -- Notification -- end --*/
+				
 				catch (Exception ex)
 				{
 					logger.error("Error in  notification for student submit at Extension of Service : {}",ex.getMessage());
 				}
+				/* -- Notification -- end --*/
 		}
 		
 		
@@ -217,7 +231,7 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 	 * ExtensionServiceImpl
 	 * return type  : int
 	 * 
-	 * purpose		: add record for approval 
+	 * purpose		: add record for approval / add record in approval transaction table
 	 * Note			: This function relates with two different transactional statements
 	 *
 	 * Date    		:	Feb 28, 2017 11:32:46 AM
@@ -225,10 +239,25 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 	 */
 	public ExtensionDTO setRoleTransaction(ExtensionDTO extensionDTOTr, Employee employee, Locale locale) 
 	{
-		int 			resultTr			=	0;		
-		ExtensionDTO	extensionDTOStudent	=	new ExtensionDTO();
-		ExtensionDTO	extensionDTOResult	=	null;
-		ApprovalDTO	approvalDTO				= 	dpsServiceDao.setRoleTransaction(extensionDTOTr, employee);
+		int 					resultTr			=	0;		
+		ExtensionDTO			extensionDTOStudent	=	new ExtensionDTO();
+		ExtensionDTO			extensionDTOResult	=	null;
+		ApprovalTransactionDTO	transactionDTO		=	new ApprovalTransactionDTO();
+		
+		transactionDTO.setStudentNo(extensionDTOTr.getStudentNo());
+		transactionDTO.setStdStatCode(extensionDTOTr.getStdStatCode());
+		transactionDTO.setAppEmpNo(employee.getEmpNumber());
+		transactionDTO.setAppEmpName(employee.getUserName());
+		transactionDTO.setComments(extensionDTOTr.getCommentEng());
+		transactionDTO.setRequestCode(Constants.CONST_REQUEST_CODE_DEFAULT);
+		
+		
+		ApprovalDTO	approvalDTO				= 	dpsServiceDao.setRoleTransaction(
+																						transactionDTO
+																					, 	Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY
+																					, 	extensionDTOTr.getRoleName()
+																					, 	extensionDTOTr.getStatusCodeName()
+																				);
 
 		if(extensionDTOTr.getStatusCodeName().equals(Constants.CONST_SQL_STATUS_CODE_REJCT))
 		{
