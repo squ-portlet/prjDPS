@@ -221,6 +221,7 @@ public interface Constants
 	
 	/* ---  SQL - DPS - Postponement of Studies property--------------------- */
 	public	static	final	String	CONST_SQL_POSTPONE_REASONS					=	"dps.postpone.select.postpone.reasons";
+	public	static	final	String	CONST_SQL_POSTPONE_INSERT_STUDENT			=	"dps.postpone.insert.student";
 
 	/* ---  SQL - DPS - Drop With W -- Stored Procedure -- --------------------- */	
 	public	static	final	String	CONST_PROC_DROPW_WITHDRAW_COURSE			=	"PROC_WITHDRAW_COURSE";

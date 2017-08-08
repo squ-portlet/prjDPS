@@ -36,9 +36,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
+import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeReason;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.db.PostponeDBDao;
+import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentModel;
 
 /**
  * @author Bhabesh
@@ -69,5 +72,26 @@ public class PostponeServiceImpl implements PostponeService
 	public List<PostponeReason> getPostponeReasons(Locale locale)
 	{
 		return postponeDBDao.getPostponeReasons(locale);
+	}
+	
+	/**
+	 * 
+	 * method name  : setPostponeByStudent
+	 * @param student 
+	 * @param studentModel
+	 * @param userName
+	 * @return
+	 * PostponeDBImpl
+	 * return type  : int
+	 * 
+	 * purpose		: Insert to postpone as student
+	 *
+	 * Date    		:	Aug 7, 2017 5:00:53 PM
+	 */
+	public int setPostponeByStudent(Student student, PostponeStudentModel studentModel, String userName)
+	{
+		PostponeDTO	dto	=	new PostponeDTO(student,studentModel,userName);
+		
+		return postponeDBDao.setPostponeByStudent(dto);
 	}
 }

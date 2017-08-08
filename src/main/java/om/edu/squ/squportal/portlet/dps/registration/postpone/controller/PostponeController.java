@@ -32,12 +32,15 @@ package om.edu.squ.squportal.portlet.dps.registration.postpone.controller;
 import java.util.Locale;
 
 import javax.portlet.PortletRequest;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentDataModel;
+import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentModel;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.service.PostponeService;
 
 import org.slf4j.Logger;
@@ -45,7 +48,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 /**
  * @author Bhabesh
@@ -81,4 +86,37 @@ public class PostponeController
 		
 		return "/registration/postpone/student/welcomePostponeStudent";
 	}
+	
+	/**
+	 * 
+	 * method name  : resourceSubmitByStudent
+	 * @param studentModel
+	 * @param request
+	 * @param response
+	 * @param locale
+	 * PostponeController
+	 * return type  : void
+	 * 
+	 * purpose		: Resource mapping for student submit
+	 *
+	 * Date    		:	Aug 8, 2017 9:02:13 AM
+	 * @throws NotCorrectDBRecordException 
+	 */
+	@ResourceMapping(value="resourceStudentSubmit")
+	private	void resourceSubmitByStudent(
+														@ModelAttribute("studentModel") PostponeStudentModel studentModel
+													,	ResourceRequest		request
+													,	ResourceResponse	response
+													,	Locale				locale				
+													
+												) throws NotCorrectDBRecordException
+	{
+		User	user	=	dpsServiceDao.getUser(request);
+		Student student	= 	dpsServiceDao.getStudent(user.getUserId(), null, new Locale("en"));
+		postponeService.setPostponeByStudent(student, studentModel,request.getRemoteUser());
+		
+
+	}
+	
+	
 }

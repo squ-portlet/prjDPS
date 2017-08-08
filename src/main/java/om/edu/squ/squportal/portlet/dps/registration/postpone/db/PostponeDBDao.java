@@ -32,6 +32,7 @@ package om.edu.squ.squportal.portlet.dps.registration.postpone.db;
 import java.util.List;
 import java.util.Locale;
 
+import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeReason;
 
 /**
@@ -53,4 +54,18 @@ public interface PostponeDBDao
 	 * Date    		:	May 25, 2017 4:15:05 PM
 	 */
 	public List<PostponeReason> getPostponeReasons(Locale locale);
+	
+	/**
+	 * 
+	 * method name  : setPostponeByStudent
+	 * @param dto
+	 * @return
+	 * PostponeDBImpl
+	 * return type  : int
+	 * 
+	 * purpose		: Insert to postpone as student
+	 *
+	 * Date    		:	Aug 7, 2017 5:00:53 PM
+	 */
+	public int setPostponeByStudent(PostponeDTO dto);
 }

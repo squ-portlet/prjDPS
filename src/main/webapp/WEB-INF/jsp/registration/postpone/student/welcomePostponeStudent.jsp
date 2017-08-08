@@ -6,6 +6,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 	<%@include file="../../../ui/cssWelcome.jsp" %>	
+	<%@include file="../../../ui/js/registration/postpone/jsPostpone.jsp" %>
 	
     <div class="section">
       <div class="container-fluid">
@@ -29,7 +30,7 @@
 	      </div>
 
      
-		 <form:form   method="post" modelAttribute="postponeStudentDataModel" htmlEscape="false">
+		 <form:form    modelAttribute="postponeStudentDataModel" htmlEscape="false">
 			      <div class="modal-body">
 						    <div class="section">
 						      <div class="container">
@@ -82,8 +83,8 @@
 			      </div>
 			      <div class="modal-footer">
 			      	<spring:message code="prop.dps.postpone.student.applications.form.submit.question.text"/>
-			        <button type="button" class="btn btn-default" data-dismiss="modal"><spring:message code="prop.dps.postpone.student.applications.form.submit.no"/></button>
-			        <button id="bttnCompetentCancel" type="submit" class="btn btn-primary"><spring:message code="prop.dps.postpone.student.applications.form.submit.yes"/></button>
+			        <button type="button" id="bttnCompetentCancel" class="btn btn-default" data-dismiss="modal"><spring:message code="prop.dps.postpone.student.applications.form.submit.no"/></button>
+			        <button  type="submit" id="bttnCompetentSubmit" class="btn btn-primary"><spring:message code="prop.dps.postpone.student.applications.form.submit.yes"/></button>
 			      </div>
 	      </form:form>
 	      

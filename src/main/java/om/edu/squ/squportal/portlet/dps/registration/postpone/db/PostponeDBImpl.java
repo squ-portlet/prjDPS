@@ -37,11 +37,13 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
+import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeReason;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
@@ -123,6 +125,47 @@ public class PostponeDBImpl implements PostponeDBDao
 		namedParameterMap.put("paramLocale", locale.getLanguage());
 		
 		return nPJdbcTemplDpsPostpone.query(SQL_POSTPONE_REASONS,namedParameterMap,rowMapper);
+	}
+	
+	/**
+	 * 
+	 * method name  : setPostponeByStudent
+	 * @param dto
+	 * @return
+	 * PostponeDBImpl
+	 * return type  : int
+	 * 
+	 * purpose		: Insert to postpone as student
+	 *
+	 * Date    		:	Aug 7, 2017 5:00:53 PM
+	 */
+	public int setPostponeByStudent(PostponeDTO dto)
+	{
+		String	SQL_POSTPONE_INSERT_STUDENT		=	queryPostpone.getProperty(Constants.CONST_SQL_POSTPONE_INSERT_STUDENT);
+	
+		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+		namedParameterMap.put("paramStdNo",dto.getStudentNo() );
+		namedParameterMap.put("paramStdStatCode", dto.getStudentStatCode());
+		namedParameterMap.put("paramFromYearCode", dto.getFromCcYearCode());
+		namedParameterMap.put("paramFromSemCode", dto.getFromSemCode());
+		namedParameterMap.put("paramToYearCode", dto.getToCcYearCode());
+		namedParameterMap.put("paramToSemCode", dto.getToSemCode());
+		namedParameterMap.put("paramPostponeReasonCode", dto.getReasonCode());
+		namedParameterMap.put("paramPostponeReasonOther", dto.getReasonOther());
+		namedParameterMap.put("paramPostponeStatusCode", Constants.CONST_SQL_STATUS_CODE_NAME_PENDING);
+		namedParameterMap.put("paramUserCode", dto.getUserName());
+
+		try
+		{
+			return nPJdbcTemplDpsPostpone.update(SQL_POSTPONE_INSERT_STUDENT, namedParameterMap);
+		}
+		catch(BadSqlGrammarException sqlEx)
+		{
+			logger.error("Error in Database record insert :: details : {}",sqlEx.getMessage());
+			return 0;
+		}
+		
+		
 	}
 	
 }
