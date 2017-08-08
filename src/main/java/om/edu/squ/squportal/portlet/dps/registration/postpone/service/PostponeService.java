@@ -62,6 +62,7 @@ public interface PostponeService
 	 * @param student 
 	 * @param studentModel
 	 * @param userName
+	 * @param locale 
 	 * @return
 	 * PostponeDBImpl
 	 * return type  : int
@@ -70,5 +71,5 @@ public interface PostponeService
 	 *
 	 * Date    		:	Aug 7, 2017 5:00:53 PM
 	 */
-	public int setPostponeByStudent(Student student, PostponeStudentModel studentModel, String userName);
+	public int setPostponeByStudent(Student student, PostponeStudentModel studentModel, String userName, Locale locale);
 }

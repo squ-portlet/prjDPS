@@ -37,11 +37,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import om.edu.squ.squportal.portlet.dps.bo.Student;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
+import om.edu.squ.squportal.portlet.dps.notification.bo.NotifierPeople;
+import om.edu.squ.squportal.portlet.dps.notification.service.DPSNotification;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeReason;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.db.PostponeDBDao;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentModel;
+import om.edu.squ.squportal.portlet.dps.utility.Constants;
+import om.edu.squ.squportal.portlet.dps.utility.UtilProperty;
 
 /**
  * @author Bhabesh
@@ -55,6 +60,8 @@ public class PostponeServiceImpl implements PostponeService
 	DpsServiceDao	dpsServiceDao;
 	@Autowired
 	PostponeDBDao	postponeDBDao;
+	@Autowired
+	DPSNotification	dpsNotification;
 	
 	
 	/**
@@ -80,6 +87,7 @@ public class PostponeServiceImpl implements PostponeService
 	 * @param student 
 	 * @param studentModel
 	 * @param userName
+	 * @param locale 
 	 * @return
 	 * PostponeDBImpl
 	 * return type  : int
@@ -88,10 +96,48 @@ public class PostponeServiceImpl implements PostponeService
 	 *
 	 * Date    		:	Aug 7, 2017 5:00:53 PM
 	 */
-	public int setPostponeByStudent(Student student, PostponeStudentModel studentModel, String userName)
+	public int setPostponeByStudent(Student student, PostponeStudentModel studentModel, String userName, Locale locale)
 	{
+		int result		=	0;
 		PostponeDTO	dto	=	new PostponeDTO(student,studentModel,userName);
 		
-		return postponeDBDao.setPostponeByStudent(dto);
+		result =  postponeDBDao.setPostponeByStudent(dto);
+		if(result>0)
+		{
+			/* -- Notification -- Start --*/
+			try
+			{
+				NotifierPeople notifierPeople = dpsServiceDao.getNotifierPeople(
+																					student.getAcademicDetail().getStudentNo(), 
+																					Constants.CONST_FORM_NAME_DPS_POSTPONE_STUDY, 
+																					Constants.CONST_SQL_ROLE_NAME_ADVISOR, 
+																					false, 
+																					locale
+																				);
+	
+				notifierPeople.setFormNameEng(UtilProperty.getMessage("prop.dps.form.name.extension", null));
+				notifierPeople.setFormNameAr(UtilProperty.getMessage("prop.dps.form.name.extension", null, new Locale("ar")));
+				notifierPeople.setServiceUrl(UtilProperty.getMessage("prop.dps.url.extension", null));
+				
+				dpsNotification.sendNotification(
+														UtilProperty.getMessage("prop.dps.postpone.notification.subject", new String[]{notifierPeople.getStudent().getPersonalDetail().getId()})
+													, 	notifierPeople
+													, 	"null"
+													, 	Constants.CONST_TEST_ENVIRONMENT
+												);
+			}
+			catch (NotCorrectDBRecordException ex)
+			{
+	
+				logger.error("Error in Notification : "+ex.getMessage());
+			}
+			
+			catch (Exception ex)
+			{
+				logger.error("Error in  notification for student submit at Postponement of Service : {}",ex.getMessage());
+			}
+			/* -- Notification -- end --*/
+		}
+		return result;
 	}
 }

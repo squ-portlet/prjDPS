@@ -113,7 +113,7 @@ public class PostponeController
 	{
 		User	user	=	dpsServiceDao.getUser(request);
 		Student student	= 	dpsServiceDao.getStudent(user.getUserId(), null, new Locale("en"));
-		postponeService.setPostponeByStudent(student, studentModel,request.getRemoteUser());
+		postponeService.setPostponeByStudent(student, studentModel,request.getRemoteUser(), locale);
 		
 
 	}
