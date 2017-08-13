@@ -39,6 +39,11 @@ import java.util.Properties;
 
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeReason;
+import om.edu.squ.squportal.portlet.dps.role.bo.Advisor;
+import om.edu.squ.squportal.portlet.dps.role.bo.CollegeDean;
+import om.edu.squ.squportal.portlet.dps.role.bo.DpsDean;
+import om.edu.squ.squportal.portlet.dps.role.bo.Supervisor;
+import om.edu.squ.squportal.portlet.dps.tags.RoleTagGlyphicon;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
 import org.slf4j.Logger;
@@ -125,6 +130,94 @@ public class PostponeDBImpl implements PostponeDBDao
 		namedParameterMap.put("paramLocale", locale.getLanguage());
 		
 		return nPJdbcTemplDpsPostpone.query(SQL_POSTPONE_REASONS,namedParameterMap,rowMapper);
+	}
+	
+	/**
+	 * 
+	 * method name  : getPostponesForStudents
+	 * @param studentNo
+	 * @param locale
+	 * @return
+	 * PostponeDBImpl
+	 * return type  : List<PostponeDTO>
+	 * 
+	 * purpose		: List of postponed studies requested by a particular student
+	 *
+	 * Date    		:	Aug 10, 2017 9:40:55 AM
+	 */
+	public List<PostponeDTO> getPostponesForStudents(String studentNo, Locale locale)
+	{
+		String	SQL_POSTPONE_SELECT_RECORDS_BY_STUDENT		=	queryPostpone.getProperty(Constants.CONST_SQL_POSTPONE_SELECT_RECORDS_BY_STUDENT);
+		RowMapper<PostponeDTO> rowMapper	=	new RowMapper<PostponeDTO>()
+		{
+			
+			@Override
+			public PostponeDTO mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				PostponeDTO	dto			=	new PostponeDTO();
+				Advisor		advisor		=	new Advisor();
+				Supervisor	supervisor	=	new Supervisor();
+				CollegeDean	collegeDean	=	new CollegeDean();
+				DpsDean		dpsDean		=	new DpsDean();
+				
+				dto.setActivityDate(rs.getString(Constants.COST_COL_DPS_CREATE_DATE));
+				dto.setToCcYearCode(rs.getString(Constants.COST_COL_DPS_TO_COURSE_YEAR_CODE));
+				dto.setToSemCode(rs.getString(Constants.COST_COL_DPS_SEMESTER_CODE));
+				dto.setToSemName(rs.getString(Constants.COST_COL_DPS_SEMESTER_NAME));
+				if(null != rs.getString(Constants.CONST_COLMN_POSTPONE_OTHER_REASON) )
+				{
+					dto.setReasonDesc(rs.getString(Constants.CONST_COLMN_POSTPONE_OTHER_REASON));
+				}
+				else
+				{
+					dto.setReasonDesc(rs.getString(Constants.CONST_COLMN_POSTPONE_REASON_NAME));
+				}
+				advisor.setApprovalcode(rs.getString(Constants.CONST_COLMN_ADVISOR_APPROVAL_CODE));
+				advisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS));
+				advisor.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS)));
+				
+				supervisor.setApprovalcode(rs.getString(Constants.CONST_COLMN_ADVISOR_APPROVAL_CODE));
+				supervisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS));
+				supervisor.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS)));
+				
+				collegeDean.setApprovalcode(rs.getString(Constants.CONST_COLMN_ADVISOR_APPROVAL_CODE));
+				collegeDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS));
+				collegeDean.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS)));				
+
+				dpsDean.setApprovalcode(rs.getString(Constants.CONST_COLMN_ADVISOR_APPROVAL_CODE));
+				dpsDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS));
+				dpsDean.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS)));					
+				
+				dto.setAdvisor(advisor);
+				dto.setSupervisor(supervisor);
+				dto.setCollegeDean(collegeDean);
+				dto.setDpsDean(dpsDean);
+				
+				dto.setStatusCode(rs.getString(Constants.CONST_COLMN_STATUS_CODE));
+				dto.setStatusCodeName(rs.getString(Constants.CONST_COLMN_STATUS_CODE_NAME));
+				if(rs.getString(Constants.CONST_COLMN_STATUS_CODE_NAME).equals(Constants.CONST_SQL_STATUS_CODE_REJCT))
+				{
+					dto.setStatusReject(true);
+				}
+				dto.setStatusDesc(rs.getString(Constants.CONST_COLMN_STATUS_DESC));
+				
+				dto.setCommentEng(rs.getString(Constants.CONST_COLMN_COMMENT));
+				
+				return dto;
+			}
+		};
+		
+		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+		namedParameterMap.put("paramStdNo", studentNo);
+		namedParameterMap.put("paramLocale", locale.getLanguage());
+		namedParameterMap.put("paramAdvisorRoleName", Constants.CONST_SQL_ROLE_NAME_ADVISOR);
+		namedParameterMap.put("paramSupervisorRoleName", Constants.CONST_SQL_ROLE_NAME_SUPERVISOR);
+		namedParameterMap.put("paramColDeanRoleName", Constants.CONST_SQL_ROLE_NAME_COL_DEAN);
+		namedParameterMap.put("paramDpsDeanRoleName", Constants.CONST_SQL_ROLE_NAME_DPS_DEAN);
+		namedParameterMap.put("paramFormName", Constants.CONST_FORM_NAME_DPS_POSTPONE_STUDY);
+		
+		
+		return nPJdbcTemplDpsPostpone.query(SQL_POSTPONE_SELECT_RECORDS_BY_STUDENT, namedParameterMap, rowMapper);
 	}
 	
 	/**

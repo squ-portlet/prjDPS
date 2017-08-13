@@ -68,4 +68,19 @@ public interface PostponeDBDao
 	 * Date    		:	Aug 7, 2017 5:00:53 PM
 	 */
 	public int setPostponeByStudent(PostponeDTO dto);
+	
+	/**
+	 * 
+	 * method name  : getPostponesForStudents
+	 * @param studentNo
+	 * @param locale
+	 * @return
+	 * PostponeDBImpl
+	 * return type  : List<PostponeDTO>
+	 * 
+	 * purpose		: List of postponed studies requested by a particular student
+	 *
+	 * Date    		:	Aug 10, 2017 9:40:55 AM
+	 */
+	public List<PostponeDTO> getPostponesForStudents(String studentNo, Locale locale);
 }

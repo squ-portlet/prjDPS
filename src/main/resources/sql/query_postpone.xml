@@ -17,7 +17,96 @@
         		CODE.SISCODETYPCD = CODE_TYPE.SISCODETYPCD
 		    AND CODE_TYPE.SISCODETYPNM = 'PST_REASON'
     </entry>
-    
+    <entry key="dps.postpone.select.student.records">
+		SELECT 
+		          TO_CHAR(POSTPN.CREATE_DATE,'DD/MM/YYYY')									AS		CREATE_DATE
+		        , POSTPN.TOCCYRCD															AS		TOCCYRCD
+		        , POSTPN.TOSEMCD															AS		SEMCD
+		        , (
+		            SELECT 
+		                DECODE 
+		                (
+		                  :paramLocale,
+		                  'en', SEMNM, A_SEMNM
+		                )
+		              FROM SEM
+		              WHERE SEMCD = POSTPN.TOSEMCD
+		          ) 																		AS 		SEM_NAME
+		        , POSTPN.PSTREASONCD  														AS		POSTPONE_REASON_CODE
+		        , DECODE
+		          (
+		            SISCD.L_ABR_CODE
+		            ,'OTHR',POSTPN.OTHER_REASON, 
+		              DECODE
+		              (
+		                  :paramLocale
+		                  ,'en', SISCD.CODENM, SISCD.A_CODENM
+		              )
+		            )                                           							AS 		POSTPONE_REASON_NAME
+		        , POSTPN.OTHER_REASON														AS		POSTPONE_OTHER_REASON							    
+		        , POSTPN.POSTREQ_STATUSCD													AS		STATUS_CODE
+		        , (
+		        	SELECT
+		        		L_ABR_CODE
+		        	FROM SIS_CODES
+		            WHERE 
+		            	SISCODECD= POSTPN.POSTREQ_STATUSCD
+		        	)																		AS		STATUS_CODE_NAME
+		        , (
+		            SELECT 
+		              DECODE 
+		              (
+		                :paramLocale
+		                ,'en', CODENM, A_CODENM
+		                )
+		              FROM SIS_CODES
+		              WHERE SISCODECD= POSTPN.POSTREQ_STATUSCD
+		            ) 																		AS 		STATUS_DESC
+		       , POSTPN.COMMNT																AS		COMMENTS
+		          , FUNC_APPROVE_STATUS(
+	                            POSTPN.STDNO,
+	                            :paramAdvisorRoleName, 
+	                            :paramFormName
+	                            )                           								AS  	ADVISOR_STATUS            																		
+	          , FUNC_APPROVE_STATUS(
+	                            POSTPN.STDNO,
+	                            :paramSupervisorRoleName, 
+	                            :paramFormName
+	                            )                           								AS  	SUPERVISOR_STATUS
+	        , FUNC_APPROVE_STATUS(
+	                            POSTPN.STDNO,
+	                            :paramColDeanRoleName, 
+	                            :paramFormName
+	                            )                           								AS  	COLLEGE_DEAN_STATUS
+	        , FUNC_APPROVE_STATUS(
+	                            POSTPN.STDNO,
+	                            :paramDpsDeanRoleName, 
+	                            :paramFormName
+	                            )                           								AS  	DPS_DEAN_STATUS	 
+			, FUNC_GET_APPROVALCODE(
+								:paramFormName,
+								:paramAdvisorRoleName
+								)	                                                        AS  	ADVISOR_APPROVAL_CODE
+			, FUNC_GET_APPROVALCODE(
+								:paramFormName,
+								:paramSupervisorRoleName
+								)															AS		SUPERVISOR_APPROVAL_CODE
+			, FUNC_GET_APPROVALCODE(
+								:paramFormName,
+								:paramColDeanRoleName
+								)															AS		COLLEGE_DEAN_APPROVAL_CODE
+			, FUNC_GET_APPROVALCODE(
+								:paramFormName,
+								:paramDpsDeanRoleName
+								)															AS		DPS_DEAN_APPROVAL_CODE														               
+		FROM 
+		    STD_POSTPONE POSTPN,
+		    SIS_CODES     SISCD
+		
+		WHERE
+		        POSTPN.PSTREASONCD=SISCD.SISCODECD
+		    AND STDNO = :paramStdNo    
+    </entry>
     <entry key="dps.postpone.insert.student">
 		INSERT INTO STD_POSTPONE
 		(

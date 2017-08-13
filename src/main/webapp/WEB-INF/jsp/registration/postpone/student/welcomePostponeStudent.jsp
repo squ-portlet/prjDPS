@@ -16,6 +16,10 @@
       </div>
     </div>
     
+    <div id="tblPostponeStudies" >
+    	
+    </div>
+    
     
     
 <div id="modalContainerPostponeForm" class="container-fluid">
@@ -30,7 +34,7 @@
 	      </div>
 
      
-		 <form:form    modelAttribute="postponeStudentDataModel" htmlEscape="false">
+		 <form:form    modelAttribute="postponeStudentDataModel" >
 			      <div class="modal-body">
 						    <div class="section">
 						      <div class="container">
@@ -44,7 +48,7 @@
 						                  <label class="radio-inline">
 						                   	<form:radiobutton path="yearSem" value="${currYearSem.year}-${currYearSem.semesterCode}"/>${currYearSem.year},${currYearSem.semesterName}
 						                  </label>
-										<c:if test="${not empty nextYearSemester}" >
+										<c:if test="{{not empty nextYearSemester}" >
 						                  <br>
 						                  <label class="radio-inline">
 					                    	<form:radiobutton path="yearSem" value="${nextYearSemester.year}-${nextYearSemester.semesterCode}"/>${nextYearSemester.year},${nextYearSemester.semesterName}
@@ -84,11 +88,79 @@
 			      <div class="modal-footer">
 			      	<spring:message code="prop.dps.postpone.student.applications.form.submit.question.text"/>
 			        <button type="button" id="bttnCompetentCancel" class="btn btn-default" data-dismiss="modal"><spring:message code="prop.dps.postpone.student.applications.form.submit.no"/></button>
-			        <button  type="submit" id="bttnCompetentSubmit" class="btn btn-primary"><spring:message code="prop.dps.postpone.student.applications.form.submit.yes"/></button>
+			        <button  type="button" id="bttnCompetentSubmit" class="btn btn-primary"><spring:message code="prop.dps.postpone.student.applications.form.submit.yes"/></button>
 			      </div>
 	      </form:form>
 	      
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
-</div>      
+</div>  
+
+	   <!-- Error Modal HTML -->
+    <div id="alertModal" class="modal" style="width: 20%;">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><font color="red"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></font> <spring:message code="prop.dps.alert.text"/></h4>
+                </div>
+                <div class="modal-body" id="modalAlertErrMsg">
+                    <p></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal"><spring:message code="prop.dps.modal.form.button.close.text"/></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script id="hbPostponeStudies" type="text/x-handlebars-template" >
+			       <table class="table table-striped table-bordered dt-responsive nowrap collapsed">
+		              <thead>
+		                <tr>
+		                  <th><spring:message code="prop.dps.postpone.student.applications.head.column.request.date"/></th>
+		                  <th><spring:message code="prop.dps.postpone.student.applications.head.column.year.sem"/></th>
+		                 <th><spring:message code="prop.dps.postpone.student.applications.head.column.reason"/></th>
+		                  <th colspan="4"><spring:message code="prop.dps.postpone.student.applications.head.column.approver"/></th>
+						  <th><spring:message code="prop.dps.postpone.student.applications.head.column.action"/></th>
+		                </tr>
+		                <tr>
+		                  <th colspan="3"></th>
+						  <th><spring:message code="prop.dps.postpone.approver.advisor"/></th>
+		                  <th><spring:message code="prop.dps.postpone.approver.suerpervisor"/></th>
+		                  <th><spring:message code="prop.dps.postpone.approver.col.dean"/></th>
+		                  <th><spring:message code="prop.dps.postpone.approver.dps.dean"/></th>
+		                  <th></th>
+		                </tr>
+		              </thead>
+		              <tbody>
+		              	{{#each .}}
+		              		
+		              		<tr>
+		              			<td>{{activityDate}}</td>
+		              			<td>{{toCcYearCode}}-{{toSemName}}</td>
+		              			<td>{{reasonDesc}}</td>
+		              			
+		              			<td>{{{advisor.roleStausIkon}}}</td>
+								<td>{{{supervisor.roleStausIkon}}}</td>
+		              			<td>{{{collegeDean.roleStausIkon}}}</td>
+		              			<td>{{{dpsDean.roleStausIkon}}}</td>
+		              			
+		              			<td>{{statusDesc}} &nbsp;
+		              					{{#if statusReject}}
+		              						<a href="#" class="clsMsgErr" msg='{{commentEng}}'>
+				              						<font color="default">
+				              							<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+				              						</font>
+		              						</a>
+		              					{{/if}}
+		              			
+		              			
+		              			</td>
+		              		</tr>
+		              	{{/each}}
+		              </tbody>
+		            </table>
+</script>    

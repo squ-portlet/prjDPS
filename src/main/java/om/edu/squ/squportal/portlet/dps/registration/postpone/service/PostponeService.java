@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Locale;
 
 import om.edu.squ.squportal.portlet.dps.bo.Student;
+import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeReason;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentModel;
 
@@ -71,5 +72,5 @@ public interface PostponeService
 	 *
 	 * Date    		:	Aug 7, 2017 5:00:53 PM
 	 */
-	public int setPostponeByStudent(Student student, PostponeStudentModel studentModel, String userName, Locale locale);
+	public List<PostponeDTO> setPostponeByStudent(Student student, PostponeStudentModel studentModel, String userName, Locale locale);
 }

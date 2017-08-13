@@ -29,19 +29,24 @@
  */
 package om.edu.squ.squportal.portlet.dps.registration.postpone.controller;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
+import javax.servlet.http.HttpServletResponse;
 
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
+import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentDataModel;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentModel;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.service.PostponeService;
+import om.edu.squ.squportal.portlet.dps.utility.UtilProperty;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +56,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
+import com.google.gson.Gson;
 
 /**
  * @author Bhabesh
@@ -101,6 +108,7 @@ public class PostponeController
 	 *
 	 * Date    		:	Aug 8, 2017 9:02:13 AM
 	 * @throws NotCorrectDBRecordException 
+	 * @throws IOException 
 	 */
 	@ResourceMapping(value="resourceStudentSubmit")
 	private	void resourceSubmitByStudent(
@@ -109,11 +117,59 @@ public class PostponeController
 													,	ResourceResponse	response
 													,	Locale				locale				
 													
-												) throws NotCorrectDBRecordException
+												) 
 	{
-		User	user	=	dpsServiceDao.getUser(request);
-		Student student	= 	dpsServiceDao.getStudent(user.getUserId(), null, new Locale("en"));
-		postponeService.setPostponeByStudent(student, studentModel,request.getRemoteUser(), locale);
+		Gson				gson			=	new Gson();
+		List<PostponeDTO>	postponeDTOs	=	null;
+		User				user			=	dpsServiceDao.getUser(request);
+		Student 			student			= 	null;
+		String				strJson			=	null;
+		boolean				isError			=	false;
+		
+
+		
+		try
+		{
+			student			=	dpsServiceDao.getStudent(user.getUserId(), null, new Locale("en"));
+			postponeDTOs = postponeService.setPostponeByStudent(student, studentModel,request.getRemoteUser(), locale);
+		}
+		catch (NotCorrectDBRecordException ex)
+		{
+			isError	=	true;
+		}
+		
+		
+		if((null != postponeDTOs) && (postponeDTOs.size() != 0) )
+		{
+
+			strJson	=	gson.toJson(postponeDTOs);
+
+		}
+		else
+		{
+			
+			isError	=	true;
+			strJson = UtilProperty.getMessage("err.dps.service.not.available.text", null, locale);
+
+		}
+		
+		
+		try
+		{
+
+			if(isError)
+			{
+				response.setProperty(ResourceResponse.HTTP_STATUS_CODE, Integer.toString(HttpServletResponse.SC_INTERNAL_SERVER_ERROR));
+			}
+
+			response.getWriter().print(strJson);
+
+
+		}
+		catch(IOException exIO)
+		{
+			logger.error("Error in response generation using json at postponement by student, Details {} ",exIO.getMessage());
+		}
 		
 
 	}

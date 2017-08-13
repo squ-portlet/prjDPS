@@ -1,3 +1,4 @@
+
 <%@ taglib prefix="c"       uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="portlet" uri="http://java.sun.com/portlet_2_0" %>
 <%@ taglib prefix="spring"  uri="http://www.springframework.org/tags" %>
@@ -9,8 +10,35 @@
 <script type="text/javascript">
 	$(function(){
 		
+		
+		var studentModel = {
+				yearSem		: 	''
+
+		};
+		
+		/* Default screen with postpone data for student*/
+		$.ajax({
+			url		:	"${varAjaxResourceStudentSubmit}",
+			type	:	'POST',
+			cache	:	false,
+			data	:	studentModel,
+			success	:	function(data)
+			{
+				var	postponeDTOs = JSON.parse(data);
+				dataLoad(postponeDTOs, '#hbPostponeStudies', '#tblPostponeStudies');
+			},
+			error	:	function(xhr, status, error)
+			{
+				$('#modalAlertErrMsg').html(xhr.responseText);
+				$('#alertModal').modal('toggle');
+			}
+		});
+		
+		
+		
 		/* Submit by student*/
 		$('#bttnCompetentSubmit').click(function(){
+			$('#modalPostponeForm').modal('toggle');
 			var studentModel = {
 					yearSem		: 	$('input[name=yearSem]').val(),
 					reasonCode	:	$('#reasonCode').val(),
@@ -24,15 +52,31 @@
 					data	:	studentModel,
 					success	:	function(data)
 					{
-						console.log('success data transfer');
+						var	postponeDTOs = JSON.parse(data);
+						dataLoad(postponeDTOs, '#hbPostponeStudies', '#tblPostponeStudies');
 					},
-					error	:	function(xhr, status)
+					error	:	function(xhr, status, error)
 					{
-						console.log('Error in  data transfer');
+						$('#modalAlertErrMsg').html(xhr.responseText);
+						$('#alertModal').modal('toggle');
 					}
 			});
 			
 		});
+	
+		
+		function dataLoad(dataJson, hbTemplateId, tableId)
+		{
+			if ($.trim(dataJson))
+			{
+				var theAlertTemplate=$(hbTemplateId).html();
+				var template = Handlebars.compile(theAlertTemplate);
+				$(tableId).html(template(dataJson));
+			}
+			return true;
+			
+		}
+		
 		
 		
 	});

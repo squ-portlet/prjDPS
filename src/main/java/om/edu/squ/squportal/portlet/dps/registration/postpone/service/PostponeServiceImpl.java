@@ -96,15 +96,20 @@ public class PostponeServiceImpl implements PostponeService
 	 *
 	 * Date    		:	Aug 7, 2017 5:00:53 PM
 	 */
-	public int setPostponeByStudent(Student student, PostponeStudentModel studentModel, String userName, Locale locale)
+	public List<PostponeDTO> setPostponeByStudent(Student student, PostponeStudentModel studentModel, String userName, Locale locale)
 	{
-		int result		=	0;
-		PostponeDTO	dto	=	new PostponeDTO(student,studentModel,userName);
-		
-		result =  postponeDBDao.setPostponeByStudent(dto);
+		int 				result			=	0;
+		List<PostponeDTO>	postponeDTOs	=	null;
+		if(!studentModel.getYearSem().equals(""))
+		{
+			PostponeDTO			dto				=	new PostponeDTO(student,studentModel,userName);
+								result 			=  	postponeDBDao.setPostponeByStudent(dto);
+		}
 		if(result>0)
 		{
+			
 			/* -- Notification -- Start --*/
+
 			try
 			{
 				NotifierPeople notifierPeople = dpsServiceDao.getNotifierPeople(
@@ -115,9 +120,9 @@ public class PostponeServiceImpl implements PostponeService
 																					locale
 																				);
 	
-				notifierPeople.setFormNameEng(UtilProperty.getMessage("prop.dps.form.name.extension", null));
-				notifierPeople.setFormNameAr(UtilProperty.getMessage("prop.dps.form.name.extension", null, new Locale("ar")));
-				notifierPeople.setServiceUrl(UtilProperty.getMessage("prop.dps.url.extension", null));
+				notifierPeople.setFormNameEng(UtilProperty.getMessage("prop.dps.form.name.postpone", null));
+				notifierPeople.setFormNameAr(UtilProperty.getMessage("prop.dps.form.name.postpone", null, new Locale("ar")));
+				notifierPeople.setServiceUrl(UtilProperty.getMessage("prop.dps.url.postpone", null));
 				
 				dpsNotification.sendNotification(
 														UtilProperty.getMessage("prop.dps.postpone.notification.subject", new String[]{notifierPeople.getStudent().getPersonalDetail().getId()})
@@ -136,8 +141,14 @@ public class PostponeServiceImpl implements PostponeService
 			{
 				logger.error("Error in  notification for student submit at Postponement of Service : {}",ex.getMessage());
 			}
+			
 			/* -- Notification -- end --*/
 		}
-		return result;
+		postponeDTOs	=	postponeDBDao.getPostponesForStudents(student.getAcademicDetail().getStudentNo(), locale);
+
+		
+		return postponeDTOs;
 	}
+	
+
 }

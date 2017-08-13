@@ -31,6 +31,10 @@ package om.edu.squ.squportal.portlet.dps.registration.postpone.bo;
 
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentModel;
+import om.edu.squ.squportal.portlet.dps.role.bo.Advisor;
+import om.edu.squ.squportal.portlet.dps.role.bo.CollegeDean;
+import om.edu.squ.squportal.portlet.dps.role.bo.DpsDean;
+import om.edu.squ.squportal.portlet.dps.role.bo.Supervisor;
 
 /**
  * @author Bhabesh
@@ -38,18 +42,35 @@ import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStud
  */
 public class PostponeDTO
 {
-	private String	studentNo;
-	private	String	studentStatCode;
-	private	String	fromCcYearCode;
-	private	String	fromSemCode;
-	private	String	toCcYearCode;
-	private	String	toSemCode;
-	private	String	reasonCode;
-	private	String	reasonOther;
-	private	String	commentEng;
-	private	String	commentArb;
-	private	String	yearSem;
-	private	String	userName;
+	private String		studentNo;
+	private	String		studentStatCode;
+	private	String		fromCcYearCode;
+	private	String		fromSemCode;
+	private	String		toCcYearCode;
+	private	String		toSemCode;
+	private	String		toSemName;
+	private	String		reasonCode;
+	private	String		reasonName;
+	private	String		reasonOther;
+	private	String		reasonDesc;
+	private	String		commentEng;
+	private	String		commentArb;
+	private	String		yearSem;
+	private	String		userName;
+	private	String		statusCode;
+	private	String		statusCodeName;
+	private	String		statusDesc;
+	private	Advisor		advisor;	
+	private	Supervisor	supervisor;
+	private	CollegeDean	collegeDean;
+	private	DpsDean		dpsDean;
+	private	boolean	approver;
+	private	String	roleName;
+	private	String	approvalCode;
+	private	String	activityDate;
+	private	boolean		statusReject;
+	
+	
 	
 	/**
 	 * 
@@ -248,6 +269,28 @@ public class PostponeDTO
 		this.toSemCode = toSemCode;
 	}
 
+	
+	/**
+	 * Getter Method	: getToSemName
+	 * @return the toSemName
+	 * 
+	 * Date				: Aug 10, 2017
+	 */
+	public String getToSemName()
+	{
+		return this.toSemName;
+	}
+
+	/**
+	 * Setter method : setToSemName
+	 * @param toSemName the toSemName to set
+	 * 
+	 * Date          : Aug 10, 2017 8:49:52 AM
+	 */
+	public void setToSemName(String toSemName)
+	{
+		this.toSemName = toSemName;
+	}
 
 	/**
 	 * Getter Method	: getReasonCode
@@ -274,6 +317,28 @@ public class PostponeDTO
 
 
 	/**
+	 * Getter Method	: getReasonName
+	 * @return the reasonName
+	 * 
+	 * Date				: Aug 9, 2017
+	 */
+	public String getReasonName()
+	{
+		return this.reasonName;
+	}
+
+	/**
+	 * Setter method : setReasonName
+	 * @param reasonName the reasonName to set
+	 * 
+	 * Date          : Aug 9, 2017 2:30:19 PM
+	 */
+	public void setReasonName(String reasonName)
+	{
+		this.reasonName = reasonName;
+	}
+
+	/**
 	 * Getter Method	: getReasonOther
 	 * @return the reasonOther
 	 * 
@@ -296,6 +361,29 @@ public class PostponeDTO
 		this.reasonOther = reasonOther;
 	}
 
+	
+
+	/**
+	 * Getter Method	: getReasonDesc
+	 * @return the reasonDesc
+	 * 
+	 * Date				: Aug 10, 2017
+	 */
+	public String getReasonDesc()
+	{
+		return this.reasonDesc;
+	}
+
+	/**
+	 * Setter method : setReasonDesc
+	 * @param reasonDesc the reasonDesc to set
+	 * 
+	 * Date          : Aug 10, 2017 8:54:37 AM
+	 */
+	public void setReasonDesc(String reasonDesc)
+	{
+		this.reasonDesc = reasonDesc;
+	}
 
 	/**
 	 * Getter Method	: getCommentEng
@@ -391,6 +479,272 @@ public class PostponeDTO
 		this.userName = userName;
 	}
 
+	/**
+	 * Getter Method	: getStatusCode
+	 * @return the statusCode
+	 * 
+	 * Date				: Aug 9, 2017
+	 */
+	public String getStatusCode()
+	{
+		return this.statusCode;
+	}
+
+	/**
+	 * Setter method : setStatusCode
+	 * @param statusCode the statusCode to set
+	 * 
+	 * Date          : Aug 9, 2017 2:59:24 PM
+	 */
+	public void setStatusCode(String statusCode)
+	{
+		this.statusCode = statusCode;
+	}
+
+	/**
+	 * Getter Method	: getStatusCodeName
+	 * @return the statusCodeName
+	 * 
+	 * Date				: Aug 9, 2017
+	 */
+	public String getStatusCodeName()
+	{
+		return this.statusCodeName;
+	}
+
+	/**
+	 * Setter method : setStatusCodeName
+	 * @param statusCodeName the statusCodeName to set
+	 * 
+	 * Date          : Aug 9, 2017 2:59:24 PM
+	 */
+	public void setStatusCodeName(String statusCodeName)
+	{
+		this.statusCodeName = statusCodeName;
+	}
+
+	/**
+	 * Getter Method	: getStatusDesc
+	 * @return the statusDesc
+	 * 
+	 * Date				: Aug 9, 2017
+	 */
+	public String getStatusDesc()
+	{
+		return this.statusDesc;
+	}
+
+	/**
+	 * Setter method : setStatusDesc
+	 * @param statusDesc the statusDesc to set
+	 * 
+	 * Date          : Aug 9, 2017 2:59:24 PM
+	 */
+	public void setStatusDesc(String statusDesc)
+	{
+		this.statusDesc = statusDesc;
+	}
+
+	/**
+	 * Getter Method	: getAdvisor
+	 * @return the advisor
+	 * 
+	 * Date				: Aug 9, 2017
+	 */
+	public Advisor getAdvisor()
+	{
+		return this.advisor;
+	}
+
+	/**
+	 * Setter method : setAdvisor
+	 * @param advisor the advisor to set
+	 * 
+	 * Date          : Aug 9, 2017 2:59:24 PM
+	 */
+	public void setAdvisor(Advisor advisor)
+	{
+		this.advisor = advisor;
+	}
+
+	/**
+	 * Getter Method	: getSupervisor
+	 * @return the supervisor
+	 * 
+	 * Date				: Aug 9, 2017
+	 */
+	public Supervisor getSupervisor()
+	{
+		return this.supervisor;
+	}
+
+	/**
+	 * Setter method : setSupervisor
+	 * @param supervisor the supervisor to set
+	 * 
+	 * Date          : Aug 9, 2017 2:59:24 PM
+	 */
+	public void setSupervisor(Supervisor supervisor)
+	{
+		this.supervisor = supervisor;
+	}
+
+	/**
+	 * Getter Method	: getCollegeDean
+	 * @return the collegeDean
+	 * 
+	 * Date				: Aug 9, 2017
+	 */
+	public CollegeDean getCollegeDean()
+	{
+		return this.collegeDean;
+	}
+
+	/**
+	 * Setter method : setCollegeDean
+	 * @param collegeDean the collegeDean to set
+	 * 
+	 * Date          : Aug 9, 2017 2:59:24 PM
+	 */
+	public void setCollegeDean(CollegeDean collegeDean)
+	{
+		this.collegeDean = collegeDean;
+	}
+
+	/**
+	 * Getter Method	: getDpsDean
+	 * @return the dpsDean
+	 * 
+	 * Date				: Aug 9, 2017
+	 */
+	public DpsDean getDpsDean()
+	{
+		return this.dpsDean;
+	}
+
+	/**
+	 * Setter method : setDpsDean
+	 * @param dpsDean the dpsDean to set
+	 * 
+	 * Date          : Aug 9, 2017 2:59:24 PM
+	 */
+	public void setDpsDean(DpsDean dpsDean)
+	{
+		this.dpsDean = dpsDean;
+	}
+
+	/**
+	 * Getter Method	: isApprover
+	 * @return the approver
+	 * 
+	 * Date				: Aug 9, 2017
+	 */
+	public boolean isApprover()
+	{
+		return this.approver;
+	}
+
+	/**
+	 * Setter method : setApprover
+	 * @param approver the approver to set
+	 * 
+	 * Date          : Aug 9, 2017 2:59:25 PM
+	 */
+	public void setApprover(boolean approver)
+	{
+		this.approver = approver;
+	}
+
+	/**
+	 * Getter Method	: getRoleName
+	 * @return the roleName
+	 * 
+	 * Date				: Aug 9, 2017
+	 */
+	public String getRoleName()
+	{
+		return this.roleName;
+	}
+
+	/**
+	 * Setter method : setRoleName
+	 * @param roleName the roleName to set
+	 * 
+	 * Date          : Aug 9, 2017 2:59:25 PM
+	 */
+	public void setRoleName(String roleName)
+	{
+		this.roleName = roleName;
+	}
+
+	/**
+	 * Getter Method	: getApprovalCode
+	 * @return the approvalCode
+	 * 
+	 * Date				: Aug 9, 2017
+	 */
+	public String getApprovalCode()
+	{
+		return this.approvalCode;
+	}
+
+	/**
+	 * Setter method : setApprovalCode
+	 * @param approvalCode the approvalCode to set
+	 * 
+	 * Date          : Aug 9, 2017 2:59:25 PM
+	 */
+	public void setApprovalCode(String approvalCode)
+	{
+		this.approvalCode = approvalCode;
+	}
+	
+
+	/**
+	 * Getter Method	: getActivityDate
+	 * @return the activityDate
+	 * 
+	 * Date				: Aug 10, 2017
+	 */
+	public String getActivityDate()
+	{
+		return this.activityDate;
+	}
+
+	/**
+	 * Setter method : setActivityDate
+	 * @param activityDate the activityDate to set
+	 * 
+	 * Date          : Aug 10, 2017 8:43:39 AM
+	 */
+	public void setActivityDate(String activityDate)
+	{
+		this.activityDate = activityDate;
+	}
+	
+
+	/**
+	 * Getter Method	: isStatusReject
+	 * @return the statusReject
+	 * 
+	 * Date				: Aug 10, 2017
+	 */
+	public boolean isStatusReject()
+	{
+		return this.statusReject;
+	}
+
+	/**
+	 * Setter method : setStatusReject
+	 * @param statusReject the statusReject to set
+	 * 
+	 * Date          : Aug 10, 2017 2:51:17 PM
+	 */
+	public void setStatusReject(boolean statusReject)
+	{
+		this.statusReject = statusReject;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -401,11 +755,20 @@ public class PostponeDTO
 				+ ", studentStatCode=" + this.studentStatCode
 				+ ", fromCcYearCode=" + this.fromCcYearCode + ", fromSemCode="
 				+ this.fromSemCode + ", toCcYearCode=" + this.toCcYearCode
-				+ ", toSemCode=" + this.toSemCode + ", reasonCode="
-				+ this.reasonCode + ", reasonOther=" + this.reasonOther
-				+ ", commentEng=" + this.commentEng + ", commentArb="
-				+ this.commentArb + ", yearSem=" + this.yearSem + ", userName="
-				+ this.userName + "]";
+				+ ", toSemCode=" + this.toSemCode + ", toSemName="
+				+ this.toSemName + ", reasonCode=" + this.reasonCode
+				+ ", reasonName=" + this.reasonName + ", reasonOther="
+				+ this.reasonOther + ", commentEng=" + this.commentEng
+				+ ", commentArb=" + this.commentArb + ", yearSem="
+				+ this.yearSem + ", userName=" + this.userName
+				+ ", statusCode=" + this.statusCode + ", statusCodeName="
+				+ this.statusCodeName + ", statusDesc=" + this.statusDesc
+				+ ", advisor=" + this.advisor + ", supervisor="
+				+ this.supervisor + ", collegeDean=" + this.collegeDean
+				+ ", dpsDean=" + this.dpsDean + ", approver=" + this.approver
+				+ ", roleName=" + this.roleName + ", approvalCode="
+				+ this.approvalCode + ", activityDate=" + this.activityDate
+				+ "]";
 	}
 	
 	

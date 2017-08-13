@@ -70,7 +70,7 @@
 								<title>Drop with W of Post Graduate Studies</title>
 							</portlet-info>
 						</portlet>	
-	<!-- Drop with W -->
+	<!-- Postponement of Studies -->
 						<portlet>
 							<portlet-name>dpsRegistrationPostpone</portlet-name>
 							<portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
