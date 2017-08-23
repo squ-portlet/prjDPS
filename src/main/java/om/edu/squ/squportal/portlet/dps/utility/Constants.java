@@ -152,6 +152,12 @@ public interface Constants
 	public static final String	CONST_YES													=	"Y";
 	public static final String	CONST_NO													=	"N";
 	
+	public static final String	CONST_FULL_TIME												=	"FULL";
+	public static final String	CONST_PART_TIME												=	"PART";
+	
+	public static final int		CONST_FULL_TIME_ALLOWED_CREDIT_AFTER_DROP					=	9;
+	public static final int		CONST_PART_TIME_ALLOWED_CREDIT_AFTER_DROP					=	3;
+	
 	/******************************************************/
 	public static final	String	CONST_SQL_STATUS_CODE_PENDING								=	"5539";
 	public static final	String	CONST_SQL_STATUS_CODE_NAME_MODFY							=	"MODFY";
@@ -205,6 +211,8 @@ public interface Constants
 	public	static 	final	String	SQL_PERSONAL_DETAIL_STUDENT								=	"personal.details.of.student";
 	public	static	final	String	SQL_ACADEMIC_DETAIL_STUDENT								=	"academic.details.of.student";
 	public	static	final	String	CONST_SQL_STUDENT_MODE									=	"dps.select.student.mode";				//Full Time / Part Time etc
+	public	static	final	String	CONST_SQL_STUDENT_TOTAL_CREDIT							=	"dps.select.student.total.registered.credit";
+	public	static	final	String	CONST_SQL_STUDENT_SELECTED_COURSE_CREDIT				=	"dps.select.student.selected.registered.course.credit";
 	
 	public static 	final	String	CONST_SP_APPROVER_NEXT									=	"dps.stored.procedure.sp.approver.next";
 	
@@ -244,6 +252,7 @@ public interface Constants
 	public	static	final	String	CONST_PROP_SQL_RULE_CURR_DATE_IN_SPECIFIC_WEEK			=	"sql.rule.current.date.in.specific.week";
 	
 	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_EXTENSION_COUNT				=	"sql.rule.service.extension.select.count.student";
+	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_DROP_W_PERIOD				=	"sql.rule.service.dropw.withdraw.preriod";
 
 	
 	/* ---  SQL - DPS - Role --------------------- */

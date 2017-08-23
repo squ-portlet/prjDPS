@@ -278,4 +278,36 @@ public class RuleDbImpl implements RuleDbDao
 		return nPJdbcTemplDps.queryForInt(SQL_RULE_STUDENT_EXTENSION_COUNT, mapParamsRule);
 	}
 	
+	
+	/**
+	 * 
+	 * method name  : isDropWPeriod
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * RuleDbImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		: whether the period is within drop w period 
+	 *
+	 * Date    		:	Aug 20, 2017 4:46:22 PM
+	 */
+	public boolean isDropWPeriod(String studentNo, String stdStatCode)
+	{
+		boolean result	= false;
+		String	SQL_RULE_STUDENT_DROP_W_PERIOD	=	queryPropsCommonRule.getProperty(Constants.CONST_PROP_SQL_RULE_STUDENT_DROP_W_PERIOD);
+		Map<String, String> mapParamsRule	=	new HashMap<String, String>();
+		mapParamsRule.put("paramStdNo", studentNo);
+		mapParamsRule.put("paramStdStatCode", stdStatCode);
+		if(nPJdbcTemplDps.queryForObject(SQL_RULE_STUDENT_DROP_W_PERIOD, mapParamsRule, String.class).equals(Constants.CONST_YES))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+		
+	}
+	
 }

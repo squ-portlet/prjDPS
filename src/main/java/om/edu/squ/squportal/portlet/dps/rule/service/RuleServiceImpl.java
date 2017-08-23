@@ -32,6 +32,7 @@ package om.edu.squ.squportal.portlet.dps.rule.service;
 import om.edu.squ.squportal.portlet.dps.rule.bo.StudentCompletionAndJoinTime;
 import om.edu.squ.squportal.portlet.dps.rule.bo.YearSemester;
 import om.edu.squ.squportal.portlet.dps.rule.db.RuleDbDao;
+import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -246,6 +247,61 @@ public class RuleServiceImpl implements Rule
 	{
 		return (ruleDbDao.extensionRecordAlreadyExist(studentNo, stdStatCode)!=0?true:false);
 	}
+
+	/**
+	 * 
+	 * method name  : isDropwTotalRegisteredCreditRuleExist
+	 * @param totalRegisteredCredit
+	 * @param selectedCourseCredit
+	 * @param studyModeType
+	 * @return
+	 * RuleServiceImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		:	Rule for number of total registered credits to be remain with students after drop with w
+	 *
+	 * Date    		:	Aug 16, 2017 4:00:37 PM
+	 */
+	public boolean isDropwTotalRegisteredCreditRuleExist(int totalRegisteredCredit,  int selectedCourseCredit, String studyModeType)
+	{
+		boolean	result = false;
+		
+		int finalRegisteredCredit = totalRegisteredCredit - selectedCourseCredit;
+		if(studyModeType.equals(Constants.CONST_FULL_TIME))
+		{
+			if(finalRegisteredCredit >= Constants.CONST_FULL_TIME_ALLOWED_CREDIT_AFTER_DROP)
+			{
+				result = true;
+			}
+		}
+		if(studyModeType.equals(Constants.CONST_PART_TIME))
+		{
+			if(finalRegisteredCredit >= Constants.CONST_PART_TIME_ALLOWED_CREDIT_AFTER_DROP)
+			{
+				result = true;
+			}
+		}
+		
+		return result;
+	}
 	
+	
+	/**
+	 * 
+	 * method name  : isDropWPeriod
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * RuleDbImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		: whether the period is within drop w period 
+	 *
+	 * Date    		:	Aug 20, 2017 4:46:22 PM
+	 */
+	public boolean isDropWPeriod(String studentNo, String stdStatCode)
+	{
+		return ruleDbDao.isDropWPeriod(studentNo, stdStatCode);
+	}
 	
 }

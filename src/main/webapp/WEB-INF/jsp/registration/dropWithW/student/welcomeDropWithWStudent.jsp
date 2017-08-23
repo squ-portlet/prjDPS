@@ -7,7 +7,15 @@
 
 	<%@include file="../../../ui/cssWelcome.jsp" %>	
 	<%@include file="../../../ui/js/registration/dropw/jsDropW.jsp" %>
-	
+			
+			<c:url value="/ui/ajax-loader.gif" var="imgAjaxLoader"/>		
+			<div class="row" id="imgAjaxLoading" style="display: none;">
+				<div class="col-sm-5"></div>
+				<div class="col-sm-1">
+					<img alt="Loading ...." src="${imgAjaxLoader}">
+				</div>
+			</div>
+				
 <c:choose>
 		<c:when test="${isRuleStudentComplete}">	
 			<c:choose>
@@ -155,7 +163,7 @@
 	  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
 	 	<strong><spring:message code="prop.dps.extension.student.applications.head.column.action"/>!</strong>
 	  		<hr> 
-				{{messageAlert}}
+				{{{messageAlert}}}
 	</div>	
 	
 	</script>

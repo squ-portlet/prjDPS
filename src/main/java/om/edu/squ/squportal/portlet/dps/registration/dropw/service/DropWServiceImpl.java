@@ -50,6 +50,7 @@ import om.edu.squ.squportal.portlet.dps.registration.dropw.db.DropWDBDao;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.model.DropCourseModel;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
+import om.edu.squ.squportal.portlet.dps.rule.service.Rule;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 import om.edu.squ.squportal.portlet.dps.utility.UtilProperty;
 
@@ -68,6 +69,8 @@ public class DropWServiceImpl implements DropWService
 	DropWDBDao	dropWDBDao;
 	@Autowired
 	DpsServiceDao	dpsServiceDao;
+	@Autowired
+	Rule					ruleService;
 	@Autowired
 	DPSNotification			dpsNotification;
 	
@@ -379,23 +382,99 @@ public class DropWServiceImpl implements DropWService
 	 *
 	 * Date    		:	May 17, 2017 3:11:11 PM
 	 */
-	public boolean isRuleStudentComplete(String studentNo, String stdStatCode)
+	public boolean isRuleStudentComplete(String studentNo, String stdStatCode, String courseNo)
 	{
-		/*Rule 1 : 	Full Time need 12 Credit
-		 * 			Part Time need 3 Credit
+		/*Rule 1 : 	Full Time need 9 Credit after drop
+		 * 			Part Time need 3 Credit after drop
 		 * Rule 2 : Period within Drop W Period 
 		 * */
 		
-		/*Rule 1 */
-		this.stdModeCreditApplied	=	true;
-		/*Rule 2 */
-		//TODO
-		//this.dropWTimeApplied		= 	Constants.CONST_RULE_DROP_W_PERIOD_APPLIED; // Rule - Drop W period applied -- APPLIED DROP 'W' TIME - PRODUCTION USE
 		
-		this.dropWTimeApplied		=	Constants.CONST_RULE_DROP_W_PERIOD_NOT_APPLIED; // Rule - Drop W period not applied  -- This statement for tesing only
+		/*Rule 1 */
+		String studyModeType = dpsServiceDao.getStudentMode(studentNo,stdStatCode);
+		int	totalCredit	=	dpsServiceDao.getTotalRegisteredCredit(studentNo, stdStatCode);
+		if(null==courseNo)
+		{
+			
+			this.stdModeCreditApplied	=	ruleService.isDropwTotalRegisteredCreditRuleExist(
+																						totalCredit, 
+																						0,
+																						studyModeType
+																					);
+		}
+		else
+		{
+			this.stdModeCreditApplied	=	ruleService.isDropwTotalRegisteredCreditRuleExist(
+																						totalCredit, 
+																						dpsServiceDao.getSelectedRegisteredCourseCredit(studentNo, stdStatCode, courseNo),
+																						studyModeType
+																					);
+		}
+		
+		
+		/*Rule 2 */
+		
+		if(ruleService.isDropWPeriod(studentNo, stdStatCode))
+		{
+			this.dropWTimeApplied		= 	Constants.CONST_RULE_DROP_W_PERIOD_APPLIED; 
+		}
+		else
+		{
+			this.dropWTimeApplied		=	Constants.CONST_RULE_DROP_W_PERIOD_NOT_APPLIED;
+		}
+		
+		/* Following rules not applied at test environment
+		 * 
+		 * rule 2
+		 * */
+		
+		if(Constants.CONST_TEST_ENVIRONMENT)
+		{
+			this.dropWTimeApplied		=	Constants.CONST_RULE_DROP_W_PERIOD_NOT_APPLIED;
+		}
 
 		//TODO : Do not change result of the rule
 		return true;
 	}
+	
+	/**
+	 * 
+	 * method name  : isRuleModeCreditApplied
+	 * @return
+	 * DropWServiceImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		: whether rule for credit mode (FULL Time -> 9 credits / PART Time -> 3 credits after drop) applied
+	 *
+	 * Date    		:	Aug 23, 2017 10:25:33 AM
+	 */
+	public boolean isRuleModeCreditApplied()
+	{
+		return this.stdModeCreditApplied;
+	}
+	
+	/**
+	 * 
+	 * method name  : isDropWTimeApplied
+	 * @return
+	 * DropWServiceImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		: whether rule for drop with 'w' time frame applied
+	 *
+	 * Date    		:	Aug 23, 2017 10:26:47 AM
+	 */
+	public boolean isDropWTimeApplied()
+	{
+		if(this.dropWTimeApplied.equals(Constants.CONST_RULE_DROP_W_PERIOD_NOT_APPLIED))
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	
 	
 }

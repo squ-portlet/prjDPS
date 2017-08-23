@@ -11,6 +11,14 @@
 
 
 <script type="text/javascript">
+		$( document ).ajaxStart(function() {
+			$('#imgAjaxLoading').show();
+		});
+		
+		$( document ).ajaxStop(function() {
+			$('#imgAjaxLoading').hide();
+		});
+
 	/*Student*/
 	$(function() {
 	<c:if test="${not empty dropWDTOs}">		
@@ -60,7 +68,9 @@
 							},
 							error : function(xhr, status)
 							{
-								
+								var message = {};
+								message.messageAlert = xhr.responseText;
+								dropDataLoadActionStudent(message, '#hbDropStatAlert', '#divDropStatAlert');
 							}
 						
 					});

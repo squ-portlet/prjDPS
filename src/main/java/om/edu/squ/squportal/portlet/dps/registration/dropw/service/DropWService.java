@@ -97,6 +97,7 @@ public interface DropWService
 	 * method name  : isRuleStudentComplete
 	 * @param studentNo
 	 * @param stdStatCode
+	 * @param courseNo TODO
 	 * @return
 	 * DropWServiceImpl
 	 * return type  : boolean
@@ -105,7 +106,7 @@ public interface DropWService
 	 *
 	 * Date    		:	May 17, 2017 3:11:11 PM
 	 */
-	public boolean isRuleStudentComplete(String studentNo, String stdStatCode);
+	public boolean isRuleStudentComplete(String studentNo, String stdStatCode, String courseNo);
 	
 	/**
 	 * 
@@ -120,5 +121,30 @@ public interface DropWService
 	 * Date    		:	Aug 1, 2017 5:40:55 PM
 	 */
 	public ApprovalDTO setRoleTransaction(DropWDTO dropWDTO, Locale locale);
+	
+	/**
+	 * 
+	 * method name  : isRuleModeCreditApplied
+	 * @return
+	 * DropWServiceImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		: whether rule for credit mode (FULL Time -> 9 credits / PART Time -> 3 credits after drop) applied
+	 *
+	 * Date    		:	Aug 23, 2017 10:25:33 AM
+	 */
+	public boolean isRuleModeCreditApplied();
+	/**
+	 * 
+	 * method name  : isDropWTimeApplied
+	 * @return
+	 * DropWServiceImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		: whether rule for drop with 'w' time frame applied
+	 *
+	 * Date    		:	Aug 23, 2017 10:26:47 AM
+	 */
+	public boolean isDropWTimeApplied();
 	
 }

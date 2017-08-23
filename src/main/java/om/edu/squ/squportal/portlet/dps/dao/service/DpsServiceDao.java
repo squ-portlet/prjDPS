@@ -210,6 +210,37 @@ public interface DpsServiceDao
 	
 	/**
 	 * 
+	 * method name  : getTotalRegisteredCredit
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * DpsDbImpl
+	 * return type  : int
+	 * 
+	 * purpose		: Total registered credit of a student at current semester 
+	 *
+	 * Date    		:	Aug 16, 2017 2:35:44 PM
+	 */
+	public int getTotalRegisteredCredit(String studentNo, String stdStatCode);
+	
+	/**
+	 * 
+	 * method name  : getSelectedRegisteredCourseCredit
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @param courseNo
+	 * @return
+	 * DpsDbImpl
+	 * return type  : int
+	 * 
+	 * purpose		:	Get course credit for individual selected registered course
+	 *
+	 * Date    		:	Aug 17, 2017 5:05:04 PM
+	 */
+	public int getSelectedRegisteredCourseCredit(String studentNo, String stdStatCode, String courseNo);
+	
+	/**
+	 * 
 	 * method name  : getEmpNumber
 	 * @param request
 	 * @return

@@ -143,7 +143,12 @@ public class DropWithWController
 		}
 		
 		model.addAttribute("dropCourseModel", dropCourseModel);
-		model.addAttribute("isRuleStudentComplete", dropWService.isRuleStudentComplete(student.getAcademicDetail().getStudentNo(), student.getAcademicDetail().getStdStatCode()));
+		model.addAttribute("isRuleStudentComplete", dropWService.isRuleStudentComplete(
+																							student.getAcademicDetail().getStudentNo(), 
+																							student.getAcademicDetail().getStdStatCode(), 
+																							null
+																						)
+							);
 		model.addAttribute("courseList", dropWService.getCourseList(student, locale));
 		model.addAttribute("dropWDTOs", gson.toJson(dropWService.getDropWCourses(student, locale)));
 		return "/registration/dropWithW/student/welcomeDropWithWStudent";
@@ -209,12 +214,28 @@ public class DropWithWController
 		AcademicDetail	academicDetail	=	student.getAcademicDetail();
 		academicDetail.setStudentUserName(request.getRemoteUser());
 		student.setAcademicDetail(academicDetail);
-	
 		
 		try
 		{
-			dropWDTOs	=	dropWService.setDropWCourseAdd(student,dropCourseModel, locale);
-			response.getWriter().print(gson.toJson(dropWDTOs));
+			if(dropWService.isRuleStudentComplete(student.getAcademicDetail().getStudentNo(), student.getAcademicDetail().getStdStatCode(), dropCourseModel.getCourseNo()))
+			{
+				if(dropWService.isRuleModeCreditApplied())
+				{
+					dropWDTOs	=	dropWService.setDropWCourseAdd(student,dropCourseModel, locale);
+					response.getWriter().print(gson.toJson(dropWDTOs));
+				}
+				else 
+				{
+					response.setProperty(ResourceResponse.HTTP_STATUS_CODE, Integer.toString(HttpServletResponse.SC_INTERNAL_SERVER_ERROR));
+					response.getWriter().print(UtilProperty.getMessage("err.dps.service.dropw.credit.mode.not.correct", null, locale));
+				}
+
+			}
+			else
+			{
+				response.setProperty(ResourceResponse.HTTP_STATUS_CODE, Integer.toString(HttpServletResponse.SC_INTERNAL_SERVER_ERROR));
+				response.getWriter().print(UtilProperty.getMessage("err.dps.service.not.available.text", null, locale));				
+			}
 		}
 		catch (IOException ex)
 		{
@@ -332,8 +353,6 @@ public class DropWithWController
 			/*We catch the error but not throwing technical error to user screen*/
 			errMsg	=	ex.getMessage();
 		}
-
-	
 
 		if(null == resultDropWDTOs)
 		{

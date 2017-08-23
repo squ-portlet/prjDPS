@@ -144,4 +144,21 @@ public interface RuleDbDao
 	 * Date    		:	Mar 15, 2017 6:51:07 PM
 	 */
 	public int extensionRecordAlreadyExist(String studentNo, String stdStatCode);
+	
+	
+	/**
+	 * 
+	 * method name  : isDropWPeriod
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * RuleDbImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		: whether the period is within drop w period 
+	 *
+	 * Date    		:	Aug 20, 2017 4:46:22 PM
+	 */
+	public boolean isDropWPeriod(String studentNo, String stdStatCode);
+	
 }

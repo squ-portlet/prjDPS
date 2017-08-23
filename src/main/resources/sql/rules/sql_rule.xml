@@ -115,7 +115,28 @@
           AND EXTN.STDNO     			= :paramStdNo
           AND EXTN.STDSTATCD			 = :paramStdStatCode
   	</entry>
- 
+  		<!-- Service Rules with Drop W ** 
+				Drop with W can be done only in 'Drop with W' period 
+		-->
+ 	<entry key="sql.rule.service.dropw.withdraw.preriod">
+		SELECT 
+			    DECODE 
+			          (
+			            COUNT(WITHIN_DATE)
+			            , 0 , 'N','Y'
+			          ) 										AS 	WITHDRAW_DATE
+		FROM
+		(
+		    SELECT
+		            'Y'  AS WITHIN_DATE
+		    FROM 
+		     V_STD_CURREG        REG
+		    WHERE 
+		            REG.STDNO = :paramStdNo
+		      AND   REG.STDSTATCD = :paramStdStatCode
+		      AND  SYSDATE BETWEEN REG.FIRSTWTHDTE AND REG.SECONDWTHDTE
+		)
+	</entry>
   
     
 </properties>

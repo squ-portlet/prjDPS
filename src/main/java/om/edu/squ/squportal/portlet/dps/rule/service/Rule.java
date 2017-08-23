@@ -110,4 +110,35 @@ public interface Rule
 	 * Date    		:	Mar 15, 2017 6:51:07 PM
 	 */
 	public boolean isExtensionRecordAlreadyExist(String studentNo, String stdStatCode);
+	
+	/**
+	 * 
+	 * method name  : isDropwTotalRegisteredCreditRuleExist
+	 * @param totalRegisteredCredit
+	 * @param selectedCourseCredit
+	 * @param studyModeType
+	 * @return
+	 * RuleServiceImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		:	Rule for number of total registered credits to be remain with students after drop with w
+	 *
+	 * Date    		:	Aug 16, 2017 4:00:37 PM
+	 */
+	public boolean isDropwTotalRegisteredCreditRuleExist(int totalRegisteredCredit,  int selectedCourseCredit, String studyModeType);
+	
+	/**
+	 * 
+	 * method name  : isDropWPeriod
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * RuleDbImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		: whether the period is within drop w period 
+	 *
+	 * Date    		:	Aug 20, 2017 4:46:22 PM
+	 */
+	public boolean isDropWPeriod(String studentNo, String stdStatCode);
 }

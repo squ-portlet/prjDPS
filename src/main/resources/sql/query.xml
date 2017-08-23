@@ -171,5 +171,24 @@
     <entry key="dps.stored.procedure.sp.approver.next">
     	SP_APPROVER_NEXT
     </entry>
+    <entry key="dps.select.student.total.registered.credit">
+			SELECT 
+			        SUM(CRSCRED)  AS  TOTAL_CREDIT
+			FROM
+			        V_STD_CURREG
+			WHERE
+			            STDNO       = :paramStdNo
+			      AND   STDSTATCD   = :paramStdStatCode
+    </entry>
+    <entry key="dps.select.student.selected.registered.course.credit">
+			SELECT 
+			      CRSCRED
+			FROM
+			      V_STD_CURREG
+			WHERE
+			            STDNO = :paramStdNo
+			      AND   STDSTATCD = :paramStdStatCode
+			      AND   CRSNO     = :paramCourseNo    	
+    </entry>
     
 </properties>
