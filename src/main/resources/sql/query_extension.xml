@@ -66,7 +66,12 @@
 	              WHERE SISCODECD= EXTN.EXTREQ_STATUSCD
 	            ) 																		AS 		STATUS_DESC
 	       , EXTN.COMMNT																AS		COMMENTS
-	            																		
+	      , FUNC_IS_SUPERVISOR_AVAILABLE(:paramStdNo,:paramStdStatCode)   				AS 		HAS_THESIS     																		
+          , FUNC_APPROVE_STATUS(
+                           EXTN.STDNO,
+                           :paramAdvisorRoleName, 
+                           :paramFormName
+                           )                           									AS  	ADVISOR_STATUS
           , FUNC_APPROVE_STATUS(
                             EXTN.STDNO,
                             :paramSupervisorRoleName, 
@@ -82,6 +87,10 @@
                             :paramDpsDeanRoleName, 
                             :paramFormName
                             )                           								AS  	DPS_DEAN_STATUS	 
+		, FUNC_GET_APPROVALCODE(
+							:paramFormName,
+							:paramAdvisorRoleName
+							)	                                                        AS  	ADVISOR_APPROVAL_CODE
 		, FUNC_GET_APPROVALCODE(
 							:paramFormName,
 							:paramSupervisorRoleName

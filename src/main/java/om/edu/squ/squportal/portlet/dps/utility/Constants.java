@@ -79,6 +79,7 @@ public interface Constants
 	public static final	String	CONST_COLMN_STUDENT_HOME_POSTALCD							=	"STUDENT_HOME_POSTALCD";
 	public static final	String	CONST_COLMN_STUDENT_PHONE									=	"STUDENT_PHONE";
 	public static final	String	CONST_COLMN_STUDENT_EMAIL									=	"STUDENT_EMAIL";
+	public static final	String	CONST_COLMN_STUDENT_HAS_THESIS								=	"HAS_THESIS";
 	public static final	String	CONST_COLMN_DGR_GRAD_ESTIMATE_SEM_COUNT						=	"DGR_GRAD_ESTIMATE_SEM_COUNT";
 
 	public static final	String	CONST_COLMN_COLLEGE_NAME									=	"COLLEGE_NAME";             
@@ -125,10 +126,11 @@ public interface Constants
 	public static final	String	CONST_COLMN_APPROVER_ROLE_NAME								=	"APPROVER_ROLE_NAME";
 	public static final	String	CONST_COLMN_APPROVAL_SEQUENCE								=	"APPROVAL_SEQUENCE";
 	public static final	String	CONST_COLMN_APPROVAL_MAX_SEQUENCE							=	"APPROVAL_MAX_SEQUENCE";
-	public static final	String	CONST_COLMN_ADVISOR_APPROVAL_CODE 							=	"ADVISOR_APPROVAL_CODE";
+	public static final	String	CONST_COLMN_APPROVAL_CODE_ADVISOR 							=	"ADVISOR_APPROVAL_CODE";
 	public static final	String	CONST_COLMN_APPROVAL_CODE_SUPERVISOR						=	"SUPERVISOR_APPROVAL_CODE";
 	public static final	String	CONST_COLMN_APPROVAL_CODE_COLLEGE_DEAN						=	"COLLEGE_DEAN_APPROVAL_CODE";
 	public static final	String	CONST_COLMN_APPROVAL_CODE_DPS_DEAN							=	"DPS_DEAN_APPROVAL_CODE";
+	
 	
 	public static final	String	CONST_COLMN_ROLE_ADVISOR_STATUS								=	"ADVISOR_STATUS";
 	public static final	String	CONST_COLMN_ROLE_SUPERVISOR_STATUS							=	"SUPERVISOR_STATUS";
@@ -215,6 +217,7 @@ public interface Constants
 	public	static	final	String	CONST_SQL_STUDENT_SELECTED_COURSE_CREDIT				=	"dps.select.student.selected.registered.course.credit";
 	
 	public static 	final	String	CONST_SP_APPROVER_NEXT									=	"dps.stored.procedure.sp.approver.next";
+	public static 	final	String	CONST_SQL_FUNC_IS_SUPERVISOR_AVAILABLE					=	"dps.function.is.supervisor.available";
 	
 	/* ---  SQL - DPS - Extension property--------------------- */
 	public	static	final	String	CONST_SQL_EXTENSION_REASONS								=	"dps.extension.select.extension.reasons";

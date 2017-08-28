@@ -90,6 +90,7 @@ public interface ExtensionDbDao
 	 * 
 	 * method name  : getExtensionsForStudents
 	 * @param studentNo
+	 * @param studentStatCode 
 	 * @param locale
 	 * @return
 	 * ExtensionDbImpl
@@ -99,7 +100,7 @@ public interface ExtensionDbDao
 	 *
 	 * Date    		:	Feb 7, 2017 3:51:38 PM
 	 */
-	public List<ExtensionDTO> getExtensionsForStudents(String studentNo, Locale locale);
+	public List<ExtensionDTO> getExtensionsForStudents(String studentNo, String studentStatCode, Locale locale);
 	
 	/**
 	 * 

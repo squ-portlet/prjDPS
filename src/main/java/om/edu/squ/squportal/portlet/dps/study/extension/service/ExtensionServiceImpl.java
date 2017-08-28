@@ -160,6 +160,7 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 	 * 
 	 * method name  : getExtensionsForStudents
 	 * @param studentNo
+	 * @param studentStatCode 
 	 * @param locale
 	 * @return
 	 * ExtensionDbImpl
@@ -169,9 +170,9 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 	 *
 	 * Date    		:	Feb 7, 2017 3:51:38 PM
 	 */
-	public List<ExtensionDTO> getExtensionsForStudents(String studentNo, Locale locale)
+	public List<ExtensionDTO> getExtensionsForStudents(String studentNo, String studentStatCode, Locale locale)
 	{
-		return extensionDbDao.getExtensionsForStudents(studentNo, locale);
+		return extensionDbDao.getExtensionsForStudents(studentNo, studentStatCode, locale);
 	}
 
 
@@ -337,7 +338,7 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 	 * Date    		:	Mar 13, 2017 8:58:51 PM
 	 */
 	/*Rule 1 -- Student need to be in last semester */
-	/*Rule 2 -- first seminar completed if program option reqire thesis */
+	/*Rule 2 -- first seminar completed if program option reqire thesis / If candidate doesn't have thesis then approver will be advisor*/ 
 	/*Rule 3 -- Starting from week 10 */
 	/*Rule 4 -- Student can apply only once for extension */
 	public boolean isRuleStudentComplete(String studentNo, String stdStatCode)

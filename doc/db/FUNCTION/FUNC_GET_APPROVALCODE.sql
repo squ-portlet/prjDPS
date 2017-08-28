@@ -28,6 +28,7 @@ BEGIN
 
   RETURN VAR_APPROVAL_CODE;
    EXCEPTION
-  WHEN OTHERS THEN
-      raise_application_error(-20001,'An error was encountered - '||SQLCODE||' -ERROR- '||SQLERRM);
+  WHEN NO_DATA_FOUND THEN
+      RETURN 'NA';
+      --raise_application_error(-20001,'An error was encountered - '||SQLCODE||' -ERROR- '||SQLERRM);
 END FUNC_GET_APPROVALCODE;

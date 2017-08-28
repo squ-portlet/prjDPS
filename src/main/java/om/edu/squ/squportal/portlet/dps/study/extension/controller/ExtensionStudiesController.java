@@ -161,17 +161,34 @@ public class ExtensionStudiesController
 	 */
 	private String studentWelcome(PortletRequest request, Model model, Locale locale) throws NotCorrectDBRecordException
 	{
-		String userName	=	request.getRemoteUser();
-		User	user	=	dpsServiceDao.getUser(request);
-		Student student	= dpsServiceDao.getStudent(user.getUserId(), null, new Locale("en"));
+		String	studentNumber	=	null;
+		String	studentStatCode	=	null;
+		
+		String 	userName		=	request.getRemoteUser();
+		User   	user			=	dpsServiceDao.getUser(request);
+		Student student			= dpsServiceDao.getStudent(user.getUserId(), null, new Locale("en"));
+		
+				studentNumber	=	student.getAcademicDetail().getStudentNo();
+				studentStatCode	=	student.getAcademicDetail().getStdStatCode();
+		
 		List<ExtensionDTO>	extensions = null;
-		if(null == extensionServiceDao.getExtensionsForStudents(student.getAcademicDetail().getStudentNo(), locale))
+		if(
+				null == extensionServiceDao.getExtensionsForStudents(
+																			studentNumber
+																		, 	studentStatCode
+																		, 	locale
+																	)
+		  )
 		{ 
 			
 		}
 		else
 		{
-			extensions = extensionServiceDao.getExtensionsForStudents(student.getAcademicDetail().getStudentNo(), locale);
+			extensions = extensionServiceDao.getExtensionsForStudents(
+																			studentNumber
+																		, 	studentStatCode
+																		, 	locale
+																	);
 		}
 		
 		if(!model.containsAttribute("extensionStudentDataModel"))
@@ -180,7 +197,12 @@ public class ExtensionStudiesController
 			model.addAttribute("extensionStudentDataModel", extensionStudentDataModel);
 		}
 
-		
+		model.addAttribute(
+								"hasSuperVisor", dpsServiceDao.isSupervisorAvailable(
+																							studentNumber
+																						, 	studentStatCode
+																			  		)
+						  );
 		model.addAttribute("student", student);
 		model.addAttribute("currYearSem", dpsServiceDao.getCurrentYearSemester(locale));
 		model.addAttribute("nextYearSemester", dpsServiceDao.getNextYearSemester(locale));

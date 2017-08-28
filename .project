@@ -3,6 +3,7 @@
 	<name>prjDPS</name>
 	<comment></comment>
 	<projects>
+		<project>prjNotification</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

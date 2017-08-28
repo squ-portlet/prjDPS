@@ -189,4 +189,21 @@ public interface DpsDbDao
 	 * Date    		:	Aug 17, 2017 5:05:04 PM
 	 */
 	public int getSelectedRegisteredCourseCredit(String studentNo, String stdStatCode, String courseNo);
+	
+	/**
+	 * 
+	 * method name  : isSupervisorAvailable
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * DpsDbImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		: Find out whether the student has supervisor or not
+	 *                Indirectly -- whether the student has thesis or not.
+	 *                that means whether the student has any entry at thesis table.
+	 *
+	 * Date    		:	Aug 28, 2017 4:52:06 PM
+	 */
+	public boolean isSupervisorAvailable(String studentNo, String stdStatCode);
 }

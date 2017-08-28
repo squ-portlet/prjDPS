@@ -493,5 +493,44 @@ public class DpsDbImpl implements DpsDbDao
 		return nPJdbcTemplDps.queryForInt(SQL_STUDENT_SELECTED_COURSE_CREDIT, namedParameterMap);
 	}
 	
+	/**
+	 * 
+	 * method name  : isSupervisorAvailable
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * DpsDbImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		: Find out whether the student has supervisor or not
+	 *                Indirectly -- whether the student has thesis or not.
+	 *                that means whether the student has any entry at thesis table.
+	 *
+	 * Date    		:	Aug 28, 2017 4:52:06 PM
+	 */
+	public boolean isSupervisorAvailable(String studentNo, String stdStatCode)
+	{
+		String	SQL_FUNC_IS_SUPERVISOR_AVAILABLE				=	queryProps.getProperty(Constants.CONST_SQL_FUNC_IS_SUPERVISOR_AVAILABLE);
+		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+		namedParameterMap.put("paramStdNo", studentNo);
+		namedParameterMap.put("paramStdStatCode", stdStatCode);
+		
+		if(
+				nPJdbcTemplDps.queryForObject(
+												SQL_FUNC_IS_SUPERVISOR_AVAILABLE, 
+												namedParameterMap, 
+												String.class
+										 	).equals(Constants.CONST_YES)
+			)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+		
+	}
+	
 }
 

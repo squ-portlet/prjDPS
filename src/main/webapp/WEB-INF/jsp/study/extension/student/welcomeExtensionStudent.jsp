@@ -52,7 +52,17 @@
 		                </tr>
 		                <tr>
 		                  <th colspan="3"></th>
-		                  <th><spring:message code="prop.dps.extension.student.applications.head.column.approver.suerpervisor"/></th>
+
+		                  <th>
+			                  <c:choose>
+			                  		<c:when test="${hasSuperVisor}">
+			                  			<spring:message code="prop.dps.extension.student.applications.head.column.approver.suerpervisor"/>
+			                  		</c:when>
+			                  		<c:otherwise>
+			                  			<spring:message code="prop.dps.extension.student.applications.head.column.approver.advisor"/>
+			                  		</c:otherwise>
+			                  </c:choose>
+		                  </th>
 		                  <th><spring:message code="prop.dps.extension.student.applications.head.column.approver.col.dean"/></th>
 		                  <th><spring:message code="prop.dps.extension.student.applications.head.column.approver.dps.dean"/></th>
 		                  <th></th>
@@ -65,8 +75,16 @@
 		              			<td>${ext.activitiDate}</td>
 		              			<td>${ext.toCcYrCode}-${ext.toSemName}</td>
 		              			<td>${ext.reasonDesc}</td>
-		              			
-		              			<td>${ext.supervisor.roleStausIkon}</td>
+		              			<td>
+			              			<c:choose>
+				                  		<c:when test="${hasSuperVisor}">
+				                  			${ext.supervisor.roleStausIkon}
+				                  		</c:when>
+				                  		<c:otherwise>
+				                  			${ext.advisor.roleStausIkon}
+				                  		</c:otherwise>
+				                  	</c:choose>		              			
+		              			</td>
 		              			<td>${ext.collegeDean.roleStausIkon}</td>
 		              			<td>${ext.dpsDean.roleStausIkon}</td>
 		              			

@@ -30,6 +30,7 @@
 package om.edu.squ.squportal.portlet.dps.study.extension.bo;
 
 import om.edu.squ.squportal.portlet.dps.bo.Student;
+import om.edu.squ.squportal.portlet.dps.role.bo.Advisor;
 import om.edu.squ.squportal.portlet.dps.role.bo.CollegeDean;
 import om.edu.squ.squportal.portlet.dps.role.bo.DpsDean;
 import om.edu.squ.squportal.portlet.dps.role.bo.Supervisor;
@@ -41,37 +42,38 @@ import om.edu.squ.squportal.portlet.dps.study.extension.model.ExtensionStudentDa
  */
 public class ExtensionDTO
 {
-	private	String	studentNo;
-	private	String	studentId;
-	private	String	stdStatCode;
-	private	String	studentName;
-	private	String	cohort;
-	private	String	collegeName;
-	private	String	degreeName;
-	private	String	fromCcYrCode;
-	private	String	fromSemCode;
-	private	String	fromSemName;
-	private	String	toCcYrCode;
-	private	String	toSemCode;
-	private	String	toSemName;
-	private	String	commentEng;
-	private	String	commentArb;
-	private	String	userCode;									// User to insert/ update the record
-	private	String	userName;
-	private	String	activitiDate;
-	private	String	reasonCode;
-	private	String	reasonDesc;
-	private	String	reasonOther;
-	private	String	statusCode;
-	private	String	statusCodeName;
-	private	String	statusDesc;
-
+	private	String		studentNo;
+	private	String		studentId;
+	private	String		stdStatCode;
+	private	String		studentName;
+	private	String		cohort;
+	private	String		collegeName;
+	private	String		degreeName;
+	private	String		fromCcYrCode;
+	private	String		fromSemCode;
+	private	String		fromSemName;
+	private	String		toCcYrCode;
+	private	String		toSemCode;
+	private	String		toSemName;
+	private	String		commentEng;
+	private	String		commentArb;
+	private	String		userCode;									// User to insert/ update the record
+	private	String		userName;
+	private	String		activitiDate;
+	private	String		reasonCode;
+	private	String		reasonDesc;
+	private	String		reasonOther;
+	private	String		statusCode;
+	private	String		statusCodeName;
+	private	String		statusDesc;
+	
+	private	Advisor		advisor;
 	private	Supervisor	supervisor;
 	private	CollegeDean	collegeDean;
 	private	DpsDean		dpsDean;
-	private	boolean	approver;
-	private	String	roleName;
-	private	String	approvalCode;
+	private	boolean		approver;
+	private	String		roleName;
+	private	String		approvalCode;
 	
 	
 	
@@ -653,6 +655,27 @@ public class ExtensionDTO
 		this.approvalCode = approvalCode;
 	}
 	
+	
+	/**
+	 * Getter Method	: getAdvisor
+	 * @return the advisor
+	 * 
+	 * Date				: Aug 28, 2017
+	 */
+	public Advisor getAdvisor()
+	{
+		return this.advisor;
+	}
+	/**
+	 * Setter method : setAdvisor
+	 * @param advisor the advisor to set
+	 * 
+	 * Date          : Aug 28, 2017 5:57:45 PM
+	 */
+	public void setAdvisor(Advisor advisor)
+	{
+		this.advisor = advisor;
+	}
 	/**
 	 * Getter Method	: getSupervisor
 	 * @return the supervisor
@@ -734,11 +757,11 @@ public class ExtensionDTO
 				+ this.reasonCode + ", reasonDesc=" + this.reasonDesc
 				+ ", reasonOther=" + this.reasonOther + ", statusCode="
 				+ this.statusCode + ", statusCodeName=" + this.statusCodeName
-				+ ", statusDesc=" + this.statusDesc + ", supervisor="
-				+ this.supervisor + ", collegeDean=" + this.collegeDean
-				+ ", dpsDean=" + this.dpsDean + ", approver=" + this.approver
-				+ ", roleName=" + this.roleName + ", approvalCode="
-				+ this.approvalCode + "]";
+				+ ", statusDesc=" + this.statusDesc + ", advisor="
+				+ this.advisor + ", supervisor=" + this.supervisor
+				+ ", collegeDean=" + this.collegeDean + ", dpsDean="
+				+ this.dpsDean + ", approver=" + this.approver + ", roleName="
+				+ this.roleName + ", approvalCode=" + this.approvalCode + "]";
 	}
 	
 	

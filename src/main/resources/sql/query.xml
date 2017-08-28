@@ -190,5 +190,11 @@
 			      AND   STDSTATCD = :paramStdStatCode
 			      AND   CRSNO     = :paramCourseNo    	
     </entry>
+    <entry key="dps.function.is.supervisor.available">
+    	SELECT 
+    		FUNC_IS_SUPERVISOR_AVAILABLE(:paramStdNo,:paramStdStatCode) 
+    	FROM
+    		DUAL
+    </entry>
     
 </properties>
