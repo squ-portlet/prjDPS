@@ -42,6 +42,7 @@
                   <th ><spring:message code="prop.dps.student.student.college"/></th>
                   <th ><spring:message code="prop.dps.student.student.program"/></th>
 <!--                   <th colspan="3">Approver</th> -->
+                  <th><spring:message code="prop.dps.role.advisor.text"/></th>
                   <th><spring:message code="prop.dps.role.supervisor.text"/></th>
                   <th><spring:message code="prop.dps.role.college.dean"/></th>
                   <th><spring:message code="prop.dps.role.dps.dean"/></th>

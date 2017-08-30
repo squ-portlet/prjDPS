@@ -154,6 +154,8 @@ public interface Constants
 	public static final String	CONST_YES													=	"Y";
 	public static final String	CONST_NO													=	"N";
 	
+	public static final String	CONST_NOT_USED												=	"NU";
+	
 	public static final String	CONST_FULL_TIME												=	"FULL";
 	public static final String	CONST_PART_TIME												=	"PART";
 	

@@ -38,8 +38,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
+import om.edu.squ.squportal.portlet.dps.bo.Approver;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
+import om.edu.squ.squportal.portlet.dps.role.bo.Advisor;
 import om.edu.squ.squportal.portlet.dps.role.bo.CollegeDean;
 import om.edu.squ.squportal.portlet.dps.role.bo.DpsDean;
 import om.edu.squ.squportal.portlet.dps.role.bo.Supervisor;
@@ -205,6 +207,7 @@ public class ExtensionDbImpl implements ExtensionDbDao
 	 * 
 	 * method name  : getExtensionsForStudents
 	 * @param studentNo
+	 * @param studentStatCode
 	 * @param locale
 	 * @return
 	 * ExtensionDbImpl
@@ -214,7 +217,7 @@ public class ExtensionDbImpl implements ExtensionDbDao
 	 *
 	 * Date    		:	Feb 7, 2017 3:51:38 PM
 	 */
-	public List<ExtensionDTO> getExtensionsForStudents(String studentNo, Locale locale)
+	public List<ExtensionDTO> getExtensionsForStudents(String studentNo, String studentStatCode, Locale locale)
 	{
 		String SQL_EXTENSION_SELECT_STUDENT_RECORDS		=	queryExtensionProps.getProperty(Constants.CONST_SQL_EXTENSION_SELECT_STUDENT_RECORDS);		
 		
@@ -224,7 +227,8 @@ public class ExtensionDbImpl implements ExtensionDbDao
 			public ExtensionDTO mapRow(ResultSet rs, int rowNum) throws SQLException
 			{
 				ExtensionDTO	extensionDTO	=	new ExtensionDTO();
-				Supervisor		supervisor		=	new Supervisor();
+				Supervisor		supervisor		=	null;
+				Advisor			advisor			=	null;			
 				CollegeDean		collegeDean		=	new CollegeDean();
 				DpsDean			dpsDean			=	new DpsDean();
 				
@@ -241,10 +245,22 @@ public class ExtensionDbImpl implements ExtensionDbDao
 				{
 					extensionDTO.setReasonDesc(rs.getString(Constants.CONST_COLMN_EXTENSION_REASON_NAME));
 				}
-				supervisor.setApprovalcode(rs.getString(Constants.CONST_COLMN_APPROVAL_CODE_SUPERVISOR));
-				supervisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_SUPERVISOR_STATUS));
-				supervisor.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_SUPERVISOR_STATUS)));
 				
+				if(rs.getString(Constants.CONST_COLMN_STUDENT_HAS_THESIS).equals(Constants.CONST_YES))
+				{
+					supervisor	=	new Supervisor();
+					supervisor.setApprovalcode(rs.getString(Constants.CONST_COLMN_APPROVAL_CODE_SUPERVISOR));
+					supervisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_SUPERVISOR_STATUS));
+					supervisor.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_SUPERVISOR_STATUS)));
+				}
+				else
+				{
+					advisor		=	new Advisor();
+					advisor.setApprovalcode(rs.getString(Constants.CONST_COLMN_APPROVAL_CODE_ADVISOR));
+					advisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS));
+					advisor.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS)));
+
+				}
 				collegeDean.setApprovalcode(rs.getString(Constants.CONST_COLMN_APPROVAL_CODE_COLLEGE_DEAN));
 				collegeDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_COLLEGE_DEAN_STATUS));
 				collegeDean.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_COLLEGE_DEAN_STATUS)));
@@ -253,6 +269,7 @@ public class ExtensionDbImpl implements ExtensionDbDao
 				dpsDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_DPS_DEAN_STATUS));
 				dpsDean.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_DPS_DEAN_STATUS)));
 				
+				extensionDTO.setAdvisor(advisor);
 				extensionDTO.setSupervisor(supervisor);
 				extensionDTO.setCollegeDean(collegeDean);
 				extensionDTO.setDpsDean(dpsDean);
@@ -268,11 +285,13 @@ public class ExtensionDbImpl implements ExtensionDbDao
 		};
 		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
 		namedParameterMap.put("paramStdNo", studentNo);
+		namedParameterMap.put("paramStdStatCode", studentStatCode);
 		namedParameterMap.put("paramLocale", locale.getLanguage());
+		namedParameterMap.put("paramAdvisorRoleName", Constants.CONST_SQL_ROLE_NAME_ADVISOR);
 		namedParameterMap.put("paramSupervisorRoleName", Constants.CONST_SQL_ROLE_NAME_SUPERVISOR);
 		namedParameterMap.put("paramColDeanRoleName", Constants.CONST_SQL_ROLE_NAME_COL_DEAN);
 		namedParameterMap.put("paramDpsDeanRoleName", Constants.CONST_SQL_ROLE_NAME_DPS_DEAN);
-		
+				
 		namedParameterMap.put("paramFormName", Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY);
 		
 		return nPJdbcTemplDpsExtension.query(SQL_EXTENSION_SELECT_STUDENT_RECORDS, namedParameterMap, mapper);
@@ -302,7 +321,8 @@ public class ExtensionDbImpl implements ExtensionDbDao
 			public ExtensionDTO mapRow(ResultSet rs, int rowNum) throws SQLException
 			{
 				ExtensionDTO	extensionDTO	=	new ExtensionDTO();
-				Supervisor		supervisor		=	new Supervisor();
+				Advisor			advisor			=	new Advisor();
+				Supervisor		supervisor		=	new Supervisor(); 
 				CollegeDean		collegeDean		=	new CollegeDean();
 				DpsDean			dpsDean			=	new DpsDean();
 				
@@ -315,11 +335,13 @@ public class ExtensionDbImpl implements ExtensionDbDao
 				extensionDTO.setCollegeName(rs.getString(Constants.CONST_COLMN_COLLEGE_NAME));
 				extensionDTO.setDegreeName(rs.getString(Constants.CONST_COLMN_DEGREE_NAME));
 				
-				supervisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_SUPERVISOR_STATUS));
+	
+				
+				
 				collegeDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_COLLEGE_DEAN_STATUS));
 				dpsDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_DPS_DEAN_STATUS));
 
-				if(rs.getString(Constants.CONST_COLMN_ROLE_IS_APPROVER).equals("Y"))
+				if(rs.getString(Constants.CONST_COLMN_ROLE_IS_APPROVER).equals(Constants.CONST_YES))
 				{
 					extensionDTO.setApprover(true);
 				}
@@ -328,6 +350,20 @@ public class ExtensionDbImpl implements ExtensionDbDao
 					extensionDTO.setApprover(false);
 				}
 				
+				if(rs.getString(Constants.CONST_COLMN_STUDENT_HAS_THESIS).equals(Constants.CONST_YES))
+				{
+					
+					supervisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_SUPERVISOR_STATUS));
+					advisor.setRoleStatus(Constants.CONST_NOT_USED);
+					
+				}
+				else
+				{
+					advisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS));
+					supervisor.setRoleStatus(Constants.CONST_NOT_USED);
+					
+				}
+				extensionDTO.setAdvisor(advisor);
 				extensionDTO.setSupervisor(supervisor);
 				extensionDTO.setCollegeDean(collegeDean);
 				extensionDTO.setDpsDean(dpsDean);
@@ -347,6 +383,7 @@ public class ExtensionDbImpl implements ExtensionDbDao
 		namedParameterMap.put("paramFormName", Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY);
 		namedParameterMap.put("paramEmpNo", employee.getEmpNumber());
 		
+		namedParameterMap.put("paramAdvisorRoleName", Constants.CONST_SQL_ROLE_NAME_ADVISOR);
 		namedParameterMap.put("paramSupervisorRoleName", Constants.CONST_SQL_ROLE_NAME_SUPERVISOR);
 		namedParameterMap.put("paramColDeanRoleName", Constants.CONST_SQL_ROLE_NAME_COL_DEAN);
 		namedParameterMap.put("paramDpsDeanRoleName", Constants.CONST_SQL_ROLE_NAME_DPS_DEAN);
@@ -355,6 +392,9 @@ public class ExtensionDbImpl implements ExtensionDbDao
 		
 		switch (roleType)
 		{
+			case Constants.CONST_ROLE_NAME_ADVISOR:
+				namedParameterMap.put("paramAdvisor", employee.getEmpNumber());
+				break;
 			case Constants.CONST_ROLE_NAME_SUPERVISOR:
 				namedParameterMap.put("paramSupervisor", employee.getEmpNumber());
 				break;
@@ -375,6 +415,8 @@ public class ExtensionDbImpl implements ExtensionDbDao
 		{
 			namedParameterMap.put("paramStdNo", studentNo);
 		}
+		
+		
 		return nPJdbcTemplDpsExtension.query(SQL_EXTENSION_SELECT_STUDENT_RECORDS_BY_EMPLOYEE, namedParameterMap, mapper);
 	}
 	

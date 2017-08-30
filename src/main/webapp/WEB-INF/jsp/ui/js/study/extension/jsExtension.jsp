@@ -110,6 +110,12 @@
 									{ "mData": "cohort" },
 									{ "mData": "collegeName" },
 									{ "mData": "degreeName" },
+									{ "mData": "advisor.roleStatus", 
+										"render" : function(data, type, full, meta)	
+										{
+											return getStatusIcon(data);
+										}
+									},
 									{ "mData": "supervisor.roleStatus", 
 										"render" : function(data, type, full, meta)	
 										{
@@ -235,6 +241,7 @@
 																//$(btnRadio).prop("checked", true);
 																var jsonReqBO=JSON.parse(data);
 																rowData.approver='';
+																rowData.advisor.roleStatus=jsonReqBO.advisor.roleStatus;
 																rowData.supervisor.roleStatus=jsonReqBO.supervisor.roleStatus;
 																rowData.collegeDean.roleStatus=jsonReqBO.collegeDean.roleStatus;
 																rowData.dpsDean.roleStatus=jsonReqBO.dpsDean.roleStatus;
@@ -278,6 +285,10 @@
 			if(status=='NA')
 			{
 				return '<span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>';
+			}
+			if(status=='NU')
+			{
+				return '<span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span>';
 			}
 		}
 		
