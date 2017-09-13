@@ -51,6 +51,9 @@ public class RoleTagGlyphicon
 			case	"NA" :
 				result =  "<span class='glyphicon glyphicon-ban-circle' aria-hidden='true'></span>";
 				break;
+			case	"NU" :
+				result =  "<span class='glyphicon glyphicon-option-horizontal' aria-hidden='true'></span>";
+				break;				
 			default :
 				result =  "<span class='glyphicon glyphicon-ban-circle' aria-hidden='true'></span>";
 				break;

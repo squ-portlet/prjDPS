@@ -32,6 +32,7 @@ package om.edu.squ.squportal.portlet.dps.registration.postpone.db;
 import java.util.List;
 import java.util.Locale;
 
+import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeReason;
 
@@ -83,4 +84,21 @@ public interface PostponeDBDao
 	 * Date    		:	Aug 10, 2017 9:40:55 AM
 	 */
 	public List<PostponeDTO> getPostponesForStudents(String studentNo, Locale locale);
+	
+	/**
+	 * 
+	 * method name  : getExtensionsForApprovers
+	 * @param roleType
+	 * @param employee
+	 * @param locale
+	 * @param studentNo
+	 * @return
+	 * PostponeDBImpl
+	 * return type  : List<PostponeDTO>
+	 * 
+	 * purpose		: List of student's postpone details using employee role
+	 *
+	 * Date    		:	Sep 13, 2017 4:48:56 PM
+	 */
+	public List<PostponeDTO> getExtensionsForApprovers(String roleType, Employee employee, Locale locale, String studentNo);
 }

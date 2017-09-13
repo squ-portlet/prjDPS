@@ -117,6 +117,15 @@
 
 
 <script id="hbPostponeStudies" type="text/x-handlebars-template" >
+    <div class="section">
+      	<div class="container-fluid">
+			<c:url value="/ui/ajax-loader.gif" var="imgAjaxLoader"/>		
+			<div class="row" id="divImgAjaxLoading" style="display: none;">
+				<div class="col-sm-5"></div>
+				<div class="col-sm-1">
+					<img alt="Loading ...." src="${imgAjaxLoader}">
+				</div>
+			</div>
 			       <table class="table table-striped table-bordered dt-responsive nowrap collapsed">
 		              <thead>
 		                <tr>
@@ -163,4 +172,6 @@
 		              	{{/each}}
 		              </tbody>
 		            </table>
+	</div>
+			</div>
 </script>    

@@ -38,14 +38,18 @@ import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import javax.servlet.http.HttpServletResponse;
 
+import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
+import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentDataModel;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentModel;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.service.PostponeService;
+import om.edu.squ.squportal.portlet.dps.role.bo.RoleNameValue;
+import om.edu.squ.squportal.portlet.dps.utility.Constants;
 import om.edu.squ.squportal.portlet.dps.utility.UtilProperty;
 
 import org.slf4j.Logger;
@@ -75,6 +79,36 @@ public class PostponeController
 	PostponeService	postponeService;
 	
 	@RequestMapping
+	private	String welcome(PortletRequest request, Model model, Locale locale) throws NotCorrectDBRecordException
+	{
+		User	user	=	dpsServiceDao.getUser(request);
+
+		if(user.getUserType().equals(Constants.USER_TYPE_STUDENT))
+		{
+			
+			return studentWelcome(request,model,locale);
+		}
+		else
+		{
+			return approverWelcome(request,model,locale);
+		} 
+	}
+	
+	/**
+	 * 
+	 * method name  : studentWelcome
+	 * @param request
+	 * @param model
+	 * @param locale
+	 * @return
+	 * @throws NotCorrectDBRecordException
+	 * PostponeController
+	 * return type  : String
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Sep 10, 2017 4:15:57 PM
+	 */
 	private	String studentWelcome(PortletRequest request, Model model, Locale locale) throws NotCorrectDBRecordException
 	{
 		User	user	=	dpsServiceDao.getUser(request);
@@ -93,6 +127,43 @@ public class PostponeController
 		
 		return "/registration/postpone/student/welcomePostponeStudent";
 	}
+
+
+	/**
+	 * 
+	 * method name  : approverWelcome
+	 * @param request
+	 * @param model
+	 * @param locale
+	 * @return
+	 * @throws NotCorrectDBRecordException
+	 * PostponeController
+	 * return type  : String
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Sep 10, 2017 4:16:05 PM
+	 */
+	private	String approverWelcome(PortletRequest request, Model model, Locale locale) throws NotCorrectDBRecordException
+	{
+		Employee employee	=	null;
+		try
+		{
+			employee = dpsServiceDao.getEmployee(request,locale);
+			
+		}
+		catch (ExceptionEmptyResultset ex)
+		{
+			logger.error("No records available. Probably user doesnot logged in ");
+		}
+		
+		model.addAttribute("employee", employee);
+		model.addAttribute("appApprove", Constants.CONST_SQL_STATUS_CODE_ACCPT);
+		model.addAttribute("appRecect", Constants.CONST_SQL_STATUS_CODE_REJCT);
+		
+		return "/registration/postpone/approver/welcomePostponeApprover";
+	}	
+	
 	
 	/**
 	 * 
@@ -172,6 +243,44 @@ public class PostponeController
 		}
 		
 
+	}
+	
+	/**
+	 * 
+	 * method name  : getResourceCoursesforPostpone
+	 * @param request
+	 * @param response
+	 * @param locale
+	 * PostponeController
+	 * return type  : void
+	 * 
+	 * purpose		: For Approvers : List of courses for postpone 
+	 *
+	 * Date    		:	Sep 12, 2017 4:20:21 PM
+	 * @throws IOException 
+	 */
+	@ResourceMapping(value="resourcePostponeDataByRole")
+	private void getResourceCoursesforPostpone(
+													@ModelAttribute("roleNameValue") RoleNameValue roleNameValue,
+													ResourceRequest request, ResourceResponse response, Locale locale
+												) throws IOException
+	{
+		Gson	gson	=	new Gson();
+		
+		Employee employee;
+		try
+		{
+			employee = dpsServiceDao.getEmployee(request,locale);
+			List<PostponeDTO> dtos	=	postponeService.getPostponeForAprovers(roleNameValue.getRoleValue(), employee, locale);
+			response.getWriter().print(gson.toJson(dtos));
+
+		}
+		catch (ExceptionEmptyResultset ex)
+		{
+			response.getWriter().print(gson.toJson(""));
+		}
+		
+		
 	}
 	
 	

@@ -147,4 +147,125 @@
 			, :paramUserCode 
 		)    
     </entry>
+    <entry key="dps.postpone.select.student.records.by.employee">
+			SELECT * 
+					  FROM
+					(  
+					    SELECT DISTINCT
+					            POST.STDNO                                     	AS  STUDENT_NO
+					          , PORTAL.STD_ID									AS	STUDENT_ID  
+					          , DECODE
+					                  (
+					                      :paramLocal
+					                      ,'en',PORTAL.STD_NAME
+					                      , PORTAL.A_STD_NAME
+					                  )                                       	AS  STUDENT_NAME        
+					          , POST.STDSTATCD                                 	AS  STDSTATCD
+					          , PORTAL.COHORT                                 	AS  COHORT
+					          , POST.TOCCYRCD                                  	AS  TOCCYRCD                              
+					          , POST.TOSEMCD                                   	AS  TOSEMCD
+					          , COL.COLCENCD
+					          , DECODE
+					                (
+					                    :paramLocal
+					                    ,'en', PORTAL.DEGREE_NAME
+					                    ,PORTAL.A_DEGREE_NAME
+					                )                                         	AS  DEGREE_NAME
+					          , DECODE 
+					                (
+					                      :paramLocal
+					                      ,'en', PORTAL.COLLEGENM
+					                      , PORTAL.A_COLLEGENM
+					                )                                         	AS  COLLEGE_NAME
+					          , POST.POSTREQ_STATUSCD                          	AS  STATUS_CODE
+					          , (
+					              SELECT 
+					                  DECODE
+					                  (
+					                      :paramLocal
+					                      ,'en', CODENM , A_CODENM
+					                  )
+					                  FROM
+					                    SIS_CODES
+					                  WHERE 
+					                    SISCODECD = POST.POSTREQ_STATUSCD
+					            )                                             	AS  STATUS_DESC
+					          , POST.CREATE_DATE                               	AS  CREATE_DATE
+
+
+	                          , FUNC_APPROVE_STATUS(
+	                                              POST.STDNO,
+	                                              :paramAdvisorRoleName, 
+	                                              :paramFormName
+	                                              )                           	AS  ADVISOR_STATUS 
+
+                      
+	                          , FUNC_APPROVE_STATUS(
+	                                              POST.STDNO,
+	                                              :paramSupervisorRoleName, 
+	                                              :paramFormName
+	                                              )                           	AS  SUPERVISOR_STATUS
+	                          , FUNC_APPROVE_STATUS(
+	                                              POST.STDNO,
+	                                              :paramColDeanRoleName, 
+	                                              :paramFormName
+	                                              )                           	AS  COLLEGE_DEAN_STATUS
+	                          , FUNC_APPROVE_STATUS(
+	                                              POST.STDNO,
+	                                              :paramDpsDeanRoleName, 
+	                                              :paramFormName
+	                                              )                           	AS  DPS_DEAN_STATUS
+	                          ,	FUNC_IS_APPROVER(
+												 		  POST.STDNO
+												 		, POST.STDSTATCD
+												 		, :paramFormName
+												 		, :paramRoleName
+												 		, :paramEmpNo
+	                         						)						 	AS	IS_APPROVER
+                              ,FUNC_IS_SUPERVISOR_AVAILABLE(POST.STDNO,POST.STDSTATCD)  AS 	HAS_THESIS     		                                          
+                                        
+					    FROM     
+					          STD_POSTPONE        POST
+					          ,V_STDINFO_PORTAL   PORTAL
+					          ,COL_CEN            COL
+					          , STD_THESIS        THESIS
+					          , V_DEPT_MAJOR      DEPT_MAJ
+					          , COL_DEPT          DEPT
+					    WHERE
+					              DEPT.COLCENCD     = COL.COLCENCD
+					          AND DEPT_MAJ.DEPTNO   = DEPT.DEPTNO (+)
+					          AND POST.STDNO         = PORTAL.STDNO
+					          AND THESIS.STDNO(+)      = POST.STDNO 															 
+					          --AND THESIS.STDNO    = PORTAL.STDNO
+					          AND PORTAL.ACTIVE     = 'Y'
+					          AND PORTAL.COLLEGE_CODE = COL.L_ABR_CC 
+					          AND POST.POSTREQ_STATUSCD IS NOT NULL
+					          AND 
+					              ( 
+					                      :paramColCode = COL.COLCENCD		 		--  College DEAN/ ASST DEAN
+					                  OR  :paramColCode IS NULL               		-- 	DPS DEAN / DPS STAFF
+					              )
+					          AND
+					            (
+					                      :paramAdvisor = PORTAL.ADVISOR			--	ADVISOR
+					                  OR  :paramAdvisor IS NULL
+					            )
+					          AND
+					            (
+					                      :paramSupervisor =  THESIS.SUPVISREMPNO	--	SUPERVISOR
+					                  OR  :paramSupervisor  IS NULL
+					            )
+					          AND
+					            (
+					                      :paramDeptCode  = DEPT.DEPTNO				--	HOD
+					                  OR  :paramDeptCode  IS NULL
+					            )
+					         AND
+								(
+								          :paramStdNo = POST.STDNO
+								      OR  :paramStdNo IS NULL
+								)
+					)
+					ORDER BY  CREATE_DATE DESC    
+    </entry>
 </properties>

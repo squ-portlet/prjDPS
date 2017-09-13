@@ -6,17 +6,30 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <portlet:resourceURL id="resourceStudentSubmit" var="varAjaxResourceStudentSubmit"></portlet:resourceURL>
+<portlet:resourceURL id="resourcePostponeDataByRole" var="varAjaxResourcePostponeDataByRole"></portlet:resourceURL>
+
 
 <script type="text/javascript">
 	$(function(){
-		
+	
+		$('#divImgAjaxLoading').hide(); //initially hide the divImgAjaxLoading icon
+		 
+        $('#divImgAjaxLoading').ajaxStart(function(){
+            $(this).show();
+            console.log('shown');
+        });
+        $("#divImgAjaxLoading").ajaxStop(function(){
+            $(this).hide();
+              console.log('hidden');
+        }); 
+        
 		
 		var studentModel = {
 				yearSem		: 	''
 
 		};
 		
-		/* Default screen with postpone data for student*/
+/* Default screen with postpone data for student*/
 		$.ajax({
 			url		:	"${varAjaxResourceStudentSubmit}",
 			type	:	'POST',
@@ -31,12 +44,13 @@
 			{
 				$('#modalAlertErrMsg').html(xhr.responseText);
 				$('#alertModal').modal('toggle');
+				$('#divImgAjaxLoading').hide();
 			}
 		});
 		
 		
 		
-		/* Submit by student*/
+/* Submit by student*/
 		$('#bttnCompetentSubmit').click(function(){
 			$('#modalPostponeForm').modal('toggle');
 			var studentModel = {
@@ -59,12 +73,55 @@
 					{
 						$('#modalAlertErrMsg').html(xhr.responseText);
 						$('#alertModal').modal('toggle');
+						$('#divImgAjaxLoading').hide();
 					}
 			});
 			
 		});
 	
-		
+
+
+/* Approver */
+ 
+ /* Populate students postpone data based on clicking appropriate role tab */	
+
+ 	<c:forEach items="${employee.myRoles}" var="myRole">
+			// Clicking on tabs to make it active (other than Home tab)
+			$("#role-${myRole.roleName}").click(function(){
+				$(".clsNavRole").removeClass("active");
+				$("#idNav-${myRole.roleName}").addClass("active");
+				
+				var roleNameValue = {
+						roleName:'testRole',
+						roleValue:'${myRole.roleName}'
+				};
+				$("#divAlertData").hide();
+				
+				$("#imgAjaxLoading").show();
+				
+				$.ajax({
+						url		:	"${varAjaxResourcePostponeDataByRole}",
+						type	:	'POST',
+						cache	:	false,
+						data	:	roleNameValue,
+						success	:	function(data)
+						{
+							$("#imgAjaxLoading").hide();
+							var postpone=JSON.parse(data);
+							dataLoad(postpone,'#hbPostponeApprover','#divPostponeApprover');
+						},
+						error	:	function(xhr, status)
+						{
+							$("#imgAjaxLoading").hide();
+						}
+				});
+				
+				
+			});
+		</c:forEach>
+
+
+
 		function dataLoad(dataJson, hbTemplateId, tableId)
 		{
 			if ($.trim(dataJson))

@@ -36,6 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
@@ -151,4 +152,29 @@ public class PostponeServiceImpl implements PostponeService
 	}
 	
 
+	/**
+	 * 
+	 * method name  : getPostponeForAprovers
+	 * @param roleType
+	 * @param employee
+	 * @param locale
+	 * @return
+	 * PostponeServiceImpl
+	 * return type  : List<PostponeDTO>
+	 * 
+	 * purpose		: Get List of student postpone data for approver role
+	 *
+	 * Date    		:	Sep 13, 2017 5:13:02 PM
+	 */
+	public List<PostponeDTO> getPostponeForAprovers(String roleType, Employee employee, Locale locale)
+	{
+		if(employee.getEmpNumber().substring(0,1).equals("e"))
+		{
+			employee.setEmpNumber(employee.getEmpNumber().substring(1));
+		}
+		
+		return postponeDBDao.getExtensionsForApprovers(roleType, employee, locale, null);
+	}
+	
+	
 }

@@ -43,7 +43,12 @@ import om.edu.squ.squportal.portlet.dps.role.bo.Supervisor;
 public class PostponeDTO
 {
 	private String		studentNo;
+	private	String		studentId;
 	private	String		studentStatCode;
+	private	String		studentName;
+	private	String		cohort;
+	private	String		collegeName;
+	private	String		degreeName;	
 	private	String		fromCcYearCode;
 	private	String		fromSemCode;
 	private	String		toCcYearCode;
@@ -64,10 +69,10 @@ public class PostponeDTO
 	private	Supervisor	supervisor;
 	private	CollegeDean	collegeDean;
 	private	DpsDean		dpsDean;
-	private	boolean	approver;
-	private	String	roleName;
-	private	String	approvalCode;
-	private	String	activityDate;
+	private	boolean		approver;
+	private	String		roleName;
+	private	String		approvalCode;
+	private	String		activityDate;
 	private	boolean		statusReject;
 	
 	
@@ -149,6 +154,27 @@ public class PostponeDTO
 		this.studentNo = studentNo;
 	}
 
+	/**
+	 * Getter Method	: getStudentId
+	 * @return the studentId
+	 * 
+	 * Date				: Sep 12, 2017
+	 */
+	public String getStudentId()
+	{
+		return this.studentId;
+	}
+
+	/**
+	 * Setter method : setStudentId
+	 * @param studentId the studentId to set
+	 * 
+	 * Date          : Sep 12, 2017 5:40:10 PM
+	 */
+	public void setStudentId(String studentId)
+	{
+		this.studentId = studentId;
+	}
 
 	/**
 	 * Getter Method	: getStudentStatCode
@@ -173,6 +199,95 @@ public class PostponeDTO
 		this.studentStatCode = studentStatCode;
 	}
 
+	
+
+	/**
+	 * Getter Method	: getStudentName
+	 * @return the studentName
+	 * 
+	 * Date				: Sep 12, 2017
+	 */
+	public String getStudentName()
+	{
+		return this.studentName;
+	}
+
+	/**
+	 * Setter method : setStudentName
+	 * @param studentName the studentName to set
+	 * 
+	 * Date          : Sep 12, 2017 5:45:00 PM
+	 */
+	public void setStudentName(String studentName)
+	{
+		this.studentName = studentName;
+	}
+
+	/**
+	 * Getter Method	: getCohort
+	 * @return the cohort
+	 * 
+	 * Date				: Sep 12, 2017
+	 */
+	public String getCohort()
+	{
+		return this.cohort;
+	}
+
+	/**
+	 * Setter method : setCohort
+	 * @param cohort the cohort to set
+	 * 
+	 * Date          : Sep 12, 2017 5:48:39 PM
+	 */
+	public void setCohort(String cohort)
+	{
+		this.cohort = cohort;
+	}
+
+	/**
+	 * Getter Method	: getCollegeName
+	 * @return the collegeName
+	 * 
+	 * Date				: Sep 12, 2017
+	 */
+	public String getCollegeName()
+	{
+		return this.collegeName;
+	}
+
+	/**
+	 * Setter method : setCollegeName
+	 * @param collegeName the collegeName to set
+	 * 
+	 * Date          : Sep 12, 2017 5:51:28 PM
+	 */
+	public void setCollegeName(String collegeName)
+	{
+		this.collegeName = collegeName;
+	}
+
+	/**
+	 * Getter Method	: getDegreeName
+	 * @return the degreeName
+	 * 
+	 * Date				: Sep 12, 2017
+	 */
+	public String getDegreeName()
+	{
+		return this.degreeName;
+	}
+
+	/**
+	 * Setter method : setDegreeName
+	 * @param degreeName the degreeName to set
+	 * 
+	 * Date          : Sep 12, 2017 5:51:28 PM
+	 */
+	public void setDegreeName(String degreeName)
+	{
+		this.degreeName = degreeName;
+	}
 
 	/**
 	 * Getter Method	: getFromCcYearCode
@@ -751,16 +866,19 @@ public class PostponeDTO
 	@Override
 	public String toString()
 	{
-		return "PostponeDTO [studentNo=" + this.studentNo
-				+ ", studentStatCode=" + this.studentStatCode
-				+ ", fromCcYearCode=" + this.fromCcYearCode + ", fromSemCode="
-				+ this.fromSemCode + ", toCcYearCode=" + this.toCcYearCode
-				+ ", toSemCode=" + this.toSemCode + ", toSemName="
-				+ this.toSemName + ", reasonCode=" + this.reasonCode
-				+ ", reasonName=" + this.reasonName + ", reasonOther="
-				+ this.reasonOther + ", commentEng=" + this.commentEng
-				+ ", commentArb=" + this.commentArb + ", yearSem="
-				+ this.yearSem + ", userName=" + this.userName
+		return "PostponeDTO [studentNo=" + this.studentNo + ", studentId="
+				+ this.studentId + ", studentStatCode=" + this.studentStatCode
+				+ ", studentName=" + this.studentName + ", cohort="
+				+ this.cohort + ", collegeName=" + this.collegeName
+				+ ", degreeName=" + this.degreeName + ", fromCcYearCode="
+				+ this.fromCcYearCode + ", fromSemCode=" + this.fromSemCode
+				+ ", toCcYearCode=" + this.toCcYearCode + ", toSemCode="
+				+ this.toSemCode + ", toSemName=" + this.toSemName
+				+ ", reasonCode=" + this.reasonCode + ", reasonName="
+				+ this.reasonName + ", reasonOther=" + this.reasonOther
+				+ ", reasonDesc=" + this.reasonDesc + ", commentEng="
+				+ this.commentEng + ", commentArb=" + this.commentArb
+				+ ", yearSem=" + this.yearSem + ", userName=" + this.userName
 				+ ", statusCode=" + this.statusCode + ", statusCodeName="
 				+ this.statusCodeName + ", statusDesc=" + this.statusDesc
 				+ ", advisor=" + this.advisor + ", supervisor="
@@ -768,7 +886,7 @@ public class PostponeDTO
 				+ ", dpsDean=" + this.dpsDean + ", approver=" + this.approver
 				+ ", roleName=" + this.roleName + ", approvalCode="
 				+ this.approvalCode + ", activityDate=" + this.activityDate
-				+ "]";
+				+ ", statusReject=" + this.statusReject + "]";
 	}
 	
 	
