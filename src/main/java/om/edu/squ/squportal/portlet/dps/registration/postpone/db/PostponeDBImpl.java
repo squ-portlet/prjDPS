@@ -278,7 +278,7 @@ public class PostponeDBImpl implements PostponeDBDao
 	 *
 	 * Date    		:	Sep 13, 2017 4:48:56 PM
 	 */
-	public List<PostponeDTO> getExtensionsForApprovers(String roleType, Employee employee, Locale locale, String studentNo)
+	public List<PostponeDTO> getPostponeForApprovers(String roleType, Employee employee, Locale locale, String studentNo)
 	{
 		String SQL_POSTPONE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE		=	queryPostpone.getProperty(Constants.CONST_SQL_POSTPONE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE);
 		RowMapper<PostponeDTO> rowMapper	=	new RowMapper<PostponeDTO>()

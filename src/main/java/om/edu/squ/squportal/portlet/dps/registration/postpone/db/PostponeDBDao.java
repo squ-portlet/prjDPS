@@ -100,5 +100,5 @@ public interface PostponeDBDao
 	 *
 	 * Date    		:	Sep 13, 2017 4:48:56 PM
 	 */
-	public List<PostponeDTO> getExtensionsForApprovers(String roleType, Employee employee, Locale locale, String studentNo);
+	public List<PostponeDTO> getPostponeForApprovers(String roleType, Employee employee, Locale locale, String studentNo);
 }

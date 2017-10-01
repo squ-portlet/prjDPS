@@ -173,7 +173,7 @@ public class PostponeServiceImpl implements PostponeService
 			employee.setEmpNumber(employee.getEmpNumber().substring(1));
 		}
 		
-		return postponeDBDao.getExtensionsForApprovers(roleType, employee, locale, null);
+		return postponeDBDao.getPostponeForApprovers(roleType, employee, locale, null);
 	}
 	
 	

@@ -32,7 +32,35 @@
 			
 <!--  Alert message -->			
 			<div id="divAlertData" class="alert alert-warning" role="alert" ><spring:message code="prop.dps.role.home"/></div>
-			
+
+<!--  Modal approver form -->			
+    <div class="modal fade" id="modalApprovForm" role="dialog" aria-labelledby="myModalLabelPostponeForm" aria-hidden="true" >
+      <div class="modal-dialog">
+        <div class="modal-content">
+        	<input type="hidden" id="txtModalAppFormStatus" >
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&nbsp;</button>
+            <h4 class="modal-title"><spring:message code="prop.dps.postpone.approver.modal.title.text"/> </h4>
+          </div>
+          <form id="formModalApprover" name="formModalApprover">
+          <div class="modal-body">
+            <p><!--  spring:message code="prop.dps.extension.approver.modal.body.confirmation.text"/--> </p>
+            <p>
+            	<div col="col-sm-2"><spring:message code="prop.dps.postpone.approver.modal.body.approve.comment.text"></spring:message></div>
+            	<div col="col-sm-8"><textarea id="txtMessage" rows="" cols=""></textarea></div>
+            </p>
+          </div>
+          </form>
+          <div class="modal-footer">
+            <a class="btn btn-default"  data-dismiss="modal"><spring:message code="prop.dps.role.submit.no.text"/></a>
+            <button id="linkSubmitApprove" name="linkSubmitApprove" type="button" class="btn btn-primary"><spring:message code="prop.dps.role.submit.yes.text"/></button>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+
 			
 			
 <!-- Handlebar template for Postpone data for Approvers -->			
@@ -69,7 +97,14 @@
 						<td>{{{supervisor.roleStausIkon}}}</td>
 						<td>{{{collegeDean.roleStausIkon}}}</td>
 						<td>{{{dpsDean.roleStausIkon}}}</td>
-						<td></td>	                
+						<td>
+							{{#if approver}}
+								<div class="col-xs-10">
+											<div class="col-xs-2"><label><input type="radio" class ="clsAppAction" name="appAction" id="appRadio1" value="${appApprove}" data-toggle="modal" data-target="#modalApprovForm"><spring:message code="prop.dps.role.approve.text"/></label> </div>
+											<div class="col-xs-2"><label><input type="radio" class ="clsAppAction" name="appAction" id="appRadio2" value="${appRecect}" data-toggle="modal" data-target="#modalApprovForm"> <spring:message code="prop.dps.role.reject.text"/> </label></div> 
+								</div>
+							{{/if}}
+						</td>	                
 	                </tr>
                 {{/each}}
               </tbody>

@@ -12,6 +12,8 @@
 <script type="text/javascript">
 	$(function(){
 	
+		
+		
 		$('#divImgAjaxLoading').hide(); //initially hide the divImgAjaxLoading icon
 		 
         $('#divImgAjaxLoading').ajaxStart(function(){
@@ -97,7 +99,7 @@
 				};
 				$("#divAlertData").hide();
 				
-				$("#imgAjaxLoading").show();
+				$("#divImgAjaxLoading").show();
 				
 				$.ajax({
 						url		:	"${varAjaxResourcePostponeDataByRole}",
@@ -106,13 +108,31 @@
 						data	:	roleNameValue,
 						success	:	function(data)
 						{
-							$("#imgAjaxLoading").hide();
+							$("#divImgAjaxLoading").hide();
 							var postpone=JSON.parse(data);
-							dataLoad(postpone,'#hbPostponeApprover','#divPostponeApprover');
+							if($.trim(postpone))
+								{
+									dataLoad(postpone,'#hbPostponeApprover','#divPostponeApprover');
+									$('#tblPostponeApprover').DataTable({
+											"sDom":  '<f><t><"col-sm-5"i><"col-sm-2"l><"col-sm-12"p><"clearfix">', 
+											"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+											/*
+											"oLanguage": {
+												  "sUrl": "${urlCdn}/DataTables/language/lang_${rc.locale.language}.txt"
+												},
+												*/
+											"order": []
+										
+										});
+								}
+							else
+								{
+									$('#divPostponeApprover').html('');
+								}
 						},
 						error	:	function(xhr, status)
 						{
-							$("#imgAjaxLoading").hide();
+							$("#divImgAjaxLoading").hide();
 						}
 				});
 				
