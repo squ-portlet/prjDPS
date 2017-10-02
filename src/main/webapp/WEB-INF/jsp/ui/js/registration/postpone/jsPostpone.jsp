@@ -141,6 +141,28 @@
 		</c:forEach>
 
 
+		/* click event on approve/reject radio button */		
+		$(document).on("click", ".clsAppAction", function(event){
+			event.preventDefault();
+			$(this).prop("checked", true);
+			$('#txtModalAppFormStatus').val($(this).val());
+			if($(this).val() == '${appApprove}')
+			{
+				
+				$('#idComment').hide();
+				$('#idCommentTxtArea').html('');
+				$('#idApprovalMsg').html("<spring:message code='prop.dps.postpone.approver.approve.text'/>");
+				$('#linkSubmitApprove').addClass('btn-success').removeClass('btn-danger');
+			}
+			else
+			{
+				$('#idComment').show();
+				$('#idCommentTxtArea').html('<textarea id="txtMessage" name="txtMessage" rows="" cols="" required></textarea>');
+				$('#idApprovalMsg').html("<spring:message code='prop.dps.postpone.approver.reject.text'/>");
+				$('#linkSubmitApprove').addClass('btn-danger').removeClass('btn-success');
+			}
+		});
+		
 
 		function dataLoad(dataJson, hbTemplateId, tableId)
 		{

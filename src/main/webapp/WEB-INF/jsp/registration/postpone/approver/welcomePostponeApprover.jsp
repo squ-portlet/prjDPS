@@ -44,16 +44,16 @@
           </div>
           <form id="formModalApprover" name="formModalApprover">
           <div class="modal-body">
-            <p><!--  spring:message code="prop.dps.extension.approver.modal.body.confirmation.text"/--> </p>
-            <p>
-            	<div col="col-sm-2"><spring:message code="prop.dps.postpone.approver.modal.body.approve.comment.text"></spring:message></div>
-            	<div col="col-sm-8"><textarea id="txtMessage" rows="" cols=""></textarea></div>
-            </p>
+          		<div id="idApprovalMsg"></div>
+				<div id="idComment">
+		            	<div col="col-sm-2"><spring:message code="prop.dps.postpone.approver.modal.body.approve.comment.text"></spring:message></div>
+		            	<div class="col-sm-8" id="idCommentTxtArea"></div>
+            	</div>
           </div>
           </form>
           <div class="modal-footer">
             <a class="btn btn-default"  data-dismiss="modal"><spring:message code="prop.dps.role.submit.no.text"/></a>
-            <button id="linkSubmitApprove" name="linkSubmitApprove" type="button" class="btn btn-primary"><spring:message code="prop.dps.role.submit.yes.text"/></button>
+            <button id="linkSubmitApprove" name="linkSubmitApprove" type="button" class="btn"><spring:message code="prop.dps.role.submit.yes.text"/></button>
           </div>
           
         </div>
