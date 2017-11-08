@@ -283,5 +283,49 @@ public class PostponeController
 		
 	}
 	
+	/**
+	 * 
+	 * method name  : getResourceDataForApprove
+	 * @param postponeDTO
+	 * @param request
+	 * @param response
+	 * @param locale
+	 * PostponeController
+	 * return type  : void
+	 * 
+	 * purpose		: Set approver in transaction table
+	 *
+	 * Date    		:	Nov 6, 2017 6:01:44 PM
+	 * @throws IOException 
+	 */
+	@ResourceMapping(value="resourcePostponeDataApprove")
+	private	void getResourceDataForApprove(
+												@ModelAttribute ("postponeDTO") PostponeDTO postponeDTO,
+												ResourceRequest request, ResourceResponse response,Locale locale
+											) throws IOException
+	{
+				
+				Gson		gson		=	new Gson();
+				Employee	employee	=	null;
+				PostponeDTO	dtoResult	=	null;
+				try
+				{
+					employee		=	dpsServiceDao.getEmployee(request,locale);		
+					employee.setUserName(request.getRemoteUser());
+					postponeDTO.setUserName(request.getRemoteUser());
+					
+					dtoResult	=	postponeService.setRoleTransaction(postponeDTO, employee, locale);
+					response.getWriter().print(gson.toJson(dtoResult));
+					
+				}
+				catch(Exception ex)
+				{
+					logger.error("Error in Data generation. Actual error :  "+ex.getMessage());
+					response.getWriter().print(gson.toJson(""));
+				}
+				
+				
+	}
+			
 	
 }

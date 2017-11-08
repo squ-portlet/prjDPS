@@ -91,4 +91,21 @@ public interface PostponeService
 	 * Date    		:	Sep 13, 2017 5:13:02 PM
 	 */
 	public List<PostponeDTO> getPostponeForAprovers(String roleType, Employee employee, Locale locale);
+	
+	/**
+	 * 
+	 * method name  : setRoleTransaction
+	 * @param dto
+	 * @param employee
+	 * @param locale
+	 * @return
+	 * PostponeServiceImpl
+	 * return type  : PostponeDTO
+	 * 
+	 * purpose		: add record for approval / add record in approval transaction table
+	 * Note			: This function relates with two different transactional statements
+	 *
+	 * Date    		:	Nov 7, 2017 5:55:12 PM
+	 */
+	public PostponeDTO setRoleTransaction(PostponeDTO dto, Employee employee, Locale locale);
 }

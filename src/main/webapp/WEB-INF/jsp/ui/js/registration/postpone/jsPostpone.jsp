@@ -7,24 +7,22 @@
 
 <portlet:resourceURL id="resourceStudentSubmit" var="varAjaxResourceStudentSubmit"></portlet:resourceURL>
 <portlet:resourceURL id="resourcePostponeDataByRole" var="varAjaxResourcePostponeDataByRole"></portlet:resourceURL>
-
+<portlet:resourceURL id="resourcePostponeDataApprove" var="varAjaxResourcePostponeDataApprove"></portlet:resourceURL>
 
 <script type="text/javascript">
+
+$('#divImgAjaxLoading').hide(); //initially hide the divImgAjaxLoading icon
+
+$(document).ajaxStart(function(){
+    $('#divImgAjaxLoading').show();
+});
+$(document).ajaxStop(function(){
+    $('#divImgAjaxLoading').hide();
+});
+
+
 	$(function(){
-	
-		
-		
-		$('#divImgAjaxLoading').hide(); //initially hide the divImgAjaxLoading icon
-		 
-        $('#divImgAjaxLoading').ajaxStart(function(){
-            $(this).show();
-            console.log('shown');
-        });
-        $("#divImgAjaxLoading").ajaxStop(function(){
-            $(this).hide();
-              console.log('hidden');
-        }); 
-        
+		var varRoleName;
 		
 		var studentModel = {
 				yearSem		: 	''
@@ -90,6 +88,7 @@
  	<c:forEach items="${employee.myRoles}" var="myRole">
 			// Clicking on tabs to make it active (other than Home tab)
 			$("#role-${myRole.roleName}").click(function(){
+				varRoleName	=	'${myRole.roleName}';
 				$(".clsNavRole").removeClass("active");
 				$("#idNav-${myRole.roleName}").addClass("active");
 				
@@ -146,6 +145,8 @@
 			event.preventDefault();
 			$(this).prop("checked", true);
 			$('#txtModalAppFormStatus').val($(this).val());
+			$('#studentno').val(this.getAttribute("studentno"));
+			$('#studentstatCode').val(this.getAttribute("studentstatCode"));
 			if($(this).val() == '${appApprove}')
 			{
 				
@@ -164,6 +165,42 @@
 		});
 		
 
+		
+		$('#linkSubmitApprove').click(function(event) {
+			
+			console.log("studentNo : "+ this.getAttribute("studentno"));
+			
+			if ($('#formModalApprover').valid()) {
+		    	var postponeDTO	= {
+		    			studentNo 		: $('#studentno').val(),
+						studentStatCode		: $('#studentstatCode').val(),
+						statusCodeName	: $('#txtModalAppFormStatus').val(),
+						roleName		: varRoleName,
+						commentEng		: $('#txtMessage').val()
+						
+					};
+		    	$('#modalApprovForm').modal('toggle');
+		    	
+		    	$.ajax({
+		    			url 		:	"${varAjaxResourcePostponeDataApprove}",
+		    			type		:	'POST',
+		    			data		:	postponeDTO,
+		    			success		:	function(data)
+		    			{
+		    				
+		    			},
+		    			error	:	function(xhr, status, error)
+		    			{
+		    				
+		    			}
+		    	});
+		    	
+			}
+			
+		});
+		
+		
+		
 		function dataLoad(dataJson, hbTemplateId, tableId)
 		{
 			if ($.trim(dataJson))

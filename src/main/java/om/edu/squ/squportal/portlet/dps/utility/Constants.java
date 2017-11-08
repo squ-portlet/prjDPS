@@ -240,6 +240,7 @@ public interface Constants
 	public	static	final	String	CONST_SQL_POSTPONE_SELECT_RECORDS_BY_STUDENT			=	"dps.postpone.select.student.records";
 	public	static	final	String	CONST_SQL_POSTPONE_INSERT_STUDENT						=	"dps.postpone.insert.student";
 	public	static	final	String	CONST_SQL_POSTPONE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	"dps.postpone.select.student.records.by.employee";
+	public	static	final	String	CONST_SQL_POSTPONE_UPDATE_STATUS_STUDENT				=	"dps.postpone.update.status.student";
 
 	/* ---  SQL - DPS - Drop With W -- Stored Procedure -- --------------------- */	
 	public	static	final	String	CONST_PROC_DROPW_WITHDRAW_COURSE						=	"PROC_WITHDRAW_COURSE";

@@ -32,6 +32,8 @@ package om.edu.squ.squportal.portlet.dps.registration.postpone.db;
 import java.util.List;
 import java.util.Locale;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeReason;
@@ -101,4 +103,18 @@ public interface PostponeDBDao
 	 * Date    		:	Sep 13, 2017 4:48:56 PM
 	 */
 	public List<PostponeDTO> getPostponeForApprovers(String roleType, Employee employee, Locale locale, String studentNo);
+	
+	/**
+	 * 
+	 * method name  : setPostponeStatusOfStudent
+	 * @param dto
+	 * @return
+	 * PostponeDBImpl
+	 * return type  : int
+	 * 
+	 * purpose		: Update status of postpone
+	 *
+	 * Date    		:	Nov 7, 2017 5:51:48 PM
+	 */
+	public int setPostponeStatusOfStudent(PostponeDTO dto);
 }

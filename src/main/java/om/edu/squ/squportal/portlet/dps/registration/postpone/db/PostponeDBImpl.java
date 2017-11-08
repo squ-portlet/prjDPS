@@ -54,6 +54,7 @@ import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Bhabesh
@@ -386,5 +387,33 @@ public class PostponeDBImpl implements PostponeDBDao
 		
 		
 		return nPJdbcTemplDpsPostpone.query(SQL_POSTPONE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE, namedParameterMap, rowMapper);
+	}
+	
+	/**
+	 * 
+	 * method name  : setPostponeStatusOfStudent
+	 * @param dto
+	 * @return
+	 * PostponeDBImpl
+	 * return type  : int
+	 * 
+	 * purpose		: Update status of postpone
+	 *
+	 * Date    		:	Nov 7, 2017 5:51:48 PM
+	 */
+	@Transactional
+	public int setPostponeStatusOfStudent(PostponeDTO dto)
+	{
+		String	SQL_POSTPONE_UPDATE_STATUS_STUDENT			=	queryPostpone.getProperty(Constants.CONST_SQL_POSTPONE_UPDATE_STATUS_STUDENT);
+		
+		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+		namedParameterMap.put("paramStdNo", dto.getStudentNo());
+		namedParameterMap.put("paramStdStatCode", dto.getStudentStatCode());
+		namedParameterMap.put("paramComment", dto.getCommentEng());
+		namedParameterMap.put("paramStatusCodeName", dto.getStatusCodeName());
+		namedParameterMap.put("paramUserName", dto.getUserName());
+		
+		return nPJdbcTemplDpsPostpone.update(SQL_POSTPONE_UPDATE_STATUS_STUDENT, namedParameterMap);
+		
 	}
 }

@@ -268,4 +268,26 @@
 					)
 					ORDER BY  CREATE_DATE DESC    
     </entry>
+    <entry key="dps.postpone.update.status.student">
+				UPDATE
+				    STD_POSTPONE
+				SET
+				    POSTREQ_STATUSCD =   (
+									                                SELECT
+									                                    CODES.SISCODECD	
+									                                FROM
+									                                        SIS_CODES       CODES
+									                                    ,   SIS_CODE_TYPES  TYPES
+									                                WHERE
+									                                        CODES.SISCODETYPCD =  TYPES.SISCODETYPCD
+									                                    AND TYPES.SISCODETYPNM = 'APPROVAL_STATUS'
+									                                    AND CODES.L_ABR_CODE  = :paramStatusCodeName
+				                              )
+				    , COMMNT			= :paramComment					                            
+				    , USRACCTCD       = :paramUserName
+				    , UPDDTE          = SYSDATE
+				WHERE
+				          STDNO     	= :paramStdNo
+				      AND STDSTATCD 	= :paramStdStatCode    
+    </entry>
 </properties>

@@ -36,6 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import om.edu.squ.squportal.notification.exception.NotificationException;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
@@ -46,6 +47,8 @@ import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeReason;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.db.PostponeDBDao;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentModel;
+import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
+import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 import om.edu.squ.squportal.portlet.dps.utility.UtilProperty;
 
@@ -175,6 +178,129 @@ public class PostponeServiceImpl implements PostponeService
 		
 		return postponeDBDao.getPostponeForApprovers(roleType, employee, locale, null);
 	}
+
+	/**
+	 * 
+	 * method name  : getPostponeForAprovers
+	 * @param roleType
+	 * @param employee
+	 * @param locale
+	 * @param studentNo
+	 * @return
+	 * PostponeServiceImpl
+	 * return type  : PostponeDTO
+	 * 
+	 * purpose		: Get postpone details for particular student
+	 *
+	 * Date    		:	Nov 8, 2017 4:17:32 PM
+	 */
+	private PostponeDTO getPostponeForAprovers(String roleType, Employee employee, Locale locale, String studentNo)
+	{
+		if(employee.getEmpNumber().substring(0,1).equals("e"))
+		{
+			employee.setEmpNumber(employee.getEmpNumber().substring(1));
+		}
+		
+		return postponeDBDao.getPostponeForApprovers(roleType, employee, locale, studentNo).get(0);
+	}
 	
+	
+	/**
+	 * 
+	 * method name  : setRoleTransaction
+	 * @param dto
+	 * @param employee
+	 * @param locale
+	 * @return
+	 * PostponeServiceImpl
+	 * return type  : PostponeDTO
+	 * 
+	 * purpose		: add record for approval / add record in approval transaction table
+	 * Note			: This function relates with two different transactional statements
+	 *
+	 * Date    		:	Nov 7, 2017 5:55:12 PM
+	 */
+	public PostponeDTO setRoleTransaction(PostponeDTO dto, Employee employee, Locale locale)
+	{
+		int						resultTr				=	0;
+		PostponeDTO				dtoStudent				=	new PostponeDTO();
+		PostponeDTO				dtoResult				=	null;
+		
+		ApprovalTransactionDTO	transactionDTO			=	new ApprovalTransactionDTO();
+								transactionDTO.setStudentNo(dto.getStudentNo());
+								transactionDTO.setStdStatCode(dto.getStudentStatCode());
+								transactionDTO.setAppEmpNo(employee.getEmpNumber());
+								transactionDTO.setAppEmpName(employee.getUserName());
+								transactionDTO.setComments(dto.getCommentEng());
+								transactionDTO.setRequestCode(Constants.CONST_REQUEST_CODE_DEFAULT);
+		
+		ApprovalDTO				approvalDTO				=	dpsServiceDao.setRoleTransaction(
+																									transactionDTO
+																								, 	Constants.CONST_FORM_NAME_DPS_POSTPONE_STUDY
+																								, 	dto.getRoleName()
+																								, 	dto.getStatusCodeName()
+																							);	
+		if(dto.getStatusCodeName().equals(Constants.CONST_SQL_STATUS_CODE_REJCT))
+		{
+			dtoStudent.setStatusCodeName(dto.getStatusCodeName());
+		}
+		else
+		{
+			if(approvalDTO.getApprovalSequenceNo() == approvalDTO.getApprovalMaxSequenceNo())
+			{
+				dtoStudent.setStatusCodeName(dto.getStatusCodeName());
+			}
+			else
+			{
+				dtoStudent.setStatusCodeName(Constants.CONST_SQL_STATUS_CODE_NAME_PROGRESS);
+			}
+		}
+		
+							dtoStudent.setStudentNo(dto.getStudentNo());
+							dtoStudent.setStudentStatCode(dto.getStudentStatCode());
+							dtoStudent.setUserName(employee.getUserName());
+							dtoStudent.setCommentEng(dto.getCommentEng());
+		
+							resultTr					=	postponeDBDao.setPostponeStatusOfStudent(dtoStudent);	
+
+		try
+		{
+			if(resultTr > 0)
+			{
+				dtoResult	=	getPostponeForAprovers(dto.getRoleName(), employee, locale, dto.getStudentNo());
+				/* -- Notification -- Start --*/
+					NotifierPeople	notifierPeople	=	dpsServiceDao.getNotifierPeople(
+																							dto.getStudentNo()
+																						, 	Constants.CONST_FORM_NAME_DPS_POSTPONE_STUDY
+																						, 	dto.getRoleName()
+																						, 	true
+																						, locale
+																						);
+					
+					notifierPeople.setFormNameEng(UtilProperty.getMessage("prop.dps.form.name.postpone", null));
+					notifierPeople.setFormNameAr(UtilProperty.getMessage("prop.dps.form.name.postpone", null, new Locale("ar")));
+					notifierPeople.setServiceUrl(UtilProperty.getMessage("prop.dps.url.postpone", null));					
+					
+					dpsNotification.sendNotification(
+															UtilProperty.getMessage("prop.dps.postpone.notification.subject", new String[]{notifierPeople.getStudent().getPersonalDetail().getId()})
+														, 	notifierPeople
+														, 	"null"
+														, 	Constants.CONST_TEST_ENVIRONMENT
+													);
+					
+				/* -- Notification -- end --*/
+			}
+		}
+		catch(NotCorrectDBRecordException ex)
+		{
+			logger.error("Error in Notification : "+ex.getMessage());
+		}
+		catch(NotificationException exNotification)
+		{
+			logger.error("Error in  notification for approving at Postpone of Service  : {}",exNotification.getMessage());
+		}
+		
+		return dtoResult;
+	}
 	
 }

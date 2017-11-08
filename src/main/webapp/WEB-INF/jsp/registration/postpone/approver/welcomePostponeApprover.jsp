@@ -7,6 +7,7 @@
 
 	<%@include file="../../../ui/cssWelcome.jsp" %>	
 	<%@include file="../../../ui/js/registration/postpone/jsPostpone.jsp" %>
+	<%@include file="../../../ui/js/registration/postpone/jsValidationPostpone.jsp" %>
 
 <!-- Role based tabs -->	
 		<ul class="nav nav-tabs">
@@ -35,9 +36,12 @@
 
 <!--  Modal approver form -->			
     <div class="modal fade" id="modalApprovForm" role="dialog" aria-labelledby="myModalLabelPostponeForm" aria-hidden="true" >
+     
       <div class="modal-dialog">
         <div class="modal-content">
         	<input type="hidden" id="txtModalAppFormStatus" >
+        	<input type="hidden" id="studentno">
+        	<input type="hidden" id="studentstatCode">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&nbsp;</button>
             <h4 class="modal-title"><spring:message code="prop.dps.postpone.approver.modal.title.text"/> </h4>
@@ -100,8 +104,8 @@
 						<td>
 							{{#if approver}}
 								<div class="col-xs-10">
-											<div class="col-xs-2"><label><input type="radio" class ="clsAppAction" name="appAction" id="appRadio1" value="${appApprove}" data-toggle="modal" data-target="#modalApprovForm"><spring:message code="prop.dps.role.approve.text"/></label> </div>
-											<div class="col-xs-2"><label><input type="radio" class ="clsAppAction" name="appAction" id="appRadio2" value="${appRecect}" data-toggle="modal" data-target="#modalApprovForm"> <spring:message code="prop.dps.role.reject.text"/> </label></div> 
+											<div class="col-xs-2"><label><input type="radio" class ="clsAppAction" name="appAction" id="appRadio1" value="${appApprove}" data-toggle="modal" data-target="#modalApprovForm" studentno={{studentNo}} studentstatCode={{studentStatCode}}><spring:message code="prop.dps.role.approve.text"/></label> </div>
+											<div class="col-xs-2"><label><input type="radio" class ="clsAppAction" name="appAction" id="appRadio2" value="${appRecect}" data-toggle="modal" data-target="#modalApprovForm" studentno={{studentNo}} studentstatCode={{studentStatCode}}> <spring:message code="prop.dps.role.reject.text"/> </label></div> 
 								</div>
 							{{/if}}
 						</td>	                
