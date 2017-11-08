@@ -287,13 +287,32 @@ USRACCTCD               VARCHAR2(12)
 DESC T_REG_DROPW
 Name            Null     Type         
 --------------- -------- ------------ 
-STDNO           NOT NULL NUMBER(9)    
-STDSTATCD       NOT NULL NUMBER(9)    
-CRSNO           NOT NULL NUMBER(8)    
-SECTCD          NOT NULL NUMBER(8)    
-SECTNO          NOT NULL NUMBER(3)    
-STATUSCD                 NUMBER(4)    
-CREATE_DATE     NOT NULL DATE         
-CREATE_USERNAME NOT NULL VARCHAR2(20) 
-UPDATE_DATE              DATE         
-UPDATE_USERNAME          DATE         
+STDNO           NOT NULL NUMBER(9)      
+STDSTATCD       NOT NULL NUMBER(9)      
+CRSNO           NOT NULL NUMBER(8)      
+SECTCD          NOT NULL NUMBER(8)      
+SECTNO          NOT NULL NUMBER(3)      
+STATUSCD        NOT NULL NUMBER(4)      
+CREATE_DATE     NOT NULL DATE           
+CREATE_USERNAME NOT NULL VARCHAR2(20)   
+UPDATE_DATE              DATE           
+UPDATE_USERNAME          VARCHAR2(20)   
+COMMENTS                 VARCHAR2(1000)         
+
+
+
+
+desc GRADE_VAL
+Name        Null     Type         
+----------- -------- ------------ 
+GRADECD     NOT NULL NUMBER(2)    
+A_ABR_GVAL  NOT NULL VARCHAR2(5)  
+L_ABR_GVAL  NOT NULL VARCHAR2(3)  
+GRADEPOINTS          NUMBER(3,1)  
+EFFDTE      NOT NULL DATE         
+TERMDTE              DATE         
+APLYTOGPACD NOT NULL NUMBER(4)    
+RANK        NOT NULL NUMBER(2)    
+GVALNM               VARCHAR2(20) 
+A_GVALNM             VARCHAR2(20) 
+USRACCTCD            VARCHAR2(12) 
