@@ -90,5 +90,26 @@
 							<portlet-info>
 								<title>Postponement of Studies</title>
 							</portlet-info>
-						</portlet>	
+						</portlet>
+<!-- Grade -->
+	<!--  Grade Change -->
+						<portlet>
+							<portlet-name>dpsGradeGradeChange</portlet-name>
+							<portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>	
+							<init-param>
+					         <name>contextConfigLocation</name>
+					         <value>/WEB-INF/context/gradeGradeChange-portlet.xml</value>
+					      	</init-param>
+							<expiration-cache>0</expiration-cache>
+							<supports>
+								<mime-type>text/html</mime-type>
+					         	<portlet-mode>view</portlet-mode>
+							</supports>
+							<supported-locale>en</supported-locale>
+					        <supported-locale>ar</supported-locale>		
+					        <resource-bundle>messages/grade/gradeChange/gradeChange</resource-bundle>
+							<portlet-info>
+								<title>Grade Change</title>
+							</portlet-info>					      						
+						</portlet>
 </portlet-app>

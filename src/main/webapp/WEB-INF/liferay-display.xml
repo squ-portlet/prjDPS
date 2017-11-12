@@ -32,5 +32,6 @@
 		<portlet id="dpsExtensionStudies" />
 		<portlet id="dpsRegistrationDropWithW" />
 		<portlet id="dpsRegistrationPostpone" />
+		<portlet id="dpsGradeGradeChange" />
 	</category>
 </display>

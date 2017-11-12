@@ -51,4 +51,11 @@
 		<user-principal-strategy>screenName</user-principal-strategy> <!-- This tag for liferay screen name as remote user name  -->
 		<requires-namespaced-parameters>false</requires-namespaced-parameters>
 	</portlet> 	 
+ 	<portlet>
+		<portlet-name>dpsGradeGradeChange</portlet-name>
+		<instanceable>false</instanceable>
+		<remoteable>true</remoteable>
+		<user-principal-strategy>screenName</user-principal-strategy> <!-- This tag for liferay screen name as remote user name  -->
+		<requires-namespaced-parameters>false</requires-namespaced-parameters>
+	</portlet> 	
 </liferay-portlet-app>

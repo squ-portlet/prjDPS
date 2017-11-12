@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>DPS Grades Queries</comment>
+	<entry key="dps.grades.select.student.grades">
+			SELECT
+			            GRADES.L_ABR_CRSNO                                          AS    L_ABR_CRSNO
+			         ,  DECODE (
+			                     :paramLocale
+			                     , 'ar', A_CRSSNM
+			                     , CRS.CRSSNM
+			                    )                                                 AS      COURSE_NAME 
+			         ,  GRADES.GRADECD                                            AS      GRADE_CODE
+			         ,  DECODE
+			                  (
+			                    :paramLocale
+			                    , 'ar', GV.A_ABR_GVAL
+			                    ,      GV.L_ABR_GVAL
+			                  )                                                   AS      GRADE
+			            
+			FROM
+			            GRADE_VAL            GV
+			         ,  STD_GRADES           GRADES
+			         ,  CRS_BASIC           CRS
+			         
+			WHERE
+			
+			      GRADES.STDNO = :paramStdNo
+			      AND GRADES.CCYRCD=:paramYear
+			      AND GRADES.SEMCD=:paramSem
+			      AND GV.GRADECD  = GRADES.GRADECD
+			      AND CRS.CRSNO = GRADES.CRSNO	
+	</entry>
+	<entry key="">
+		UPDATE
+		      STD_GRADES
+		      SET GRADECD = :paramGradeCode
+		WHERE
+		           STDNO = :paramStdNo
+		      AND CCYRCD=:paramYear
+		      AND SEMCD=:paramSem
+		      AND L_ABR_CRSNO = :paramCourseLAbrCode	
+	
+	</entry>
+
+</properties>
