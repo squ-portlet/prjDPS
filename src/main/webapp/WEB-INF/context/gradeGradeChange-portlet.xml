@@ -33,7 +33,7 @@
         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
         
               <!-- scan spring components -->
-	  <context:component-scan base-package="om.edu.squ.squportal.portlet.dps.grade" />   
+	  <context:component-scan base-package="om.edu.squ.squportal.portlet.dps.grade.gradechange" />   
 	  
 	    
   <!-- DI to DPS Postponement of studies Property -->
@@ -42,13 +42,13 @@
 		</bean>
 	  
  <!-- DI to Postponement of studies Registration DB Dao -->			
-		<bean id="gradeChangeDBDao"	class="om.edu.squ.squportal.portlet.dps.grade.db.GradeChangeDBImpl">
+		<bean id="gradeChangeDBDao"	class="om.edu.squ.squportal.portlet.dps.grade.gradechange.db.GradeChangeDBImpl">
 	 		<property name="nPJdbcTemplDpsGradeChange" ref="namedParameterJdbcTemplateDps"/> 
 			<property name="queryProps" ref="queryProps" />
 			<property name="queryGradeChange" ref="queryGradeChange" />
 	 	</bean>
 
 <!-- DI to DPS Postponement of studies of Registration Service Dao -->
-	<bean id="gradeChangeService"	class="om.edu.squ.squportal.portlet.dps.grade.service.GradeChangeServiceImpl"/>
+	<bean id="gradeChangeService"	class="om.edu.squ.squportal.portlet.dps.grade.gradechange.service.GradeChangeServiceImpl"/>
 
 </beans>        

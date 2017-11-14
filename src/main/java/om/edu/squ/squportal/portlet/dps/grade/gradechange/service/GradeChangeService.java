@@ -8,9 +8,9 @@
  *
  * FrameWork			:	Spring 4.0.8 (Annotation) Portlet
  * 
- * File Name			:	GradeChangeModel.java
- * Package Name			:	om.edu.squ.squportal.portlet.dps.grade.model
- * Date of creation		:	Nov 13, 2017  3:40:47 PM
+ * File Name			:	GradeChangeService.java
+ * Package Name			:	om.edu.squ.squportal.portlet.dps.grade.gradechange.service
+ * Date of creation		:	Nov 13, 2017  3:37:46 PM
  * Date of modification :	
  * 
  * Summary				:	
@@ -27,13 +27,13 @@
  *
  * 
  */
-package om.edu.squ.squportal.portlet.dps.grade.model;
+package om.edu.squ.squportal.portlet.dps.grade.gradechange.service;
 
 /**
  * @author Bhabesh
  *
  */
-public class GradeChangeModel
+public interface GradeChangeService
 {
 	
 }

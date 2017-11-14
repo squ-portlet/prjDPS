@@ -71,6 +71,7 @@
 				<value>extension</value>
 				<value>messages/registration/dropWithW/dropwithw</value>
 				<value>/messages/registration/postpone/postpone</value>
+				<value>/messages/grade/gradeChange/gradeChange</value>
 			</list>
 		</property>	
 	</bean>

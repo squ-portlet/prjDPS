@@ -8,9 +8,9 @@
  *
  * FrameWork			:	Spring 4.0.8 (Annotation) Portlet
  * 
- * File Name			:	GradeChangeDBDao.java
- * Package Name			:	om.edu.squ.squportal.portlet.dps.grade.db
- * Date of creation		:	Nov 13, 2017  3:42:02 PM
+ * File Name			:	GradeChangeServiceImpl.java
+ * Package Name			:	om.edu.squ.squportal.portlet.dps.grade.gradechange.service
+ * Date of creation		:	Nov 13, 2017  3:37:08 PM
  * Date of modification :	
  * 
  * Summary				:	
@@ -27,13 +27,13 @@
  *
  * 
  */
-package om.edu.squ.squportal.portlet.dps.grade.db;
+package om.edu.squ.squportal.portlet.dps.grade.gradechange.service;
 
 /**
  * @author Bhabesh
  *
  */
-public interface GradeChangeDBDao
+public class GradeChangeServiceImpl implements GradeChangeService
 {
 	
 }

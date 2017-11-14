@@ -9,7 +9,7 @@
  * FrameWork			:	Spring 4.0.8 (Annotation) Portlet
  * 
  * File Name			:	GradeChangeDBImpl.java
- * Package Name			:	om.edu.squ.squportal.portlet.dps.grade.db
+ * Package Name			:	om.edu.squ.squportal.portlet.dps.grade.gradechange.db
  * Date of creation		:	Nov 13, 2017  3:41:32 PM
  * Date of modification :	
  * 
@@ -27,7 +27,7 @@
  *
  * 
  */
-package om.edu.squ.squportal.portlet.dps.grade.db;
+package om.edu.squ.squportal.portlet.dps.grade.gradechange.db;
 
 import java.util.Properties;
 
