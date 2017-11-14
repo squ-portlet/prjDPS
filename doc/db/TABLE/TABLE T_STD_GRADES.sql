@@ -1,5 +1,5 @@
 --------------------------------------------------------
---  File created - Monday-November-13-2017   
+--  File created - Tuesday-November-14-2017   
 --------------------------------------------------------
 --------------------------------------------------------
 --  DDL for Table T_STD_GRADES
@@ -12,7 +12,8 @@
 	"L_ABR_CRSNO" VARCHAR2(8 BYTE), 
 	"CRSNO" NUMBER(8,0), 
 	"SECTNO" NUMBER(3,0), 
-	"GRADECD" NUMBER(2,0), 
+	"GRADECD_OLD" NUMBER(2,0), 
+	"GRADECD_NEW" NUMBER(2,0), 
 	"INCOMPLETE_NOTIFICATION" VARCHAR2(1 BYTE), 
 	"CREATE_DATE" DATE, 
 	"CREATE_USERNAME" VARCHAR2(20 BYTE), 
@@ -52,7 +53,9 @@
  
   ALTER TABLE "DPSPROJECT"."T_STD_GRADES" MODIFY ("CRSNO" NOT NULL ENABLE);
  
-  ALTER TABLE "DPSPROJECT"."T_STD_GRADES" MODIFY ("GRADECD" NOT NULL ENABLE);
+  ALTER TABLE "DPSPROJECT"."T_STD_GRADES" MODIFY ("GRADECD_OLD" NOT NULL ENABLE);
+ 
+  ALTER TABLE "DPSPROJECT"."T_STD_GRADES" MODIFY ("GRADECD_NEW" NOT NULL ENABLE);
  
   ALTER TABLE "DPSPROJECT"."T_STD_GRADES" MODIFY ("CREATE_DATE" NOT NULL ENABLE);
  
