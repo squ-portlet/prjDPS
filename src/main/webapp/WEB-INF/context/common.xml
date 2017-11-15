@@ -206,7 +206,9 @@
  		<property name="smsPassword" value="evil-sms-sic135"/>
  	</bean>
 
-
+	<!-- Encryption -->
+	 	<bean id="crypto" class="om.edu.squ.squportal.portlet.dps.security.CryptoAES"/>
+ 		
 
  	
 
