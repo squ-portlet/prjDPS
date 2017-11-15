@@ -35,5 +35,147 @@ package om.edu.squ.squportal.portlet.dps.grade.gradechange.model;
  */
 public class GradeChangeModel
 {
+	private	String	studentId;
+	private	String	courseYear;
+	private	String	semCode;
+	private	String	lAbrCrsNo;
+	private	String	salt;
+	private	String	four;
+	
+	/**
+	 * Getter Method	: getStudentId
+	 * @return the studentId
+	 * 
+	 * Date				: Nov 15, 2017
+	 */
+	public String getStudentId()
+	{
+		return this.studentId;
+	}
+	/**
+	 * Setter method : setStudentId
+	 * @param studentId the studentId to set
+	 * 
+	 * Date          : Nov 15, 2017 2:24:32 PM
+	 */
+	public void setStudentId(String studentId)
+	{
+		this.studentId = studentId;
+	}
+	/**
+	 * Getter Method	: getCourseYear
+	 * @return the courseYear
+	 * 
+	 * Date				: Nov 15, 2017
+	 */
+	public String getCourseYear()
+	{
+		return this.courseYear;
+	}
+	/**
+	 * Setter method : setCourseYear
+	 * @param courseYear the courseYear to set
+	 * 
+	 * Date          : Nov 15, 2017 2:24:32 PM
+	 */
+	public void setCourseYear(String courseYear)
+	{
+		this.courseYear = courseYear;
+	}
+	/**
+	 * Getter Method	: getSemCode
+	 * @return the semCode
+	 * 
+	 * Date				: Nov 15, 2017
+	 */
+	public String getSemCode()
+	{
+		return this.semCode;
+	}
+	/**
+	 * Setter method : setSemCode
+	 * @param semCode the semCode to set
+	 * 
+	 * Date          : Nov 15, 2017 2:24:32 PM
+	 */
+	public void setSemCode(String semCode)
+	{
+		this.semCode = semCode;
+	}
+	
+	/**
+	 * Getter Method	: getlAbrCrsNo
+	 * @return the lAbrCrsNo
+	 * 
+	 * Date				: Nov 15, 2017
+	 */
+	public String getlAbrCrsNo()
+	{
+		return this.lAbrCrsNo;
+	}
+	/**
+	 * Setter method : setlAbrCrsNo
+	 * @param lAbrCrsNo the lAbrCrsNo to set
+	 * 
+	 * Date          : Nov 15, 2017 2:48:18 PM
+	 */
+	public void setlAbrCrsNo(String lAbrCrsNo)
+	{
+		this.lAbrCrsNo = lAbrCrsNo;
+	}
+	
+	/**
+	 * Getter Method	: getSalt
+	 * @return the salt
+	 * 
+	 * Date				: Nov 15, 2017
+	 */
+	public String getSalt()
+	{
+		return this.salt;
+	}
+	/**
+	 * Setter method : setSalt
+	 * @param salt the salt to set
+	 * 
+	 * Date          : Nov 15, 2017 6:56:03 PM
+	 */
+	public void setSalt(String salt)
+	{
+		this.salt = salt;
+	}
+	/**
+	 * Getter Method	: getFour
+	 * @return the four
+	 * 
+	 * Date				: Nov 15, 2017
+	 */
+	public String getFour()
+	{
+		return this.four;
+	}
+	/**
+	 * Setter method : setFour
+	 * @param four the four to set
+	 * 
+	 * Date          : Nov 15, 2017 6:56:03 PM
+	 */
+	public void setFour(String four)
+	{
+		this.four = four;
+	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString()
+	{
+		return "GradeChangeModel [studentId=" + this.studentId
+				+ ", courseYear=" + this.courseYear + ", semCode="
+				+ this.semCode + ", lAbrCrsNo=" + this.lAbrCrsNo + "]";
+	}
+	
+	
+
 	
 }

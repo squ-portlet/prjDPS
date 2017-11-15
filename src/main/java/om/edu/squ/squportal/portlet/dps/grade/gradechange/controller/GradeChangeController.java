@@ -38,6 +38,9 @@ import om.edu.squ.squportal.portlet.dps.bo.User;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
+import om.edu.squ.squportal.portlet.dps.grade.gradechange.model.GradeChangeModel;
+import om.edu.squ.squportal.portlet.dps.security.Crypto;
+import om.edu.squ.squportal.portlet.dps.security.CryptoAES;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
 import org.slf4j.Logger;
@@ -58,11 +61,18 @@ public class GradeChangeController
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	DpsServiceDao	dpsServiceDao;
+	@Autowired
+	Crypto			crypto;
 	
 	@RequestMapping
 	private	String welcome(PortletRequest request, Model model, Locale locale) throws NotCorrectDBRecordException
 	{
 		User	user	=	dpsServiceDao.getUser(request);
+		/**** Security - data encryption keys *****/
+		model.addAttribute("cryptoIterationCount", Crypto.CRYPTO_ITERATION_COUNT);
+		model.addAttribute("cryptoKeySize", Crypto.CRYPTO_KEY_SIZE);
+		model.addAttribute("cryptoPassPhrase", Crypto.CRYPTO_PASSCODE);
+		/* ************************************* */
 
 		if(user.getUserType().equals(Constants.USER_TYPE_STUDENT))
 		{
@@ -95,4 +105,12 @@ public class GradeChangeController
 		
 		return "/grade/gradechange/approver/welcomeGradeChangeApprover";
 	}
+	@ResourceMapping(value="resourceAjaxGetStudentGrades")
+	private	void getStudentGrades(@ModelAttribute("gradeChangeModel") GradeChangeModel gradeChangeModel, ResourceRequest request, ResourceResponse response, Locale locale) 
+	{
+		String studentId		=	crypto.decrypt(gradeChangeModel.getSalt(), gradeChangeModel.getFour(),  gradeChangeModel.getStudentId());
+				
+		logger.info("studentId : "+studentId);
+	}
+	
 }

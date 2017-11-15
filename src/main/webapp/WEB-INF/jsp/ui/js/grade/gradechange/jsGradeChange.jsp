@@ -14,5 +14,7 @@
 		$('#tblGradeListApproval').DataTable({
 			
 		});
+			var crStudentId =	aesUtil.encrypt(salt, four, passphrase, $('#studentId').val());
+			
 	});
 </script>
