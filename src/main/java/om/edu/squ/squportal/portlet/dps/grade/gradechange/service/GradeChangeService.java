@@ -29,11 +29,32 @@
  */
 package om.edu.squ.squportal.portlet.dps.grade.gradechange.service;
 
+import java.util.List;
+import java.util.Locale;
+
+import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.GradeDTO;
+
 /**
  * @author Bhabesh
  *
  */
 public interface GradeChangeService
 {
-	
+	/**
+	 * 
+	 * method name  : getStudentGrades
+	 * @param studentNo
+	 * @param gradeYear
+	 * @param semester
+	 * @param employeeNo
+	 * @param locale
+	 * @return
+	 * GradeChangeDBImpl
+	 * return type  : List<GradeDTO>
+	 * 
+	 * purpose		:	Grade list of a student for a particular year, semester, instructor
+	 *
+	 * Date    		:	Nov 15, 2017 10:08:43 AM
+	 */
+	public List<GradeDTO>	getStudentGrades(String studentNo, String gradeYear, String semester, String employeeNo, Locale locale);
 }

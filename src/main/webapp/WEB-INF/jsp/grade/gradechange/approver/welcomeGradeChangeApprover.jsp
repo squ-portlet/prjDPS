@@ -14,7 +14,7 @@
 		<div class="col-sm-4">
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<form>
+					<form id="modelGrade" name="modelGrade" method="post" >
 						<div class="form-group">
 							<label for="studentId"><spring:message code="prop.dps.gradechange.student.id"/></label>	
 							<input type="text" class="form-control" id="studentId" placeholder="Enter Student Id">		
@@ -26,7 +26,11 @@
 						<div class="form-group">
 							<label for="semCode"><spring:message code="prop.dps.gradechange.semCode"/></label>	
 							<select id="semCode">
-								<option></option>
+								<option value=''><spring:message code="prop.dps.gradechange.select"/></option>
+								<option value='<spring:message code="prop.dps.gradechange.semCode.02"/>' ><spring:message code="prop.dps.gradechange.semCode.02.spring"/></option>
+								<option value='<spring:message code="prop.dps.gradechange.semCode.03"/>' > <spring:message code="prop.dps.gradechange.semCode.03.summer"/> </option>
+								<option value='<spring:message code="prop.dps.gradechange.semCode.04"/>' > <spring:message code="prop.dps.gradechange.semCode.04.fall"/> </option>
+								
 							</select>		
 						</div>
 						<div class="form-group">
@@ -34,7 +38,7 @@
 							<input type="text" class="form-control" id="lAbrCrsNo" placeholder="Enter CourseNo">		
 						</div>
 						<div>
-							<button type="button" class="btn btn-default" ">
+							<button type="button" id="bttnGradeSearch" class="btn btn-default" ">
 		  						<span class="glyphicon glyphicon-search" aria-hidden="true"></span> <spring:message code="prop.dps.gradechange.button.search"/>
 							</button>
 						</div>
@@ -44,7 +48,7 @@
 		</div>
 		
 		<div class="col-sm-6">
-			<table id="tblGradeList" class="table table-striped table-bordered dt-responsive collapsed dataTable">
+			<table id="tblGradeList" class="table table-striped table-bordered dt-responsive collapsed ">
 				<tr>
 					<th><spring:message code="prop.dps.gradechange.course.code"/></th>
 					<th><spring:message code="prop.dps.gradechange.section"/></th>
@@ -57,7 +61,7 @@
 	</div>
 	
 	<div class="row">
-		<table id="tblGradeListApproval" class="table table-striped table-bordered dt-responsive collapsed dataTable">
+		<table id="tblGradeListApproval" class="table table-striped table-bordered dt-responsive  collapsed ">
 				<tr>
 					<th><spring:message code="prop.dps.gradechange.course.code"/></th>
 					<th><spring:message code="prop.dps.gradechange.section"/></th>

@@ -29,10 +29,22 @@
  */
 package om.edu.squ.squportal.portlet.dps.grade.gradechange.db;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Properties;
+
+import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.Course;
+import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.Grade;
+import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.GradeDTO;
+import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 /**
@@ -77,6 +89,65 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 	{
 		this.nPJdbcTemplDpsGradeChange = nPJdbcTemplDpsGradeChange;
 	}
+	
+	
+	/**
+	 * 
+	 * method name  : getStudentGrades
+	 * @param studentNo
+	 * @param gradeYear
+	 * @param semester
+	 * @param employeeNo
+	 * @param locale
+	 * @return
+	 * GradeChangeDBImpl
+	 * return type  : List<GradeDTO>
+	 * 
+	 * purpose		:	Grade list of a student for a particular year, semester, instructor
+	 *
+	 * Date    		:	Nov 15, 2017 10:08:43 AM
+	 */
+	public List<GradeDTO>	getStudentGrades(String studentNo, String gradeYear, String semester, String employeeNo, Locale locale)
+	{
+		String	SQL_GRADE_CHANGE_STUDENT_LIST_OF_EXISTING_GRADE	=	queryGradeChange.getProperty(Constants.CONST_SQL_GRADE_CHANGE_STUDENT_LIST_OF_EXISTING_GRADE);
+		
+		RowMapper<GradeDTO> rowMapper	=	new RowMapper<GradeDTO>()
+		{
+			
+			@Override
+			public GradeDTO mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				GradeDTO	gradeDTO	=	new GradeDTO();
+				Course		course		=	new Course();
+				Grade		grade		=	new Grade();
+				
+				course.setlAbrCourseNo(rs.getString(Constants.CONST_COLMN_L_ABR_CRSNO));
+				course.setCourseName(rs.getString(Constants.CONST_COLMN_COURSE_NAME));
+				
+				grade.setGradeCode(rs.getInt(Constants.CONST_COLMN_GRADE_CODE));
+				grade.setGradeVal(rs.getString(Constants.CONST_COLMN_GRADE_VAL));
+				
+				gradeDTO.setSectionNo(rs.getString(Constants.CONST_COLMN_SECTION_NO));
+				
+				gradeDTO.setCourse(course);
+				gradeDTO.setCourse(course);
+				
+				return gradeDTO;
+			}
+		};
+		
+		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+		namedParameterMap.put("paramStdNo", studentNo);
+		namedParameterMap.put("paramYear", gradeYear);
+		namedParameterMap.put("paramSem", semester);
+		namedParameterMap.put("paramEmpNo", employeeNo);
+		namedParameterMap.put("paramLocale", locale.getLanguage());
+		
+		return nPJdbcTemplDpsGradeChange.query(SQL_GRADE_CHANGE_STUDENT_LIST_OF_EXISTING_GRADE, namedParameterMap, rowMapper);
+		
+	}
+	
+	
 	
 	
 }

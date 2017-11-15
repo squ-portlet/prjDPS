@@ -100,6 +100,8 @@ public interface Constants
 	public static final	String	CONST_COLMN_CREDITS											=	"CREDITS";
 	public static final	String	CONST_COLMN_TUTION_FEE										=	"TUTION_FEE";
 	public static final	String	CONST_COLMN_STUDENT_MODE									=	"STD_MODE";
+	public static final	String	CONST_COLMN_GRADE_CODE										=	"GRADE_CODE";
+	public static final	String	CONST_COLMN_GRADE_VAL										=	"GRADE_VAL";
 
 	public static final	String	CONST_COLMN_SISCODECD										=	"SISCODECD";
 	public static final	String	CONST_COLMN_STATUS_CODE										=	"STATUS_CODE";
@@ -241,6 +243,9 @@ public interface Constants
 	public	static	final	String	CONST_SQL_POSTPONE_INSERT_STUDENT						=	"dps.postpone.insert.student";
 	public	static	final	String	CONST_SQL_POSTPONE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	"dps.postpone.select.student.records.by.employee";
 	public	static	final	String	CONST_SQL_POSTPONE_UPDATE_STATUS_STUDENT				=	"dps.postpone.update.status.student";
+	
+	/* ---  SQL - DPS - Grade Change property--------------------- */
+	public	static	final	String	CONST_SQL_GRADE_CHANGE_STUDENT_LIST_OF_EXISTING_GRADE	=	"dps.grades.select.student.grades";
 
 	/* ---  SQL - DPS - Drop With W -- Stored Procedure -- --------------------- */	
 	public	static	final	String	CONST_PROC_DROPW_WITHDRAW_COURSE						=	"PROC_WITHDRAW_COURSE";

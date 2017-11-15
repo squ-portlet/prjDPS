@@ -296,7 +296,6 @@ background-color:transparent;
 
 
 </script>
-
 <script>
 	/*
 	*	Initializing cryptojs in UI 

@@ -3,33 +3,49 @@
 <properties>
 	<comment>DPS Grades Queries</comment>
 	<entry key="dps.grades.select.student.grades">
-			SELECT
-			            GRADES.L_ABR_CRSNO                                          AS    L_ABR_CRSNO
-			         ,  DECODE (
+				SELECT
+                  DISTINCT
+			            	GRADES.L_ABR_CRSNO                                          AS    L_ABR_CRSNO
+			         	,  	DECODE (
 			                     :paramLocale
 			                     , 'ar', A_CRSSNM
 			                     , CRS.CRSSNM
-			                    )                                                 AS      COURSE_NAME 
-			         ,  GRADES.GRADECD                                            AS      GRADE_CODE
-			         ,  DECODE
+			                    )                                                 		AS      COURSE_NAME 
+               			,  GRADES.SECTNO                                             	AS      SECTION_NO
+			         	,  GRADES.GRADECD                                            	AS      GRADE_CODE
+			         	,  DECODE
 			                  (
 			                    :paramLocale
 			                    , 'ar', GV.A_ABR_GVAL
 			                    ,      GV.L_ABR_GVAL
-			                  )                                                   AS      GRADE
+			                  )                                                   		AS      GRADE
+                  
 			            
 			FROM
-			            GRADE_VAL            GV
-			         ,  STD_GRADES           GRADES
-			         ,  CRS_BASIC           CRS
+			           GRADE_VAL           GV
+			        ,  STD_GRADES          GRADES
+			        ,  CRS_BASIC           CRS
+               		,  SCHED_WEEKLY        SCHED
+               		,  V_STDINFO_PORTAL    VSP
 			         
 			WHERE
 			
-			      GRADES.STDNO = :paramStdNo
-			      AND GRADES.CCYRCD=:paramYear
-			      AND GRADES.SEMCD=:paramSem
-			      AND GV.GRADECD  = GRADES.GRADECD
-			      AND CRS.CRSNO = GRADES.CRSNO	
+                	VSP.STD_ID = :paramStdId
+			      	AND GRADES.CCYRCD=:paramYear
+			     	AND GRADES.SEMCD=:paramSem
+            	AND GRADES.STDNO = VSP.STDNO
+            	AND VSP.ACTIVE  = 'Y'
+			    AND GV.GRADECD  = GRADES.GRADECD
+			    AND CRS.CRSNO = GRADES.CRSNO	
+            	AND SCHED.CRSNO = GRADES.CRSNO
+            	AND SCHED.SECTNO = GRADES.SECTNO
+            	AND SCHED.CRSNO = CRS.CRSNO
+            	AND FACSURNMCD  IS NOT NULL
+            	AND FACSURNMCD = :paramEmpNo
+            	AND (
+                		GRADES.L_ABR_CRSNO  = :paramLAbrCrsNo
+                		OR :paramLAbrCrsNo IS NULL
+               		)
 	</entry>
 	<entry key="dps.grades.update.grade">
 		UPDATE

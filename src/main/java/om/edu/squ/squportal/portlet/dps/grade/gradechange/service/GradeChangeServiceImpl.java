@@ -29,11 +29,49 @@
  */
 package om.edu.squ.squportal.portlet.dps.grade.gradechange.service;
 
+import java.util.List;
+import java.util.Locale;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.GradeDTO;
+import om.edu.squ.squportal.portlet.dps.grade.gradechange.db.GradeChangeDBDao;
+
 /**
  * @author Bhabesh
  *
  */
 public class GradeChangeServiceImpl implements GradeChangeService
 {
+	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	@Autowired
+	GradeChangeDBDao	gradeChangeDBDao;
+	
+	/**
+	 * 
+	 * method name  : getStudentGrades
+	 * @param studentNo
+	 * @param gradeYear
+	 * @param semester
+	 * @param employeeNo
+	 * @param locale
+	 * @return
+	 * GradeChangeDBImpl
+	 * return type  : List<GradeDTO>
+	 * 
+	 * purpose		:	Grade list of a student for a particular year, semester, instructor
+	 *
+	 * Date    		:	Nov 15, 2017 10:08:43 AM
+	 */
+	public List<GradeDTO>	getStudentGrades(String studentNo, String gradeYear, String semester, String employeeNo, Locale locale)
+	{
+		return gradeChangeDBDao.getStudentGrades(studentNo, gradeYear, semester, employeeNo, locale);
+	}
+	
+	
+	
 	
 }

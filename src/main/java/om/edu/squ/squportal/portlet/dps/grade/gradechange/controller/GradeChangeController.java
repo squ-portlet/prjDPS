@@ -29,9 +29,13 @@
  */
 package om.edu.squ.squportal.portlet.dps.grade.gradechange.controller;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 
+import javax.crypto.NoSuchPaddingException;
 import javax.portlet.PortletRequest;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.User;
@@ -48,7 +52,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 /**
  * @author Bhabesh
@@ -68,6 +74,7 @@ public class GradeChangeController
 	private	String welcome(PortletRequest request, Model model, Locale locale) throws NotCorrectDBRecordException
 	{
 		User	user	=	dpsServiceDao.getUser(request);
+		
 		/**** Security - data encryption keys *****/
 		model.addAttribute("cryptoIterationCount", Crypto.CRYPTO_ITERATION_COUNT);
 		model.addAttribute("cryptoKeySize", Crypto.CRYPTO_KEY_SIZE);
@@ -82,10 +89,27 @@ public class GradeChangeController
 		{
 			return approverWelcome(request,model,locale);
 		}
+		
+		
+		
+		
 	}
 	
 	
-	
+	/**
+	 * 
+	 * method name  : approverWelcome
+	 * @param request
+	 * @param model
+	 * @param locale
+	 * @return
+	 * GradeChangeController
+	 * return type  : String
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Nov 15, 2017 10:26:16 AM
+	 */
 	private String approverWelcome(PortletRequest request, Model model, Locale locale)
 	{
 		Employee employee	=	null;
@@ -105,6 +129,8 @@ public class GradeChangeController
 		
 		return "/grade/gradechange/approver/welcomeGradeChangeApprover";
 	}
+	
+	
 	@ResourceMapping(value="resourceAjaxGetStudentGrades")
 	private	void getStudentGrades(@ModelAttribute("gradeChangeModel") GradeChangeModel gradeChangeModel, ResourceRequest request, ResourceResponse response, Locale locale) 
 	{
@@ -112,5 +138,6 @@ public class GradeChangeController
 				
 		logger.info("studentId : "+studentId);
 	}
+	
 	
 }
