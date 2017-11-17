@@ -32,6 +32,7 @@ package om.edu.squ.squportal.portlet.dps.grade.gradechange.db;
 import java.util.List;
 import java.util.Locale;
 
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.GradeDTO;
 
 /**
@@ -43,9 +44,7 @@ public interface GradeChangeDBDao
 	/**
 	 * 
 	 * method name  : getStudentGrades
-	 * @param studentNo
-	 * @param gradeYear
-	 * @param semester
+	 * @param gradeDTO TODO
 	 * @param employeeNo
 	 * @param locale
 	 * @return
@@ -55,6 +54,7 @@ public interface GradeChangeDBDao
 	 * purpose		:	Grade list of a student for a particular year, semester, instructor
 	 *
 	 * Date    		:	Nov 15, 2017 10:08:43 AM
+	 * @throws NoDBRecordException 
 	 */
-	public List<GradeDTO>	getStudentGrades(String studentNo, String gradeYear, String semester, String employeeNo, Locale locale);
+	public List<GradeDTO>	getStudentGrades(GradeDTO gradeDTO, String employeeNo, Locale locale) throws NoDBRecordException;
 }

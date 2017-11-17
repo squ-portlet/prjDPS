@@ -36,8 +36,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
+import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.Course;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.GradeDTO;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.db.GradeChangeDBDao;
+import om.edu.squ.squportal.portlet.dps.grade.gradechange.model.GradeChangeModel;
 
 /**
  * @author Bhabesh
@@ -53,9 +56,6 @@ public class GradeChangeServiceImpl implements GradeChangeService
 	/**
 	 * 
 	 * method name  : getStudentGrades
-	 * @param studentNo
-	 * @param gradeYear
-	 * @param semester
 	 * @param employeeNo
 	 * @param locale
 	 * @return
@@ -65,10 +65,22 @@ public class GradeChangeServiceImpl implements GradeChangeService
 	 * purpose		:	Grade list of a student for a particular year, semester, instructor
 	 *
 	 * Date    		:	Nov 15, 2017 10:08:43 AM
+	 * @throws NoDBRecordException 
 	 */
-	public List<GradeDTO>	getStudentGrades(String studentNo, String gradeYear, String semester, String employeeNo, Locale locale)
+	public List<GradeDTO>	getStudentGrades(String employeeNo, Locale locale, GradeChangeModel gradeChangeModel) throws NoDBRecordException
 	{
-		return gradeChangeDBDao.getStudentGrades(studentNo, gradeYear, semester, employeeNo, locale);
+
+		GradeDTO	dto		=	new GradeDTO();
+		Course		course	=	new Course();
+		
+		dto.setStudentId(gradeChangeModel.getStudentId());
+		dto.setCourseYear(gradeChangeModel.getCourseYear());
+		dto.setSemester(gradeChangeModel.getSemCode());
+		
+		course.setlAbrCourseNo(gradeChangeModel.getlAbrCrsNo());
+		dto.setCourse(course);
+		
+		return gradeChangeDBDao.getStudentGrades(dto, employeeNo, locale);
 	}
 	
 	

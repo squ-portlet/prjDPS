@@ -29,7 +29,9 @@
  */
 package om.edu.squ.squportal.portlet.dps.grade.gradechange.controller;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.Locale;
 
 import javax.crypto.NoSuchPaddingException;
@@ -39,10 +41,13 @@ import javax.portlet.ResourceResponse;
 
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.User;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
+import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.GradeDTO;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.model.GradeChangeModel;
+import om.edu.squ.squportal.portlet.dps.grade.gradechange.service.GradeChangeService;
 import om.edu.squ.squportal.portlet.dps.security.Crypto;
 import om.edu.squ.squportal.portlet.dps.security.CryptoAES;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
@@ -56,6 +61,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
+import com.google.gson.Gson;
+
 /**
  * @author Bhabesh
  *
@@ -66,7 +73,9 @@ public class GradeChangeController
 {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
-	DpsServiceDao	dpsServiceDao;
+	DpsServiceDao		dpsServiceDao;
+	@Autowired
+	GradeChangeService	gradeChangeService;
 	@Autowired
 	Crypto			crypto;
 	
@@ -130,13 +139,37 @@ public class GradeChangeController
 		return "/grade/gradechange/approver/welcomeGradeChangeApprover";
 	}
 	
-	
+	/**
+	 * 
+	 * method name  : getStudentGrades
+	 * @param gradeChangeModel
+	 * @param request
+	 * @param response
+	 * @param locale
+	 * @throws IOException
+	 * GradeChangeController
+	 * return type  : void
+	 * 
+	 * purpose		: 
+	 *
+	 * Date    		:	Nov 16, 2017 4:23:46 PM
+	 */
 	@ResourceMapping(value="resourceAjaxGetStudentGrades")
-	private	void getStudentGrades(@ModelAttribute("gradeChangeModel") GradeChangeModel gradeChangeModel, ResourceRequest request, ResourceResponse response, Locale locale) 
+	private	void getStudentGrades(@ModelAttribute("gradeChangeModel") GradeChangeModel gradeChangeModel, ResourceRequest request, ResourceResponse response, Locale locale) throws IOException 
 	{
-		String studentId		=	crypto.decrypt(gradeChangeModel.getSalt(), gradeChangeModel.getFour(),  gradeChangeModel.getStudentId());
-				
-		logger.info("studentId : "+studentId);
+		Gson		gson		= 	new Gson();
+		String 			studentId		=	crypto.decrypt(gradeChangeModel.getSalt(), gradeChangeModel.getFour(),  gradeChangeModel.getStudentId());
+		gradeChangeModel.setStudentId(studentId);
+		try
+		{
+			List<GradeDTO> 	gradeList		=	gradeChangeService.getStudentGrades(dpsServiceDao.getEmpNumber(request), locale, gradeChangeModel);	
+			
+			response.getWriter().print(gson.toJson(gradeList));
+		}
+		catch(NoDBRecordException ex)
+		{
+			response.getWriter().print(gson.toJson(""));
+		}
 	}
 	
 	

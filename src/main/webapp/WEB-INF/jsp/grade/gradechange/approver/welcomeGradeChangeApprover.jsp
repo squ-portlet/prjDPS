@@ -48,15 +48,7 @@
 		</div>
 		
 		<div class="col-sm-6">
-			<table id="tblGradeList" class="table table-striped table-bordered dt-responsive collapsed ">
-				<tr>
-					<th><spring:message code="prop.dps.gradechange.course.code"/></th>
-					<th><spring:message code="prop.dps.gradechange.section"/></th>
-					<th><spring:message code="prop.dps.gradechange.grade.code.existing"/></th>
-					<th><spring:message code="prop.dps.gradechange.grade.code.new"/></th>
-					<th><spring:message code="prop.dps.gradechange.action"/></th>
-				</tr>
-			</table>			
+			<div id="divGradeList"></div>
 		</div>
 	</div>
 	
@@ -77,5 +69,27 @@
 	</div>
 	
 </div>
+
+
+<script id="hbGradeList" type="text/x-handlebars-template">
+			<table id="tblGradeList" class="table table-striped table-bordered dt-responsive collapsed ">
+				<tr>
+					<th><spring:message code="prop.dps.gradechange.course.code"/></th>
+					<th><spring:message code="prop.dps.gradechange.section"/></th>
+					<th><spring:message code="prop.dps.gradechange.grade.code.existing"/></th>
+					<th><spring:message code="prop.dps.gradechange.grade.code.new"/></th>
+					<th><spring:message code="prop.dps.gradechange.action"/></th>
+				</tr>
+				{{#each .}}
+					<tr>
+						<td>{{course.lAbrCourseNo}}</td>
+						<td>{{sectionNo}}</td>
+						<td>{{grade.gradeVal}}</td>
+						<td>{{}}</td>
+						<td>{{}}</td>
+					</tr>
+				{{/each}}
+			</table>
+</script>
 
 

@@ -35,9 +35,118 @@ package om.edu.squ.squportal.portlet.dps.grade.gradechange.bo;
  */
 public class GradeDTO
 {
+	private		String	studentId;
+	private		String	studentNo;
+	private		String	stdStatCode;
+	private		String	courseYear;
+	private		String	semester;
+	
 	private		Course	course;
 	private		String	sectionNo;
 	private		Grade	grade;
+	
+	
+	/**
+	 * Getter Method	: getStudentId
+	 * @return the studentId
+	 * 
+	 * Date				: Nov 16, 2017
+	 */
+	public String getStudentId()
+	{
+		return this.studentId;
+	}
+	/**
+	 * Setter method : setStudentId
+	 * @param studentId the studentId to set
+	 * 
+	 * Date          : Nov 16, 2017 10:42:55 AM
+	 */
+	public void setStudentId(String studentId)
+	{
+		this.studentId = studentId;
+	}
+	/**
+	 * Getter Method	: getStudentNo
+	 * @return the studentNo
+	 * 
+	 * Date				: Nov 16, 2017
+	 */
+	public String getStudentNo()
+	{
+		return this.studentNo;
+	}
+	/**
+	 * Setter method : setStudentNo
+	 * @param studentNo the studentNo to set
+	 * 
+	 * Date          : Nov 16, 2017 10:33:26 AM
+	 */
+	public void setStudentNo(String studentNo)
+	{
+		this.studentNo = studentNo;
+	}
+	
+	/**
+	 * Getter Method	: getStdStatCode
+	 * @return the stdStatCode
+	 * 
+	 * Date				: Nov 16, 2017
+	 */
+	public String getStdStatCode()
+	{
+		return this.stdStatCode;
+	}
+	/**
+	 * Setter method : setStdStatCode
+	 * @param stdStatCode the stdStatCode to set
+	 * 
+	 * Date          : Nov 16, 2017 10:43:11 AM
+	 */
+	public void setStdStatCode(String stdStatCode)
+	{
+		this.stdStatCode = stdStatCode;
+	}
+	/**
+	 * Getter Method	: getCourseYear
+	 * @return the courseYear
+	 * 
+	 * Date				: Nov 16, 2017
+	 */
+	public String getCourseYear()
+	{
+		return this.courseYear;
+	}
+	/**
+	 * Setter method : setCourseYear
+	 * @param courseYear the courseYear to set
+	 * 
+	 * Date          : Nov 16, 2017 10:33:27 AM
+	 */
+	public void setCourseYear(String courseYear)
+	{
+		this.courseYear = courseYear;
+	}
+	/**
+	 * Getter Method	: getSemester
+	 * @return the semester
+	 * 
+	 * Date				: Nov 16, 2017
+	 */
+	public String getSemester()
+	{
+		return this.semester;
+	}
+	/**
+	 * Setter method : setSemester
+	 * @param semester the semester to set
+	 * 
+	 * Date          : Nov 16, 2017 10:33:27 AM
+	 */
+	public void setSemester(String semester)
+	{
+		this.semester = semester;
+	}
 	/**
 	 * Getter Method	: getCourse
 	 * @return the course
@@ -104,7 +213,10 @@ public class GradeDTO
 	@Override
 	public String toString()
 	{
-		return "GradeDTO [course=" + this.course + ", sectionNo="
+		return "GradeDTO [studentId=" + this.studentId + ", studentNo="
+				+ this.studentNo + ", stdStatCode=" + this.stdStatCode
+				+ ", courseYear=" + this.courseYear + ", semester="
+				+ this.semester + ", course=" + this.course + ", sectionNo="
 				+ this.sectionNo + ", grade=" + this.grade + "]";
 	}
 	

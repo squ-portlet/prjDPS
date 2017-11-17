@@ -44,7 +44,8 @@
 						data	:	gradeChangeModel,
 						success	:	function(data)
 						{
-							
+							var gradeDTOs	=	JSON.parse(data); 
+							 hbDataLoadAction(gradeDTOs, '#hbGradeList', '#divGradeList');
 						},
 						error	:	function(xhr, status,  error)
 						{
@@ -54,7 +55,22 @@
 				});
 			
 		});
-		
+
+	
+	/* Filling data using handlebar template*/
+	function hbDataLoadAction(dataJson, hbTemplateId, divId)
+	{
+		if ($.trim(dataJson))
+			{
+			var theAlertTemplate=$(hbTemplateId).html();
+			var template = Handlebars.compile(theAlertTemplate);
+			$(divId).html(template(dataJson));
+			}
+		return true;
+	}
+	
+	
+	
 		
 	});
 </script>

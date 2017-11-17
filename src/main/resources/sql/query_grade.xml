@@ -19,14 +19,27 @@
 			                    , 'ar', GV.A_ABR_GVAL
 			                    ,      GV.L_ABR_GVAL
 			                  )                                                   		AS      GRADE
+                , (
+                    SELECT 
+                          COUNT(SCHEDW.FACSURNMCD)
+                    FROM 
+                            SCHED_WEEKLY        SCHEDW
+                          , SECT_DAGR           SECTDGR
+                    WHERE
+                              SCHEDW.SECTCD= SECTDGR.SECTCD 
+                          AND SCHEDW.FACSURNMCD = :paramEmpNo
+                          AND SECTDGR.CCYRCD = :paramYear
+                          AND SECTDGR.SEMCD = :paramSem
+                          AND SECTDGR.L_ABR_CRSNO = GRADES.L_ABR_CRSNO
+                )                                                               AS EMP_COUNT
                   
 			            
 			FROM
 			           GRADE_VAL           GV
 			        ,  STD_GRADES          GRADES
 			        ,  CRS_BASIC           CRS
-               		,  SCHED_WEEKLY        SCHED
-               		,  V_STDINFO_PORTAL    VSP
+
+           		,  V_STDINFO_PORTAL    VSP
 			         
 			WHERE
 			
@@ -37,11 +50,7 @@
             	AND VSP.ACTIVE  = 'Y'
 			    AND GV.GRADECD  = GRADES.GRADECD
 			    AND CRS.CRSNO = GRADES.CRSNO	
-            	AND SCHED.CRSNO = GRADES.CRSNO
-            	AND SCHED.SECTNO = GRADES.SECTNO
-            	AND SCHED.CRSNO = CRS.CRSNO
-            	AND FACSURNMCD  IS NOT NULL
-            	AND FACSURNMCD = :paramEmpNo
+
             	AND (
                 		GRADES.L_ABR_CRSNO  = :paramLAbrCrsNo
                 		OR :paramLAbrCrsNo IS NULL

@@ -37,6 +37,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.Course;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.Grade;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.GradeDTO;
@@ -44,6 +45,7 @@ import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
@@ -94,9 +96,6 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 	/**
 	 * 
 	 * method name  : getStudentGrades
-	 * @param studentNo
-	 * @param gradeYear
-	 * @param semester
 	 * @param employeeNo
 	 * @param locale
 	 * @return
@@ -107,8 +106,9 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 	 *
 	 * Date    		:	Nov 15, 2017 10:08:43 AM
 	 */
-	public List<GradeDTO>	getStudentGrades(String studentNo, String gradeYear, String semester, String employeeNo, Locale locale)
+	public List<GradeDTO>	getStudentGrades(GradeDTO gradeDTO, String employeeNo, Locale locale) throws NoDBRecordException
 	{
+
 		String	SQL_GRADE_CHANGE_STUDENT_LIST_OF_EXISTING_GRADE	=	queryGradeChange.getProperty(Constants.CONST_SQL_GRADE_CHANGE_STUDENT_LIST_OF_EXISTING_GRADE);
 		
 		RowMapper<GradeDTO> rowMapper	=	new RowMapper<GradeDTO>()
@@ -137,13 +137,32 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 		};
 		
 		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
-		namedParameterMap.put("paramStdNo", studentNo);
-		namedParameterMap.put("paramYear", gradeYear);
-		namedParameterMap.put("paramSem", semester);
+		namedParameterMap.put("paramStdId", gradeDTO.getStudentId());
+		namedParameterMap.put("paramYear", gradeDTO.getCourseYear());
+		namedParameterMap.put("paramSem", gradeDTO.getSemester());
 		namedParameterMap.put("paramEmpNo", employeeNo);
+		if(null == gradeDTO.getCourse().getlAbrCourseNo() || gradeDTO.getCourse().getlAbrCourseNo().trim().equals(""))
+		{
+			namedParameterMap.put("paramLAbrCrsNo",null);
+		}
+		else
+		{
+			namedParameterMap.put("paramLAbrCrsNo", gradeDTO.getCourse().getlAbrCourseNo());
+		}
 		namedParameterMap.put("paramLocale", locale.getLanguage());
 		
-		return nPJdbcTemplDpsGradeChange.query(SQL_GRADE_CHANGE_STUDENT_LIST_OF_EXISTING_GRADE, namedParameterMap, rowMapper);
+		logger.info("namedParameterMap : "+namedParameterMap);
+		logger.info("result : "+nPJdbcTemplDpsGradeChange.query(SQL_GRADE_CHANGE_STUDENT_LIST_OF_EXISTING_GRADE, namedParameterMap, rowMapper));
+		
+		try
+		{
+			return nPJdbcTemplDpsGradeChange.query(SQL_GRADE_CHANGE_STUDENT_LIST_OF_EXISTING_GRADE, namedParameterMap, rowMapper);
+		}
+		catch(UncategorizedSQLException sqlEx)
+		{
+			logger.error("Error occur to find to find grade records for student id:  {} and instructor: {} ",gradeDTO.getStudentId(), employeeNo);
+			throw new NoDBRecordException(sqlEx.getMessage());
+		}
 		
 	}
 	
