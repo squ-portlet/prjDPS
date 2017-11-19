@@ -38,6 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.Course;
+import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.Grade;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.GradeDTO;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.db.GradeChangeDBDao;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.model.GradeChangeModel;
@@ -85,5 +86,43 @@ public class GradeChangeServiceImpl implements GradeChangeService
 	
 	
 	
+	/**
+	 * 
+	 * method name  : getGrades
+	 * @param locale
+	 * @return
+	 * GradeChangeDBImpl
+	 * return type  : List<Grade>
+	 * 
+	 * purpose		: list of all grade values
+	 *
+	 * Date    		:	Nov 19, 2017 1:44:54 PM
+	 */
+	public List<Grade> getGrades(Locale locale)
+	{
+		return gradeChangeDBDao.getGrades(locale);
+	}
+	
+	/**
+	 * 
+	 * method name  : getGradeHistory
+	 * @param gradeChangeModelHistory
+	 * @param locale
+	 * @return
+	 * GradeChangeService
+	 * return type  : List<GradeDTO>
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Nov 19, 2017 4:53:00 PM
+	 * @throws NoDBRecordException 
+	 */
+	public List<GradeDTO> getGradeHistory(GradeChangeModel gradeChangeModelHistory, Locale locale) throws NoDBRecordException
+	{
+		GradeDTO	dto		=	new GradeDTO();
+		dto.setStudentId(gradeChangeModelHistory.getStudentId());
+		dto.setCourseYear(gradeChangeModelHistory.getCourseYear());
+		return gradeChangeDBDao.getGradeHistory(dto, locale);
+	}
 	
 }

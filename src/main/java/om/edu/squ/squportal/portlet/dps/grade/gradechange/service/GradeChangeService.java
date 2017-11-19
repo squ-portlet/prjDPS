@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Locale;
 
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
+import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.Grade;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.GradeDTO;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.model.GradeChangeModel;
 
@@ -58,4 +59,35 @@ public interface GradeChangeService
 	 * @throws NoDBRecordException 
 	 */
 	public List<GradeDTO>	getStudentGrades(String employeeNo, Locale locale, GradeChangeModel gradeChangeModel) throws NoDBRecordException;
+	
+	
+	/**
+	 * 
+	 * method name  : getGrades
+	 * @param locale
+	 * @return
+	 * GradeChangeDBImpl
+	 * return type  : List<Grade>
+	 * 
+	 * purpose		: list of all grade values
+	 *
+	 * Date    		:	Nov 19, 2017 1:44:54 PM
+	 */
+	public List<Grade> getGrades(Locale locale);
+	
+	/**
+	 * 
+	 * method name  : getGradeHistory
+	 * @param gradeChangeModelHistory
+	 * @param locale
+	 * @return
+	 * GradeChangeService
+	 * return type  : List<GradeDTO>
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Nov 19, 2017 4:53:00 PM
+	 * @throws NoDBRecordException 
+	 */
+	public List<GradeDTO> getGradeHistory(GradeChangeModel gradeChangeModelHistory, Locale locale) throws NoDBRecordException;
 }

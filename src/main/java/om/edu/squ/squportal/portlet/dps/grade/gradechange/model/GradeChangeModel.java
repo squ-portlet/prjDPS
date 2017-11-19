@@ -39,6 +39,9 @@ public class GradeChangeModel
 	private	String	courseYear;
 	private	String	semCode;
 	private	String	lAbrCrsNo;
+	private	String	gradeValNew;
+
+	/* Security cipher */
 	private	String	salt;
 	private	String	four;
 	
@@ -125,6 +128,26 @@ public class GradeChangeModel
 	}
 	
 	/**
+	 * Getter Method	: getGradeValNew
+	 * @return the gradeValNew
+	 * 
+	 * Date				: Nov 19, 2017
+	 */
+	public String getGradeValNew()
+	{
+		return this.gradeValNew;
+	}
+	/**
+	 * Setter method : setGradeValNew
+	 * @param gradeValNew the gradeValNew to set
+	 * 
+	 * Date          : Nov 19, 2017 1:49:31 PM
+	 */
+	public void setGradeValNew(String gradeValNew)
+	{
+		this.gradeValNew = gradeValNew;
+	}
+	/**
 	 * Getter Method	: getSalt
 	 * @return the salt
 	 * 
@@ -172,7 +195,9 @@ public class GradeChangeModel
 	{
 		return "GradeChangeModel [studentId=" + this.studentId
 				+ ", courseYear=" + this.courseYear + ", semCode="
-				+ this.semCode + ", lAbrCrsNo=" + this.lAbrCrsNo + "]";
+				+ this.semCode + ", lAbrCrsNo=" + this.lAbrCrsNo
+				+ ", gradeValNew=" + this.gradeValNew + ", salt=" + this.salt
+				+ ", four=" + this.four + "]";
 	}
 	
 	

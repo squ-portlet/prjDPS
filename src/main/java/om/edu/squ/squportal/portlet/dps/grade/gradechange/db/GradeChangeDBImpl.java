@@ -130,7 +130,7 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 				gradeDTO.setSectionNo(rs.getString(Constants.CONST_COLMN_SECTION_NO));
 				
 				gradeDTO.setCourse(course);
-				gradeDTO.setCourse(course);
+				gradeDTO.setGrade(grade);
 				
 				return gradeDTO;
 			}
@@ -166,7 +166,97 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 		
 	}
 	
+	/**
+	 * 
+	 * method name  : getGrades
+	 * @param locale
+	 * @return
+	 * GradeChangeDBImpl
+	 * return type  : List<Grade>
+	 * 
+	 * purpose		: list of all grade values
+	 *
+	 * Date    		:	Nov 19, 2017 1:44:54 PM
+	 */
+	public List<Grade> getGrades(Locale locale)
+	{
+		String	SQL_GRADE_VALUE_LIST		=	queryGradeChange.getProperty(Constants.CONST_SQL_GRADE_VALUE_LIST);
+		RowMapper<Grade> rowMapper			=	new RowMapper<Grade>()
+		{
+			
+			@Override
+			public Grade mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				Grade	grade	=	new Grade();
+				grade.setGradeCode(rs.getInt(Constants.CONST_COLMN_GRADE_CODE));
+				grade.setGradeVal(rs.getString(Constants.CONST_COLMN_GRADE_VAL));
+				return grade;
+			}
+		};
+		
+		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+		namedParameterMap.put("paramLocale", locale.getLanguage());
+		
+		return nPJdbcTemplDpsGradeChange.query(SQL_GRADE_VALUE_LIST, namedParameterMap, rowMapper);
+	}
 	
+	/**
+	 * 
+	 * method name  : getGradeHistory
+	 * @param dto
+	 * @param locale
+	 * @return
+	 * GradeChangeDBImpl
+	 * return type  : List<GradeDTO>
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Nov 19, 2017 4:36:02 PM
+	 * @throws NoDBRecordException 
+	 */
+	public List<GradeDTO> getGradeHistory(GradeDTO dto, Locale locale) throws NoDBRecordException
+	{
+		String					SQL_GRADE_SELECT_HISORY	=	queryGradeChange.getProperty(Constants.CONST_SQL_GRADE_SELECT_HISORY);
+		RowMapper<GradeDTO> 	rowMapper				=	new RowMapper<GradeDTO>()
+		{
+			
+			@Override
+			public GradeDTO mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				GradeDTO	gradeDto	=	new GradeDTO();
+				Course		course		=	new Course();
+				Grade		grade		=	new Grade();
+				
+				course.setlAbrCourseNo(rs.getString(Constants.CONST_COLMN_L_ABR_CRSNO));
+				
+				grade.setGradeValOld(rs.getString(Constants.CONST_COLMN_GRADE_VAL_OLD));
+				grade.setGradeValNew(rs.getString(Constants.CONST_COLMN_GRADE_VAL_NEW));
+				
+				gradeDto.setSectionNo(rs.getString(Constants.CONST_COLMN_SECTION_NO));
+				gradeDto.setCourse(course);
+				
+				gradeDto.setGrade(grade);
+				
+				return gradeDto;
+			}
+		};	
+	
+		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+		namedParameterMap.put("paramStdId", dto.getStudentId());
+		namedParameterMap.put("paramYear", dto.getCourseYear());
+		namedParameterMap.put("paramLocale", locale.getLanguage());
+		
+		
+		try
+		{
+			return nPJdbcTemplDpsGradeChange.query(SQL_GRADE_SELECT_HISORY, namedParameterMap, rowMapper);
+		}
+		catch(UncategorizedSQLException sqlEx)
+		{
+			logger.error("Error occur to find to find grade change history records for student id:  {} ",dto.getStudentId());
+			throw new NoDBRecordException(sqlEx.getMessage());
+		}
+	}
 	
 	
 }

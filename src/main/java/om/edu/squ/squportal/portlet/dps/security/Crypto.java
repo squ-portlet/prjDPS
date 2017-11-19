@@ -38,7 +38,7 @@ public interface Crypto
 	
 	public 	static 	final	int		CRYPTO_ITERATION_COUNT	=	1000;
 	public 	static 	final	int		CRYPTO_KEY_SIZE			=	128;
-	public	static	final	String	CRYPTO_PASSCODE			=	"abcdef";
+	public	static	final	String	CRYPTO_PASSCODE			=	"8639fbf762977d8c4f49ecb96b1e368e";
 	
 	
     /**

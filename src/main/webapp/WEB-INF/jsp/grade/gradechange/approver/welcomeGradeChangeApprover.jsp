@@ -53,23 +53,12 @@
 	</div>
 	
 	<div class="row">
-		<table id="tblGradeListApproval" class="table table-striped table-bordered dt-responsive  collapsed ">
-				<tr>
-					<th><spring:message code="prop.dps.gradechange.course.code"/></th>
-					<th><spring:message code="prop.dps.gradechange.section"/></th>
-					<th><spring:message code="prop.dps.gradechange.grade.code.existing"/></th>
-					<th><spring:message code="prop.dps.gradechange.grade.code.new"/></th>
-					<th><spring:message code="prop.dps.gradechange.hod"/></th>
-					<th><spring:message code="prop.dps.gradechange.dean.asst"/></th>
-					<th><spring:message code="prop.dps.gradechange.dean.dps"/></th>
-				</tr>
-		</table>
-	
-	
+		<div id="divGradeChangeHistory">
+		
+		</div>
 	</div>
 	
 </div>
-
 
 <script id="hbGradeList" type="text/x-handlebars-template">
 			<table id="tblGradeList" class="table table-striped table-bordered dt-responsive collapsed ">
@@ -81,15 +70,49 @@
 					<th><spring:message code="prop.dps.gradechange.action"/></th>
 				</tr>
 				{{#each .}}
+					
 					<tr>
 						<td>{{course.lAbrCourseNo}}</td>
 						<td>{{sectionNo}}</td>
 						<td>{{grade.gradeVal}}</td>
-						<td>{{}}</td>
-						<td>{{}}</td>
+						<td>
+								<select id="gradeValNew" class="input-small">
+									<option value=""><spring:message code="prop.dps.gradechange.select"/><option>
+									<c:forEach items="${grades}" var="grade">
+										<option value="${grade.gradeCode}">${grade.gradeVal}</option>
+									</c:forEach>
+								</select>
+						
+						</td>
+						<td></td>
 					</tr>
 				{{/each}}
 			</table>
 </script>
 
+
+<script id="hbGradeChangeHistory" type="text/x-handlebars-template">
+		<table id="tblGradeChangeHistory" class="table table-striped table-bordered dt-responsive  collapsed ">
+				<tr>
+					<th><spring:message code="prop.dps.gradechange.course.code"/></th>
+					<th><spring:message code="prop.dps.gradechange.section"/></th>
+					<th><spring:message code="prop.dps.gradechange.grade.code.existing"/></th>
+					<th><spring:message code="prop.dps.gradechange.grade.code.new"/></th>
+					<th><spring:message code="prop.dps.gradechange.hod"/></th>
+					<th><spring:message code="prop.dps.gradechange.dean.asst"/></th>
+					<th><spring:message code="prop.dps.gradechange.dean.dps"/></th>
+				</tr>
+			{{#each .}}
+					<tr>
+						<td>{{course.lAbrCourseNo}}</td>
+						<td>{{sectionNo}}</td>
+						<td>{{grade.gradeValOld}}</td>
+						<td>{{grade.gradeValNew}}</td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+			{{/each}}
+		</table>
+</script>
 

@@ -5,6 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <portlet:resourceURL id="resourceAjaxGetStudentGrades" var="varResourceAjaxGetStudentGrades"/>
+<portlet:resourceURL id="resourceAjaxGetStudentGradesChangeHistory" var="varResourceAjaxGetStudentGradesChangeHistory"/>
 
 <script type="text/javascript">
 	$(function() {
@@ -53,6 +54,26 @@
 						}
 					
 				});
+		
+			
+			$.ajax({
+				url		:	"${varResourceAjaxGetStudentGradesChangeHistory}",
+				type	:	'POST',
+				cache	:	false,
+				data	:	gradeChangeModel,
+				success	:	function(data)
+				{
+					var gradeDTOs	=	JSON.parse(data); 
+					 hbDataLoadAction(gradeDTOs, '#hbGradeChangeHistory', '#divGradeChangeHistory');
+				},
+				error	:	function(xhr, status,  error)
+				{
+					
+				}
+			
+		});
+			
+			
 			
 		});
 

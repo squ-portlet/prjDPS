@@ -136,6 +136,8 @@ public class GradeChangeController
 		model.addAttribute("appApprove", Constants.CONST_SQL_STATUS_CODE_ACCPT);
 		model.addAttribute("appRecect", Constants.CONST_SQL_STATUS_CODE_REJCT);
 		
+		model.addAttribute("grades", gradeChangeService.getGrades(locale));
+		
 		return "/grade/gradechange/approver/welcomeGradeChangeApprover";
 	}
 	
@@ -170,6 +172,48 @@ public class GradeChangeController
 		{
 			response.getWriter().print(gson.toJson(""));
 		}
+	}
+	
+	/**
+	 * 
+	 * method name  : getStudentGradeChangeHistory
+	 * @param gradeChangeModelHistory
+	 * @param request
+	 * @param response
+	 * @param locale
+	 * GradeChangeController
+	 * return type  : void
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Nov 19, 2017 4:46:59 PM
+	 * @throws IOException 
+	 */
+	@ResourceMapping(value="resourceAjaxGetStudentGradesChangeHistory")	
+	private void getStudentGradeChangeHistory
+											(
+													@ModelAttribute("gradeChangeModelHistory") GradeChangeModel gradeChangeModelHistory
+												,	ResourceRequest request
+												, 	ResourceResponse response
+												, 	Locale locale
+											) throws IOException
+	{
+		Gson		gson		= 	new Gson();
+		String 			studentId		=	crypto.decrypt(gradeChangeModelHistory.getSalt(), gradeChangeModelHistory.getFour(),  gradeChangeModelHistory.getStudentId());
+		
+		gradeChangeModelHistory.setStudentId(studentId);
+		
+		try
+		{
+			List<GradeDTO> 	gradeChangeList		=	gradeChangeService.getGradeHistory(gradeChangeModelHistory, locale);	
+			
+			response.getWriter().print(gson.toJson(gradeChangeList));
+		}
+		catch(NoDBRecordException ex)
+		{
+			response.getWriter().print(gson.toJson(""));
+		}
+		
 	}
 	
 	

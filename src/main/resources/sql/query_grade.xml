@@ -18,7 +18,7 @@
 			                    :paramLocale
 			                    , 'ar', GV.A_ABR_GVAL
 			                    ,      GV.L_ABR_GVAL
-			                  )                                                   		AS      GRADE
+			                  )                                                   		AS      GRADE_VAL
                 , (
                     SELECT 
                           COUNT(SCHEDW.FACSURNMCD)
@@ -31,7 +31,7 @@
                           AND SECTDGR.CCYRCD = :paramYear
                           AND SECTDGR.SEMCD = :paramSem
                           AND SECTDGR.L_ABR_CRSNO = GRADES.L_ABR_CRSNO
-                )                                                               AS EMP_COUNT
+                )                                                               		AS EMP_COUNT
                   
 			            
 			FROM
@@ -44,8 +44,8 @@
 			WHERE
 			
                 	VSP.STD_ID = :paramStdId
-			      	AND GRADES.CCYRCD=:paramYear
-			     	AND GRADES.SEMCD=:paramSem
+			    AND GRADES.CCYRCD=:paramYear
+			    AND GRADES.SEMCD=:paramSem
             	AND GRADES.STDNO = VSP.STDNO
             	AND VSP.ACTIVE  = 'Y'
 			    AND GV.GRADECD  = GRADES.GRADECD
@@ -55,6 +55,57 @@
                 		GRADES.L_ABR_CRSNO  = :paramLAbrCrsNo
                 		OR :paramLAbrCrsNo IS NULL
                		)
+	</entry>
+	<entry key="dps.grades.select.grade.values">
+		SELECT
+		          GV.GRADECD                          AS  GRADE_CODE
+		       ,  DECODE
+		                (
+		                  :paramLocale
+		                  , 'ar', GV.A_ABR_GVAL
+		                  , GV.L_ABR_GVAL
+		                )                             AS  GRADE_VAL
+		FROM  
+		      GRADE_VAL GV
+		
+		ORDER BY GRADE_VAL	
+	</entry>
+	<entry key="dps.grades.select.grade.change.history">
+		SELECT 
+		          TGRADE.L_ABR_CRSNO					AS    	L_ABR_CRSNO
+		      ,   TGRADE.SECTNO							AS		SECTION_NO
+		      ,   (
+		              SELECT
+		                    DECODE
+		                    (
+		                        'ar', A_ABR_GVAL
+		                      , L_ABR_GVAL
+		                    )
+		              FROM
+		                    GRADE_VAL
+		              WHERE
+		                    GRADECD = GRADECD_OLD
+		          )										AS		GRADE_VAL_NEW
+		      ,   (
+		              SELECT
+		                    DECODE
+		                    (
+		                        'ar', A_ABR_GVAL
+		                      , L_ABR_GVAL
+		                    )
+		              FROM
+		                    GRADE_VAL
+		              WHERE
+		                    GRADECD = GRADECD_NEW
+		          )										AS		GRADE_VAL_OLD
+		FROM
+		      	T_STD_GRADES  		TGRADE
+		      ,  V_STDINFO_PORTAL    VSP
+		WHERE
+		          VSP.STD_ID 	= :paramStdId
+		      AND TGRADE.CCYRCD = :paramYear
+		      AND TGRADE.STDNO 	= VSP.STDNO	
+		ORDER BY TGRADE.UPDATE_DATE DESC
 	</entry>
 	<entry key="dps.grades.update.grade">
 		UPDATE
