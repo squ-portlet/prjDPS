@@ -76,15 +76,16 @@
 						<td>{{sectionNo}}</td>
 						<td>{{grade.gradeVal}}</td>
 						<td>
-								<select id="gradeValNew" class="input-small">
+								<select class="gradeValNew input-small" >
 									<option value=""><spring:message code="prop.dps.gradechange.select"/><option>
 									<c:forEach items="${grades}" var="grade">
 										<option value="${grade.gradeCode}">${grade.gradeVal}</option>
 									</c:forEach>
 								</select>
-						
 						</td>
-						<td></td>
+						<td>
+							<a class="linkGradeChange" href="#" stdno="{{encryptStr studentNo}}" courseyear="{{courseYear}}" semester="{{semester}}" courseno="{{course.courseNo}}" labrcourseno="{{course.lAbrCourseNo}}" sectionno="{{sectionNo}}"  gradecodeold="{{{encryptStr grade.gradeCode}}}" ><spring:message code="prop.dps.gradechange.link.update"/></a>
+						</td>
 					</tr>
 				{{/each}}
 			</table>

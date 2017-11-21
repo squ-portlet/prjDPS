@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Locale;
 
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.Grade;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.GradeDTO;
 
@@ -89,4 +90,19 @@ public interface GradeChangeDBDao
 	 * @throws NoDBRecordException 
 	 */
 	public List<GradeDTO> getGradeHistory(GradeDTO dto, Locale locale) throws NoDBRecordException;
+	
+	/**
+	 * 
+	 * method name  : setInstructorApplyForGradeChange
+	 * @param dto
+	 * @return
+	 * GradeChangeDBImpl
+	 * return type  : int
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Nov 21, 2017 12:32:15 PM
+	 * @throws NotCorrectDBRecordException 
+	 */
+	public int setInstructorApplyForGradeChange(GradeDTO dto) throws NotCorrectDBRecordException;
 }

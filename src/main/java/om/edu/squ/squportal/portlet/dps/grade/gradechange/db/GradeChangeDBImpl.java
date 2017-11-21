@@ -31,6 +31,7 @@ package om.edu.squ.squportal.portlet.dps.grade.gradechange.db;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -38,6 +39,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.Course;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.Grade;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.GradeDTO;
@@ -45,6 +47,7 @@ import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -121,11 +124,16 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 				Course		course		=	new Course();
 				Grade		grade		=	new Grade();
 				
+				course.setCourseNo(rs.getString(Constants.CONST_COLMN_COURSE_NO));
 				course.setlAbrCourseNo(rs.getString(Constants.CONST_COLMN_L_ABR_CRSNO));
 				course.setCourseName(rs.getString(Constants.CONST_COLMN_COURSE_NAME));
 				
 				grade.setGradeCode(rs.getInt(Constants.CONST_COLMN_GRADE_CODE));
 				grade.setGradeVal(rs.getString(Constants.CONST_COLMN_GRADE_VAL));
+				
+				gradeDTO.setStudentNo(rs.getString(Constants.CONST_COLMN_STUDENT_NO));
+				gradeDTO.setCourseYear(rs.getString(Constants.COST_COL_DPS_COURSE_YEAR));
+				gradeDTO.setSemester(rs.getString(Constants.COST_COL_DPS_SEMESTER_CODE));
 				
 				gradeDTO.setSectionNo(rs.getString(Constants.CONST_COLMN_SECTION_NO));
 				
@@ -255,6 +263,48 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 		{
 			logger.error("Error occur to find to find grade change history records for student id:  {} ",dto.getStudentId());
 			throw new NoDBRecordException(sqlEx.getMessage());
+		}
+	}
+	
+	/**
+	 * 
+	 * method name  : setInstructorApplyForGradeChange
+	 * @param dto
+	 * @return
+	 * GradeChangeDBImpl
+	 * return type  : int
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Nov 21, 2017 12:32:15 PM
+	 */
+	public int setInstructorApplyForGradeChange(GradeDTO dto) throws NotCorrectDBRecordException
+	{
+		String	SQL_GRADE_INSERT_APPLY_INSTRUCTOR	=	queryGradeChange.getProperty(Constants.CONST_SQL_GRADE_INSERT_APPLY_INSTRUCTOR);
+		
+		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+		namedParameterMap.put("paramStdNo", dto.getStudentNo());
+		namedParameterMap.put("paramYear", dto.getCourseYear());
+		namedParameterMap.put("paramSem", dto.getSemester());
+		namedParameterMap.put("paramCourseLAbrCode", dto.getCourse().getlAbrCourseNo());
+		namedParameterMap.put("paramCourseNo", dto.getCourse().getCourseNo());
+		namedParameterMap.put("paramSectNo", dto.getSectionNo());
+		namedParameterMap.put("paramGradeCodeOld", String.valueOf(dto.getGrade().getGradeCodeOld()));
+		namedParameterMap.put("paramGradeCodeNew", String.valueOf(dto.getGrade().getGradeCodeNew()));
+		namedParameterMap.put("paramStatusCode", Constants.CONST_SQL_STATUS_CODE_NAME_PENDING);
+		namedParameterMap.put("paramUserName", dto.getUserName());
+		
+		logger.info("namedParameterMap : "+namedParameterMap);
+		logger.info("SQL_GRADE_INSERT_APPLY_INSTRUCTOR : "+SQL_GRADE_INSERT_APPLY_INSTRUCTOR);
+		
+		try
+			{
+				return nPJdbcTemplDpsGradeChange.update(SQL_GRADE_INSERT_APPLY_INSTRUCTOR, namedParameterMap);
+			}
+		catch(DuplicateKeyException sqlEx)
+		{
+			logger.error("Violation of primary key. Details : {}",sqlEx.getMessage());
+			throw new NotCorrectDBRecordException(sqlEx.getMessage());
 		}
 	}
 	

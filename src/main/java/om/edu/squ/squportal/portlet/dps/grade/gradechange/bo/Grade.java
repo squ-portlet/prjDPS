@@ -37,6 +37,8 @@ public class Grade
 {
 	private	int		gradeCode;
 	private	String	gradeVal;
+	private	int		gradeCodeOld;
+	private	int		gradeCodeNew;
 	private	String	gradeValOld;
 	private	String	gradeValNew;
 	
@@ -81,6 +83,46 @@ public class Grade
 		this.gradeVal = gradeVal;
 	}
 	
+	/**
+	 * Getter Method	: getGradeCodeOld
+	 * @return the gradeCodeOld
+	 * 
+	 * Date				: Nov 20, 2017
+	 */
+	public int getGradeCodeOld()
+	{
+		return this.gradeCodeOld;
+	}
+	/**
+	 * Setter method : setGradeCodeOld
+	 * @param gradeCodeOld the gradeCodeOld to set
+	 * 
+	 * Date          : Nov 20, 2017 10:22:28 AM
+	 */
+	public void setGradeCodeOld(int gradeCodeOld)
+	{
+		this.gradeCodeOld = gradeCodeOld;
+	}
+	/**
+	 * Getter Method	: getGradeCodeNew
+	 * @return the gradeCodeNew
+	 * 
+	 * Date				: Nov 20, 2017
+	 */
+	public int getGradeCodeNew()
+	{
+		return this.gradeCodeNew;
+	}
+	/**
+	 * Setter method : setGradeCodeNew
+	 * @param gradeCodeNew the gradeCodeNew to set
+	 * 
+	 * Date          : Nov 20, 2017 10:22:28 AM
+	 */
+	public void setGradeCodeNew(int gradeCodeNew)
+	{
+		this.gradeCodeNew = gradeCodeNew;
+	}
 	/**
 	 * Getter Method	: getGradeValOld
 	 * @return the gradeValOld
@@ -128,7 +170,9 @@ public class Grade
 	public String toString()
 	{
 		return "Grade [gradeCode=" + this.gradeCode + ", gradeVal="
-				+ this.gradeVal + "]";
+				+ this.gradeVal + ", gradeCodeOld=" + this.gradeCodeOld
+				+ ", gradeCodeNew=" + this.gradeCodeNew + ", gradeValOld="
+				+ this.gradeValOld + ", gradeValNew=" + this.gradeValNew + "]";
 	}
 	
 	

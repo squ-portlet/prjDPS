@@ -36,10 +36,16 @@ package om.edu.squ.squportal.portlet.dps.grade.gradechange.model;
 public class GradeChangeModel
 {
 	private	String	studentId;
+	private	String	studentNo;
 	private	String	courseYear;
 	private	String	semCode;
+	private	String	sectionNo;
+	private	String	courseCode;
 	private	String	lAbrCrsNo;
+	private	String	gradeCodeOld;
+	private	String	gradeCodeNew;
 	private	String	gradeValNew;
+	
 
 	/* Security cipher */
 	private	String	salt;
@@ -64,6 +70,27 @@ public class GradeChangeModel
 	public void setStudentId(String studentId)
 	{
 		this.studentId = studentId;
+	}
+	
+	/**
+	 * Getter Method	: getStudentNo
+	 * @return the studentNo
+	 * 
+	 * Date				: Nov 20, 2017
+	 */
+	public String getStudentNo()
+	{
+		return this.studentNo;
+	}
+	/**
+	 * Setter method : setStudentNo
+	 * @param studentNo the studentNo to set
+	 * 
+	 * Date          : Nov 20, 2017 11:58:36 AM
+	 */
+	public void setStudentNo(String studentNo)
+	{
+		this.studentNo = studentNo;
 	}
 	/**
 	 * Getter Method	: getCourseYear
@@ -107,6 +134,47 @@ public class GradeChangeModel
 	}
 	
 	/**
+	 * Getter Method	: getSectionNo
+	 * @return the sectionNo
+	 * 
+	 * Date				: Nov 20, 2017
+	 */
+	public String getSectionNo()
+	{
+		return this.sectionNo;
+	}
+	/**
+	 * Setter method : setSectionNo
+	 * @param sectionNo the sectionNo to set
+	 * 
+	 * Date          : Nov 20, 2017 11:58:55 AM
+	 */
+	public void setSectionNo(String sectionNo)
+	{
+		this.sectionNo = sectionNo;
+	}
+	
+	/**
+	 * Getter Method	: getCourseCode
+	 * @return the courseCode
+	 * 
+	 * Date				: Nov 20, 2017
+	 */
+	public String getCourseCode()
+	{
+		return this.courseCode;
+	}
+	/**
+	 * Setter method : setCourseCode
+	 * @param courseCode the courseCode to set
+	 * 
+	 * Date          : Nov 20, 2017 11:59:19 AM
+	 */
+	public void setCourseCode(String courseCode)
+	{
+		this.courseCode = courseCode;
+	}
+	/**
 	 * Getter Method	: getlAbrCrsNo
 	 * @return the lAbrCrsNo
 	 * 
@@ -127,6 +195,46 @@ public class GradeChangeModel
 		this.lAbrCrsNo = lAbrCrsNo;
 	}
 	
+	/**
+	 * Getter Method	: getGradeCodeOld
+	 * @return the gradeCodeOld
+	 * 
+	 * Date				: Nov 20, 2017
+	 */
+	public String getGradeCodeOld()
+	{
+		return this.gradeCodeOld;
+	}
+	/**
+	 * Setter method : setGradeCodeOld
+	 * @param gradeCodeOld the gradeCodeOld to set
+	 * 
+	 * Date          : Nov 20, 2017 11:59:36 AM
+	 */
+	public void setGradeCodeOld(String gradeCodeOld)
+	{
+		this.gradeCodeOld = gradeCodeOld;
+	}
+	/**
+	 * Getter Method	: getGradeCodeNew
+	 * @return the gradeCodeNew
+	 * 
+	 * Date				: Nov 20, 2017
+	 */
+	public String getGradeCodeNew()
+	{
+		return this.gradeCodeNew;
+	}
+	/**
+	 * Setter method : setGradeCodeNew
+	 * @param gradeCodeNew the gradeCodeNew to set
+	 * 
+	 * Date          : Nov 20, 2017 11:59:36 AM
+	 */
+	public void setGradeCodeNew(String gradeCodeNew)
+	{
+		this.gradeCodeNew = gradeCodeNew;
+	}
 	/**
 	 * Getter Method	: getGradeValNew
 	 * @return the gradeValNew
@@ -193,11 +301,14 @@ public class GradeChangeModel
 	@Override
 	public String toString()
 	{
-		return "GradeChangeModel [studentId=" + this.studentId
-				+ ", courseYear=" + this.courseYear + ", semCode="
-				+ this.semCode + ", lAbrCrsNo=" + this.lAbrCrsNo
-				+ ", gradeValNew=" + this.gradeValNew + ", salt=" + this.salt
-				+ ", four=" + this.four + "]";
+		return "GradeChangeModel [studentId=" + this.studentId + ", studentNo="
+				+ this.studentNo + ", courseYear=" + this.courseYear
+				+ ", semCode=" + this.semCode + ", sectionNo=" + this.sectionNo
+				+ ", courseCode=" + this.courseCode + ", lAbrCrsNo="
+				+ this.lAbrCrsNo + ", gradeCodeOld=" + this.gradeCodeOld
+				+ ", gradeCodeNew=" + this.gradeCodeNew + ", gradeValNew="
+				+ this.gradeValNew + ", salt=" + this.salt + ", four="
+				+ this.four + "]";
 	}
 	
 	

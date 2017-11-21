@@ -5,7 +5,11 @@
 	<entry key="dps.grades.select.student.grades">
 				SELECT
                   DISTINCT
-			            	GRADES.L_ABR_CRSNO                                          AS    L_ABR_CRSNO
+                  			GRADES.STDNO												AS	  	STUDENT_NO
+                  		,   GRADES.CCYRCD												AS		CCYRCD	
+                  		,	GRADES.SEMCD												AS		SEMCD
+                  		,	GRADES.CRSNO												AS		COURSE_NO
+			            ,	GRADES.L_ABR_CRSNO                                          AS    	L_ABR_CRSNO
 			         	,  	DECODE (
 			                     :paramLocale
 			                     , 'ar', A_CRSSNM
@@ -31,7 +35,7 @@
                           AND SECTDGR.CCYRCD = :paramYear
                           AND SECTDGR.SEMCD = :paramSem
                           AND SECTDGR.L_ABR_CRSNO = GRADES.L_ABR_CRSNO
-                )                                                               		AS EMP_COUNT
+                )                                                               		AS 		EMP_COUNT
                   
 			            
 			FROM
@@ -71,33 +75,38 @@
 		ORDER BY GRADE_VAL	
 	</entry>
 	<entry key="dps.grades.select.grade.change.history">
+
 		SELECT 
+              
 		          TGRADE.L_ABR_CRSNO					AS    	L_ABR_CRSNO
 		      ,   TGRADE.SECTNO							AS		SECTION_NO
+
 		      ,   (
 		              SELECT
 		                    DECODE
 		                    (
-		                        'ar', A_ABR_GVAL
-		                      , L_ABR_GVAL
+                            :paramLocale
+		                        , 'ar', GV.A_ABR_GVAL
+                            , GV.L_ABR_GVAL
 		                    )
 		              FROM
-		                    GRADE_VAL
+		                    GRADE_VAL GV
 		              WHERE
-		                    GRADECD = GRADECD_OLD
-		          )										AS		GRADE_VAL_NEW
-		      ,   (
-		              SELECT
-		                    DECODE
-		                    (
-		                        'ar', A_ABR_GVAL
-		                      , L_ABR_GVAL
-		                    )
-		              FROM
-		                    GRADE_VAL
-		              WHERE
-		                    GRADECD = GRADECD_NEW
+		                    GV.GRADECD = TGRADE.GRADECD_OLD
 		          )										AS		GRADE_VAL_OLD
+		      ,   (
+		              SELECT
+		                    DECODE
+		                    (
+                            :paramLocale
+		                        , 'ar', GV.A_ABR_GVAL
+                            , GV.L_ABR_GVAL
+		                    )
+		              FROM
+		                    GRADE_VAL GV
+		              WHERE
+		                    GRADECD = TGRADE.GRADECD_NEW
+		          )										AS		GRADE_VAL_NEW
 		FROM
 		      	T_STD_GRADES  		TGRADE
 		      ,  V_STDINFO_PORTAL    VSP
@@ -105,6 +114,7 @@
 		          VSP.STD_ID 	= :paramStdId
 		      AND TGRADE.CCYRCD = :paramYear
 		      AND TGRADE.STDNO 	= VSP.STDNO	
+          AND VSP.ACTIVE    = 'Y'
 		ORDER BY TGRADE.UPDATE_DATE DESC
 	</entry>
 	<entry key="dps.grades.update.grade">
@@ -117,6 +127,48 @@
 		      AND SEMCD=:paramSem
 		      AND L_ABR_CRSNO = :paramCourseLAbrCode	
 	
+	</entry>
+	<entry key="dps.grades.insert.grade.apply.instructor">
+		INSERT INTO T_STD_GRADES
+		(
+		   REC_SEQ_NO
+		  , STDNO
+		  , CCYRCD
+		  , SEMCD
+		  , L_ABR_CRSNO
+		  , CRSNO
+		  , SECTNO
+		  , GRADECD_OLD
+		  , GRADECD_NEW
+		  , STATUSCD
+		  , CREATE_DATE
+		  , CREATE_USERNAME
+		)
+		  VALUES
+		  (
+			   DPS_SQ.NEXTVAL
+		    , :paramStdNo
+		    , :paramYear
+		    , :paramSem
+		    , :paramCourseLAbrCode
+		    , :paramCourseNo
+		    , :paramSectNo
+		    , :paramGradeCodeOld
+		    , :paramGradeCodeNew
+		    , (
+                 SELECT
+                     CODES.SISCODECD	
+                 FROM
+                         SIS_CODES       CODES
+                     ,   SIS_CODE_TYPES  TYPES
+                 WHERE
+                         CODES.SISCODETYPCD =  TYPES.SISCODETYPCD
+                     AND TYPES.SISCODETYPNM = 'APPROVAL_STATUS'
+                     AND CODES.L_ABR_CODE  = :paramStatusCode		    
+		      )
+		    , SYSDATE
+		    , :paramUserName
+		  )
 	</entry>
 
 </properties>

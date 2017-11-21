@@ -45,6 +45,8 @@ public class GradeDTO
 	private		String	sectionNo;
 	private		Grade	grade;
 	
+	private		String	userName;
+	
 	
 	/**
 	 * Getter Method	: getStudentId
@@ -207,6 +209,28 @@ public class GradeDTO
 	{
 		this.grade = grade;
 	}
+	
+	
+	/**
+	 * Getter Method	: getUserName
+	 * @return the userName
+	 * 
+	 * Date				: Nov 21, 2017
+	 */
+	public String getUserName()
+	{
+		return this.userName;
+	}
+	/**
+	 * Setter method : setUserName
+	 * @param userName the userName to set
+	 * 
+	 * Date          : Nov 21, 2017 12:25:25 PM
+	 */
+	public void setUserName(String userName)
+	{
+		this.userName = userName;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -217,7 +241,8 @@ public class GradeDTO
 				+ this.studentNo + ", stdStatCode=" + this.stdStatCode
 				+ ", courseYear=" + this.courseYear + ", semester="
 				+ this.semester + ", course=" + this.course + ", sectionNo="
-				+ this.sectionNo + ", grade=" + this.grade + "]";
+				+ this.sectionNo + ", grade=" + this.grade + ", userName="
+				+ this.userName + "]";
 	}
 	
 	

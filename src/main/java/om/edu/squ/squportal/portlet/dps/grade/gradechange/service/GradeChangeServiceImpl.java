@@ -32,16 +32,21 @@ package om.edu.squ.squportal.portlet.dps.grade.gradechange.service;
 import java.util.List;
 import java.util.Locale;
 
+import javax.portlet.ResourceRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
+import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.Course;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.Grade;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.GradeDTO;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.db.GradeChangeDBDao;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.model.GradeChangeModel;
+import om.edu.squ.squportal.portlet.dps.security.Crypto;
 
 /**
  * @author Bhabesh
@@ -52,7 +57,11 @@ public class GradeChangeServiceImpl implements GradeChangeService
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
+	DpsServiceDao		dpsServiceDao;
+	@Autowired
 	GradeChangeDBDao	gradeChangeDBDao;
+	@Autowired
+	Crypto				crypto;
 	
 	/**
 	 * 
@@ -123,6 +132,64 @@ public class GradeChangeServiceImpl implements GradeChangeService
 		dto.setStudentId(gradeChangeModelHistory.getStudentId());
 		dto.setCourseYear(gradeChangeModelHistory.getCourseYear());
 		return gradeChangeDBDao.getGradeHistory(dto, locale);
+	}
+	
+	/**
+	 * 
+	 * method name  : instructorApplyForGradeChange
+	 * @param gradeChangeModel
+	 * @param request
+	 * @return
+	 * GradeChangeServiceImpl
+	 * return type  : List<GradeDTO>
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Nov 21, 2017 11:36:38 AM
+	 */
+	public List<GradeDTO> instructorApplyForGradeChange(GradeChangeModel gradeChangeModel, ResourceRequest request)
+	{
+		GradeDTO	gradeDTO	=	new GradeDTO();
+		Course		course		=	new Course();
+		Grade		grade		=	new	Grade();
+		int			result		=	0;
+		
+		
+		String		studentNo			=	crypto.decrypt(gradeChangeModel.getSalt(), gradeChangeModel.getFour(),  gradeChangeModel.getStudentNo());
+		String		gradeChangeCodeOld	=	crypto.decrypt(gradeChangeModel.getSalt(), gradeChangeModel.getFour(),  gradeChangeModel.getGradeCodeOld());
+		String		gradeChangeCodeNew	=	crypto.decrypt(gradeChangeModel.getSalt(), gradeChangeModel.getFour(),  gradeChangeModel.getGradeCodeNew());
+		
+					gradeDTO.setStudentNo(studentNo);
+					gradeDTO.setCourseYear(gradeChangeModel.getCourseYear());
+					gradeDTO.setSemester(gradeChangeModel.getSemCode());
+					gradeDTO.setSectionNo(gradeChangeModel.getSectionNo());
+					
+					course.setCourseNo(gradeChangeModel.getCourseCode());
+					course.setlAbrCourseNo(gradeChangeModel.getlAbrCrsNo());
+					
+					grade.setGradeCodeOld(Integer.parseInt(gradeChangeCodeOld));
+					grade.setGradeCodeNew(Integer.parseInt(gradeChangeCodeNew));
+					
+					gradeDTO.setCourse(course);
+					gradeDTO.setGrade(grade);
+					gradeDTO.setUserName(request.getRemoteUser());
+					
+			 try
+			{
+				result =	gradeChangeDBDao.setInstructorApplyForGradeChange(gradeDTO);
+			}
+			catch (NotCorrectDBRecordException ex)
+			{
+				logger.error("Duplicate key error for user: {}, studentNo :{}, courseNo: {}, semesterNo: {}, sectionNo: {}",
+									request.getRemoteUser()
+								,	studentNo,gradeChangeModel.getCourseCode()
+								,	gradeChangeModel.getSemCode()
+								,	gradeChangeModel.getSectionNo() 
+						);
+			}
+			 logger.info("result of insert : "+result);
+			 return null;
+					
 	}
 	
 }

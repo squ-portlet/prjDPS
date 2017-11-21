@@ -216,5 +216,31 @@ public class GradeChangeController
 		
 	}
 	
-	
+	/**
+	 * 
+	 * method name  : instructorApplyForGradeChange
+	 * @param gradeChangeModel
+	 * @param request
+	 * @param response
+	 * @param locale
+	 * GradeChangeController
+	 * return type  : void
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Nov 21, 2017 11:35:12 AM
+	 */
+	@ResourceMapping(value="resourceAjaxGradeChangeApply")
+	private	void instructorApplyForGradeChange(
+			@ModelAttribute("gradeChangeModel") GradeChangeModel gradeChangeModel
+			,	ResourceRequest request
+			, 	ResourceResponse response
+			, 	Locale locale)
+	{
+		logger.info("gradeChangeModel : "+gradeChangeModel);
+		logger.info("GradeCodeOld : "+crypto.decrypt(gradeChangeModel.getSalt(), gradeChangeModel.getFour(),  gradeChangeModel.getGradeCodeOld()));
+		
+		gradeChangeService.instructorApplyForGradeChange(gradeChangeModel,request);
+		
+	}
 }

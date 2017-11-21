@@ -6,16 +6,17 @@
 
 <portlet:resourceURL id="resourceAjaxGetStudentGrades" var="varResourceAjaxGetStudentGrades"/>
 <portlet:resourceURL id="resourceAjaxGetStudentGradesChangeHistory" var="varResourceAjaxGetStudentGradesChangeHistory"/>
+<portlet:resourceURL id="resourceAjaxGradeChangeApply" var="varResourceAjaxGradeChangeApply"/>
 
 <script type="text/javascript">
 	$(function() {
 
-	/*		
+		/*	
 		$('#tblGradeList').DataTable({
 			
 		});
 		
-
+		
 		
 		$('#tblGradeListApproval').DataTable({
 			
@@ -46,7 +47,12 @@
 						success	:	function(data)
 						{
 							var gradeDTOs	=	JSON.parse(data); 
+	
 							 hbDataLoadAction(gradeDTOs, '#hbGradeList', '#divGradeList');
+							 
+								$('.linkGradeChange').on('click',function (e){
+									instructorApplyForGradeChange(this)
+								});
 						},
 						error	:	function(xhr, status,  error)
 						{
@@ -71,13 +77,51 @@
 					
 				}
 			
-		});
+			});
 			
 			
 			
 		});
+	
+	/* Filling data using handlebar template*/	
+		function instructorApplyForGradeChange(data)
+		{
+			var newGradeCode	=	aesUtil.encrypt(salt, four, passphrase, $(data).closest('tr').find('.gradeValNew').val());
+			var gradeChangeModel = {
+					studentNo		:	data.getAttribute("stdno"),
+					courseYear		:	data.getAttribute("courseyear"),
+					semCode			:	data.getAttribute("semester"),
+					sectionNo		:	data.getAttribute("sectionno"),
+					courseCode		:	data.getAttribute("courseno"),
+					lAbrCrsNo		:	data.getAttribute("labrcourseno"),
+					gradeCodeOld	:	data.getAttribute("gradecodeold"),
+					gradeCodeNew	:	newGradeCode,
+					salt			:	salt,
+					four			:	four
+			};
+			
+			$.ajax({
+				url		:	"${varResourceAjaxGradeChangeApply}",
+				type	:	'POST',
+				cache	:	false,
+				data	:	gradeChangeModel,
+				success	:	function(data)
+				{
+					
+				},
+				error	:	function(xhr, status,  error)
+				{
+					
+				}				
+			});
+			
+			
+		}
+	
+
 
 	
+
 	/* Filling data using handlebar template*/
 	function hbDataLoadAction(dataJson, hbTemplateId, divId)
 	{
@@ -90,7 +134,13 @@
 		return true;
 	}
 	
-	
+
+	/* Call back function for encryption */
+	Handlebars.registerHelper("encryptStr", function(item) {
+		  var html = '';
+		    html = html + aesUtil.encrypt(salt, four, passphrase, item.toString()); 
+		  return html;
+		});
 	
 		
 	});

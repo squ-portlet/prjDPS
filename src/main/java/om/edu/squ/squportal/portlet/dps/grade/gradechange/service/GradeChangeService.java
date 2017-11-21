@@ -32,6 +32,8 @@ package om.edu.squ.squportal.portlet.dps.grade.gradechange.service;
 import java.util.List;
 import java.util.Locale;
 
+import javax.portlet.ResourceRequest;
+
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.Grade;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.GradeDTO;
@@ -90,4 +92,20 @@ public interface GradeChangeService
 	 * @throws NoDBRecordException 
 	 */
 	public List<GradeDTO> getGradeHistory(GradeChangeModel gradeChangeModelHistory, Locale locale) throws NoDBRecordException;
+
+
+	/**
+	 * 
+	 * method name  : instructorApplyForGradeChange
+	 * @param gradeChangeModel
+	 * @param request
+	 * GradeChangeService
+	 * return type  : void
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Nov 21, 2017 1:59:05 PM
+	 * @return 
+	 */
+	public List<GradeDTO> instructorApplyForGradeChange(GradeChangeModel gradeChangeModel, ResourceRequest request);
 }
