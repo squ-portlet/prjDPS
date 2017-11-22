@@ -29,23 +29,34 @@
  */
 package om.edu.squ.squportal.portlet.dps.grade.gradechange.bo;
 
+import om.edu.squ.squportal.portlet.dps.role.bo.DPSAsstDean;
+import om.edu.squ.squportal.portlet.dps.role.bo.DpsDean;
+import om.edu.squ.squportal.portlet.dps.role.bo.HOD;
+
 /**
  * @author Bhabesh
  *
  */
 public class GradeDTO
 {
-	private		String	studentId;
-	private		String	studentNo;
-	private		String	stdStatCode;
-	private		String	courseYear;
-	private		String	semester;
+	private		String			studentId;
+	private		String			studentNo;
+	private		String			stdStatCode;
+	private		String			courseYear;
+	private		String			semester;
 	
-	private		Course	course;
-	private		String	sectionNo;
-	private		Grade	grade;
+	private		Course			course;
+	private		String			sectionNo;
+	private		Grade			grade;
+	private		String			comments;
 	
-	private		String	userName;
+	private		String			userName;
+	
+	private		HOD				hod;
+	private		DPSAsstDean		dpsAsstDean;
+	private		DpsDean			dpsDean;
+	
+	
 	
 	
 	/**
@@ -212,6 +223,26 @@ public class GradeDTO
 	
 	
 	/**
+	 * Getter Method	: getComments
+	 * @return the comments
+	 * 
+	 * Date				: Nov 22, 2017
+	 */
+	public String getComments()
+	{
+		return this.comments;
+	}
+	/**
+	 * Setter method : setComments
+	 * @param comments the comments to set
+	 * 
+	 * Date          : Nov 22, 2017 2:56:37 PM
+	 */
+	public void setComments(String comments)
+	{
+		this.comments = comments;
+	}
+	/**
 	 * Getter Method	: getUserName
 	 * @return the userName
 	 * 
@@ -231,6 +262,68 @@ public class GradeDTO
 	{
 		this.userName = userName;
 	}
+	
+	
+	/**
+	 * Getter Method	: getHod
+	 * @return the hod
+	 * 
+	 * Date				: Nov 22, 2017
+	 */
+	public HOD getHod()
+	{
+		return this.hod;
+	}
+	/**
+	 * Setter method : setHod
+	 * @param hod the hod to set
+	 * 
+	 * Date          : Nov 22, 2017 2:45:57 PM
+	 */
+	public void setHod(HOD hod)
+	{
+		this.hod = hod;
+	}
+	/**
+	 * Getter Method	: getDpsAsstDean
+	 * @return the dpsAsstDean
+	 * 
+	 * Date				: Nov 22, 2017
+	 */
+	public DPSAsstDean getDpsAsstDean()
+	{
+		return this.dpsAsstDean;
+	}
+	/**
+	 * Setter method : setDpsAsstDean
+	 * @param dpsAsstDean the dpsAsstDean to set
+	 * 
+	 * Date          : Nov 22, 2017 2:45:57 PM
+	 */
+	public void setDpsAsstDean(DPSAsstDean dpsAsstDean)
+	{
+		this.dpsAsstDean = dpsAsstDean;
+	}
+	/**
+	 * Getter Method	: getDpsDean
+	 * @return the dpsDean
+	 * 
+	 * Date				: Nov 22, 2017
+	 */
+	public DpsDean getDpsDean()
+	{
+		return this.dpsDean;
+	}
+	/**
+	 * Setter method : setDpsDean
+	 * @param dpsDean the dpsDean to set
+	 * 
+	 * Date          : Nov 22, 2017 2:45:57 PM
+	 */
+	public void setDpsDean(DpsDean dpsDean)
+	{
+		this.dpsDean = dpsDean;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -241,8 +334,10 @@ public class GradeDTO
 				+ this.studentNo + ", stdStatCode=" + this.stdStatCode
 				+ ", courseYear=" + this.courseYear + ", semester="
 				+ this.semester + ", course=" + this.course + ", sectionNo="
-				+ this.sectionNo + ", grade=" + this.grade + ", userName="
-				+ this.userName + "]";
+				+ this.sectionNo + ", grade=" + this.grade + ", comments="
+				+ this.comments + ", userName=" + this.userName + ", hod="
+				+ this.hod + ", dpsAsstDean=" + this.dpsAsstDean + ", dpsDean="
+				+ this.dpsDean + "]";
 	}
 	
 	

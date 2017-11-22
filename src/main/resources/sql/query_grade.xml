@@ -5,25 +5,25 @@
 	<entry key="dps.grades.select.student.grades">
 				SELECT
                   DISTINCT
-                  			GRADES.STDNO												AS	  	STUDENT_NO
-                  		,  	VSP.STDSTATCD                       						AS      STDSTATCD 
-                  		,   GRADES.CCYRCD												AS		CCYRCD	
-                  		,	GRADES.SEMCD												AS		SEMCD
-                  		,	GRADES.CRSNO												AS		COURSE_NO
-			            ,	GRADES.L_ABR_CRSNO                                          AS    	L_ABR_CRSNO
+                  			GRADES.STDNO										AS	  	STUDENT_NO
+                  		,  	VSP.STDSTATCD                       				AS      STDSTATCD 
+                  		,   GRADES.CCYRCD										AS		CCYRCD	
+                  		,	GRADES.SEMCD										AS		SEMCD
+                  		,	GRADES.CRSNO										AS		COURSE_NO
+			            ,	GRADES.L_ABR_CRSNO                                  AS    	L_ABR_CRSNO
 			         	,  	DECODE (
 			                     :paramLocale
 			                     , 'ar', A_CRSSNM
 			                     , CRS.CRSSNM
-			                    )                                                 		AS      COURSE_NAME 
-               			,  GRADES.SECTNO                                             	AS      SECTION_NO
-			         	,  GRADES.GRADECD                                            	AS      GRADE_CODE
+			                    )                                               AS      COURSE_NAME 
+               			,  GRADES.SECTNO                                        AS      SECTION_NO
+			         	,  GRADES.GRADECD                                       AS      GRADE_CODE
 			         	,  DECODE
 			                  (
 			                    :paramLocale
 			                    , 'ar', GV.A_ABR_GVAL
 			                    ,      GV.L_ABR_GVAL
-			                  )                                                   		AS      GRADE_VAL
+			                  )                                                 AS      GRADE_VAL
                 , (
                     SELECT 
                           COUNT(SCHEDW.FACSURNMCD)
@@ -36,7 +36,7 @@
                           AND SECTDGR.CCYRCD = :paramYear
                           AND SECTDGR.SEMCD = :paramSem
                           AND SECTDGR.L_ABR_CRSNO = GRADES.L_ABR_CRSNO
-                )                                                               		AS 		EMP_COUNT
+                )                                                               AS 		EMP_COUNT
                   
 			            
 			FROM
@@ -63,13 +63,13 @@
 	</entry>
 	<entry key="dps.grades.select.grade.values">
 		SELECT
-		          GV.GRADECD                          AS  GRADE_CODE
+		          GV.GRADECD                          							AS  GRADE_CODE
 		       ,  DECODE
 		                (
 		                  :paramLocale
 		                  , 'ar', GV.A_ABR_GVAL
 		                  , GV.L_ABR_GVAL
-		                )                             AS  GRADE_VAL
+		                )                             							AS  GRADE_VAL
 		FROM  
 		      GRADE_VAL GV
 		
@@ -79,10 +79,9 @@
 
 		SELECT 
               
-		          TGRADE.L_ABR_CRSNO					AS    	L_ABR_CRSNO
-		      ,   TGRADE.SECTNO							AS		SECTION_NO
-
-		      ,   (
+		          TGRADE.L_ABR_CRSNO											AS    	L_ABR_CRSNO
+		      	,   TGRADE.SECTNO												AS		SECTION_NO
+		      	,   (
 		              SELECT
 		                    DECODE
 		                    (
@@ -94,8 +93,8 @@
 		                    GRADE_VAL GV
 		              WHERE
 		                    GV.GRADECD = TGRADE.GRADECD_OLD
-		          )										AS		GRADE_VAL_OLD
-		      ,   (
+		          )																AS		GRADE_VAL_OLD
+		      	,   (
 		              SELECT
 		                    DECODE
 		                    (
@@ -107,16 +106,56 @@
 		                    GRADE_VAL GV
 		              WHERE
 		                    GRADECD = TGRADE.GRADECD_NEW
-		          )										AS		GRADE_VAL_NEW
+		          )																AS		GRADE_VAL_NEW
+			  	, COMMENTS                                    					AS 		COMMENTS
+			  	, (
+		        	SELECT
+		        		L_ABR_CODE
+		        	FROM SIS_CODES
+		            WHERE 
+		            	SISCODECD= TGRADE.STATUSCD
+		        	)															AS		STATUS_CODE_NAME
+	        	, (
+		            SELECT 
+		              DECODE 
+		              (
+		                :paramLocale
+		                ,'en', CODENM, A_CODENM
+		                )
+		              FROM SIS_CODES
+		              WHERE SISCODECD= TGRADE.STATUSCD
+	            ) 																AS 		STATUS_DESC
+              
+		      , FUNC_APPROVE_STATUS(
+		                           TGRADE.STDNO,
+		                           :paramHodRoleName, 
+		                           :paramFormName
+		                           )                        					AS  	HOD_STATUS
+		     , FUNC_APPROVE_STATUS(
+		                     TGRADE.STDNO,
+		                     :paramADeanPRoleName, 
+		                     :paramFormName
+		                     )                              					AS  	DPS_ASST_DEAN_STATUS 
+		     , FUNC_APPROVE_STATUS(
+		                     TGRADE.STDNO,
+		                     :paramDeanPRoleName, 
+		                     :paramFormName
+		                     )                              					AS  	DPS_DEAN_STATUS   
+                     
 		FROM
-		      	T_STD_GRADES  		TGRADE
-		      ,  V_STDINFO_PORTAL    VSP
+              T_STD_GRADES  		  TGRADE
+		      ,   V_STDINFO_PORTAL    VSP
+
+          
 		WHERE
 		          VSP.STD_ID 	= :paramStdId
 		      AND TGRADE.CCYRCD = :paramYear
-		      AND TGRADE.STDNO 	= VSP.STDNO	
+		      AND TGRADE.STDNO 	= VSP.STDNO
           AND VSP.ACTIVE    = 'Y'
+       
+          
 		ORDER BY TGRADE.UPDATE_DATE DESC
+                                	
 	</entry>
 	<entry key="dps.grades.update.grade">
 		UPDATE

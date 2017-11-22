@@ -109,9 +109,9 @@
 						<td>{{sectionNo}}</td>
 						<td>{{grade.gradeValOld}}</td>
 						<td>{{grade.gradeValNew}}</td>
-						<td></td>
-						<td></td>
-						<td></td>
+						<td>{{{hod.roleStausIkon}}}</td>
+						<td>{{{dpsAsstDean.roleStausIkon}}}</td>
+						<td>{{{dpsDean.roleStausIkon}}}</td>
 					</tr>
 			{{/each}}
 		</table>

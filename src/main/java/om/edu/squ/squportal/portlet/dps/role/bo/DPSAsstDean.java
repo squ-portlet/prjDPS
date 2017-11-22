@@ -8,9 +8,9 @@
  *
  * FrameWork			:	Spring 4.0.8 (Annotation) Portlet
  * 
- * File Name			:	HOD.java
+ * File Name			:	DPSAsstDean.java
  * Package Name			:	om.edu.squ.squportal.portlet.dps.role.bo
- * Date of creation		:	Feb 8, 2017  5:52:37 PM
+ * Date of creation		:	Feb 8, 2017  10:12:58 AM
  * Date of modification :	
  * 
  * Summary				:	
@@ -36,15 +36,15 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Bhabesh
  *
  */
-@XmlRootElement(name="hod")
-public class HOD
+@XmlRootElement(name="collegeAsstDean")
+public class DPSAsstDean
 {
 	private	String	access;
 	private	String	sequence;
 	private	String	rolecode;
 	private	String	approvalcode;
 	private	String	roleStatus;
-	private	String	roleStausIkon;	
+	private	String	roleStausIkon;
 	/**
 	 * Getter Method	: getAccess
 	 * @return the access
@@ -60,7 +60,7 @@ public class HOD
 	 * Setter method : setAccess
 	 * @param access the access to set
 	 * 
-	 * Date          : Feb 8, 2017 5:53:53 PM
+	 * Date          : Feb 8, 2017 10:15:53 AM
 	 */
 	public void setAccess(String access)
 	{
@@ -81,7 +81,7 @@ public class HOD
 	 * Setter method : setSequence
 	 * @param sequence the sequence to set
 	 * 
-	 * Date          : Feb 8, 2017 5:53:53 PM
+	 * Date          : Feb 8, 2017 10:15:53 AM
 	 */
 	public void setSequence(String sequence)
 	{
@@ -103,7 +103,7 @@ public class HOD
 	 * Setter method : setRolecode
 	 * @param rolecode the rolecode to set
 	 * 
-	 * Date          : Feb 10, 2017 9:35:45 PM
+	 * Date          : Feb 10, 2017 9:33:10 PM
 	 */
 	public void setRolecode(String rolecode)
 	{
@@ -124,7 +124,7 @@ public class HOD
 	 * Setter method : setApprovalcode
 	 * @param approvalcode the approvalcode to set
 	 * 
-	 * Date          : Feb 10, 2017 10:19:07 PM
+	 * Date          : Feb 10, 2017 10:14:11 PM
 	 */
 	public void setApprovalcode(String approvalcode)
 	{
@@ -145,7 +145,7 @@ public class HOD
 	 * Setter method : setRoleStatus
 	 * @param roleStatus the roleStatus to set
 	 * 
-	 * Date          : Nov 22, 2017 2:35:29 PM
+	 * Date          : Nov 22, 2017 2:38:32 PM
 	 */
 	public void setRoleStatus(String roleStatus)
 	{
@@ -165,7 +165,7 @@ public class HOD
 	 * Setter method : setRoleStausIkon
 	 * @param roleStausIkon the roleStausIkon to set
 	 * 
-	 * Date          : Nov 22, 2017 2:35:29 PM
+	 * Date          : Nov 22, 2017 2:38:32 PM
 	 */
 	public void setRoleStausIkon(String roleStausIkon)
 	{
@@ -177,11 +177,11 @@ public class HOD
 	@Override
 	public String toString()
 	{
-		return "HOD [access=" + this.access + ", sequence=" + this.sequence
-				+ ", rolecode=" + this.rolecode + ", approvalcode="
-				+ this.approvalcode + ", roleStatus=" + this.roleStatus
-				+ ", roleStausIkon=" + this.roleStausIkon + "]";
+		return "CollegeAsstDean [access=" + this.access + ", sequence="
+				+ this.sequence + ", rolecode=" + this.rolecode
+				+ ", approvalcode=" + this.approvalcode + "]";
 	}
+
 
 	
 }

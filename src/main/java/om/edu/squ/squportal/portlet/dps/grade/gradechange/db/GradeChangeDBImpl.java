@@ -43,6 +43,11 @@ import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordExcep
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.Course;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.Grade;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.GradeDTO;
+import om.edu.squ.squportal.portlet.dps.role.bo.Advisor;
+import om.edu.squ.squportal.portlet.dps.role.bo.DPSAsstDean;
+import om.edu.squ.squportal.portlet.dps.role.bo.DpsDean;
+import om.edu.squ.squportal.portlet.dps.role.bo.HOD;
+import om.edu.squ.squportal.portlet.dps.tags.RoleTagGlyphicon;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
 import org.slf4j.Logger;
@@ -235,6 +240,9 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 				GradeDTO	gradeDto	=	new GradeDTO();
 				Course		course		=	new Course();
 				Grade		grade		=	new Grade();
+				HOD			hod			=	new HOD();
+				DPSAsstDean	dpsAsstDean	=	new DPSAsstDean();
+				DpsDean		dpsDean		=	new DpsDean();
 				
 				course.setlAbrCourseNo(rs.getString(Constants.CONST_COLMN_L_ABR_CRSNO));
 				
@@ -246,6 +254,23 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 				
 				gradeDto.setGrade(grade);
 				
+				gradeDto.setComments(rs.getString(Constants.CONST_COLMN_COMMENT));
+				
+				
+				hod.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_HOD_STATUS));
+				hod.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_HOD_STATUS)));
+
+				dpsAsstDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_HOD_STATUS));
+				dpsAsstDean.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_HOD_STATUS)));
+
+				dpsDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_HOD_STATUS));
+				dpsDean.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_HOD_STATUS)));
+
+
+				gradeDto.setHod(hod);
+				gradeDto.setDpsAsstDean(dpsAsstDean);
+				gradeDto.setDpsDean(dpsDean);
+				
 				return gradeDto;
 			}
 		};	
@@ -254,6 +279,10 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 		namedParameterMap.put("paramStdId", dto.getStudentId());
 		namedParameterMap.put("paramYear", dto.getCourseYear());
 		namedParameterMap.put("paramLocale", locale.getLanguage());
+		namedParameterMap.put("paramFormName", Constants.CONST_FORM_NAME_DPS_GRADE_CHANGE);
+		namedParameterMap.put("paramHodRoleName", Constants.CONST_SQL_ROLE_NAME_HOD);
+		namedParameterMap.put("paramADeanPRoleName", Constants.CONST_SQL_ROLE_NAME_DPS_ASSISTANT_DEAN);
+		namedParameterMap.put("paramDeanPRoleName", Constants.CONST_SQL_ROLE_NAME_DPS_DEAN);
 		
 		
 		try
