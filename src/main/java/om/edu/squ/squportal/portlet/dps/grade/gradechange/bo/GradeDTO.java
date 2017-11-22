@@ -49,6 +49,8 @@ public class GradeDTO
 	private		String			sectionNo;
 	private		Grade			grade;
 	private		String			comments;
+	private		boolean			updatable;
+	private		String			statusDesc;
 	
 	private		String			userName;
 	
@@ -242,6 +244,48 @@ public class GradeDTO
 	{
 		this.comments = comments;
 	}
+	
+	/**
+	 * Getter Method	: isUpdatable
+	 * @return the updatable
+	 * 
+	 * Date				: Nov 22, 2017
+	 */
+	public boolean isUpdatable()
+	{
+		return this.updatable;
+	}
+	/**
+	 * Setter method : setUpdatable
+	 * @param updatable the updatable to set
+	 * 
+	 * Date          : Nov 22, 2017 5:47:17 PM
+	 */
+	public void setUpdatable(boolean updatable)
+	{
+		this.updatable = updatable;
+	}
+	
+	/**
+	 * Getter Method	: getStatusDesc
+	 * @return the statusDesc
+	 * 
+	 * Date				: Nov 22, 2017
+	 */
+	public String getStatusDesc()
+	{
+		return this.statusDesc;
+	}
+	/**
+	 * Setter method : setStatusDesc
+	 * @param statusDesc the statusDesc to set
+	 * 
+	 * Date          : Nov 22, 2017 6:13:33 PM
+	 */
+	public void setStatusDesc(String statusDesc)
+	{
+		this.statusDesc = statusDesc;
+	}
 	/**
 	 * Getter Method	: getUserName
 	 * @return the userName
@@ -335,9 +379,10 @@ public class GradeDTO
 				+ ", courseYear=" + this.courseYear + ", semester="
 				+ this.semester + ", course=" + this.course + ", sectionNo="
 				+ this.sectionNo + ", grade=" + this.grade + ", comments="
-				+ this.comments + ", userName=" + this.userName + ", hod="
-				+ this.hod + ", dpsAsstDean=" + this.dpsAsstDean + ", dpsDean="
-				+ this.dpsDean + "]";
+				+ this.comments + ", updatable=" + this.updatable
+				+ ", statusDesc=" + this.statusDesc + ", userName="
+				+ this.userName + ", hod=" + this.hod + ", dpsAsstDean="
+				+ this.dpsAsstDean + ", dpsDean=" + this.dpsDean + "]";
 	}
 	
 	

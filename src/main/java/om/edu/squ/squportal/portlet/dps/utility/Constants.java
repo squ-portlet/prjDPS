@@ -125,6 +125,8 @@ public interface Constants
 	public static final	String	CONST_COLMN_POSTPONE_REASON_NAME							=	"POSTPONE_REASON_NAME";
 	public static final	String	CONST_COLMN_POSTPONE_OTHER_REASON							=	"POSTPONE_OTHER_REASON";
 	
+	public static final	String	CONST_COLMN_POSTPONE_GRADE_IS_UPDATABLE						=	"IS_UPDATABLE";
+	
 	public static final	String	CONST_COLMN_APPROVAL_CODE									=	"APPROVAL_CODE";
 	public static final	String	CONST_COLMN_APPROVER_ROLE_CODE								=	"APPROVER_ROLE_CODE";
 	public static final	String	CONST_COLMN_APPROVER_ROLE_NAME								=	"APPROVER_ROLE_NAME";
@@ -144,6 +146,7 @@ public interface Constants
 	public static final	String	CONST_COLMN_ROLE_DPS_DEAN_STATUS							=	"DPS_DEAN_STATUS";
 	
 	public static final	String	CONST_COLMN_ROLE_IS_APPROVER								=	"IS_APPROVER";
+	
 	
 	public static final String	CONST_PARAM_NAME_STUDENT_NO									=	"paramStudentNo";
 	public static final String	CONST_PARAM_NAME_FORM_NAME									=	"paramFormName";

@@ -188,6 +188,17 @@ background-color:transparent;
 }
 
 
+.verticaltext {
+    transform: rotate(-90deg);
+    transform-origin: right, top;
+    -ms-transform: rotate(-90deg);
+    -ms-transform-origin:right, top;
+    -webkit-transform: rotate(-90deg);
+    -webkit-transform-origin:right, top;
+    position: absolute; 
+    color: #ed217c;
+}
+
 </style>
 
 <script>

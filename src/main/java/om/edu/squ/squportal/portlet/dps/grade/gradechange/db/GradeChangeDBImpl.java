@@ -143,6 +143,10 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 				
 				gradeDTO.setSectionNo(rs.getString(Constants.CONST_COLMN_SECTION_NO));
 				
+				gradeDTO.setUpdatable(
+										rs.getString(Constants.CONST_COLMN_POSTPONE_GRADE_IS_UPDATABLE).equals(Constants.CONST_YES)?true:false
+									);
+				
 				gradeDTO.setCourse(course);
 				gradeDTO.setGrade(grade);
 				
@@ -254,6 +258,7 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 				
 				gradeDto.setGrade(grade);
 				
+				gradeDto.setStatusDesc(rs.getString(Constants.CONST_COLMN_STATUS_DESC));
 				gradeDto.setComments(rs.getString(Constants.CONST_COLMN_COMMENT));
 				
 				
@@ -322,11 +327,9 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 		namedParameterMap.put("paramSectNo", dto.getSectionNo());
 		namedParameterMap.put("paramGradeCodeOld", String.valueOf(dto.getGrade().getGradeCodeOld()));
 		namedParameterMap.put("paramGradeCodeNew", String.valueOf(dto.getGrade().getGradeCodeNew()));
+		namedParameterMap.put("paramComments", dto.getComments());
 		namedParameterMap.put("paramStatusCode", Constants.CONST_SQL_STATUS_CODE_NAME_PENDING);
 		namedParameterMap.put("paramUserName", dto.getUserName());
-		
-		logger.info("namedParameterMap : "+namedParameterMap);
-		logger.info("SQL_GRADE_INSERT_APPLY_INSTRUCTOR : "+SQL_GRADE_INSERT_APPLY_INSTRUCTOR);
 		
 		try
 			{

@@ -154,11 +154,18 @@ public class GradeChangeServiceImpl implements GradeChangeService
 		Grade		grade		=	new	Grade();
 		int			result		=	0;
 		
+		logger.info("gradeChangeModel : "+gradeChangeModel);
 		
 		String		studentNo			=	crypto.decrypt(gradeChangeModel.getSalt(), gradeChangeModel.getFour(),  gradeChangeModel.getStudentNo());
 		String		stdStatCode			=	crypto.decrypt(gradeChangeModel.getSalt(), gradeChangeModel.getFour(),  gradeChangeModel.getStdStatCode()); 
+		String		gradeChangeCodeNew	=	crypto.decrypt(gradeChangeModel.getSalt(), gradeChangeModel.getFour(), gradeChangeModel.getGradeCodeNew());
 		String		gradeChangeCodeOld	=	crypto.decrypt(gradeChangeModel.getSalt(), gradeChangeModel.getFour(),  gradeChangeModel.getGradeCodeOld());
-		String		gradeChangeCodeNew	=	crypto.decrypt(gradeChangeModel.getSalt(), gradeChangeModel.getFour(),  gradeChangeModel.getGradeCodeNew());
+		
+		
+		
+		logger.info("gradeChangeCodeOld : {}",gradeChangeCodeOld);
+		logger.info("gradeChangeCodeNew : {}",gradeChangeCodeNew);
+		
 		
 					gradeDTO.setStudentNo(studentNo);
 					gradeDTO.setStdStatCode(stdStatCode); 
@@ -175,6 +182,8 @@ public class GradeChangeServiceImpl implements GradeChangeService
 					gradeDTO.setCourse(course);
 					gradeDTO.setGrade(grade);
 					gradeDTO.setUserName(request.getRemoteUser());
+					
+					gradeDTO.setComments(gradeChangeModel.getComments());
 					
 			 try
 			{

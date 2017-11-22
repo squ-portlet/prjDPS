@@ -11,12 +11,10 @@
 <script type="text/javascript">
 	$(function() {
 
-		/*	
-		$('#tblGradeList').DataTable({
 			
-		});
 		
 		
+	/*
 		
 		$('#tblGradeListApproval').DataTable({
 			
@@ -49,10 +47,25 @@
 							var gradeDTOs	=	JSON.parse(data); 
 	
 							 hbDataLoadAction(gradeDTOs, '#hbGradeList', '#divGradeList');
+							 var tablGradeList = $('#tblGradeList').DataTable({
+								 select: true,
+								 "sDom":  '<t><"col-sm-5"i><"col-sm-12"p><"clearfix">'
+							 });
+							
+							 $('#tblGradeList tbody').on( 'click', 'tr .linkGradeChange', function () {
+								 
+								
+								 var rowIndex=tablGradeList.row( this ).index();
+								 var cell = tablGradeList.cell({ row: rowIndex, column: 3 }).node();
+								 
+
+								 
+									instructorApplyForGradeChange(this, cell);
+									
+									tablGradeList.row(rowIndex).remove().draw();
+									
+							});
 							 
-								$('.linkGradeChange').on('click',function (e){
-									instructorApplyForGradeChange(this)
-								});
 						},
 						error	:	function(xhr, status,  error)
 						{
@@ -61,7 +74,16 @@
 					
 				});
 		
+				viewInstructorGradeChangeHistory(gradeChangeModel);
 			
+			
+			
+			
+		});
+
+
+		function viewInstructorGradeChangeHistory(gradeChangeModel)
+		{
 			$.ajax({
 				url		:	"${varResourceAjaxGetStudentGradesChangeHistory}",
 				type	:	'POST',
@@ -78,15 +100,18 @@
 				}
 			
 			});
-			
-			
-			
-		});
+		}
+	
+	
+	
 	
 	/* Filling data using handlebar template*/	
-		function instructorApplyForGradeChange(data)
+		function instructorApplyForGradeChange(data, cell)
 		{
-			var newGradeCode	=	aesUtil.encrypt(salt, four, passphrase, $(data).closest('tr').find('.gradeValNew').val());
+		//$(data).closest('tr').find('.gradeValNew').val()
+
+	 
+			var newGradeCode	=	aesUtil.encrypt(salt, four, passphrase, $('select', cell).val());
 			var gradeChangeModel = {
 					studentNo		:	data.getAttribute("stdno"),
 					stdStatCode		:	data.getAttribute("stdstatcode"), 
@@ -97,10 +122,13 @@
 					lAbrCrsNo		:	data.getAttribute("labrcourseno"),
 					gradeCodeOld	:	data.getAttribute("gradecodeold"),
 					gradeCodeNew	:	newGradeCode,
+					comments		:	$(data).closest('tr').find('.txtComments').val(),
 					salt			:	salt,
 					four			:	four
 			};
 			
+			
+					
 			$.ajax({
 				url		:	"${varResourceAjaxGradeChangeApply}",
 				type	:	'POST',
@@ -116,6 +144,8 @@
 				}				
 			});
 			
+			
+			viewInstructorGradeChangeHistory(gradeChangeModel);
 			
 		}
 	

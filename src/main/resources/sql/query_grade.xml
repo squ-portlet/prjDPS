@@ -3,7 +3,8 @@
 <properties>
 	<comment>DPS Grades Queries</comment>
 	<entry key="dps.grades.select.student.grades">
-				SELECT
+		<![CDATA[ 
+			SELECT
                   DISTINCT
                   			GRADES.STDNO										AS	  	STUDENT_NO
                   		,  	VSP.STDSTATCD                       				AS      STDSTATCD 
@@ -24,27 +25,33 @@
 			                    , 'ar', GV.A_ABR_GVAL
 			                    ,      GV.L_ABR_GVAL
 			                  )                                                 AS      GRADE_VAL
-                , (
-                    SELECT 
-                          COUNT(SCHEDW.FACSURNMCD)
-                    FROM 
-                            SCHED_WEEKLY        SCHEDW
-                          , SECT_DAGR           SECTDGR
-                    WHERE
-                              SCHEDW.SECTCD= SECTDGR.SECTCD 
-                          AND SCHEDW.FACSURNMCD = :paramEmpNo
-                          AND SECTDGR.CCYRCD = :paramYear
-                          AND SECTDGR.SEMCD = :paramSem
-                          AND SECTDGR.L_ABR_CRSNO = GRADES.L_ABR_CRSNO
-                )                                                               AS 		EMP_COUNT
-                  
+		                , (
+		                    SELECT 
+		                          COUNT(SCHEDW.FACSURNMCD)
+		                    FROM 
+		                            SCHED_WEEKLY        SCHEDW
+		                          , SECT_DAGR           SECTDGR
+		                    WHERE
+		                              SCHEDW.SECTCD= SECTDGR.SECTCD 
+		                          AND SCHEDW.FACSURNMCD = :paramEmpNo
+		                          AND SECTDGR.CCYRCD = :paramYear
+		                          AND SECTDGR.SEMCD = :paramSem
+		                          AND SECTDGR.L_ABR_CRSNO = GRADES.L_ABR_CRSNO
+		                	)                                                    AS		EMP_COUNT
+                
+			          ,  DECODE
+			                  (
+			                   NVL(T_GRADES.CRSNO,0)
+			                    , 0, 'Y', 'N'
+			                  )                                                  AS    IS_UPDATABLE
 			            
 			FROM
 			           GRADE_VAL           GV
 			        ,  STD_GRADES          GRADES
 			        ,  CRS_BASIC           CRS
-
-           		,  V_STDINFO_PORTAL    VSP
+           			,  V_STDINFO_PORTAL    VSP
+              		,  T_STD_GRADES        T_GRADES 
+              
 			         
 			WHERE
 			
@@ -55,11 +62,18 @@
             	AND VSP.ACTIVE  = 'Y'
 			    AND GV.GRADECD  = GRADES.GRADECD
 			    AND CRS.CRSNO = GRADES.CRSNO	
-
-            	AND (
-                		GRADES.L_ABR_CRSNO  = :paramLAbrCrsNo
-                		OR :paramLAbrCrsNo IS NULL
-               		)
+	          	AND (
+	                		GRADES.L_ABR_CRSNO  = :paramLAbrCrsNo
+	                	OR 	:paramLAbrCrsNo IS NULL
+	              	)
+              
+	          AND GRADES.STDNO  = T_GRADES.STDNO(+)
+	          AND GRADES.CRSNO  = T_GRADES.CRSNO(+)
+	          AND GRADES.CCYRCD  = T_GRADES.CCYRCD(+)
+	          AND GRADES.SEMCD  = T_GRADES.SEMCD(+)
+	          AND T_GRADES.STATUSCD(+) <> FUNC_GET_STATUS_CODE('ACCPT')
+	          AND T_GRADES.STATUSCD(+) <> FUNC_GET_STATUS_CODE('REJCT')
+       ]]>
 	</entry>
 	<entry key="dps.grades.select.grade.values">
 		SELECT
@@ -181,6 +195,7 @@
 		  , SECTNO
 		  , GRADECD_OLD
 		  , GRADECD_NEW
+		  , COMMENTS
 		  , STATUSCD
 		  , CREATE_DATE
 		  , CREATE_USERNAME
@@ -197,6 +212,7 @@
 		    , :paramSectNo
 		    , :paramGradeCodeOld
 		    , :paramGradeCodeNew
+		    , :paramComments
 		    , (
                  SELECT
                      CODES.SISCODECD	

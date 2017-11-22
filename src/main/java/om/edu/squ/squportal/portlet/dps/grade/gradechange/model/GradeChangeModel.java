@@ -46,6 +46,7 @@ public class GradeChangeModel
 	private	String	gradeCodeOld;
 	private	String	gradeCodeNew;
 	private	String	gradeValNew;
+	private	String	comments;
 	
 
 	/* Security cipher */
@@ -257,6 +258,27 @@ public class GradeChangeModel
 	{
 		this.gradeCodeNew = gradeCodeNew;
 	}
+	
+	/**
+	 * Getter Method	: getComments
+	 * @return the comments
+	 * 
+	 * Date				: Nov 22, 2017
+	 */
+	public String getComments()
+	{
+		return this.comments;
+	}
+	/**
+	 * Setter method : setComments
+	 * @param comments the comments to set
+	 * 
+	 * Date          : Nov 22, 2017 8:06:14 PM
+	 */
+	public void setComments(String comments)
+	{
+		this.comments = comments;
+	}
 	/**
 	 * Getter Method	: getGradeValNew
 	 * @return the gradeValNew
@@ -330,8 +352,8 @@ public class GradeChangeModel
 				+ ", courseCode=" + this.courseCode + ", lAbrCrsNo="
 				+ this.lAbrCrsNo + ", gradeCodeOld=" + this.gradeCodeOld
 				+ ", gradeCodeNew=" + this.gradeCodeNew + ", gradeValNew="
-				+ this.gradeValNew + ", salt=" + this.salt + ", four="
-				+ this.four + "]";
+				+ this.gradeValNew + ", comments=" + this.comments + ", salt="
+				+ this.salt + ", four=" + this.four + "]";
 	}
 	
 	

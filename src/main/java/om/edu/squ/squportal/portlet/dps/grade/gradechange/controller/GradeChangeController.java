@@ -237,8 +237,8 @@ public class GradeChangeController
 			, 	ResourceResponse response
 			, 	Locale locale)
 	{
-		logger.info("gradeChangeModel : "+gradeChangeModel);
-		logger.info("GradeCodeOld : "+crypto.decrypt(gradeChangeModel.getSalt(), gradeChangeModel.getFour(),  gradeChangeModel.getGradeCodeOld()));
+		
+		
 		
 		gradeChangeService.instructorApplyForGradeChange(gradeChangeModel,request);
 		
