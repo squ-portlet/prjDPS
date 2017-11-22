@@ -37,7 +37,7 @@ public class GradeChangeModel
 {
 	private	String	studentId;
 	private	String	studentNo;
-	private	String	stdStatCode;
+	private	String	stdStatCode; 
 	private	String	courseYear;
 	private	String	semCode;
 	private	String	sectionNo;

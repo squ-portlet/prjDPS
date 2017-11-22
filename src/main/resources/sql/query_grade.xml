@@ -6,7 +6,7 @@
 				SELECT
                   DISTINCT
                   			GRADES.STDNO												AS	  	STUDENT_NO
-                  		,  	VSP.STDSTATCD                       						AS      STDSTATCD
+                  		,  	VSP.STDSTATCD                       						AS      STDSTATCD 
                   		,   GRADES.CCYRCD												AS		CCYRCD	
                   		,	GRADES.SEMCD												AS		SEMCD
                   		,	GRADES.CRSNO												AS		COURSE_NO
@@ -134,7 +134,7 @@
 		(
 		   REC_SEQ_NO
 		  , STDNO
-		  , STDSTATCD
+		  , STDSTATCD 
 		  , CCYRCD
 		  , SEMCD
 		  , L_ABR_CRSNO
@@ -150,7 +150,7 @@
 		  (
 			   DPS_SQ.NEXTVAL
 		    , :paramStdNo
-		    , :paramStdStatCode
+		    , :paramStdStatCode 
 		    , :paramYear
 		    , :paramSem
 		    , :paramCourseLAbrCode

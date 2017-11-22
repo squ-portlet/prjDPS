@@ -84,7 +84,7 @@
 								</select>
 						</td>
 						<td>
-							<a class="linkGradeChange" href="#" stdno="{{encryptStr studentNo}}" stdstatcode="{{encryptStr stdStatCode}}" courseyear="{{courseYear}}" semester="{{semester}}" courseno="{{course.courseNo}}" labrcourseno="{{course.lAbrCourseNo}}" sectionno="{{sectionNo}}"  gradecodeold="{{{encryptStr grade.gradeCode}}}" ><spring:message code="prop.dps.gradechange.link.update"/></a>
+							<a class="linkGradeChange" href="#" stdno="{{encryptStr studentNo}}" stdstatcode="{{encryptStr stdStatCode}}" courseyear="{{courseYear}}" semester="{{semester}}" courseno="{{course.courseNo}}" labrcourseno="{{course.lAbrCourseNo}}" sectionno="{{sectionNo}}"  gradecodeold="{{{encryptStr grade.gradeCode}}}" ><spring:message code="prop.dps.gradechange.link.update"/></a> 
 						</td>
 					</tr>
 				{{/each}}
