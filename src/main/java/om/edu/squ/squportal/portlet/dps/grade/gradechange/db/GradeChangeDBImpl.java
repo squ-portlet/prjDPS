@@ -132,6 +132,7 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 				grade.setGradeVal(rs.getString(Constants.CONST_COLMN_GRADE_VAL));
 				
 				gradeDTO.setStudentNo(rs.getString(Constants.CONST_COLMN_STUDENT_NO));
+				gradeDTO.setStdStatCode(rs.getString(Constants.CONST_COLMN_STDSTATCD));
 				gradeDTO.setCourseYear(rs.getString(Constants.COST_COL_DPS_COURSE_YEAR));
 				gradeDTO.setSemester(rs.getString(Constants.COST_COL_DPS_SEMESTER_CODE));
 				
@@ -284,6 +285,7 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 		
 		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
 		namedParameterMap.put("paramStdNo", dto.getStudentNo());
+		namedParameterMap.put("paramStdStatCode", dto.getStdStatCode());
 		namedParameterMap.put("paramYear", dto.getCourseYear());
 		namedParameterMap.put("paramSem", dto.getSemester());
 		namedParameterMap.put("paramCourseLAbrCode", dto.getCourse().getlAbrCourseNo());

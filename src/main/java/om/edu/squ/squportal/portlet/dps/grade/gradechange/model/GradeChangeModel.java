@@ -37,6 +37,7 @@ public class GradeChangeModel
 {
 	private	String	studentId;
 	private	String	studentNo;
+	private	String	stdStatCode;
 	private	String	courseYear;
 	private	String	semCode;
 	private	String	sectionNo;
@@ -91,6 +92,27 @@ public class GradeChangeModel
 	public void setStudentNo(String studentNo)
 	{
 		this.studentNo = studentNo;
+	}
+	
+	/**
+	 * Getter Method	: getStdStatCode
+	 * @return the stdStatCode
+	 * 
+	 * Date				: Nov 22, 2017
+	 */
+	public String getStdStatCode()
+	{
+		return this.stdStatCode;
+	}
+	/**
+	 * Setter method : setStdStatCode
+	 * @param stdStatCode the stdStatCode to set
+	 * 
+	 * Date          : Nov 22, 2017 9:28:10 AM
+	 */
+	public void setStdStatCode(String stdStatCode)
+	{
+		this.stdStatCode = stdStatCode;
 	}
 	/**
 	 * Getter Method	: getCourseYear
@@ -302,8 +324,9 @@ public class GradeChangeModel
 	public String toString()
 	{
 		return "GradeChangeModel [studentId=" + this.studentId + ", studentNo="
-				+ this.studentNo + ", courseYear=" + this.courseYear
-				+ ", semCode=" + this.semCode + ", sectionNo=" + this.sectionNo
+				+ this.studentNo + ", stdStatCode=" + this.stdStatCode
+				+ ", courseYear=" + this.courseYear + ", semCode="
+				+ this.semCode + ", sectionNo=" + this.sectionNo
 				+ ", courseCode=" + this.courseCode + ", lAbrCrsNo="
 				+ this.lAbrCrsNo + ", gradeCodeOld=" + this.gradeCodeOld
 				+ ", gradeCodeNew=" + this.gradeCodeNew + ", gradeValNew="

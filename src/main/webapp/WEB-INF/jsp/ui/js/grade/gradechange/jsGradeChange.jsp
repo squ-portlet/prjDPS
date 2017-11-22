@@ -89,6 +89,7 @@
 			var newGradeCode	=	aesUtil.encrypt(salt, four, passphrase, $(data).closest('tr').find('.gradeValNew').val());
 			var gradeChangeModel = {
 					studentNo		:	data.getAttribute("stdno"),
+					stdStatCode		:	data.getAttribute("stdstatcode"),
 					courseYear		:	data.getAttribute("courseyear"),
 					semCode			:	data.getAttribute("semester"),
 					sectionNo		:	data.getAttribute("sectionno"),

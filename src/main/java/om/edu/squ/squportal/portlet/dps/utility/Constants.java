@@ -185,11 +185,13 @@ public interface Constants
 	public static final	String	CONST_SQL_ROLE_SUPERVISOR									=	"2012";   // SUPRVS
 	public static final	String	CONST_SQL_ROLE_COL_DEAN										=	"1883";	  // DEAN
 	public static final	String	CONST_SQL_ROLE_DPS_DEAN										=	"5548";
-*/	
+	
+*/	public static final	String	CONST_SQL_ROLE_NAME_HOD										=	"HOD";
 	public static final	String	CONST_SQL_ROLE_NAME_ADVISOR									=	"ADVISOR";
 	public static final	String	CONST_SQL_ROLE_NAME_SUPERVISOR								=	"SUPRVS";   
 	public static final	String	CONST_SQL_ROLE_NAME_COL_DEAN								=	"DEAN";	  
 	public static final	String	CONST_SQL_ROLE_NAME_DPS_DEAN								=	"DEANP";
+	public static final	String	CONST_SQL_ROLE_NAME_DPS_ASSISTANT_DEAN						=	"ADEANP";
 	
 	/******************************************************/
 	
@@ -197,8 +199,10 @@ public interface Constants
 //	public static final	String	CONST_FORM_DPS_EXTENSION_STUDY								=	"3413";
 
 	public static final	String	CONST_FORM_NAME_DPS_DROP_W									=	"DPS7";
+	public static final	String	CONST_FORM_NAME_DPS_GRADE_CHANGE							=	"DPS9";
 	public static final	String	CONST_FORM_NAME_DPS_POSTPONE_STUDY							=	"DPS13";
-	public static final	String	CONST_FORM_NAME_DPS_EXTENSION_STUDY							=	"DPS19";	
+	public static final	String	CONST_FORM_NAME_DPS_EXTENSION_STUDY							=	"DPS19";
+	
 	
 	/************* PROPERTY FILE ******************************/
 	public	static	String	RESOURCE_PROPERTY_FILE_NAME										=	"messages";

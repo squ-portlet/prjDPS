@@ -156,10 +156,12 @@ public class GradeChangeServiceImpl implements GradeChangeService
 		
 		
 		String		studentNo			=	crypto.decrypt(gradeChangeModel.getSalt(), gradeChangeModel.getFour(),  gradeChangeModel.getStudentNo());
+		String		stdStatCode			=	crypto.decrypt(gradeChangeModel.getSalt(), gradeChangeModel.getFour(),  gradeChangeModel.getStdStatCode());
 		String		gradeChangeCodeOld	=	crypto.decrypt(gradeChangeModel.getSalt(), gradeChangeModel.getFour(),  gradeChangeModel.getGradeCodeOld());
 		String		gradeChangeCodeNew	=	crypto.decrypt(gradeChangeModel.getSalt(), gradeChangeModel.getFour(),  gradeChangeModel.getGradeCodeNew());
 		
 					gradeDTO.setStudentNo(studentNo);
+					gradeDTO.setStdStatCode(stdStatCode);
 					gradeDTO.setCourseYear(gradeChangeModel.getCourseYear());
 					gradeDTO.setSemester(gradeChangeModel.getSemCode());
 					gradeDTO.setSectionNo(gradeChangeModel.getSectionNo());
