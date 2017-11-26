@@ -316,7 +316,7 @@ public interface Constants
 	public	static	final	boolean	CONST_TEST_ENVIRONMENT									=	true;
 	public	static	final	String	CONST_EMAIL_FROM										=	"portal_feedback@squ.edu.om";
 	public	static	final	String	CONST_DUMMY_USER_EMAIL_TO								=	"bhabesh@squ.edu.om";
-	public	static	final	String	CONST_DUMMY_USER_SMS_TO									=	"97259245";
+	public	static	final	String	CONST_DUMMY_USER_SMS_TO									=	"-----"; //TODO Change to phone number only in development environment 
 	
 	
 }
