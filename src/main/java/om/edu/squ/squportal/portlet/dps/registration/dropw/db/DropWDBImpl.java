@@ -477,8 +477,6 @@ public class DropWDBImpl implements DropWDBDao
 		paramMap.put(Constants.CONST_PROC_COL_NAME_P_SECTNO, dropWDTO.getSectionNo());
 		paramMap.put(Constants.CONST_PROC_COL_NAME_P_USER, dropWDTO.getUserName());
 		
-		logger.info("paramMap : "+paramMap);
-		
 		try
 		{
 			resultProc	=	simpleJdbcCallDpsDropW.execute(paramMap);
