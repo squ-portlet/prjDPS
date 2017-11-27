@@ -59,10 +59,12 @@
 								 var cell = tablGradeList.cell({ row: rowIndex, column: 3 }).node();
 								 
 
-								 
 									instructorApplyForGradeChange(this, cell);
-									
+
 									tablGradeList.row(rowIndex).remove().draw();
+									
+									
+									
 									
 							});
 							 
@@ -110,9 +112,10 @@
 		{
 		//$(data).closest('tr').find('.gradeValNew').val()
 
-	 
+	 		var crStudentId =	aesUtil.encrypt(salt, four, passphrase, $('#studentId').val());
 			var newGradeCode	=	aesUtil.encrypt(salt, four, passphrase, $('select', cell).val());
 			var gradeChangeModel = {
+					studentId		:	crStudentId,
 					studentNo		:	data.getAttribute("stdno"),
 					stdStatCode		:	data.getAttribute("stdstatcode"), 
 					courseYear		:	data.getAttribute("courseyear"),
@@ -136,7 +139,7 @@
 				data	:	gradeChangeModel,
 				success	:	function(data)
 				{
-					
+					viewInstructorGradeChangeHistory(gradeChangeModel);
 				},
 				error	:	function(xhr, status,  error)
 				{
@@ -145,7 +148,7 @@
 			});
 			
 			
-			viewInstructorGradeChangeHistory(gradeChangeModel);
+			
 			
 		}
 	

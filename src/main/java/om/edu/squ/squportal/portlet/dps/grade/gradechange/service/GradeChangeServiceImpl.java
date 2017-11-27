@@ -131,6 +131,7 @@ public class GradeChangeServiceImpl implements GradeChangeService
 		GradeDTO	dto		=	new GradeDTO();
 		dto.setStudentId(gradeChangeModelHistory.getStudentId());
 		dto.setCourseYear(gradeChangeModelHistory.getCourseYear());
+
 		return gradeChangeDBDao.getGradeHistory(dto, locale);
 	}
 	
@@ -154,17 +155,11 @@ public class GradeChangeServiceImpl implements GradeChangeService
 		Grade		grade		=	new	Grade();
 		int			result		=	0;
 		
-		logger.info("gradeChangeModel : "+gradeChangeModel);
 		
 		String		studentNo			=	crypto.decrypt(gradeChangeModel.getSalt(), gradeChangeModel.getFour(),  gradeChangeModel.getStudentNo());
 		String		stdStatCode			=	crypto.decrypt(gradeChangeModel.getSalt(), gradeChangeModel.getFour(),  gradeChangeModel.getStdStatCode()); 
 		String		gradeChangeCodeNew	=	crypto.decrypt(gradeChangeModel.getSalt(), gradeChangeModel.getFour(), gradeChangeModel.getGradeCodeNew());
 		String		gradeChangeCodeOld	=	crypto.decrypt(gradeChangeModel.getSalt(), gradeChangeModel.getFour(),  gradeChangeModel.getGradeCodeOld());
-		
-		
-		
-		logger.info("gradeChangeCodeOld : {}",gradeChangeCodeOld);
-		logger.info("gradeChangeCodeNew : {}",gradeChangeCodeNew);
 		
 		
 					gradeDTO.setStudentNo(studentNo);
@@ -198,7 +193,7 @@ public class GradeChangeServiceImpl implements GradeChangeService
 								,	gradeChangeModel.getSectionNo() 
 						);
 			}
-			 logger.info("result of insert : "+result);
+
 			 return null;
 					
 	}

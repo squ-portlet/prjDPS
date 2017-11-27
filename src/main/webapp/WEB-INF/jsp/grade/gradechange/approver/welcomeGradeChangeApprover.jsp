@@ -117,13 +117,13 @@
 			{{#each .}}
 					<tr>
 						<td>{{course.lAbrCourseNo}}</td>
-						<td>{{sectionNo}}</td>
-						<td>{{grade.gradeValOld}}</td>
-						<td>{{grade.gradeValNew}}</td>
-						<td>{{statusDesc}}</td>
-						<td>{{{hod.roleStausIkon}}}</td>
-						<td>{{{dpsAsstDean.roleStausIkon}}}</td>
-						<td>{{{dpsDean.roleStausIkon}}}</td>
+						<td><center>{{sectionNo}}</center></td>
+						<td><center>{{grade.gradeValOld}}</center></td>
+						<td><center>{{grade.gradeValNew}}</center></td>
+						<td><center>{{statusDesc}}</center></td>
+						<td><center>{{{hod.roleStausIkon}}}</center></td>
+						<td><center>{{{dpsAsstDean.roleStausIkon}}}</center></td>
+						<td><center>{{{dpsDean.roleStausIkon}}}</center></td>
 					</tr>
 			{{/each}}
 		</table>

@@ -169,9 +169,6 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 		}
 		namedParameterMap.put("paramLocale", locale.getLanguage());
 		
-		logger.info("namedParameterMap : "+namedParameterMap);
-		logger.info("result : "+nPJdbcTemplDpsGradeChange.query(SQL_GRADE_CHANGE_STUDENT_LIST_OF_EXISTING_GRADE, namedParameterMap, rowMapper));
-		
 		try
 		{
 			return nPJdbcTemplDpsGradeChange.query(SQL_GRADE_CHANGE_STUDENT_LIST_OF_EXISTING_GRADE, namedParameterMap, rowMapper);
