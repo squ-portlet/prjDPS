@@ -23,8 +23,8 @@
 
 	*/
 		$('#bttnGradeSearch').click(function(){
-
 			
+			$('#idAlert').removeClass('alert in');
 			//Encrypt Student Id
 			var crStudentId =	aesUtil.encrypt(salt, four, passphrase, $('#studentId').val());
 			
@@ -58,7 +58,8 @@
 								 var rowIndex=tablGradeList.row( this ).index();
 								 var cell = tablGradeList.cell({ row: rowIndex, column: 3 }).node();
 								 
-
+								 	
+								 	
 									instructorApplyForGradeChange(this, cell);
 
 									tablGradeList.row(rowIndex).remove().draw();
@@ -71,8 +72,16 @@
 						},
 						error	:	function(xhr, status,  error)
 						{
+							var alertText = {
+									alertTxt: xhr.responseText
+							}
 							
+							hbDataLoadAction(alertText, '#hbAlert', '#divAlertGradeList');
+							$('#divGradeList').html('');
+							$('#divGradeChangeHistory').html('');
 						}
+						
+						
 					
 				});
 		
@@ -111,6 +120,8 @@
 		function instructorApplyForGradeChange(data, cell)
 		{
 		//$(data).closest('tr').find('.gradeValNew').val()
+		
+		
 
 	 		var crStudentId =	aesUtil.encrypt(salt, four, passphrase, $('#studentId').val());
 			var newGradeCode	=	aesUtil.encrypt(salt, four, passphrase, $('select', cell).val());
@@ -139,6 +150,7 @@
 				data	:	gradeChangeModel,
 				success	:	function(data)
 				{
+					
 					viewInstructorGradeChangeHistory(gradeChangeModel);
 				},
 				error	:	function(xhr, status,  error)

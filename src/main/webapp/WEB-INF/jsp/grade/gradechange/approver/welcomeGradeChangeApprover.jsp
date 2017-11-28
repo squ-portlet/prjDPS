@@ -49,6 +49,7 @@
 		
 		<div class="col-sm-6">
 			<div id="divGradeList"></div>
+			<div id="divAlertGradeList"></div>
 		</div>
 	</div>
 	
@@ -127,5 +128,13 @@
 					</tr>
 			{{/each}}
 		</table>
+</script>
+
+<script id="hbAlert" type="text/x-handlebars-template">
+	<div id="idAlert" class="alert alert-danger alert-dismissible fade in" role="alert"> 
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">×</span></button> <h4><spring:message code="err.dps.gradechange.alert"/></h4> 
+				<p id="idAlertText">{{alertTxt}}</p> 
+	</div> 
 </script>
 

@@ -38,6 +38,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
+import javax.servlet.http.HttpServletResponse;
 
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.User;
@@ -51,6 +52,7 @@ import om.edu.squ.squportal.portlet.dps.grade.gradechange.service.GradeChangeSer
 import om.edu.squ.squportal.portlet.dps.security.Crypto;
 import om.edu.squ.squportal.portlet.dps.security.CryptoAES;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
+import om.edu.squ.squportal.portlet.dps.utility.UtilProperty;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -165,8 +167,15 @@ public class GradeChangeController
 		try
 		{
 			List<GradeDTO> 	gradeList		=	gradeChangeService.getStudentGrades(dpsServiceDao.getEmpNumber(request), locale, gradeChangeModel);	
-			
-			response.getWriter().print(gson.toJson(gradeList));
+			if( (null == gradeList) || gradeList.size()==0)
+			{
+				response.setProperty(ResourceResponse.HTTP_STATUS_CODE, Integer.toString(HttpServletResponse.SC_INTERNAL_SERVER_ERROR));
+				response.getWriter().print(UtilProperty.getMessage("err.dps.service.not.available.text", null, locale));
+			}
+			else
+			{
+				response.getWriter().print(gson.toJson(gradeList));
+			}
 		}
 		catch(NoDBRecordException ex)
 		{
