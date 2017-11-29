@@ -291,6 +291,7 @@ public interface Constants
 	public	static	final	String	CONST_PROP_SQL_ROLE_IS_POST_GRAD_ASST_DEAN				=	"sql.role.is.college.post.graduate.asst.dean";
 	public	static	final	String	CONST_PROP_SQL_ROLE_IS_COLLEGE_DEAN						=	"sql.role.is.extension.col.dean";
 	public	static	final	String	CONST_PROP_SQL_ROLE_IS_DPS_DEAN							=	"sql.role.is.dps.dean";
+	public	static	final	String	CONST_PROP_SQL_ROLE_IS_DPS_ADMIN_STAFF					=	"sql.role.is.college.post.graduate.dps.admin.staff";
 	public	static	final	String	CONST_PROP_SQL_ROLE_APPROVAL_CODE						=	"sql.role.approval.code";
 	public	static	final	String	CONST_PROP_SQL_ROLE_STATUS_CODE							=	"sql.role.status.code";
 	
@@ -304,6 +305,7 @@ public interface Constants
 	public	static	final	String	CONST_ROLE_NAME_COL_DEAN								=	"DEAN";
 	public	static	final	String	CONST_ROLE_NAME_DPS_DEAN								=	"DEANP";
 	public	static	final	String	CONST_ROLE_NAME_DPS_STAFF								=	"DPS";
+	public	static	final	String	CONST_ROLE_NAME_DPS_ADMIN_STAFF							=	"ADMINP";
 	
 	
 	public	static	final	String	CONST_THESIS_SEMINAR_SEMINAR_01							=	"SEM1";

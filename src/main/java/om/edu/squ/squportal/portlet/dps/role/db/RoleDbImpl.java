@@ -351,6 +351,7 @@ public class RoleDbImpl implements RoleDbDao
 		return result.equals("Y") ? true : false;
 	}
 
+
 	/**
 	 * 
 	 * method name  : isCollegeDean
@@ -399,6 +400,32 @@ public class RoleDbImpl implements RoleDbDao
 		result	=	nPJdbcTemplDps.queryForObject(PROP_SQL_ROLE_IS_DPS_DEAN, mapParamsRole, String.class);
 		
 		return result.equals("Y") ? true : false;
+	}
+	
+	/**
+	 * 
+	 * method name  : isDpsAdminStaff
+	 * @param empNumber
+	 * @return
+	 * RoleDbImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		: Is Employee DPS Admin staff
+	 *
+	 * Date    		:	Nov 29, 2017 4:59:55 PM
+	 */
+	public boolean isDpsAdminStaff(String empNumber)
+	{
+		String	PROP_SQL_ROLE_IS_DPS_ADMIN_STAFF		=	queryPropsCommonRole.getProperty(Constants.CONST_PROP_SQL_ROLE_IS_DPS_ADMIN_STAFF);
+		String	result										=	null;;
+		
+		Map<String, String> mapParamsRole	=	new HashMap<String, String>();
+		mapParamsRole.put("paramEmpNo", empNumber);
+		
+		result	=	nPJdbcTemplDps.queryForObject(PROP_SQL_ROLE_IS_DPS_ADMIN_STAFF, mapParamsRole, String.class);
+		
+		return result.equals("Y") ? true : false;		
+		
 	}
 	
 

@@ -178,6 +178,20 @@ public interface RoleDbDao
 	 * Date    		:	Feb 13, 2017 5:28:49 PM
 	 */
 	public boolean isDpsDean(String empNumber);
+
+	/**
+	 * 
+	 * method name  : isDpsAdminStaff
+	 * @param empNumber
+	 * @return
+	 * RoleDbImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		: Is Employee DPS Admin staff
+	 *
+	 * Date    		:	Nov 29, 2017 4:59:55 PM
+	 */
+	public boolean isDpsAdminStaff(String empNumber);
 	
 	/**
 	 * 

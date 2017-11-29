@@ -113,8 +113,28 @@
 				      AND LPAD(LTRIM(USERS.USERNAME,'e'),7,0) = LPAD(:paramEmpNo,7,0)
 				      AND USERS.STATUSACTIVE='Y'
 				)
-					
-		</entry>		
+		</entry>
+		<entry key="sql.role.is.college.post.graduate.dps.admin.staff">
+						SELECT 
+						    DECODE
+						          (
+						            COUNT_REC,
+						            0,'N','Y'
+						          )             													AS	IS_COL_ASST_DEAN
+						FROM
+						(
+						    SELECT 
+						          COUNT(USERS.USERNAME) AS COUNT_REC
+						    FROM 
+						      SIS_USERS USERS
+						      ,SIS_CODES CODES
+						    WHERE
+						    USERS.USERCATEGORY = CODES.SISCODECD
+						      AND CODES.L_ABR_CODE LIKE 'ADMINP'
+						      AND LPAD(LTRIM(USERS.USERNAME,'e'),7,0) = LPAD(:paramEmpNo,7,0)
+						      AND USERS.STATUSACTIVE='Y'
+						)
+		</entry>				
 		<entry key="sql.role.is.extension.col.dean">
 				SELECT 
 				    DECODE
