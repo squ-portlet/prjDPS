@@ -5,6 +5,7 @@ create or replace FUNCTION FUNC_IS_APPROVER
     ,  paramFormName      IN  VARCHAR2
     ,  paramRoleName      IN  VARCHAR2
     ,  paramEmpNo         IN  VARCHAR2
+    ,  paramRequestCode   IN  VARCHAR2 DEFAULT NULL
   )
   RETURN VARCHAR2 IS 
 /*
@@ -14,6 +15,7 @@ create or replace FUNCTION FUNC_IS_APPROVER
 
   Author : Bhabesh
   Create Date : 20-February-2017
+  Modify Date : 06-December-2017 (introduce REQUESTCD from APPROVAL_TRANSACTION)
 */
 COUNT_REC       NUMBER          :=0;
 COUNT_REC_OTHER NUMBER          :=0;
@@ -49,7 +51,12 @@ BEGIN
                   WHERE
                           APP_T.APPROVALCD  = APPROVAL_CODE
                       AND APP_T.APPROVER_EMPNO =paramEmpNo
-                      AND APP_T.STDNO          = paramStudentNo;
+                      AND APP_T.STDNO          = paramStudentNo
+                      AND (
+                                APP_T.REQUESTCD = paramRequestCode
+                            OR  paramRequestCode IS NULL
+                          )
+                      ;
           END;
      
           BEGIN
@@ -78,6 +85,10 @@ BEGIN
                                  AND    APP_T.APPROVAL_STATUSCD = CODES.SISCODECD(+)
                                  AND  APP_T.STDNO (+)           = paramStudentNo
                                  AND  OBJ.OBJECTNM  = paramFormName
+                                 AND (
+                                            APP_T.REQUESTCD = paramRequestCode
+                                        OR  paramRequestCode IS NULL
+                                      )
                             
                             GROUP BY   L_ABR_CODE, APPROVAL_SEQUENCE   
                             ORDER BY APP_M.APPROVAL_SEQUENCE; 
@@ -99,12 +110,14 @@ BEGIN
                     END IF;
                   END IF;
                   
-          END;
+          
 --    END IF; 
       
-  RETURN IS_LINK_AVL;
+  
   EXCEPTION
   WHEN OTHERS THEN
-      raise_application_error(-20001,'An error was encountered - '||SQLCODE||' -ERROR- '||SQLERRM);
-  
+      --raise_application_error(-20001,'An error was encountered - '||SQLCODE||' -ERROR- '||SQLERRM);
+      IS_LINK_AVL := '-';
+  END;
+ RETURN IS_LINK_AVL; 
 END FUNC_IS_APPROVER;
