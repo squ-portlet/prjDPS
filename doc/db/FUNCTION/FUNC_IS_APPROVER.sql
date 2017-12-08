@@ -1,4 +1,4 @@
-create or replace FUNCTION FUNC_IS_APPROVER 
+create or replace FUNCTION            FUNC_IS_APPROVER 
   (
        paramStudentNo     IN  VARCHAR2
     ,  paramStdStatCode   IN  VARCHAR2
@@ -16,6 +16,7 @@ create or replace FUNCTION FUNC_IS_APPROVER
   Author : Bhabesh
   Create Date : 20-February-2017
   Modify Date : 06-December-2017 (introduce REQUESTCD from APPROVAL_TRANSACTION)
+  Modify Date : 08-December-2017 (Check whether the cursor is empty)
 */
 COUNT_REC       NUMBER          :=0;
 COUNT_REC_OTHER NUMBER          :=0;
@@ -94,6 +95,8 @@ BEGIN
                             ORDER BY APP_M.APPROVAL_SEQUENCE; 
                       BEGIN
                         OPEN CUR_APP;
+                        FETCH CUR_APP INTO CNT_STD, APP_STATUS,APP_SEQ ;
+                        IF CUR_APP%FOUND THEN
                         LOOP
                           
                           FETCH CUR_APP INTO CNT_STD, APP_STATUS,APP_SEQ ;
@@ -105,6 +108,7 @@ BEGIN
                                 EXIT;
                               END IF;
                         END LOOP;
+                        END IF;
                         CLOSE CUR_APP;
                       END;
                     END IF;
