@@ -563,7 +563,6 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
 		namedParameterMap.put("paramStatusCode", gradeDTO.getStatusCode());
 		namedParameterMap.put("paramUserName", gradeDTO.getUserName());
-		namedParameterMap.put("paramComments", gradeDTO.getComments());
 		namedParameterMap.put("paramStdNo", gradeDTO.getStudentNo());
 		namedParameterMap.put("paramStdStatCode", gradeDTO.getStdStatCode());
 		namedParameterMap.put("paramSectCode", gradeDTO.getSectCode());
@@ -571,8 +570,6 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 		namedParameterMap.put("paramSem", gradeDTO.getSemester());
 		namedParameterMap.put("paramCourseLAbrCode", gradeDTO.getCourse().getlAbrCourseNo());
 		namedParameterMap.put("paramSeqNo", gradeDTO.getRecordSequence());
-		
-		
 		return nPJdbcTemplDpsGradeChange.update(SQL_GRADE_CHANGE_UPDATE_APPROVAL_TEMP, namedParameterMap);
 	}
 	
