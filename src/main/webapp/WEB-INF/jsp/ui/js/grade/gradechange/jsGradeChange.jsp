@@ -298,7 +298,7 @@
 					studentNo		:	$('#studentNo').val(),
 					stdStatCode		:	$('#stdStatCode').val(), 
 					roleName		:	$('#roleName').val(),
-					sectcode		:	$('#sectcode').val(),
+					sectCode		:	$('#sectcode').val(),
 					courseCode		:	$('#courseCode').val(),
 					lAbrCrsNo		:	$('#lAbrCourseNo2').val(),
 					sectionNo		:	$('#sectionNo').val(),
