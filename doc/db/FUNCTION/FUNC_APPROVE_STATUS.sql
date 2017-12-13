@@ -32,22 +32,25 @@ begin
             ELSE
                 begin
                           SELECT
-                                 (
-                                   SELECT
-                                       DECODE
-                                      (
-                                        NVL(CODES.L_ABR_CODE,'NA')
-                                        ,'ACCPT','Y'
-                                        ,'REJCT','N'
+                              NVL (
+                                     (
+                                       SELECT
+                                           DECODE
+                                          (
+                                            NVL(CODES.L_ABR_CODE,'NA')
+                                            ,'ACCPT','Y'
+                                            ,'REJCT','N'
+                                          )
+                                        FROM
+                                                SIS_CODES       CODES
+                                            ,   SIS_CODE_TYPES  TYPES
+                                        WHERE
+                                                CODES.SISCODETYPCD =  TYPES.SISCODETYPCD
+                                            AND TYPES.SISCODETYPNM = 'APPROVAL_STATUS'
+                                            AND CODES.SISCODECD  = APP_TX.APPROVAL_STATUSCD  
                                       )
-                                    FROM
-                                            SIS_CODES       CODES
-                                        ,   SIS_CODE_TYPES  TYPES
-                                    WHERE
-                                            CODES.SISCODETYPCD =  TYPES.SISCODETYPCD
-                                        AND TYPES.SISCODETYPNM = 'APPROVAL_STATUS'
-                                        AND CODES.SISCODECD  = APP_TX.APPROVAL_STATUSCD  
-                                  )
+                                    , 'NA'
+                                )
                                         
                                    INTO    RESULT_STATUS
                             FROM
@@ -77,8 +80,10 @@ begin
           end;
           EXCEPTION 
               WHEN NO_DATA_FOUND THEN
+                  BEGIN
                   COUNT_REC:=0;
                   RESULT_STATUS:='NA';
+                  END;
         
       end;
       RETURN RESULT_STATUS;
