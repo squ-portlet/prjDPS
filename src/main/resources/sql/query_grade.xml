@@ -519,7 +519,6 @@
 			                  ) 
 			      , UPDATE_DATE 	= SYSDATE
 			      , UPDATE_USERNAME = :paramUserName
-			      , COMMENTS 		= :paramComments
 			
 			  WHERE
 			        STDNO = :paramStdNo 

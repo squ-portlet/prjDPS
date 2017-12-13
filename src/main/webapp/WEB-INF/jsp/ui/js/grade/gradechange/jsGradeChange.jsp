@@ -305,6 +305,7 @@
 					courseYear		:	$('#courseYear2').val(),
 					semCode			:	$('#semester').val(),
 					statusCode		:	$('#statusApprove').val(),
+					comments		:	$('#txtMessage').val(),
 					salt			:	salt,
 					four			:	four
 			};

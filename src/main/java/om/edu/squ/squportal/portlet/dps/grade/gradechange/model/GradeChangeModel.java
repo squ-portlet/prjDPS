@@ -79,7 +79,6 @@ public class GradeChangeModel
 		this.gradeCodeOld	=	(null==gradeChangeModel.getGradeCodeOld())	?null:crypto.decrypt(salt,four,gradeChangeModel.getGradeCodeOld());
 		this.gradeCodeNew	=	(null==gradeChangeModel.getGradeCodeNew())	?null:crypto.decrypt(salt,four,gradeChangeModel.getGradeCodeNew());
 		this.gradeValNew	=	(null==gradeChangeModel.getGradeValNew())	?null:crypto.decrypt(salt,four,gradeChangeModel.getGradeValNew());
-		this.comments		=	(null==gradeChangeModel.getComments())		?null:crypto.decrypt(salt,four,gradeChangeModel.getComments());
 		this.statusCode		=	(null==gradeChangeModel.getStatusCode())	?null:crypto.decrypt(salt,four,gradeChangeModel.getStatusCode());
 		this.roleName		=	(null==gradeChangeModel.getRoleName())		?null:crypto.decrypt(salt,four,gradeChangeModel.getRoleName());
 	}
