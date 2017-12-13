@@ -29,15 +29,24 @@
  */
 package om.edu.squ.squportal.portlet.dps.grade.gradechange.model;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import om.edu.squ.squportal.portlet.dps.security.Crypto;
+
 /**
  * @author Bhabesh
  *
  */
 public class GradeChangeModel
 {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	private	String	recordSequence;
 	private	String	studentId;
 	private	String	studentNo;
 	private	String	stdStatCode; 
+	private	String	sectCode;
 	private	String	courseYear;
 	private	String	semCode;
 	private	String	sectionNo;
@@ -47,12 +56,54 @@ public class GradeChangeModel
 	private	String	gradeCodeNew;
 	private	String	gradeValNew;
 	private	String	comments;
+	private	String	statusCode;
 	
+	private	String	roleName;
 
 	/* Security cipher */
 	private	String	salt;
 	private	String	four;
 	
+	public void decrypt(Crypto crypto, String salt, String four, GradeChangeModel gradeChangeModel )
+	{
+		this.recordSequence	=	(null==gradeChangeModel.getRecordSequence())?null:crypto.decrypt(salt,four,gradeChangeModel.getRecordSequence());
+		this.studentId		=	(null==gradeChangeModel.getStudentId())		?null:crypto.decrypt(salt,four,gradeChangeModel.getStudentId());
+		this.studentNo		=	(null==gradeChangeModel.getStudentNo())		?null:crypto.decrypt(salt,four,gradeChangeModel.getStudentNo());
+		this.stdStatCode 	=	(null==gradeChangeModel.getStdStatCode())	?null:crypto.decrypt(salt,four,gradeChangeModel.getStdStatCode());
+		this.sectCode		=	(null==gradeChangeModel.getSectCode())		?null:crypto.decrypt(salt,four,gradeChangeModel.getSectCode());
+		this.courseYear		=	(null==gradeChangeModel.getCourseYear())	?null:crypto.decrypt(salt,four,gradeChangeModel.getCourseYear());
+		this.semCode		=	(null==gradeChangeModel.getSemCode())		?null:crypto.decrypt(salt,four,gradeChangeModel.getSemCode());
+		this.sectionNo		=	(null==gradeChangeModel.getSectionNo())		?null:crypto.decrypt(salt,four,gradeChangeModel.getSectionNo());
+		this.courseCode		=	(null==gradeChangeModel.getCourseCode())	?null:crypto.decrypt(salt,four,gradeChangeModel.getCourseCode());
+		this.lAbrCrsNo		=	(null==gradeChangeModel.getlAbrCrsNo())		?null:crypto.decrypt(salt,four,gradeChangeModel.getlAbrCrsNo());
+		this.gradeCodeOld	=	(null==gradeChangeModel.getGradeCodeOld())	?null:crypto.decrypt(salt,four,gradeChangeModel.getGradeCodeOld());
+		this.gradeCodeNew	=	(null==gradeChangeModel.getGradeCodeNew())	?null:crypto.decrypt(salt,four,gradeChangeModel.getGradeCodeNew());
+		this.gradeValNew	=	(null==gradeChangeModel.getGradeValNew())	?null:crypto.decrypt(salt,four,gradeChangeModel.getGradeValNew());
+		this.comments		=	(null==gradeChangeModel.getComments())		?null:crypto.decrypt(salt,four,gradeChangeModel.getComments());
+		this.statusCode		=	(null==gradeChangeModel.getStatusCode())	?null:crypto.decrypt(salt,four,gradeChangeModel.getStatusCode());
+		this.roleName		=	(null==gradeChangeModel.getRoleName())		?null:crypto.decrypt(salt,four,gradeChangeModel.getRoleName());
+	}
+	
+	/**
+	 * Getter Method	: getRecordSequence
+	 * @return the recordSequence
+	 * 
+	 * Date				: Dec 10, 2017
+	 */
+	public String getRecordSequence()
+	{
+		return this.recordSequence;
+	}
+	/**
+	 * Setter method : setRecordSequence
+	 * @param recordSequence the recordSequence to set
+	 * 
+	 * Date          : Dec 10, 2017 11:27:45 AM
+	 */
+	public void setRecordSequence(String recordSequence)
+	{
+		this.recordSequence = recordSequence;
+	}
 	/**
 	 * Getter Method	: getStudentId
 	 * @return the studentId
@@ -115,6 +166,29 @@ public class GradeChangeModel
 	{
 		this.stdStatCode = stdStatCode;
 	}
+	
+	/**
+	 * Getter Method	: getSectCode
+	 * @return the sectCode
+	 * 
+	 * Date				: Dec 13, 2017
+	 */
+	public String getSectCode()
+	{
+		return this.sectCode;
+	}
+
+	/**
+	 * Setter method : setSectCode
+	 * @param sectCode the sectCode to set
+	 * 
+	 * Date          : Dec 13, 2017 12:02:03 PM
+	 */
+	public void setSectCode(String sectCode)
+	{
+		this.sectCode = sectCode;
+	}
+
 	/**
 	 * Getter Method	: getCourseYear
 	 * @return the courseYear
@@ -279,6 +353,47 @@ public class GradeChangeModel
 	{
 		this.comments = comments;
 	}
+	
+	/**
+	 * Getter Method	: getStatusCode
+	 * @return the statusCode
+	 * 
+	 * Date				: Dec 10, 2017
+	 */
+	public String getStatusCode()
+	{
+		return this.statusCode;
+	}
+	/**
+	 * Setter method : setStatusCode
+	 * @param statusCode the statusCode to set
+	 * 
+	 * Date          : Dec 10, 2017 2:22:32 PM
+	 */
+	public void setStatusCode(String statusCode)
+	{
+		this.statusCode = statusCode;
+	}
+	/**
+	 * Getter Method	: getRoleName
+	 * @return the roleName
+	 * 
+	 * Date				: Dec 7, 2017
+	 */
+	public String getRoleName()
+	{
+		return this.roleName;
+	}
+	/**
+	 * Setter method : setRoleName
+	 * @param roleName the roleName to set
+	 * 
+	 * Date          : Dec 7, 2017 1:16:35 PM
+	 */
+	public void setRoleName(String roleName)
+	{
+		this.roleName = roleName;
+	}
 	/**
 	 * Getter Method	: getGradeValNew
 	 * @return the gradeValNew
@@ -345,15 +460,19 @@ public class GradeChangeModel
 	@Override
 	public String toString()
 	{
-		return "GradeChangeModel [studentId=" + this.studentId + ", studentNo="
-				+ this.studentNo + ", stdStatCode=" + this.stdStatCode
+		return "GradeChangeModel [logger=" + this.logger + ", recordSequence="
+				+ this.recordSequence + ", studentId=" + this.studentId
+				+ ", studentNo=" + this.studentNo + ", stdStatCode="
+				+ this.stdStatCode + ", sectCode=" + this.sectCode
 				+ ", courseYear=" + this.courseYear + ", semCode="
 				+ this.semCode + ", sectionNo=" + this.sectionNo
 				+ ", courseCode=" + this.courseCode + ", lAbrCrsNo="
 				+ this.lAbrCrsNo + ", gradeCodeOld=" + this.gradeCodeOld
 				+ ", gradeCodeNew=" + this.gradeCodeNew + ", gradeValNew="
-				+ this.gradeValNew + ", comments=" + this.comments + ", salt="
-				+ this.salt + ", four=" + this.four + "]";
+				+ this.gradeValNew + ", comments=" + this.comments
+				+ ", statusCode=" + this.statusCode + ", roleName="
+				+ this.roleName + ", salt=" + this.salt + ", four=" + this.four
+				+ "]";
 	}
 	
 	

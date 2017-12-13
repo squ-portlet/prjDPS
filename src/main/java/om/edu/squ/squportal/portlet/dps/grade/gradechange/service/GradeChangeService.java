@@ -32,8 +32,11 @@ package om.edu.squ.squportal.portlet.dps.grade.gradechange.service;
 import java.util.List;
 import java.util.Locale;
 
+import javax.portlet.PortletRequest;
 import javax.portlet.ResourceRequest;
 
+import om.edu.squ.squportal.portlet.dps.bo.Employee;
+import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.Grade;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.GradeDTO;
@@ -108,4 +111,54 @@ public interface GradeChangeService
 	 * @return 
 	 */
 	public List<GradeDTO> instructorApplyForGradeChange(GradeChangeModel gradeChangeModel, ResourceRequest request);
+	
+	/**
+	 * 
+	 * method name  : getStudentDetailsForApprovers
+	 * @param gradeDTO
+	 * @param locale
+	 * @return
+	 * GradeChangeDBImpl
+	 * return type  : List<GradeDTO>
+	 * 
+	 * purpose		: Get list of Students details who applied for grade change
+	 *
+	 * Date    		:	Dec 5, 2017 1:06:57 AM
+	 */
+	public List<Student> getStudentDetailsForApprovers(String roleType,  Employee employee, Locale locale);
+	
+	/**
+	 * 	
+	 * method name  : getCourseListForGradeChange
+	 * @param studentNo
+	 * @param studentStatCode
+	 * @param roleType
+	 * @param employee
+	 * @param locale
+	 * @return
+	 * GradeChangeDBImpl
+	 * return type  : List<GradeDTO>
+	 * 
+	 * purpose		: List of courses with grade change request and their approval details 
+	 *
+	 * Date    		:	Dec 6, 2017 8:26:06 PM
+	 */
+	public List<GradeDTO> getCourseListForGradeChange(String studentNo, String studentStatCode, String roleType,  Employee employee, Locale locale);
+	
+	/**
+	 * 
+	 * method name  : setGradeChangeApproval
+	 * @param gradeChangeModel
+	 * @param employee
+	 * @param portletRequest
+	 * @param locale
+	 * @return
+	 * GradeChangeServiceImpl
+	 * return type  : List<GradeDTO>
+	 * 
+	 * purpose		: update the status / comment for approval process and fetch data to populate
+	 *
+	 * Date    		:	Dec 11, 2017 11:04:47 PM
+	 */
+	public List<GradeDTO> setGradeChangeApproval(GradeChangeModel gradeChangeModel, Employee employee, PortletRequest portletRequest, Locale locale );
 }

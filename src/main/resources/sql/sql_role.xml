@@ -99,7 +99,7 @@
 				          (
 				            COUNT_REC,
 				            0,'N','Y'
-				          )             													AS	IS_COL_ASST_DEAN
+				          )             													AS	IS_DPS_ASST_DEAN
 				FROM
 				(
 				    SELECT 
@@ -120,7 +120,7 @@
 						          (
 						            COUNT_REC,
 						            0,'N','Y'
-						          )             													AS	IS_COL_ASST_DEAN
+						          )             													AS	IS_DPS_ADMIN_STAFF
 						FROM
 						(
 						    SELECT 

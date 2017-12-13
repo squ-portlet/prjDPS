@@ -176,7 +176,7 @@ public class RoleServiceImpl implements Role
 					employee.setAdvisor(roleDbDao.isAdvisor(empNumber));
 					employee.setSupervisor(roleDbDao.isSupervisor(empNumber));
 					employee.setHod(roleDbDao.isHod(empNumber));
-					employee.setCollegeAsstDean(roleDbDao.isAsstDeanP(empNumber));
+					employee.setCollegeAsstDeanP(roleDbDao.isAsstDeanP(empNumber));
 					employee.setCollegeDean(roleDbDao.isCollegeDean(empNumber));
 					employee.setDpsDean(roleDbDao.isDpsDean(empNumber));
 					employee.setDpsStaff(roleDbDao.isDpsAdminStaff(empNumber));

@@ -1,40 +1,89 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Untitled 1</title>
+</head>
 
 <body>
 
-<p>
-	Dear $data.approverHigher.roleNameEng$ [$data.approverHigher.nameEng$], 
-			<br />Detail Status of&nbsp; application is mentioned below :  
-</p>
-<ul class="auto-style1">
-	<li>Service Name 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-		: <strong>DPS</strong>
-	</li>
-	<li>Form Name									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-				: <strong>$data.formNameEng$</strong>
-	</li>
-	<li>Student Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-	: <strong>$data.student.personalDetail.name$</strong></li>
-	<li>Student Id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-	: <strong>$data.student.personalDetail.id$</strong></li>
-	<li>Student Email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-	: <strong>$data.student.personalDetail.email$</strong></li>
-	<li>Student College&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-	: <strong>$data.student.academicDetail.college$</strong></li>
-	<li>Student Degree&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-	: <strong>$data.student.academicDetail.degree$</strong></li>
-	<li>Student Major&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-	:<strong> $data.student.academicDetail.major$</strong></li>
-	<li>List of Approvers&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :<strong>&nbsp; $data.roles 
-	: {x | $x.sequenceNo$.$x.roleValue$  &nbsp;} $ </strong>
-	</li>
-	<li>Previous Approver							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : 
-			<strong>$data.approver.roleNameEng$</strong> </li>
-	<li>Status										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-				: <strong>$data.statusDescEng$</strong> </li>
-</ul>
-<p class="auto-style2">
-$if(data.accept)$
+<table style="width: 100%">
+	<tr>
+		<td  colspan="3">	Dear 
+		$data.approverHigher.roleNameEng$ [$data.approverHigher.nameEng$], <br />
+		Detail Status of &nbsp; application is mentioned below :</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>Service Name </td>
+		<td>:</td>
+		<td> <strong>DPS</strong>
+	</td>
+	</tr>
+	<tr>
+		<td>Form Name</td>
+		<td>:</td>
+		<td> <strong>$data.formNameEng$</strong>
+	</td>
+	</tr>
+	<tr>
+		<td>Student Name&nbsp;&nbsp;</td>
+		<td>:</td>
+		<td> <strong>$data.student.personalDetail.name$</strong></td>
+	</tr>
+	<tr>
+		<td>Student Id</td>
+		<td>:</td>
+		<td> <strong>$data.student.personalDetail.id$</strong></td>
+	</tr>
+	<tr>
+		<td>Student Email&nbsp;&nbsp;&nbsp;&nbsp;</td>
+		<td>:</td>
+		<td> <strong>$data.student.personalDetail.email$</strong></td>
+	</tr>
+	<tr>
+		<td>Student College&nbsp;&nbsp;</td>
+		<td>:</td>
+		<td> <strong>$data.student.academicDetail.college$</strong></td>
+	</tr>
+	<tr>
+		<td>Student Degree</td>
+		<td>:</td>
+		<td> <strong>$data.student.academicDetail.degree$</strong></td>
+	</tr>
+	<tr>
+		<td>Student Major&nbsp;&nbsp;</td>
+		<td>:</td>
+		<td><strong> $data.student.academicDetail.major$</strong></td>
+	</tr>
+	<tr>
+		<td>List of Approvers</td>
+		<td>:</td>
+		<td><strong>$data.roles : {x | $x.sequenceNo$.$x.roleValue$ &nbsp;} $</strong></td>
+	</tr>
+	<tr>
+		<td>Previous Approver</td>
+		<td>:</td>
+		<td> 
+			<strong>$data.approver.roleNameEng$</strong></td>
+	</tr>
+	<tr>
+		<td>Status</td>
+		<td>&nbsp;</td>
+		<td> <strong>$data.statusDescEng$</strong> </td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="3">$if(data.accept)$
 
 $else$
 	$if(data.progress)$
@@ -44,19 +93,180 @@ $else$
 		(Note : <em>This is for your information only. Action not needed.</em>)
 	$endif$
 $endif$
-</p>
-<p class="auto-style2">You can view the details at the following url : 
-<a href="$data.serviceUrl$">$data.serviceUrl$</a></p>
-<p>with regards
-<br />
-<br />
-Deanship of PostGraduate Studies<br />
+</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="3">You can view the details at the following url : 
+<a href="$data.serviceUrl$">$data.serviceUrl$</a></td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="3">with regards
+</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="3">Deanship of PostGraduate Studies<br />
 Sultan Qaboos University<br />
-Muscat | Oman</p>
+Muscat | Oman</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="3">(<strong>N.B</strong>. <span class="auto-style3"><em>This is an autogenerated 
+email. Please do not reply to this email</em></span>. )</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+</table>
+
 <p>&nbsp;</p>
-<p>(<strong>N.B</strong>. <span class="auto-style3"><em>This is an autogenerated 
-email. Please do not reply to this email</em></span>. )</p>
-<p>&nbsp;</p>
+
+
+<table style="width: 100%" dir="rtl">
+	<tr>
+		<td  colspan="3">	الفاضل 
+		$data.approverHigher.roleNameEng$ [$data.approverHigher.nameEng$], <br />
+		أدناه حالة الطلب : </td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>اسم الخدمة </td>
+		<td>:</td>
+		<td>عمادة الدراسات العليا</td>
+	</tr>
+	<tr>
+		<td>الاستمارة</td>
+		<td>:</td>
+		<td> <strong>$data.formNameEng$</strong>
+	</td>
+	</tr>
+	<tr>
+		<td>اسم الطالب/ة&nbsp;&nbsp;</td>
+		<td>:</td>
+		<td> <strong>$data.student.personalDetail.name$</strong></td>
+	</tr>
+	<tr>
+		<td>الرقم الجامعي</td>
+		<td>:</td>
+		<td> <strong>$data.student.personalDetail.id$</strong></td>
+	</tr>
+	<tr>
+		<td>البريد الالكتروني&nbsp;&nbsp;&nbsp;&nbsp;</td>
+		<td>:</td>
+		<td> <strong>$data.student.personalDetail.email$</strong></td>
+	</tr>
+	<tr>
+		<td>الكلية</td>
+		<td>:</td>
+		<td> <strong>$data.student.academicDetail.college$</strong></td>
+	</tr>
+	<tr>
+		<td>البرنامج</td>
+		<td>:</td>
+		<td> <strong>$data.student.academicDetail.degree$</strong></td>
+	</tr>
+	<tr>
+		<td>التخصص&nbsp;&nbsp;</td>
+		<td>:</td>
+		<td><strong> $data.student.academicDetail.major$</strong></td>
+	</tr>
+	<tr>
+		<td>قائمة الموافقات المطلوبة</td>
+		<td>:</td>
+		<td><strong>$data.roles : {x | $x.sequenceNo$.$x.roleValue$ &nbsp;} $</strong></td>
+	</tr>
+	<tr>
+		<td>الموافقة الحالية</td>
+		<td>:</td>
+		<td> 
+			<strong>$data.approver.roleNameEng$</strong></td>
+	</tr>
+	<tr>
+		<td>الحالة</td>
+		<td>&nbsp;</td>
+		<td> <strong>$data.statusDescEng$</strong> </td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="3">$if(data.accept)$ $else$ $if(data.progress)$ (باعتباركم 
+		الجهة الأعلى إداريا الرجاء اتخاذ ما يلزم حول الطلب أعلاه.
+'$data.approverHigher.roleNameEng$' ) $else$ (هذه 
+		الرسالة للعلم فقط)
+	$endif$
+$endif$
+</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="3">
+		يمكنكم الاطلاع على التفاصيل من خلال الرابط: 
+<a href="$data.serviceUrl$">$data.serviceUrl$</a></td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="3">مع تحيات</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="3">عمادة الدراسات العليا<br />
+		جامعة السلطان قابوس<br />
+		</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="3" style="height: 23px">ملاحظة: هذه الرسالة تلقائية. الرجاء 
+		عدم الرد لهذا العنوان. )</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>
+</table>
 
 
 

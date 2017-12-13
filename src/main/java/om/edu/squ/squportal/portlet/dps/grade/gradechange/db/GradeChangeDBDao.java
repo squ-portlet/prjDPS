@@ -32,6 +32,10 @@ package om.edu.squ.squportal.portlet.dps.grade.gradechange.db;
 import java.util.List;
 import java.util.Locale;
 
+import org.springframework.transaction.annotation.Transactional;
+
+import om.edu.squ.squportal.portlet.dps.bo.Employee;
+import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.Grade;
@@ -105,4 +109,54 @@ public interface GradeChangeDBDao
 	 * @throws NotCorrectDBRecordException 
 	 */
 	public int setInstructorApplyForGradeChange(GradeDTO dto) throws NotCorrectDBRecordException;
+	
+	
+	/**
+	 * 
+	 * method name  : getStudentDetailsForApprovers
+	 * @param roleType
+	 * @param employee
+	 * @param locale
+	 * @return
+	 * GradeChangeDBDao
+	 * return type  : List<Student>
+	 * 
+	 * purpose		: Get list of Students details who applied for grade change
+	 *
+	 * Date    		:	Dec 5, 2017 8:03:58 PM
+	 */
+	public List<Student> getStudentDetailsForApprovers(String roleType,  Employee employee, Locale locale);
+	
+	/**
+	 * 	
+	 * method name  : getCourseListForGradeChange
+	 * @param studentNo
+	 * @param studentStatCode
+	 * @param roleType
+	 * @param employee
+	 * @param locale
+	 * @return
+	 * GradeChangeDBImpl
+	 * return type  : List<GradeDTO>
+	 * 
+	 * purpose		: List 
+	 *
+	 * Date    		:	Dec 6, 2017 8:26:06 PM
+	 */
+	public List<GradeDTO> getCourseListForGradeChange(String studentNo, String studentStatCode, String roleType,  Employee employee, Locale locale);
+	
+	/**
+	 * 
+	 * method name  : setGradeChangeApproval
+	 * @param gradeDTO
+	 * @return
+	 * GradeChangeDBImpl
+	 * return type  : int
+	 * 
+	 * purpose		: update the status / comment for approval process
+	 *
+	 * Date    		:	Dec 11, 2017 8:27:04 AM
+	 */
+	@Transactional
+	public int setGradeChangeApproval(GradeDTO gradeDTO);
 }

@@ -38,11 +38,16 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
+import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
+import om.edu.squ.squportal.portlet.dps.bo.Employee;
+import om.edu.squ.squportal.portlet.dps.bo.PersonalDetail;
+import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.Course;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.Grade;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.GradeDTO;
+import om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.Advisor;
 import om.edu.squ.squportal.portlet.dps.role.bo.DPSAsstDean;
 import om.edu.squ.squportal.portlet.dps.role.bo.DpsDean;
@@ -56,6 +61,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Bhabesh
@@ -129,6 +135,7 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 				Course		course		=	new Course();
 				Grade		grade		=	new Grade();
 				
+				gradeDTO.setSectCode(rs.getString(Constants.CONST_COLMN_SECT_CODE));
 				course.setCourseNo(rs.getString(Constants.CONST_COLMN_COURSE_NO));
 				course.setlAbrCourseNo(rs.getString(Constants.CONST_COLMN_L_ABR_CRSNO));
 				course.setCourseName(rs.getString(Constants.CONST_COLMN_COURSE_NAME));
@@ -319,6 +326,7 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 		namedParameterMap.put("paramStdStatCode", dto.getStdStatCode()); 
 		namedParameterMap.put("paramYear", dto.getCourseYear());
 		namedParameterMap.put("paramSem", dto.getSemester());
+		namedParameterMap.put("paramSectCode", dto.getSectCode());
 		namedParameterMap.put("paramCourseLAbrCode", dto.getCourse().getlAbrCourseNo());
 		namedParameterMap.put("paramCourseNo", dto.getCourse().getCourseNo());
 		namedParameterMap.put("paramSectNo", dto.getSectionNo());
@@ -339,5 +347,233 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 		}
 	}
 	
+	/**
+	 * 
+	 * method name  : getStudentDetailsForApprovers
+	 * @param roleType
+	 * @param employee
+	 * @param locale
+	 * @return
+	 * GradeChangeDBDao
+	 * return type  : List<Student>
+	 * 
+	 * purpose		: Get list of Students details who applied for grade change
+	 *
+	 * Date    		:	Dec 5, 2017 8:03:58 PM
+	 */
+	public List<Student> getStudentDetailsForApprovers(String roleType,  Employee employee, Locale locale)
+	{
+		String SQL_GRADE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	queryGradeChange.getProperty(Constants.CONST_SQL_GRADE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE);
+		
+		RowMapper<Student> rowMapper	=	new RowMapper<Student>()
+		{
+			
+			@Override
+			public Student mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				Student			student			=	new Student();
+				AcademicDetail	academicDetail	=	new AcademicDetail();
+				academicDetail.setId(rs.getString(Constants.CONST_COLMN_STUDENT_ID));
+				academicDetail.setStudentNo(rs.getString(Constants.CONST_COLMN_STUDENT_NO));
+				academicDetail.setStdStatCode(rs.getString(Constants.CONST_COLMN_STDSTATCD));
+				academicDetail.setStudentName(rs.getString(Constants.CONST_COLMN_STUDENT_NAME));
+				academicDetail.setCollege(rs.getString(Constants.CONST_COLMN_COLLEGE_NAME));
+				academicDetail.setDegree(rs.getString(Constants.CONST_COLMN_DEGREE_NAME));
+				academicDetail.setCohort(rs.getInt(Constants.CONST_COLMN_COHORT));
+				
+				student.setAcademicDetail(academicDetail);
+				
+				return student;
+			}
+		};
+		
+		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+		namedParameterMap.put("paramLocale", locale.getLanguage());
+		namedParameterMap.put("paramSupervisor", null );
+		namedParameterMap.put("paramAdvisor", null);
+		namedParameterMap.put("paramDeptCode", null);
+		namedParameterMap.put("paramColCode", null);
+
+		switch (roleType)
+		{
+			case Constants.CONST_ROLE_NAME_ADVISOR:
+				namedParameterMap.put("paramAdvisor", employee.getEmpNumber());
+				break;
+			case Constants.CONST_ROLE_NAME_SUPERVISOR:
+				namedParameterMap.put("paramSupervisor", employee.getEmpNumber());
+				break;
+			case Constants.CONST_ROLE_NAME_HOD:
+				namedParameterMap.put("paramDeptCode", employee.getDepartment().getDeptCode());
+				break;
+			case Constants.CONST_ROLE_NAME_COL_DEAN:
+				namedParameterMap.put("paramColCode", employee.getBranch().getBranchCode());
+				break;	
+			default:
+				break;
+		}
+		
+		
+		 return nPJdbcTemplDpsGradeChange.query(SQL_GRADE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE, namedParameterMap, rowMapper);
+	}
+
+	
+	/**
+	 * 	
+	 * method name  : getCourseListForGradeChange
+	 * @param studentNo
+	 * @param studentStatCode
+	 * @param roleType
+	 * @param employee
+	 * @param locale
+	 * @return
+	 * GradeChangeDBImpl
+	 * return type  : List<GradeDTO>
+	 * 
+	 * purpose		: List of courses with grade change request and their approval details
+	 *
+	 * Date    		:	Dec 6, 2017 8:26:06 PM
+	 */
+	public List<GradeDTO> getCourseListForGradeChange(String studentNo, String studentStatCode, String roleType,  Employee employee, Locale locale)
+	{
+		String	SQL_GRADE_CHANGE_SELECT_COURSE_TEMP		=	queryGradeChange.getProperty(Constants.CONST_SQL_GRADE_CHANGE_SELECT_COURSE_TEMP);
+		
+		RowMapper<GradeDTO> rowMapper	=	new RowMapper<GradeDTO>()
+		{
+			
+			@Override
+			public GradeDTO mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				GradeDTO	gradeDto	=	new GradeDTO();
+				Course		course		=	new Course();
+				Grade		grade		=	new Grade();
+				HOD			hod			=	new HOD();
+				DPSAsstDean	dpsAsstDean	=	new DPSAsstDean();
+				DpsDean		dpsDean		=	new DpsDean();
+				
+				gradeDto.setRecordSequence(rs.getString(Constants.CONST_COLMN_SEQUENCE_NO));
+				gradeDto.setStudentNo(rs.getString(Constants.CONST_COLMN_STUDENT_NO));
+				gradeDto.setStdStatCode(rs.getString(Constants.CONST_COLMN_STDSTATCD));
+				gradeDto.setCourseYear(rs.getString(Constants.COST_COL_DPS_COURSE_YEAR));
+				gradeDto.setSemester(rs.getString(Constants.COST_COL_DPS_SEMESTER_CODE));
+				
+				gradeDto.setSectCode(rs.getString(Constants.CONST_COLMN_SECT_CODE));
+				course.setlAbrCourseNo(rs.getString(Constants.CONST_COLMN_L_ABR_CRSNO));
+				course.setCourseNo(rs.getString(Constants.CONST_COLMN_COURSE_NO));
+				
+				grade.setGradeValOld(rs.getString(Constants.CONST_COLMN_GRADE_VAL_OLD));
+				grade.setGradeValNew(rs.getString(Constants.CONST_COLMN_GRADE_VAL_NEW));
+				
+				gradeDto.setSectionNo(rs.getString(Constants.CONST_COLMN_SECTION_NO));
+				gradeDto.setCourse(course);
+				
+				gradeDto.setGrade(grade);
+				
+				gradeDto.setStatusDesc(rs.getString(Constants.CONST_COLMN_STATUS_DESC));
+				gradeDto.setComments(rs.getString(Constants.CONST_COLMN_COMMENT));
+				
+				
+				hod.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_HOD_STATUS));
+				hod.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_HOD_STATUS)));
+
+				dpsAsstDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_DPS_ASST_DEAN_STATUS));
+				dpsAsstDean.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_DPS_ASST_DEAN_STATUS)));
+
+				dpsDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_DPS_DEAN_STATUS));
+				dpsDean.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_DPS_DEAN_STATUS)));
+
+
+				gradeDto.setHod(hod);
+				gradeDto.setDpsAsstDean(dpsAsstDean);
+				gradeDto.setDpsDean(dpsDean);
+				
+				if(rs.getString(Constants.CONST_COLMN_ROLE_IS_APPROVER).equals(Constants.CONST_YES))
+				{
+					gradeDto.setApprover(true);
+				}
+				else
+				{
+					gradeDto.setApprover(false);
+				}
+				
+				return gradeDto;
+			}
+		};
+		
+		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+		namedParameterMap.put("paramLocale", locale.getLanguage());
+
+		namedParameterMap.put("paramStdNo",studentNo );
+		namedParameterMap.put("paramStdStatCode",studentStatCode );
+		
+		namedParameterMap.put("paramEmpNo", employee.getEmpNumber());
+		namedParameterMap.put("paramDeptCode", null );
+		namedParameterMap.put("paramColCode", null );
+		namedParameterMap.put("paramAdvisor",null );
+		namedParameterMap.put("paramSupervisor",null );
+
+		switch (roleType)
+		{
+			case Constants.CONST_ROLE_NAME_ADVISOR:
+				namedParameterMap.put("paramAdvisor", employee.getEmpNumber());
+				break;
+			case Constants.CONST_ROLE_NAME_SUPERVISOR:
+				namedParameterMap.put("paramSupervisor", employee.getEmpNumber());
+				break;
+			case Constants.CONST_ROLE_NAME_HOD:
+				namedParameterMap.put("paramDeptCode", employee.getDepartment().getDeptCode());
+				break;
+			case Constants.CONST_ROLE_NAME_COL_DEAN:
+				namedParameterMap.put("paramColCode", employee.getBranch().getBranchCode());
+				break;	
+			default:
+				break;		
+		}
+
+		
+		namedParameterMap.put("paramFormName", Constants.CONST_FORM_NAME_DPS_GRADE_CHANGE);
+		namedParameterMap.put("paramHodRoleName", Constants.CONST_ROLE_NAME_HOD);
+		namedParameterMap.put("paramADeanPRoleName", Constants.CONST_ROLE_NAME_ASST_DEAN_P );
+		namedParameterMap.put("paramDeanPRoleName", Constants.CONST_ROLE_NAME_DPS_DEAN);
+		
+		namedParameterMap.put("paramFormName",Constants.CONST_FORM_NAME_DPS_GRADE_CHANGE );
+		namedParameterMap.put("paramRoleName", roleType);
+		
+
+		return nPJdbcTemplDpsGradeChange.query(SQL_GRADE_CHANGE_SELECT_COURSE_TEMP, namedParameterMap, rowMapper);
+	}
+	
+	/**
+	 * 
+	 * method name  : setGradeChangeApproval
+	 * @param gradeDTO
+	 * @return
+	 * GradeChangeDBImpl
+	 * return type  : int
+	 * 
+	 * purpose		: update the status / comment for approval process
+	 *
+	 * Date    		:	Dec 11, 2017 8:27:04 AM
+	 */
+	@Transactional
+	public int setGradeChangeApproval(GradeDTO gradeDTO)
+	{
+		
+		String SQL_GRADE_CHANGE_UPDATE_APPROVAL_TEMP	=	queryGradeChange.getProperty(Constants.CONST_SQL_GRADE_CHANGE_UPDATE_APPROVAL_TEMP);
+		
+		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+		namedParameterMap.put("paramStatusCode", gradeDTO.getStatusCode());
+		namedParameterMap.put("paramUserName", gradeDTO.getUserName());
+		namedParameterMap.put("paramComments", gradeDTO.getComments());
+		namedParameterMap.put("paramStdNo", gradeDTO.getStudentNo());
+		namedParameterMap.put("paramStdStatCode", gradeDTO.getStdStatCode());
+		namedParameterMap.put("paramSectCode", gradeDTO.getSectCode());
+		namedParameterMap.put("paramYear", gradeDTO.getCourseYear());
+		namedParameterMap.put("paramSem", gradeDTO.getSemester());
+		namedParameterMap.put("paramCourseLAbrCode", gradeDTO.getCourse().getlAbrCourseNo());
+		namedParameterMap.put("paramSeqNo", gradeDTO.getRecordSequence());
+		
+		
+		return nPJdbcTemplDpsGradeChange.update(SQL_GRADE_CHANGE_UPDATE_APPROVAL_TEMP, namedParameterMap);
+	}
 	
 }

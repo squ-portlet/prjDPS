@@ -7,12 +7,22 @@
 <portlet:resourceURL id="resourceAjaxGetStudentGrades" var="varResourceAjaxGetStudentGrades"/>
 <portlet:resourceURL id="resourceAjaxGetStudentGradesChangeHistory" var="varResourceAjaxGetStudentGradesChangeHistory"/>
 <portlet:resourceURL id="resourceAjaxGradeChangeApply" var="varResourceAjaxGradeChangeApply"/>
+<portlet:resourceURL id="resoureAjaxGradeChangeDataByRole" var="varResoureAjaxGradeChangeDataByRole"/>
+<portlet:resourceURL id="resoureAjaxCourseListForGradeChange" var="varResoureAjaxCourseListForGradeChange"/>
+<portlet:resourceURL id="resourceAjaxGradeChangeApproval" var="varResourceAjaxGradeChangeApproval"/>
+
 
 <script type="text/javascript">
-	$(function() {
+	$( document ).ajaxStart(function() {
+		$('#imgAjaxLoading').show();
+	});
+	
+	$( document ).ajaxStop(function() {
+		$('#imgAjaxLoading').hide();
+	});
 
-			
-		
+
+	$(function() {
 		
 	/*
 		
@@ -22,6 +32,52 @@
 		
 
 	*/
+	
+	<c:forEach items="${employee.myRoles}" var="myRole">
+	// Clicking on tabs to make it active (other than Home tab)
+	$("#role-${myRole.roleName}").click(function(){
+		$(".clsNavRole").removeClass("active");
+		$("#idNav-${myRole.roleName}").addClass("active");
+		
+		var roleNameValue = {
+				roleName:'testRole',
+				roleValue:'${myRole.roleName}'
+		};
+		
+		$('#idDivInstructor').hide();
+		$('#divStudentGradesForApprove').html('');
+		
+
+		$.ajax({
+			url		:	"${varResoureAjaxGradeChangeDataByRole}",
+			type	:	'POST',
+			cache	:	false,
+			data	:	roleNameValue,
+			success	:	function(data)
+			{
+				var students=JSON.parse(data);
+				var studentsJson={'students':students,'roleType':'${myRole.roleName}'};
+				hbDataLoadAction(studentsJson, '#hbGradeStudentsList', '#divGradeStudentsList');
+			},
+			error	:	function(xhr, status)
+			{
+				$("#imgAjaxLoading").hide();
+			}
+	});
+		
+	});	
+	</c:forEach>
+	
+	$("#idNav-home").click(function(){
+		$(".clsNavRole").removeClass("active");
+		$("#idNav-home").addClass("active");
+	
+		$('#idDivInstructor').show();
+		$('#divGradeStudentsList').html('');
+		
+	});
+	
+	
 		$('#bttnGradeSearch').click(function(){
 			
 			$('#idAlert').removeClass('alert in');
@@ -129,6 +185,7 @@
 					studentId		:	crStudentId,
 					studentNo		:	data.getAttribute("stdno"),
 					stdStatCode		:	data.getAttribute("stdstatcode"), 
+					sectCode		:	data.getAttribute("sectCode"),
 					courseYear		:	data.getAttribute("courseyear"),
 					semCode			:	data.getAttribute("semester"),
 					sectionNo		:	data.getAttribute("sectionno"),
@@ -164,8 +221,115 @@
 			
 		}
 	
+		/* Load and display course data with grade for approver */
+		$(document).on("click", ".clsLinkStudentGrades", function(event){
+			var roleType	=	this.getAttribute("roleType");
+			var gradeChangeModel = {
+					studentNo		:	this.getAttribute("studentNo"),
+					stdStatCode		:	this.getAttribute("stdstatcode"), 
+					roleName		:	this.getAttribute("roleType"),
+					salt			:	salt,
+					four			:	four
+			};
+			
+			$.ajax({
+				url			:	"${varResoureAjaxCourseListForGradeChange}",
+				type		:	'POST',
+				cache		:	false,
+				data		:	gradeChangeModel,
+				success		:	function(data)
+				{
+							var	courseGrade	=	JSON.parse(data);
+							var courseGradeJson = {'courseGrade':courseGrade, 'roleName': roleType};
+							hbDataLoadAction(courseGradeJson, '#hbStudentGradesForApprove', '#divStudentGradesForApprove');
+				}
+			});
+			
+		});
+	
 
+		/* click event on approve/reject radio button */		
+		$(document).on("click", ".clsAppAction", function(event){
+			event.preventDefault();
+			//$('#modalApprovForm').modal('toggle');
+			$(this).prop("checked", true);
+			$('#recordSequence').val(this.getAttribute("recno"))
+			$('#studentNo').val(this.getAttribute("studentNo"));
+			$('#stdStatCode').val(this.getAttribute("stdStatCode"));
+			$('#sectcode').val(this.getAttribute("sectcode"));
+			$('#courseCode').val(this.getAttribute("courseNo"));
+			$('#lAbrCourseNo2').val(this.getAttribute("lAbrCourseNo2"));
+			$('#sectionNo').val(this.getAttribute("sectionNo"));
+			$('#courseYear2').val(this.getAttribute("courseYear2"));
+			$('#semester').val(this.getAttribute("semester"));
+			$('#roleName').val(this.getAttribute("roleName"));
+			
+			$('#statusApprove').val(aesUtil.encrypt(salt, four, passphrase, $(this).val())); 
+			
+			if($(this).val() == 'ACCPT')
+			{
+				
+				$('#idComment').hide();
+				$('#idCommentTxtArea').html('');
+				$('#idApprovalMsg').html("<spring:message code='prop.dps.gradechange.approver.approve.text'/>");
+				$('#linkSubmitApprove').addClass('btn-success').removeClass('btn-danger');
+			}
+			else
+			{
+				
+				$('#idComment').show();
+				$('#idCommentTxtArea').html('<textarea id="txtMessage" name="txtMessage" rows="" cols="" required></textarea>');
+				$('#idApprovalMsg').html("<spring:message code='prop.dps.gradechange.approver.reject.text'/>");
+				$('#linkSubmitApprove').addClass('btn-danger').removeClass('btn-success');
+			}
+			
+			//idRadioBttn	=	$(this).attr('id');
+			
+	
+		});
 
+		
+	/* Submit button of modal form to approve or reject */
+		$(document).on("click", "#linkSubmitApprove", function(event){
+			event.preventDefault();
+			
+			var gradeChangeModel = {
+					recordSequence	:	$('#recordSequence').val(),
+					studentNo		:	$('#studentNo').val(),
+					stdStatCode		:	$('#stdStatCode').val(), 
+					roleName		:	$('#roleName').val(),
+					sectcode		:	$('#sectcode').val(),
+					courseCode		:	$('#courseCode').val(),
+					lAbrCrsNo		:	$('#lAbrCourseNo2').val(),
+					sectionNo		:	$('#sectionNo').val(),
+					courseYear		:	$('#courseYear2').val(),
+					semCode			:	$('#semester').val(),
+					statusCode		:	$('#statusApprove').val(),
+					salt			:	salt,
+					four			:	four
+			};
+			
+			var roleType=$('#roleName').val();
+			
+			$('#modalApprovForm').modal('toggle');
+			
+			$.ajax({
+				url			:	"${varResourceAjaxGradeChangeApproval}",
+				type		:	'POST',
+				cache		:	false,
+				data		:	gradeChangeModel,
+				success		:	function(data)
+				{
+							var	courseGrade	=	JSON.parse(data);
+							var courseGradeJson = {'courseGrade':courseGrade, 'roleName': roleType};
+							hbDataLoadAction(courseGradeJson, '#hbStudentGradesForApprove', '#divStudentGradesForApprove');
+				}
+			});
+			
+			
+			
+		})
+		
 	
 
 	/* Filling data using handlebar template*/

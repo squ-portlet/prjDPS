@@ -39,28 +39,55 @@ import om.edu.squ.squportal.portlet.dps.role.bo.HOD;
  */
 public class GradeDTO
 {
+	private		String			recordSequence;
 	private		String			studentId;
 	private		String			studentNo;
 	private		String			stdStatCode;
 	private		String			courseYear;
 	private		String			semester;
 	
+	private		String			sectCode;					// Sect Code is not Section number - it is unique and will change for the course in each semester
 	private		Course			course;
 	private		String			sectionNo;
 	private		Grade			grade;
 	private		String			comments;
 	private		boolean			updatable;
+	private		String			statusCode;
 	private		String			statusDesc;
 	
 	private		String			userName;
 	
+	private		String			roleType;
 	private		HOD				hod;
 	private		DPSAsstDean		dpsAsstDean;
 	private		DpsDean			dpsDean;
 	
+	private		boolean			approver;
 	
 	
 	
+	
+	
+	/**
+	 * Getter Method	: getRecordSequence
+	 * @return the recordSequence
+	 * 
+	 * Date				: Dec 6, 2017
+	 */
+	public String getRecordSequence()
+	{
+		return this.recordSequence;
+	}
+	/**
+	 * Setter method : setRecordSequence
+	 * @param recordSequence the recordSequence to set
+	 * 
+	 * Date          : Dec 6, 2017 7:07:11 PM
+	 */
+	public void setRecordSequence(String recordSequence)
+	{
+		this.recordSequence = recordSequence;
+	}
 	/**
 	 * Getter Method	: getStudentId
 	 * @return the studentId
@@ -161,6 +188,27 @@ public class GradeDTO
 	public void setSemester(String semester)
 	{
 		this.semester = semester;
+	}
+	
+	/**
+	 * Getter Method	: getSectCode
+	 * @return the sectCode
+	 * 
+	 * Date				: Dec 13, 2017
+	 */
+	public String getSectCode()
+	{
+		return this.sectCode;
+	}
+	/**
+	 * Setter method : setSectCode
+	 * @param sectCode the sectCode to set
+	 * 
+	 * Date          : Dec 13, 2017 11:02:09 AM
+	 */
+	public void setSectCode(String sectCode)
+	{
+		this.sectCode = sectCode;
 	}
 	/**
 	 * Getter Method	: getCourse
@@ -267,6 +315,26 @@ public class GradeDTO
 	}
 	
 	/**
+	 * Getter Method	: getStatusCode
+	 * @return the statusCode
+	 * 
+	 * Date				: Dec 10, 2017
+	 */
+	public String getStatusCode()
+	{
+		return this.statusCode;
+	}
+	/**
+	 * Setter method : setStatusCode
+	 * @param statusCode the statusCode to set
+	 * 
+	 * Date          : Dec 10, 2017 2:26:06 PM
+	 */
+	public void setStatusCode(String statusCode)
+	{
+		this.statusCode = statusCode;
+	}
+	/**
 	 * Getter Method	: getStatusDesc
 	 * @return the statusDesc
 	 * 
@@ -308,6 +376,26 @@ public class GradeDTO
 	}
 	
 	
+	/**
+	 * Getter Method	: getRoleType
+	 * @return the roleType
+	 * 
+	 * Date				: Dec 6, 2017
+	 */
+	public String getRoleType()
+	{
+		return this.roleType;
+	}
+	/**
+	 * Setter method : setRoleType
+	 * @param roleType the roleType to set
+	 * 
+	 * Date          : Dec 6, 2017 9:05:31 PM
+	 */
+	public void setRoleType(String roleType)
+	{
+		this.roleType = roleType;
+	}
 	/**
 	 * Getter Method	: getHod
 	 * @return the hod
@@ -368,21 +456,45 @@ public class GradeDTO
 	{
 		this.dpsDean = dpsDean;
 	}
+	
+	/**
+	 * Getter Method	: isApprover
+	 * @return the approver
+	 * 
+	 * Date				: Dec 6, 2017
+	 */
+	public boolean isApprover()
+	{
+		return this.approver;
+	}
+	/**
+	 * Setter method : setApprover
+	 * @param approver the approver to set
+	 * 
+	 * Date          : Dec 6, 2017 8:37:48 PM
+	 */
+	public void setApprover(boolean approver)
+	{
+		this.approver = approver;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString()
 	{
-		return "GradeDTO [studentId=" + this.studentId + ", studentNo="
+		return "GradeDTO [recordSequence=" + this.recordSequence
+				+ ", studentId=" + this.studentId + ", studentNo="
 				+ this.studentNo + ", stdStatCode=" + this.stdStatCode
 				+ ", courseYear=" + this.courseYear + ", semester="
-				+ this.semester + ", course=" + this.course + ", sectionNo="
-				+ this.sectionNo + ", grade=" + this.grade + ", comments="
-				+ this.comments + ", updatable=" + this.updatable
+				+ this.semester + ", sectCode=" + this.sectCode + ", course="
+				+ this.course + ", sectionNo=" + this.sectionNo + ", grade="
+				+ this.grade + ", comments=" + this.comments + ", updatable="
+				+ this.updatable + ", statusCode=" + this.statusCode
 				+ ", statusDesc=" + this.statusDesc + ", userName="
-				+ this.userName + ", hod=" + this.hod + ", dpsAsstDean="
-				+ this.dpsAsstDean + ", dpsDean=" + this.dpsDean + "]";
+				+ this.userName + ", roleType=" + this.roleType + ", hod="
+				+ this.hod + ", dpsAsstDean=" + this.dpsAsstDean + ", dpsDean="
+				+ this.dpsDean + ", approver=" + this.approver + "]";
 	}
 	
 	

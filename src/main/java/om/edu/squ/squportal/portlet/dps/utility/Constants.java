@@ -147,6 +147,7 @@ public interface Constants
 	
 	public static final	String	CONST_COLMN_ROLE_IS_APPROVER								=	"IS_APPROVER";
 	
+	public static final	String	CONST_COLMN_SEQUENCE_NO										=	"SEQUENCE_NUMBER";
 	
 	public static final String	CONST_PARAM_NAME_STUDENT_NO									=	"paramStudentNo";
 	public static final String	CONST_PARAM_NAME_FORM_NAME									=	"paramFormName";
@@ -197,6 +198,7 @@ public interface Constants
 	public static final	String	CONST_SQL_ROLE_NAME_COL_DEAN								=	"DEAN";	  
 	public static final	String	CONST_SQL_ROLE_NAME_DPS_DEAN								=	"DEANP";
 	public static final	String	CONST_SQL_ROLE_NAME_DPS_ASSISTANT_DEAN						=	"ADEANP"; 
+	public static final	String	CONST_SQL_ROLE_NAME_DPS_STAFF								=	"DPS"; 
 	
 	/******************************************************/
 	
@@ -260,6 +262,9 @@ public interface Constants
 	public	static	final	String	CONST_SQL_GRADE_VALUE_LIST								=	"dps.grades.select.grade.values";
 	public	static	final	String	CONST_SQL_GRADE_SELECT_HISORY							=	"dps.grades.select.grade.change.history";
 	public	static	final	String	CONST_SQL_GRADE_INSERT_APPLY_INSTRUCTOR					=	"dps.grades.insert.grade.apply.instructor";
+	public	static	final	String	CONST_SQL_GRADE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE		=	"dps.grades.select.student.records.by.employee";
+	public	static	final	String	CONST_SQL_GRADE_CHANGE_SELECT_COURSE_TEMP				=	"dps.grade.select.course.temp.for.grade.change";
+	public	static	final	String	CONST_SQL_GRADE_CHANGE_UPDATE_APPROVAL_TEMP				=	"dps.grades.update.grade.change.approval.by.approver";
 
 	/* ---  SQL - DPS - Drop With W -- Stored Procedure -- --------------------- */	
 	public	static	final	String	CONST_PROC_DROPW_WITHDRAW_COURSE						=	"PROC_WITHDRAW_COURSE";
@@ -301,7 +306,7 @@ public interface Constants
 	public	static	final	String	CONST_ROLE_NAME_ADVISOR									=	"ADVISOR";
 	public	static	final	String	CONST_ROLE_NAME_SUPERVISOR								=	"SUPRVS";
 	public	static	final	String	CONST_ROLE_NAME_HOD										=	"HOD";
-	public	static	final	String	CONST_ROLE_NAME_ASST_DEAN								=	"ADEANP";
+	public	static	final	String	CONST_ROLE_NAME_ASST_DEAN_P								=	"ADEANP";
 	public	static	final	String	CONST_ROLE_NAME_COL_DEAN								=	"DEAN";
 	public	static	final	String	CONST_ROLE_NAME_DPS_DEAN								=	"DEANP";
 	public	static	final	String	CONST_ROLE_NAME_DPS_STAFF								=	"DPS";
@@ -337,7 +342,7 @@ public interface Constants
 	public	static	final	boolean	CONST_TEST_ENVIRONMENT									=	true;
 	public	static	final	String	CONST_EMAIL_FROM										=	"portal_feedback@squ.edu.om";
 	public	static	final	String	CONST_DUMMY_USER_EMAIL_TO								=	"bhabesh@squ.edu.om";
-	public	static	final	String	CONST_DUMMY_USER_SMS_TO									=	"-----"; //TODO Change to phone number only in development environment 
+	public	static	final	String	CONST_DUMMY_USER_SMS_TO									=	"----"; //TODO Change to phone number only in development environment 
 	
 	
 }

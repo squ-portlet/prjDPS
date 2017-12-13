@@ -325,7 +325,7 @@ public class CryptoAES implements Crypto
 	        return Base64.encodeBase64String(bytes);
 	    }
 	    
-	    public static byte[] base64(String str) {
+	    public  byte[] base64(String str) {
 	        return Base64.decodeBase64(str);
 	    }
 	    

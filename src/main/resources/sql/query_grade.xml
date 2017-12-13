@@ -10,6 +10,7 @@
                   		,  	VSP.STDSTATCD                       				AS      STDSTATCD 
                   		,   GRADES.CCYRCD										AS		CCYRCD	
                   		,	GRADES.SEMCD										AS		SEMCD
+			            , 	SECT.SECTCD                        					AS    	SECT_CODE
                   		,	GRADES.CRSNO										AS		COURSE_NO
 			            ,	GRADES.L_ABR_CRSNO                                  AS    	L_ABR_CRSNO
 			         	,  	DECODE (
@@ -46,12 +47,12 @@
 			                  )                                                  AS    IS_UPDATABLE
 			            
 			FROM
-			           GRADE_VAL           GV
-			        ,  STD_GRADES          GRADES
-			        ,  CRS_BASIC           CRS
-           			,  V_STDINFO_PORTAL    VSP
-              		,  T_STD_GRADES        T_GRADES 
-              
+			           	GRADE_VAL           GV
+			        ,  	STD_GRADES          GRADES
+			        ,  	CRS_BASIC           CRS
+           			,  	V_STDINFO_PORTAL    VSP
+              		,  	T_STD_GRADES        T_GRADES 
+              		,	SECT     SECT
 			         
 			WHERE
 			
@@ -73,6 +74,10 @@
 	          AND GRADES.SEMCD  = T_GRADES.SEMCD(+)
 	          AND T_GRADES.STATUSCD(+) <> FUNC_GET_STATUS_CODE('ACCPT')
 	          AND T_GRADES.STATUSCD(+) <> FUNC_GET_STATUS_CODE('REJCT')
+	          
+	          AND SECT.CCYRCD 		= 	GRADES.CCYRCD
+              AND SECT.SEMCD 		= 	GRADES.SEMCD
+			  AND SECT.CRSNO 		= 	GRADES.CRSNO
        ]]>
 	</entry>
 	<entry key="dps.grades.select.grade.values">
@@ -92,8 +97,8 @@
 	<entry key="dps.grades.select.grade.change.history">
 
 		SELECT 
-              
-		          TGRADE.L_ABR_CRSNO											AS    	L_ABR_CRSNO
+              		VSP.STD_ID													AS		STUDENT_ID
+		        ,  TGRADE.L_ABR_CRSNO											AS    	L_ABR_CRSNO
 		      	,   TGRADE.SECTNO												AS		SECTION_NO
 		      	,   (
 		              SELECT
@@ -190,6 +195,7 @@
 		  , STDSTATCD 
 		  , CCYRCD
 		  , SEMCD
+		  , SECTCD
 		  , L_ABR_CRSNO
 		  , CRSNO
 		  , SECTNO
@@ -207,6 +213,7 @@
 		    , :paramStdStatCode 
 		    , :paramYear
 		    , :paramSem
+		    , :paramSectCode
 		    , :paramCourseLAbrCode
 		    , :paramCourseNo
 		    , :paramSectNo
@@ -228,5 +235,299 @@
 		    , :paramUserName
 		  )
 	</entry>
+	<!-- TODO -->
+	<entry key="dps.grades.select.rule.grade.change.year.sem">
+		SELECT 
+		          NVL(CCYRCD, 0) 												AS 		CCYRCD
+		        , NVL(SEMCD, 0) 												AS 		SEMCD
+		FROM
+		(
+		    SELECT 
+		            NULL AS CCYRCD
+		          , NULL AS SEMCD
+		    FROM
+		          DUAL
+		          
+		    UNION
+		    
+		    SELECT 
+		            CCYRCD
+		          , SEMCD
+		    FROM
+		          YR_SEM
+		    WHERE
+		          SYSDATE BETWEEN SEMENDDTE AND SEMENDDTE+30
+		)	
+		WHERE  ROWNUM = 1
+    	ORDER BY CCYRCD DESC, SEMCD DESC
+	</entry>
+	
+	<entry key="dps.grades.select.student.records.by.employee">
+		SELECT
+		      	DISTINCT
+				 	T_GRADE.STDNO							              			AS		STUDENT_NO
+				, 	PORTAL.STD_ID													AS		STUDENT_ID
+			  	,	T_GRADE.STDSTATCD												AS  	STDSTATCD
+		    	,	DECODE
+						    (
+								        :paramLocale
+								      , 'en', STD_NAME
+								            , A_STD_NAME
+						    )                                       				AS  	STUDENT_NAME
+				, 	PORTAL.COHORT                                 					AS  	COHORT						    
+			    , 	GENDER                                							AS  	GENDER
+			    , 	STD_EMAIL                             							AS  	EMAIL
+	          	, 	DECODE
+			                (
+			                    :paramLocale
+			                    ,'en', PORTAL.DEGREE_NAME
+			                    ,PORTAL.A_DEGREE_NAME
+			                )                                         				AS  	DEGREE_NAME
+	          	, 	DECODE 
+			                (
+			                      :paramLocale
+			                      ,'en', PORTAL.COLLEGENM
+			                      , PORTAL.A_COLLEGENM
+			                )                                         				AS  	COLLEGE_NAME			    
+			    , 	DECODE
+						    (
+								        :paramLocale
+								      , 'en', MAJORNAME
+								            , A_MAJORNAME
+						    )                                       				AS  	MAJOR
+			   , 	(
+              			SELECT 
+                      		DECODE (
+                                	MAX (UPDATE_DATE)
+                                , 	NULL, MAX (CREATE_DATE)
+                                , 	MAX (UPDATE_DATE)
+                             )
+                                
+			              FROM 
+			                    T_STD_GRADES
+			              WHERE
+			                   STDNO = T_GRADE.STDNO
+			            )                                     						AS 		DATE_WATCH
+		FROM
+				  T_STD_GRADES 	T_GRADE
+				, V_STDINFO_PORTAL  PORTAL
+				 ,COL_CEN            COL
+				, STD_THESIS        THESIS
+				, SECT				SECT
+				, COL_DEPT          DEPT
+		WHERE 
+			          T_GRADE.STDNO     	=	PORTAL.STDNO
+			      AND T_GRADE.STDSTATCD 	=	PORTAL.STDSTATCD
+			      AND DEPT.COLCENCD     	=	COL.COLCENCD
+			  	  AND SECT.SECTCD 			=	T_GRADE.SECTCD
+			  	  AND SECT.CCYRCD 			=	T_GRADE.CCYRCD
+			  	  AND SECT.SEMCD 			=	T_GRADE.SEMCD
+				  AND SECT.L_ABR_CRSNO 		=	T_GRADE.L_ABR_CRSNO
+				  AND SECT.DEPTNO			=	DEPT.DEPTNO
+			--      AND THESIS.STDNO    	=	T_GRADE.STDNO (+)
+			      AND THESIS.STDNO (+)  	=	PORTAL.STDNO 
+			      AND PORTAL.COLLEGE_CODE 	=	COL.L_ABR_CC
+		
+		          AND 
+		              ( 
+		                      :paramColCode = COL.COLCENCD		 		--  College DEAN/ ASST DEAN
+		                  OR  :paramColCode IS NULL               		-- 	DPS DEAN / DPS STAFF
+		              )
+                       
+		          AND
+		            (
+		                      :paramAdvisor = PORTAL.ADVISOR			--	ADVISOR
+		                  OR  :paramAdvisor IS NULL
+		            )
 
+		          AND
+		            (
+		                      :paramSupervisor =  THESIS.SUPVISREMPNO	--	SUPERVISOR
+		                  OR  :paramSupervisor  IS NULL
+		            )
+                     
+		          AND
+		            (
+		                      :paramDeptCode  = DEPT.DEPTNO				--	HOD
+		                  OR  :paramDeptCode  IS NULL
+		            )
+
+
+			ORDER BY PORTAL.COHORT DESC, DATE_WATCH DESC, STUDENT_NAME	
+	</entry>
+	
+	<entry key="dps.grade.select.course.temp.for.grade.change">
+		SELECT
+		      	DISTINCT
+              	   T_GRADE.REC_SEQ_NO                              				AS    	SEQUENCE_NUMBER
+            	,  PORTAL.STD_ID												AS		STUDENT_ID
+	            ,  T_GRADE.STDNO                            					AS   	STUDENT_NO
+	            ,  T_GRADE.STDSTATCD  											AS		STDSTATCD 
+	            ,  T_GRADE.CCYRCD                           					AS    	CCYRCD
+	            ,  T_GRADE.SEMCD                            					AS    	SEMCD 
+	            , 	SECT.SECTCD                        							AS    	SECT_CODE   
+	            ,  T_GRADE.CRSNO												AS		COURSE_NO         		
+		        ,  T_GRADE.L_ABR_CRSNO											AS    	L_ABR_CRSNO
+		      	,   T_GRADE.SECTNO												AS		SECTION_NO
+		      	,   (
+		              SELECT
+		                    DECODE
+		                    (
+                            :paramLocale
+		                        , 'ar', GV.A_ABR_GVAL
+                            , GV.L_ABR_GVAL
+		                    )
+		              FROM
+		                    GRADE_VAL GV
+		              WHERE
+		                    GV.GRADECD = T_GRADE.GRADECD_OLD
+		          )																AS		GRADE_VAL_OLD
+		      	,   (
+		              SELECT
+		                    DECODE
+		                    (
+                            :paramLocale
+		                        , 'ar', GV.A_ABR_GVAL
+                            , GV.L_ABR_GVAL
+		                    )
+		              FROM
+		                    GRADE_VAL GV
+		              WHERE
+		                    GRADECD = T_GRADE.GRADECD_NEW
+		          )																AS		GRADE_VAL_NEW
+			  	, COMMENTS                                    					AS 		COMMENTS
+			  	, (
+		        	SELECT
+		        		L_ABR_CODE
+		        	FROM SIS_CODES
+		            WHERE 
+		            	SISCODECD= T_GRADE.STATUSCD
+		        	)															AS		STATUS_CODE_NAME
+	        	, (
+		            SELECT 
+		              DECODE 
+		              (
+		                :paramLocale
+		                ,'en', CODENM, A_CODENM
+		                )
+		              FROM SIS_CODES
+		              WHERE SISCODECD= T_GRADE.STATUSCD
+	            ) 																AS 		STATUS_DESC		
+			   , 	(
+              			SELECT 
+                      		DECODE (
+                                	MAX (UPDATE_DATE)
+                                , 	NULL, MAX (CREATE_DATE)
+                                , 	MAX (UPDATE_DATE)
+                             )
+                                
+			              FROM 
+			                    T_STD_GRADES
+			              WHERE
+			                   STDNO = T_GRADE.STDNO
+			            )                                     					AS 		DATE_WATCH
+			  , T_GRADE.CREATE_USERNAME                                 		AS    	INSTUCTOR
+		      , FUNC_APPROVE_STATUS(
+		                           T_GRADE.STDNO,
+		                           :paramHodRoleName, 
+		                           :paramFormName
+		                           )                        					AS  	HOD_STATUS
+		     , FUNC_APPROVE_STATUS(
+		                     T_GRADE.STDNO,
+		                     :paramADeanPRoleName, 
+		                     :paramFormName
+		                     )                              					AS  	DPS_ASST_DEAN_STATUS 
+		     , FUNC_APPROVE_STATUS(
+		                     T_GRADE.STDNO,
+		                     :paramDeanPRoleName, 
+		                     :paramFormName
+		                     )                              					AS  	DPS_DEAN_STATUS 
+			      ,	FUNC_IS_APPROVER(
+							                  T_GRADE.STDNO
+							                , T_GRADE.STDSTATCD
+							                , :paramFormName
+							                , :paramRoleName
+							                , :paramEmpNo
+							                , T_GRADE.REC_SEQ_NO
+			                          )						 					AS		IS_APPROVER	           
+		FROM
+				  T_STD_GRADES 	T_GRADE
+				, V_STDINFO_PORTAL  PORTAL
+				 ,COL_CEN            COL
+				, STD_THESIS        THESIS
+				, SECT				SECT
+				, COL_DEPT          DEPT
+		WHERE 
+			          T_GRADE.STDNO     	=	PORTAL.STDNO
+			      AND T_GRADE.STDSTATCD 	=	PORTAL.STDSTATCD
+			      AND DEPT.COLCENCD     	=	COL.COLCENCD
+			      AND SECT.SECTCD 			=	T_GRADE.SECTCD
+			  	  AND SECT.CCYRCD 			=	T_GRADE.CCYRCD
+			  	  AND SECT.SEMCD 			=	T_GRADE.SEMCD
+				  AND SECT.L_ABR_CRSNO 		=	T_GRADE.L_ABR_CRSNO
+				  AND SECT.DEPTNO			=	DEPT.DEPTNO
+			--      AND THESIS.STDNO    	=	T_GRADE.STDNO (+)
+			      AND THESIS.STDNO (+)  	=	PORTAL.STDNO 
+			      AND PORTAL.COLLEGE_CODE 	=	COL.L_ABR_CC
+		
+		          AND 
+		              ( 
+		                      :paramColCode = COL.COLCENCD		 		--  College DEAN/ ASST DEAN
+		                  OR  :paramColCode IS NULL               		-- 	DPS DEAN / DPS STAFF
+		              )
+                       
+		          AND
+		            (
+		                      :paramAdvisor = PORTAL.ADVISOR			--	ADVISOR
+		                  OR  :paramAdvisor IS NULL
+		            )
+
+		          AND
+		            (
+		                      :paramSupervisor =  THESIS.SUPVISREMPNO	--	SUPERVISOR
+		                  OR  :paramSupervisor  IS NULL
+		            )
+                     
+		          AND
+		            (
+		                      :paramDeptCode  = DEPT.DEPTNO				--	HOD
+		                  OR  :paramDeptCode  IS NULL
+		            )
+            AND
+                ( 
+                        T_GRADE.STDNO     = :paramStdNo
+                    AND T_GRADE.STDSTATCD = :paramStdStatCode
+                )
+
+			ORDER BY DATE_WATCH DESC
+
+</entry>
+<entry key="dps.grades.update.grade.change.approval.by.approver">
+			UPDATE
+			    T_STD_GRADES
+			    SET 
+			        STATUSCD = (
+			                       SELECT
+			                           CODES.SISCODECD	
+			                       FROM
+			                               SIS_CODES       CODES
+			                           ,   SIS_CODE_TYPES  TYPES
+			                       WHERE
+			                               CODES.SISCODETYPCD 	=  TYPES.SISCODETYPCD
+			                           AND TYPES.SISCODETYPNM 	= 'APPROVAL_STATUS'
+			                           AND CODES.L_ABR_CODE  	= :paramStatusCode		    
+			                  ) 
+			      , UPDATE_DATE 	= SYSDATE
+			      , UPDATE_USERNAME = :paramUserName
+			      , COMMENTS 		= :paramComments
+			
+			  WHERE
+			        STDNO = :paramStdNo 
+			      AND STDSTATCD = :paramStdStatCode
+			      AND SECTCD	= :paramSectCode
+			      AND CCYRCD    = :paramYear
+			      AND SEMCD     = :paramSem
+			      AND L_ABR_CRSNO = :paramCourseLAbrCode
+			      AND REC_SEQ_NO = :paramSeqNo
+</entry>
 </properties>

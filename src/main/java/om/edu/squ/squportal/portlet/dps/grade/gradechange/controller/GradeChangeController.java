@@ -41,6 +41,7 @@ import javax.portlet.ResourceResponse;
 import javax.servlet.http.HttpServletResponse;
 
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
+import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
@@ -49,6 +50,7 @@ import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.GradeDTO;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.model.GradeChangeModel;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.service.GradeChangeService;
+import om.edu.squ.squportal.portlet.dps.role.bo.RoleNameValue;
 import om.edu.squ.squportal.portlet.dps.security.Crypto;
 import om.edu.squ.squportal.portlet.dps.security.CryptoAES;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
@@ -137,6 +139,7 @@ public class GradeChangeController
 		model.addAttribute("employee", employee);
 		model.addAttribute("appApprove", Constants.CONST_SQL_STATUS_CODE_ACCPT);
 		model.addAttribute("appRecect", Constants.CONST_SQL_STATUS_CODE_REJCT);
+		model.addAttribute("roleDpsStaff", Constants.CONST_SQL_ROLE_NAME_DPS_STAFF);
 		
 		model.addAttribute("grades", gradeChangeService.getGrades(locale));
 		
@@ -245,11 +248,132 @@ public class GradeChangeController
 			,	ResourceRequest request
 			, 	ResourceResponse response
 			, 	Locale locale)
-	{
-		
-		
-		
+	{	
+
 		gradeChangeService.instructorApplyForGradeChange(gradeChangeModel,request);
+	}
+	
+	/**
+	 * 
+	 * method name  : getStudentDetailsForApprovers
+	 * @param gradeDTO
+	 * @param locale
+	 * @return
+	 * GradeChangeDBImpl
+	 * return type  : List<GradeDTO>
+	 * 
+	 * purpose		: Get list of Students details who applied for grade change
+	 *
+	 * Date    		:	Dec 5, 2017 1:06:57 AM
+	 */
+	@ResourceMapping(value="resoureAjaxGradeChangeDataByRole")
+	public void getStudentDetailsForApprovers(@ModelAttribute("roleNameValue") RoleNameValue roleNameValue,
+			ResourceRequest request, ResourceResponse response, Locale locale
+			) throws IOException, NoDBRecordException
+	{
+		Gson		gson		= 	new Gson();
+		Employee	employee	=	null;
 		
+		try
+		{
+			employee					=	dpsServiceDao.getEmployee(request,locale);
+		
+			List<Student> students	=	gradeChangeService.getStudentDetailsForApprovers(roleNameValue.getRoleValue(), employee, locale);
+			
+			response.getWriter().print(gson.toJson(students));
+
+		}
+		catch(ExceptionEmptyResultset ex)
+		{
+			response.getWriter().print(gson.toJson(""));
+		}
+	}
+	
+	/**
+	 * 
+	 * method name  : getCourseListForGradeChange
+	 * @param gradeChangeModel
+	 * @param request
+	 * @param response
+	 * @param locale
+	 * @throws IOException
+	 * GradeChangeController
+	 * return type  : void
+	 * 
+	 * purpose		: List of courses with grade change request and their approval details  
+	 *
+	 * Date    		:	Dec 7, 2017 1:46:27 PM
+	 */
+	@ResourceMapping(value="resoureAjaxCourseListForGradeChange")
+	public void getCourseListForGradeChange(
+												@ModelAttribute ("gradeChangeModel") GradeChangeModel gradeChangeModel
+											, 	ResourceRequest request
+											, 	ResourceResponse response
+											,	Locale locale
+											) throws IOException
+	{
+		Gson		gson		= 	new Gson();
+		Employee	employee	=	null;
+		
+		gradeChangeModel.decrypt(crypto, gradeChangeModel.getSalt(), gradeChangeModel.getFour(), gradeChangeModel);
+			
+		try
+		{
+			employee					=	dpsServiceDao.getEmployee(request,locale);
+			
+			List<GradeDTO>	gradeDTOs	=	gradeChangeService.getCourseListForGradeChange(
+					gradeChangeModel.getStudentNo(), 
+					gradeChangeModel.getStdStatCode(), 
+					gradeChangeModel.getRoleName(), 
+					employee, 
+					locale
+					);	
+			response.getWriter().print(gson.toJson(gradeDTOs));
+			
+		}
+		catch (ExceptionEmptyResultset ex)
+		{
+			response.getWriter().print(gson.toJson(""));
+		}
+		
+	}
+	
+	/**
+	 * 
+	 * method name  : gradeChangeApproval
+	 * @param gradeChangeModel
+	 * @param request
+	 * @param response
+	 * @param locale
+	 * @throws IOException
+	 * GradeChangeController
+	 * return type  : void
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Dec 11, 2017 11:24:21 PM
+	 */
+	@ResourceMapping(value="resourceAjaxGradeChangeApproval")
+	public void gradeChangeApproval(
+									@ModelAttribute ("gradeChangeModel") GradeChangeModel gradeChangeModel
+									, 	ResourceRequest request
+									, 	ResourceResponse response
+									,	Locale locale									
+								) throws IOException
+	{
+
+			Employee	employee	=	null;
+			Gson		gson		= 	new Gson();
+			gradeChangeModel.decrypt(crypto, gradeChangeModel.getSalt(), gradeChangeModel.getFour(), gradeChangeModel);
+			try
+			{
+								employee	=	dpsServiceDao.getEmployee(request,locale);
+				List<GradeDTO>	gradeDTOs	=	gradeChangeService.setGradeChangeApproval(gradeChangeModel, employee, request, locale);
+				response.getWriter().print(gson.toJson(gradeDTOs));
+			}
+			catch (ExceptionEmptyResultset ex)
+			{
+				response.getWriter().print(gson.toJson(""));
+			}
 	}
 }
