@@ -108,9 +108,10 @@ public interface GradeChangeService
 	 * purpose		:
 	 *
 	 * Date    		:	Nov 21, 2017 1:59:05 PM
+	 * @param locale TODO
 	 * @return 
 	 */
-	public List<GradeDTO> instructorApplyForGradeChange(GradeChangeModel gradeChangeModel, ResourceRequest request);
+	public List<GradeDTO> instructorApplyForGradeChange(GradeChangeModel gradeChangeModel, ResourceRequest request, Locale locale);
 	
 	/**
 	 * 
@@ -161,4 +162,48 @@ public interface GradeChangeService
 	 * Date    		:	Dec 11, 2017 11:04:47 PM
 	 */
 	public List<GradeDTO> setGradeChangeApproval(GradeChangeModel gradeChangeModel, Employee employee, PortletRequest portletRequest, Locale locale );
+	
+	/**
+	 * 
+	 * method name  : getCourseList
+	 * @param employeeNo
+	 * @param locale
+	 * @return
+	 * GradeChangeDBImpl
+	 * return type  : List<GradeDTO>
+	 * 
+	 * purpose		: Get List of Courses of a faculty
+	 *
+	 * Date    		:	Dec 14, 2017 1:10:14 PM
+	 */
+	public List<GradeDTO> getCourseList(String employeeNo, Locale	locale);
+	/**
+	 * 
+	 * method name  : getStudentList
+	 * @param isRuleGradeChangeTimingFollowed
+	 * @param employeeNo
+	 * @param lAbrCourseNo
+	 * @param locale
+	 * @return
+	 * GradeChangeDBImpl
+	 * return type  : List<Student>
+	 * 
+	 * purpose		: List of Students teached by a faculty for a particular course at particular time
+	 *
+	 * Date    		:	Dec 14, 2017 3:39:51 PM
+	 */
+	public List<Student> getStudentList( String employeeNo,String lAbrCourseNo,  Locale	locale);
+	
+	/**
+	 * 
+	 * method name  : isRuleComplete
+	 * @return
+	 * GradeChangeServiceImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		: Rule for Grade Change
+	 *
+	 * Date    		:	Dec 14, 2017 1:11:15 PM
+	 */
+	public boolean isRuleComplete();
 }

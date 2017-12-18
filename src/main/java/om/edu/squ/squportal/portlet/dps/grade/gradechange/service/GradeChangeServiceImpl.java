@@ -81,6 +81,8 @@ public class GradeChangeServiceImpl implements GradeChangeService
 	@Autowired
 	DPSNotification			dpsNotification;
 	
+	private boolean isRuleGradeChangeTimingFollowed;
+	
 	/**
 	 * 
 	 * method name  : getStudentGrades
@@ -102,13 +104,11 @@ public class GradeChangeServiceImpl implements GradeChangeService
 		Course		course	=	new Course();
 		
 		dto.setStudentId(gradeChangeModel.getStudentId());
-		dto.setCourseYear(gradeChangeModel.getCourseYear());
-		dto.setSemester(gradeChangeModel.getSemCode());
 		
 		course.setlAbrCourseNo(gradeChangeModel.getlAbrCrsNo());
 		dto.setCourse(course);
 		
-		return gradeChangeDBDao.getStudentGrades(dto, employeeNo, locale);
+		return gradeChangeDBDao.getStudentGrades(isRuleGradeChangeTimingFollowed, dto, employeeNo, locale);
 	}
 	
 	
@@ -146,11 +146,14 @@ public class GradeChangeServiceImpl implements GradeChangeService
 	 */
 	public List<GradeDTO> getGradeHistory(GradeChangeModel gradeChangeModelHistory, Locale locale) throws NoDBRecordException
 	{
+		
 		GradeDTO	dto		=	new GradeDTO();
+		Course		course	=	new Course();
 		dto.setStudentId(gradeChangeModelHistory.getStudentId());
-		dto.setCourseYear(gradeChangeModelHistory.getCourseYear());
+		course.setlAbrCourseNo(gradeChangeModelHistory.getlAbrCrsNo());
+		dto.setCourse(course);
 
-		return gradeChangeDBDao.getGradeHistory(dto, locale);
+		return gradeChangeDBDao.getGradeHistory(isRuleGradeChangeTimingFollowed, dto, locale);
 	}
 	
 	/**
@@ -166,22 +169,16 @@ public class GradeChangeServiceImpl implements GradeChangeService
 	 *
 	 * Date    		:	Nov 21, 2017 11:36:38 AM
 	 */
-	public List<GradeDTO> instructorApplyForGradeChange(GradeChangeModel gradeChangeModel, ResourceRequest request)
+	public List<GradeDTO> instructorApplyForGradeChange(GradeChangeModel gradeChangeModel, ResourceRequest request, Locale locale)
 	{
 		GradeDTO	gradeDTO	=	new GradeDTO();
 		Course		course		=	new Course();
 		Grade		grade		=	new	Grade();
 		int			result		=	0;
+	
 		
-		
-		String		studentNo			=	crypto.decrypt(gradeChangeModel.getSalt(), gradeChangeModel.getFour(),  gradeChangeModel.getStudentNo());
-		String		stdStatCode			=	crypto.decrypt(gradeChangeModel.getSalt(), gradeChangeModel.getFour(),  gradeChangeModel.getStdStatCode()); 
-		String		gradeChangeCodeNew	=	crypto.decrypt(gradeChangeModel.getSalt(), gradeChangeModel.getFour(), gradeChangeModel.getGradeCodeNew());
-		String		gradeChangeCodeOld	=	crypto.decrypt(gradeChangeModel.getSalt(), gradeChangeModel.getFour(),  gradeChangeModel.getGradeCodeOld());
-		
-		
-					gradeDTO.setStudentNo(studentNo);
-					gradeDTO.setStdStatCode(stdStatCode); 
+					gradeDTO.setStudentNo(gradeChangeModel.getStudentNo());
+					gradeDTO.setStdStatCode(gradeChangeModel.getStdStatCode()); 
 					gradeDTO.setCourseYear(gradeChangeModel.getCourseYear());
 					gradeDTO.setSemester(gradeChangeModel.getSemCode());
 					gradeDTO.setSectionNo(gradeChangeModel.getSectionNo());
@@ -190,8 +187,8 @@ public class GradeChangeServiceImpl implements GradeChangeService
 					course.setCourseNo(gradeChangeModel.getCourseCode());
 					course.setlAbrCourseNo(gradeChangeModel.getlAbrCrsNo());
 					
-					grade.setGradeCodeOld(Integer.parseInt(gradeChangeCodeOld));
-					grade.setGradeCodeNew(Integer.parseInt(gradeChangeCodeNew));
+					grade.setGradeCodeOld(Integer.parseInt(gradeChangeModel.getGradeCodeOld()));
+					grade.setGradeCodeNew(Integer.parseInt(gradeChangeModel.getGradeCodeNew()));
 					
 					gradeDTO.setCourse(course);
 					gradeDTO.setGrade(grade);
@@ -207,11 +204,52 @@ public class GradeChangeServiceImpl implements GradeChangeService
 			{
 				logger.error("Duplicate key error for user: {}, studentNo :{}, courseNo: {}, semesterNo: {}, sectionNo: {}",
 									request.getRemoteUser()
-								,	studentNo,gradeChangeModel.getCourseCode()
+								,	gradeChangeModel.getStudentNo(),gradeChangeModel.getCourseCode()
 								,	gradeChangeModel.getSemCode()
 								,	gradeChangeModel.getSectionNo() 
 						);
 			}
+			 
+			 /* -- Notification -- Start --*/ 
+			 if(result >0 )
+			 {
+				 
+				 try
+				{
+					NotifierPeople	notifierPeople	=	dpsServiceDao.getNotifierPeople(
+							 																gradeChangeModel.getStudentNo()
+							 															, 	Constants.CONST_FORM_NAME_DPS_GRADE_CHANGE
+							 															, 	Constants.CONST_SQL_ROLE_NAME_HOD
+							 															, 	false
+							 															, 	locale
+							 															);
+					
+					notifierPeople.setFormNameEng(UtilProperty.getMessage("prop.dps.form.name.grade.change", null));
+					notifierPeople.setFormNameAr(UtilProperty.getMessage("prop.dps.form.name.grade.change", null, new Locale("ar")));
+					notifierPeople.setServiceUrl(UtilProperty.getMessage("prop.dps.url.grade.change", null));
+					
+					dpsNotification.sendNotification(
+							UtilProperty.getMessage("prop.dps.grade.change.notification.subject", new String[]{notifierPeople.getStudent().getPersonalDetail().getId()})
+						, 	notifierPeople
+						, 	"null"
+						, 	Constants.CONST_TEST_ENVIRONMENT
+					);
+					
+				}
+				catch (NotCorrectDBRecordException ex)
+				{
+					logger.error("Error in Notification : "+ex.getMessage());
+				}
+				 catch(Exception ex)
+				 {
+					 logger.error("Error in  notification for Instructor submit at Grade change Service : {}",ex.getMessage());
+				 }
+					
+				 /* -- Notification -- end --*/
+			 }
+			 
+			 
+			 
 
 			 return null;
 					
@@ -419,5 +457,76 @@ public class GradeChangeServiceImpl implements GradeChangeService
 		
 		return listTransactionResult;
 	}
+	
+	/**
+	 * 
+	 * method name  : getCourseList
+	 * @param employeeNo
+	 * @param locale
+	 * @return
+	 * GradeChangeDBImpl
+	 * return type  : List<GradeDTO>
+	 * 
+	 * purpose		: Get List of Courses of a faculty
+	 *
+	 * Date    		:	Dec 14, 2017 1:10:14 PM
+	 */
+	public List<GradeDTO> getCourseList(String employeeNo, Locale	locale)
+	{
+		return gradeChangeDBDao.getCourseList(isRuleGradeChangeTimingFollowed, employeeNo, locale);
+	}
+	
+	/**
+	 * 
+	 * method name  : getStudentList
+	 * @param isRuleGradeChangeTimingFollowed
+	 * @param employeeNo
+	 * @param lAbrCourseNo
+	 * @param locale
+	 * @return
+	 * GradeChangeDBImpl
+	 * return type  : List<Student>
+	 * 
+	 * purpose		: List of Students teached by a faculty for a particular course at particular time
+	 *
+	 * Date    		:	Dec 14, 2017 3:39:51 PM
+	 */
+	public List<Student> getStudentList( String employeeNo,String lAbrCourseNo,  Locale	locale)
+	{
+		return gradeChangeDBDao.getStudentList(isRuleGradeChangeTimingFollowed, employeeNo, lAbrCourseNo, locale);
+	}
+	
+	
+	/**
+	 * 
+	 * method name  : isRuleComplete
+	 * @return
+	 * GradeChangeServiceImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		: Rule for Grade Change
+	 *
+	 * Date    		:	Dec 14, 2017 1:11:15 PM
+	 */
+	public boolean isRuleComplete()
+	{
+		/*
+		 * Rule 1 : Grade Change is allowed within one month after final exam
+		 * */
+		
+		if(Constants.CONST_TEST_ENVIRONMENT)
+		{
+			
+			isRuleGradeChangeTimingFollowed	=	false;
+		}
+		else
+		{
+			/*Rule 1*/
+			isRuleGradeChangeTimingFollowed	=	true;
+		}
+		
+		return true;
+	}
+	
 	
 }

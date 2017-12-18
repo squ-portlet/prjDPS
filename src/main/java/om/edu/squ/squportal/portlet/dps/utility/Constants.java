@@ -50,6 +50,7 @@ public interface Constants
 	
 	public static final	String	COST_COL_DPS_EMP_NO											=	"EMPNO";
 	public static final	String	COST_COL_DPS_USER_NAME										=	"USERNAME";
+	public static final	String	COST_COL_DPS_USER_ACCOUNT_CODE								=	"USER_ACCT_CD";					//	This code helps to identify the user (other user might prevent)
 	public static final	String	COST_COL_DPS_BRANCH_CODE									=	"BRANCH_CODE";
 	public static final	String	COST_COL_DPS_DEPT_CODE										=	"DEPT_CODE";
 	public static final	String	COST_COL_DPS_EMP_EMAIL										=	"EMP_EMAIL";
@@ -126,6 +127,7 @@ public interface Constants
 	public static final	String	CONST_COLMN_POSTPONE_OTHER_REASON							=	"POSTPONE_OTHER_REASON";
 	
 	public static final	String	CONST_COLMN_POSTPONE_GRADE_IS_UPDATABLE						=	"IS_UPDATABLE";
+	public static final	String	CONST_COLMN_IS_CHANGE_ALLOWED								=	"CHANGE_ALLOWED";
 	
 	public static final	String	CONST_COLMN_APPROVAL_CODE									=	"APPROVAL_CODE";
 	public static final	String	CONST_COLMN_APPROVER_ROLE_CODE								=	"APPROVER_ROLE_CODE";
@@ -258,6 +260,8 @@ public interface Constants
 	public	static	final	String	CONST_SQL_POSTPONE_UPDATE_STATUS_STUDENT				=	"dps.postpone.update.status.student";
 	
 	/* ---  SQL - DPS - Grade Change property--------------------- */
+	public	static	final	String	CONST_SQL_GRADE_SELECT_COURSE_LIST						=	"dps.grades.select.course.list";
+	public	static	final	String	CONST_SQL_GRADE_SELECT_STUDENT_LIST						=	"dps.grades.select.student.list";
 	public	static	final	String	CONST_SQL_GRADE_CHANGE_STUDENT_LIST_OF_EXISTING_GRADE	=	"dps.grades.select.student.grades";
 	public	static	final	String	CONST_SQL_GRADE_VALUE_LIST								=	"dps.grades.select.grade.values";
 	public	static	final	String	CONST_SQL_GRADE_SELECT_HISORY							=	"dps.grades.select.grade.change.history";
@@ -265,6 +269,9 @@ public interface Constants
 	public	static	final	String	CONST_SQL_GRADE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE		=	"dps.grades.select.student.records.by.employee";
 	public	static	final	String	CONST_SQL_GRADE_CHANGE_SELECT_COURSE_TEMP				=	"dps.grade.select.course.temp.for.grade.change";
 	public	static	final	String	CONST_SQL_GRADE_CHANGE_UPDATE_APPROVAL_TEMP				=	"dps.grades.update.grade.change.approval.by.approver";
+	public	static	final	String	CONST_SQL_GRADE_SELECT_RULE_TEST_CURRENT_YEAR_SEM		=	"dps.grades.select.rule.test.current.year.sem";
+	public	static	final	String	CONST_SQL_GRADE_SELECT_RULE_YEAR_SEM					=	"dps.grades.select.rule.grade.change.year.sem";
+	
 
 	/* ---  SQL - DPS - Drop With W -- Stored Procedure -- --------------------- */	
 	public	static	final	String	CONST_PROC_DROPW_WITHDRAW_COURSE						=	"PROC_WITHDRAW_COURSE";

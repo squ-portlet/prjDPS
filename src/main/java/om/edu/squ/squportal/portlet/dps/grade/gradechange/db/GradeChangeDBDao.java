@@ -40,6 +40,7 @@ import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.Grade;
 import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.GradeDTO;
+import om.edu.squ.squportal.portlet.dps.rule.bo.YearSemester;
 
 /**
  * @author Bhabesh
@@ -50,6 +51,7 @@ public interface GradeChangeDBDao
 	/**
 	 * 
 	 * method name  : getStudentGrades
+	 * @param isRuleGradeChangeTimingFollowed TODO
 	 * @param gradeDTO TODO
 	 * @param employeeNo
 	 * @param locale
@@ -62,7 +64,7 @@ public interface GradeChangeDBDao
 	 * Date    		:	Nov 15, 2017 10:08:43 AM
 	 * @throws NoDBRecordException 
 	 */
-	public List<GradeDTO>	getStudentGrades(GradeDTO gradeDTO, String employeeNo, Locale locale) throws NoDBRecordException;
+	public List<GradeDTO>	getStudentGrades(boolean isRuleGradeChangeTimingFollowed, GradeDTO gradeDTO, String employeeNo, Locale locale) throws NoDBRecordException;
 	
 	
 	/**
@@ -82,6 +84,7 @@ public interface GradeChangeDBDao
 	/**
 	 * 
 	 * method name  : getGradeHistory
+	 * @param isRuleGradeChangeTimingFollowed TODO
 	 * @param dto
 	 * @param locale
 	 * @return
@@ -93,7 +96,7 @@ public interface GradeChangeDBDao
 	 * Date    		:	Nov 19, 2017 4:36:02 PM
 	 * @throws NoDBRecordException 
 	 */
-	public List<GradeDTO> getGradeHistory(GradeDTO dto, Locale locale) throws NoDBRecordException;
+	public List<GradeDTO> getGradeHistory(boolean isRuleGradeChangeTimingFollowed, GradeDTO dto, Locale locale) throws NoDBRecordException;
 	
 	/**
 	 * 
@@ -159,4 +162,38 @@ public interface GradeChangeDBDao
 	 */
 	@Transactional
 	public int setGradeChangeApproval(GradeDTO gradeDTO);
+
+	/**
+	 * 
+	 * method name  : getCourseList
+	 * @param isRuleGradeChangeTimingFollowed
+	 * @param employeeNo
+	 * @param locale
+	 * @return
+	 * GradeChangeDBImpl
+	 * return type  : List<GradeDTO>
+	 * 
+	 * purpose		: Get List of Courses of a faculty
+	 *
+	 * Date    		:	Dec 14, 2017 1:10:14 PM
+	 */
+	public List<GradeDTO> getCourseList(boolean isRuleGradeChangeTimingFollowed, String employeeNo, Locale	locale);
+	
+	/**
+	 * 
+	 * method name  : getStudentList
+	 * @param isRuleGradeChangeTimingFollowed
+	 * @param employeeNo
+	 * @param lAbrCourseNo
+	 * @param locale
+	 * @return
+	 * GradeChangeDBImpl
+	 * return type  : List<Student>
+	 * 
+	 * purpose		: List of Students teached by a faculty for a particular course at particular time
+	 *
+	 * Date    		:	Dec 14, 2017 3:39:51 PM
+	 */
+	public List<Student> getStudentList(boolean isRuleGradeChangeTimingFollowed, String employeeNo,String lAbrCourseNo,  Locale	locale);
+	
 }

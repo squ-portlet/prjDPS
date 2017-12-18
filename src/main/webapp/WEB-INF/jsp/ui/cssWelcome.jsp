@@ -199,6 +199,11 @@ background-color:transparent;
     color: #ed217c;
 }
 
+.input-xs, select.input-xs {
+  height: 20px;
+  line-height: 20px;
+}
+
 </style>
 
 <script>

@@ -10,6 +10,7 @@
 <portlet:resourceURL id="resoureAjaxGradeChangeDataByRole" var="varResoureAjaxGradeChangeDataByRole"/>
 <portlet:resourceURL id="resoureAjaxCourseListForGradeChange" var="varResoureAjaxCourseListForGradeChange"/>
 <portlet:resourceURL id="resourceAjaxGradeChangeApproval" var="varResourceAjaxGradeChangeApproval"/>
+<portlet:resourceURL id="resourceStudentList" var="varResourceStudentList"/>
 
 
 <script type="text/javascript">
@@ -58,6 +59,11 @@
 				var students=JSON.parse(data);
 				var studentsJson={'students':students,'roleType':'${myRole.roleName}'};
 				hbDataLoadAction(studentsJson, '#hbGradeStudentsList', '#divGradeStudentsList');
+				
+				var tablApprover = $('#tblApprover').DataTable({
+					 select: true,
+					 "sDom":  '<f><t><"col-sm-5"i><"col-sm-12"p><"clearfix">'
+				 });
 			},
 			error	:	function(xhr, status)
 			{
@@ -76,6 +82,101 @@
 		$('#divGradeStudentsList').html('');
 		
 	});
+	
+	
+	$(document).on("click", ".clsLinkCourseNo", function(event){
+		event.preventDefault();
+		$('#divStudentList').html('');
+		$('#divGradeList').html('');
+		$('#divGradeChangeHistory').html('');
+		var lAbrCourseNoModel	=	{
+				lAbrCourseNo	:	this.getAttribute("lAbrCourseNo")
+		};
+		
+		var lAbrCourseNo	=	this.getAttribute("lAbrCourseNo");
+		var sectionNo		=	this.getAttribute("sectionNo");
+		
+		$.ajax({
+			url 	:	"${varResourceStudentList}", 
+			data 	:	lAbrCourseNoModel,
+			cache	: false,
+			type	: 'POST',
+			success	: function(data)
+			{
+
+				var students	=	JSON.parse(data); 
+				var studentsJson = {'students':students, 'lAbrCourseNo':lAbrCourseNo, 'sectionNo':sectionNo};
+				 hbDataLoadAction(studentsJson, '#hbStudentList', '#divStudentList');
+				 var tablStudentList = $('#tblStudentList').DataTable({
+					 select: true,
+					 "sDom":  '<f><t><"col-sm-5"i><"col-sm-12"p><"clearfix">'
+				 });
+				 
+			},
+			error	:	function(xhr, status,  error)
+			{
+				
+			}
+			
+		});
+		
+		
+	})
+
+	/* onClick student id */
+	$(document).on("click", ".clsLinkStudentNo", function(event){
+		event.preventDefault();
+		$('#divGradeList').html('');
+		$('#divGradeChangeHistory').html('');
+		
+		var gradeChangeModel	=	{
+				studentId	:	this.getAttribute("studentId"),
+				lAbrCrsNo	:	this.getAttribute("lAbrCourseNo"),
+				salt		:	salt,
+				four		:	four
+		};
+		
+		$.ajax({
+					url		:	"${varResourceAjaxGetStudentGrades}",
+					type	:	'POST',
+					cache	:	false,
+					data	:	gradeChangeModel,
+					success	:	function(data)
+					{
+						var gradeDTOs	=	JSON.parse(data); 
+						 hbDataLoadAction(gradeDTOs, '#hbGradeList', '#divGradeList');
+					},
+					error	:	function(xhr, status,  error)
+					{
+						var alertText = {
+								alertTxt: xhr.responseText
+						}
+						
+						hbDataLoadAction(alertText, '#hbAlert', '#divAlertGradeList');
+						$('#divGradeList').html('');
+						$('#divGradeChangeHistory').html('');
+					}
+		});
+		
+		viewInstructorGradeChangeHistory(gradeChangeModel);
+		
+	});
+	
+	
+	$(document).on("click", ".linkGradeChange", function(event){
+		if ($('#formGradeList').valid()) {
+			var gradeChangeModel	=	{
+					studentId	:	$("#studentId").val(),
+					lAbrCrsNo	:	this.getAttribute("lAbrCourseNo"),
+					salt		:	salt,
+					four		:	four
+			};
+			
+			instructorApplyForGradeChange(this, null);
+			$('.divClsGradeListData').html('');
+			viewInstructorGradeChangeHistory(gradeChangeModel);
+		}
+	})
 	
 	
 		$('#bttnGradeSearch').click(function(){
@@ -103,6 +204,7 @@
 							var gradeDTOs	=	JSON.parse(data); 
 	
 							 hbDataLoadAction(gradeDTOs, '#hbGradeList', '#divGradeList');
+							
 							 var tablGradeList = $('#tblGradeList').DataTable({
 								 select: true,
 								 "sDom":  '<t><"col-sm-5"i><"col-sm-12"p><"clearfix">'
@@ -143,9 +245,6 @@
 		
 				viewInstructorGradeChangeHistory(gradeChangeModel);
 			
-			
-			
-			
 		});
 
 
@@ -160,6 +259,10 @@
 				{
 					var gradeDTOs	=	JSON.parse(data); 
 					 hbDataLoadAction(gradeDTOs, '#hbGradeChangeHistory', '#divGradeChangeHistory');
+					 var tablGradeChangeHistory = $('#tblGradeChangeHistory').DataTable({
+						 select: true,
+						 "sDom":  ''
+					 });
 				},
 				error	:	function(xhr, status,  error)
 				{
@@ -242,6 +345,10 @@
 							var	courseGrade	=	JSON.parse(data);
 							var courseGradeJson = {'courseGrade':courseGrade, 'roleName': roleType};
 							hbDataLoadAction(courseGradeJson, '#hbStudentGradesForApprove', '#divStudentGradesForApprove');
+							var tablGradeChangeHistory02 = $('#tblGradeChangeHistory02').DataTable({
+								 select: true,
+								 "sDom":  ''
+							 });
 				}
 			});
 			

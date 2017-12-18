@@ -2,11 +2,96 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
 	<comment>DPS Grades Queries</comment>
+	<entry key="dps.grades.select.course.list">
+		<![CDATA[
+				SELECT
+				    DISTINCT
+				       SECT.L_ABR_CRSNO												AS    	L_ABR_CRSNO
+				    ,  SECT.CRSNO													AS		COURSE_NO
+				    ,  DECODE (
+					            :paramLocale
+					            , 'ar', COURSE.A_CRSLNM
+					            , COURSE.CRSLNM
+					          )  													AS 		COURSE_NAME
+				    , SECT.SECTNO													AS      SECTION_NO
+		FROM 
+              		SECT          SECT
+		        , 	SCHED_WEEKLY  SCHW
+		        , 	FAC_SURNM     FACULTY
+		        , 	CRS_BASIC     COURSE
+		      
+		WHERE
+		              SECT.CCYRCD = :paramYear
+		        AND   SECT.SEMCD = :paramSemester
+        
+		        AND   SCHW.SECTCD = SECT.SECTCD
+		        
+		        AND   SCHW.CRSNO  = SECT.CRSNO
+		        AND   SCHW.SECTNO = SECT.SECTNO
+		        
+		        AND   SCHW.FACSURNMCD=FACULTY.FAC_SURNMCD
+		        AND   FACULTY.EMPNO =:paramEmpNo
+		        AND   COURSE.CRSNO  = SECT.CRSNO
+		        AND   COURSE.CRSNO  = SCHW.CRSNO 
+		        
+		        ORDER BY L_ABR_CRSNO
+		   ]]>	
+	</entry>
+	<entry key="dps.grades.select.student.list">
+	<![CDATA[
+		SELECT
+		    DISTINCT
+			    PORTAL.STD_ID													AS		STUDENT_ID
+			    , DECODE(
+			          :paramLocale
+			          ,'ar', PORTAL.A_STD_NAME
+			          , PORTAL.STD_NAME
+			    ) 																AS  	STUDENT_NAME
+			      , GRADES.GRADUSRACCTCD
+			      , GRADES.SECTNO
+		     
+		FROM 
+		          STD_GRADES    GRADES
+		        , SECT          SECT
+		        , SCHED_WEEKLY  SCHW
+		        , FAC_SURNM     FACULTY
+		        , V_STDINFO_PORTAL PORTAL
+		      
+		WHERE
+		              GRADES.CCYRCD = :paramYear
+		        AND   GRADES.SEMCD = :paramSemester
+		        AND   SECT.CRSNO = GRADES.CRSNO
+		        AND   SECT.CCYRCD  = GRADES.CCYRCD
+		        AND   SECT.SEMCD  = GRADES.SEMCD
+		        AND   SECT.SECTNO  = GRADES.SECTNO
+		        
+		        AND   SCHW.SECTCD = SECT.SECTCD
+		        AND   SCHW.CRSNO  = GRADES.CRSNO
+		        AND   SCHW.SECTNO = GRADES.SECTNO
+		        
+		        AND   SCHW.FACSURNMCD=FACULTY.FAC_SURNMCD
+		        AND   FACULTY.EMPNO =:paramEmpNo
+		        AND   LOWER(SUBSTR(GRADES.GRADUSRACCTCD,1,1)) <> 's'
+		        AND    GRADES.L_ABR_CRSNO = :paramLAbrCourseNo
+		        
+		        AND    GRADES.STDNO =  PORTAL.STDNO
+		        AND    PORTAL.ACTIVE='Y'
+		        
+		        ORDER BY PORTAL.STD_ID	
+		 ]]>
+	</entry>
+	
 	<entry key="dps.grades.select.student.grades">
 		<![CDATA[ 
 			SELECT
                   DISTINCT
-                  			GRADES.STDNO										AS	  	STUDENT_NO
+                  			VSP.STD_ID											AS		STUDENT_ID
+                  		,	DECODE(
+                  					:paramLocale
+                  					, 'ar',VSP.A_STD_NAME
+                  					,  STD_NAME
+                  		)														AS		STUDENT_NAME
+                  		,	GRADES.STDNO										AS	  	STUDENT_NO
                   		,  	VSP.STDSTATCD                       				AS      STDSTATCD 
                   		,   GRADES.CCYRCD										AS		CCYRCD	
                   		,	GRADES.SEMCD										AS		SEMCD
@@ -39,6 +124,11 @@
 		                          AND SECTDGR.SEMCD = :paramSem
 		                          AND SECTDGR.L_ABR_CRSNO = GRADES.L_ABR_CRSNO
 		                	)                                                    AS		EMP_COUNT
+		               ,  GRADES.GRADUSRACCTCD									 AS		USER_ACCT_CD
+		               ,  DECODE (
+		               				SUBSTR(GRADES.GRADUSRACCTCD,2)
+		               				,:paramEmpNo, 'Y','N'
+		               			)												AS		CHANGE_ALLOWED
                 
 			          ,  DECODE
 			                  (
@@ -82,13 +172,13 @@
 	</entry>
 	<entry key="dps.grades.select.grade.values">
 		SELECT
-		          GV.GRADECD                          							AS  GRADE_CODE
+		          GV.GRADECD                          							AS  	GRADE_CODE
 		       ,  DECODE
 		                (
 		                  :paramLocale
 		                  , 'ar', GV.A_ABR_GVAL
 		                  , GV.L_ABR_GVAL
-		                )                             							AS  GRADE_VAL
+		                )                             							AS  	GRADE_VAL
 		FROM  
 		      GRADE_VAL GV
 		
@@ -148,17 +238,20 @@
 		      , FUNC_APPROVE_STATUS(
 		                           TGRADE.STDNO,
 		                           :paramHodRoleName, 
-		                           :paramFormName
+		                           :paramFormName,
+		                           TGRADE.REC_SEQ_NO
 		                           )                        					AS  	HOD_STATUS
 		     , FUNC_APPROVE_STATUS(
 		                     TGRADE.STDNO,
 		                     :paramADeanPRoleName, 
-		                     :paramFormName
+		                     :paramFormName,
+		                     TGRADE.REC_SEQ_NO
 		                     )                              					AS  	DPS_ASST_DEAN_STATUS 
 		     , FUNC_APPROVE_STATUS(
 		                     TGRADE.STDNO,
 		                     :paramDeanPRoleName, 
-		                     :paramFormName
+		                     :paramFormName,
+		                     TGRADE.REC_SEQ_NO
 		                     )                              					AS  	DPS_DEAN_STATUS   
                      
 		FROM
@@ -169,6 +262,7 @@
 		WHERE
 		          VSP.STD_ID 	= :paramStdId
 		      AND TGRADE.CCYRCD = :paramYear
+		      AND TGRADE.L_ABR_CRSNO = :paramLAbrCourseNo
 		      AND TGRADE.STDNO 	= VSP.STDNO
           AND VSP.ACTIVE    = 'Y'
        
@@ -235,6 +329,13 @@
 		    , :paramUserName
 		  )
 	</entry>
+	<entry key="dps.grades.select.rule.test.current.year.sem">
+		SELECT 
+		        CCYRCD      													AS    CCYRCD
+		      , SEMCD       													AS    SEMCD
+		FROM
+		      CURRENT_YR_SEM	
+	</entry>
 	<!-- TODO -->
 	<entry key="dps.grades.select.rule.grade.change.year.sem">
 		SELECT 
@@ -265,36 +366,36 @@
 	<entry key="dps.grades.select.student.records.by.employee">
 		SELECT
 		      	DISTINCT
-				 	T_GRADE.STDNO							              			AS		STUDENT_NO
-				, 	PORTAL.STD_ID													AS		STUDENT_ID
-			  	,	T_GRADE.STDSTATCD												AS  	STDSTATCD
+				 	T_GRADE.STDNO							              		AS		STUDENT_NO
+				, 	PORTAL.STD_ID												AS		STUDENT_ID
+			  	,	T_GRADE.STDSTATCD											AS  	STDSTATCD
 		    	,	DECODE
 						    (
 								        :paramLocale
 								      , 'en', STD_NAME
 								            , A_STD_NAME
-						    )                                       				AS  	STUDENT_NAME
-				, 	PORTAL.COHORT                                 					AS  	COHORT						    
-			    , 	GENDER                                							AS  	GENDER
-			    , 	STD_EMAIL                             							AS  	EMAIL
+						    )                                       			AS  	STUDENT_NAME
+				, 	PORTAL.COHORT                                 				AS  	COHORT						    
+			    , 	GENDER                                						AS  	GENDER
+			    , 	STD_EMAIL                             						AS  	EMAIL
 	          	, 	DECODE
 			                (
 			                    :paramLocale
 			                    ,'en', PORTAL.DEGREE_NAME
 			                    ,PORTAL.A_DEGREE_NAME
-			                )                                         				AS  	DEGREE_NAME
+			                )                                         			AS  	DEGREE_NAME
 	          	, 	DECODE 
 			                (
 			                      :paramLocale
 			                      ,'en', PORTAL.COLLEGENM
 			                      , PORTAL.A_COLLEGENM
-			                )                                         				AS  	COLLEGE_NAME			    
+			                )                                         			AS  	COLLEGE_NAME			    
 			    , 	DECODE
 						    (
 								        :paramLocale
 								      , 'en', MAJORNAME
 								            , A_MAJORNAME
-						    )                                       				AS  	MAJOR
+						    )                                       			AS  	MAJOR
 			   , 	(
               			SELECT 
                       		DECODE (
@@ -307,7 +408,7 @@
 			                    T_STD_GRADES
 			              WHERE
 			                   STDNO = T_GRADE.STDNO
-			            )                                     						AS 		DATE_WATCH
+			            )                                     					AS 		DATE_WATCH
 		FROM
 				  T_STD_GRADES 	T_GRADE
 				, V_STDINFO_PORTAL  PORTAL
@@ -430,17 +531,20 @@
 		      , FUNC_APPROVE_STATUS(
 		                           T_GRADE.STDNO,
 		                           :paramHodRoleName, 
-		                           :paramFormName
+		                           :paramFormName,
+		                           T_GRADE.REC_SEQ_NO
 		                           )                        					AS  	HOD_STATUS
 		     , FUNC_APPROVE_STATUS(
 		                     T_GRADE.STDNO,
 		                     :paramADeanPRoleName, 
-		                     :paramFormName
+		                     :paramFormName,
+		                     T_GRADE.REC_SEQ_NO
 		                     )                              					AS  	DPS_ASST_DEAN_STATUS 
 		     , FUNC_APPROVE_STATUS(
 		                     T_GRADE.STDNO,
 		                     :paramDeanPRoleName, 
-		                     :paramFormName
+		                     :paramFormName,
+		                     T_GRADE.REC_SEQ_NO
 		                     )                              					AS  	DPS_DEAN_STATUS 
 			      ,	FUNC_IS_APPROVER(
 							                  T_GRADE.STDNO

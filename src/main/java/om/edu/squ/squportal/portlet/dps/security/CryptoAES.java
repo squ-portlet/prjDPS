@@ -219,6 +219,10 @@ public class CryptoAES implements Crypto
 	        catch (UnsupportedEncodingException e) {
 	        	logger.error(" :: Crypto Error :: Error in deCrypt. Details : {}",e.getMessage());
 	        }
+	    	catch(Exception ex)
+	    	{
+	    		logger.error("Error on ciphertext : {}, details : {}",ciphertext,ex.getMessage());
+	    	}
 	    	return strDecrypt;
 	    }
 	    

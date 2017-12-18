@@ -7,6 +7,7 @@
 
 	<%@include file="../../../ui/cssWelcome.jsp" %>	
 	<%@include file="../../../ui/js/grade/gradechange/jsGradeChange.jsp" %>
+	<%@include file="../../../ui/js/grade/gradechange/jsValidationGradeChange.jsp" %>
 
 
 <c:set var="varRoleName"/>
@@ -47,9 +48,28 @@
 <div id="idDivInstructor" class="section container-fluid">
 	<div class="row">
 		
-		<div class="col-sm-4">
+		<div class="col-sm-2">
 			<div class="panel panel-default">
 				<div class="panel-body">
+
+				 <table class="table table-condensed dt-responsive collapsed ">
+				 		<thead>
+				 			<tr>
+				 				<th><spring:message code="prop.dps.gradechange.course.name"/></th>
+				 			</tr>
+				 		</thead>
+				 				 <c:forEach items="${courseList}" var="course">
+				 				 	<tr>	
+				 				 		<td><a href="#" class="clsLinkCourseNo" lAbrCourseNo='${course.course.lAbrCourseNo}' sectionNo='${course.sectionNo}'>${course.course.lAbrCourseNo}/${course.sectionNo}</a></td>
+				 				 	</tr>
+				 				 </c:forEach>
+				 		<tbody>
+				 		
+				 		</tbody>
+				 		
+				 </table>
+
+<!-- 				
 					<form id="modelGrade" name="modelGrade" method="post" >
 						<div class="form-group">
 							<label for="studentId"><spring:message code="prop.dps.gradechange.student.id"/></label>	
@@ -79,21 +99,30 @@
 							</button>
 						</div>
 					</form>
+-->				
+					
 				</div>
 			</div>
 		</div>
 		
-		<div class="col-sm-6">
-			<div id="divGradeList"></div>
-			<div id="divAlertGradeList"></div>
+		<div class="col-sm-4 container-fluid">
+			<div id="divStudentList"></div>
+		</div>
+		
+		<div class="col-sm-4">
+			<div class="row">
+				<div id="divGradeList" ></div>
+				<div id="divAlertGradeList"></div>
+			</div>
+			
+			<div class="row">
+				<div id="divGradeChangeHistory">
+				</div>
+			</div>			
 		</div>
 	</div>
 	
-	<div class="row">
-		<div id="divGradeChangeHistory">
-		
-		</div>
-	</div>
+
 </div>	
 </c:if>	
 	
@@ -163,51 +192,91 @@
       </div>
     </div>
 
-
-<script id="hbGradeList" type="text/x-handlebars-template">
-			<table id="tblGradeList" class="table table-striped table-bordered dt-responsive collapsed ">
+<script id="hbStudentList" type="text/x-handlebars-template">
+			<table id="tblStudentList" class="table table-condensed dt-responsive">
 				<thead>
-				<tr>
-					<th><spring:message code="prop.dps.gradechange.course.code"/></th>
-					<th><spring:message code="prop.dps.gradechange.section"/></th>
-					<th><spring:message code="prop.dps.gradechange.grade.code.existing"/></th>
-					<th><spring:message code="prop.dps.gradechange.grade.code.new"/></th>
-					<th><spring:message code="prop.dps.gradechange.comments"/></th>					
-					<th><spring:message code="prop.dps.gradechange.action"/></th>
-					
-				</tr>
+					<tr>
+						<th><spring:message code="prop.dps.gradechange.student.id"/></th>
+						<th>
+							<spring:message code="prop.dps.gradechange.students"/>  
+								<span class="label label-default">{{lAbrCourseNo}}</span>
+								<span class="badge">{{sectionNo}}</span>
+						</th>
+					</tr>
 				</thead>
+					{{#each students}}
+					<tr>
+						<td><a class="clsLinkStudentNo" href="#" lAbrCourseNo="{{encryptStr ../lAbrCourseNo}}" studentId="{{encryptStr personalDetail.id}}">{{personalDetail.id}}</a></td>
+						<td>{{personalDetail.name}}</td>
+					</tr>
+					{{/each}}
 				<tbody>
-				{{#each .}}
-					{{#if updatable}}
-						<tr>
-							<td>{{course.lAbrCourseNo}}</td>
-							<td>{{sectionNo}}</td>
-							<td>{{grade.gradeVal}}</td>
-							<td>
-								<select class="gradeValNew input-small" >
-									<option value=""><spring:message code="prop.dps.gradechange.select"/><option>
-									<c:forEach items="${grades}" var="grade">
-										<option value="${grade.gradeCode}">${grade.gradeVal}</option>
-									</c:forEach>
-								</select>
-							</td>
-							<td>
-								<textarea class="txtComments" rows="2" cols="20"></textarea>
-							</td>
-							<td>
-								<a class="linkGradeChange" href="#" stdno="{{encryptStr studentNo}}" stdstatcode="{{encryptStr stdStatCode}}" courseyear="{{courseYear}}" semester="{{semester}}" sectCode="{{sectCode}}" courseno="{{course.courseNo}}" labrcourseno="{{course.lAbrCourseNo}}" sectionno="{{sectionNo}}"  gradecodeold="{{{encryptStr grade.gradeCode}}}" ><spring:message code="prop.dps.gradechange.link.update"/></a>
-							</td>
-						</tr>
-					{{/if}}
-				{{/each}}
-				</tbody>
+				
+				</tbody>				
 			</table>
 </script>
+
+<script id="hbGradeList" type="text/x-handlebars-template"> 
+			<div class="well container-fluid">
+				
+				
+					{{#each .}}
+						<div class="row container-fluid">
+							<input id="studentId" type="hidden" value='{{studentId}}'>
+							<label class="col-sm-2 label label-default"><spring:message code="prop.dps.gradechange.student"/></label>
+							<div class="col-sm-6">({{studentId}}) - {{studentName}} </div>
+						</div>
+						<hr>
+						<div class="divClsGradeListData">
+						{{#if updatable}}
+						<div class="row container-fluid">
+							<div class="form-group">
+								<label class="control-label col-sm-4 label label-default" for="divGradeVal"><spring:message code="prop.dps.gradechange.grade.code.existing"/></label>
+								<div class="col-sm-1" id="divGradeVal">{{grade.gradeVal}}</div>
+								
+								
+							</div>
+						</div>
+						<form id="formGradeList" name="formGradeList">
+						{{#if changable}}
+							<div class="row container-fluid">
+									<label class="control-label col-sm-4 label label-success" for="gradeValNew"><spring:message code="prop.dps.gradechange.grade.code.new"/></label>
+									<div class="col-sm-2" id="divGradeValNew">
+										<select class="gradeValNew btn input-xs" id="selectGradeValNew" name="selectGradeValNew"  style="width:auto" required >
+											<option value=""><spring:message code="prop.dps.gradechange.select"/><option>
+											<c:forEach items="${grades}" var="grade">
+												<option value="${grade.gradeCode}">${grade.gradeVal}</option>
+											</c:forEach>
+										</select>						
+									</div>
+							</div>
+						 
+								<div class="row container-fluid">
+										<div class="form-group">
+											<label class="control-label col-sm-2" for="divTxtComments"><spring:message code="prop.dps.gradechange.comments"/></label>
+											<div class="col-sm-3" id="divTxtComments"><textarea id="txtMessage" name="txtMessage" class="txtComments" rows="2" cols="20" style="width:auto" required></textarea></div>
+										</div>
+								</div>
+							
+							
+								<div class="row container-fluid">
+									<a class="linkGradeChange" href="#" stdno="{{encryptStr studentNo}}" stdstatcode="{{encryptStr stdStatCode}}" courseyear="{{encryptStr courseYear}}" semester="{{encryptStr semester}}" sectCode="{{encryptStr sectCode}}" courseno="{{encryptStr course.courseNo}}" labrcourseno="{{encryptStr course.lAbrCourseNo}}" sectionno="{{encryptStr sectionNo}}"  gradecodeold="{{{encryptStr grade.gradeCode}}}" ><spring:message code="prop.dps.gradechange.link.update"/></a>
+								</div>
+						{{/if}}
+						</form>
+							{{/if}}
+						</div>
+					{{/each}}
+
+				
+			</div>
+</script>
+
 
 
 <script id="hbGradeChangeHistory" type="text/x-handlebars-template">
 		<table id="tblGradeChangeHistory" class="table table-striped table-bordered dt-responsive  collapsed ">
+		<thead>
 				<tr>
 					<th><spring:message code="prop.dps.gradechange.course.code"/></th>
 					<th><spring:message code="prop.dps.gradechange.section"/></th>
@@ -218,18 +287,21 @@
 					<th><spring:message code="prop.dps.gradechange.dean.asst"/></th>
 					<th><spring:message code="prop.dps.gradechange.dean.dps"/></th>
 				</tr>
+		</thead>
+		<tbody>
 			{{#each .}}
 					<tr>
 						<td>{{course.lAbrCourseNo}}</td>
-						<td><center>{{sectionNo}}</center></td>
-						<td><center>{{grade.gradeValOld}}</center></td>
-						<td><center>{{grade.gradeValNew}}</center></td>
-						<td><center>{{statusDesc}}</center></td>
-						<td><center>{{{hod.roleStausIkon}}}</center></td>
-						<td><center>{{{dpsAsstDean.roleStausIkon}}}</center></td>
-						<td><center>{{{dpsDean.roleStausIkon}}}</center></td>
+						<td>{{sectionNo}}</center></td>
+						<td>{{grade.gradeValOld}}</td>
+						<td>{{grade.gradeValNew}}</td>
+						<td>{{statusDesc}}</td>
+						<td>{{{hod.roleStausIkon}}}</td>
+						<td>{{{dpsAsstDean.roleStausIkon}}}</td>
+						<td>{{{dpsDean.roleStausIkon}}}</td>
 					</tr>
 			{{/each}}
+		</tbody>
 		</table>
 </script>
 
@@ -243,6 +315,7 @@
 
 <script id="hbGradeStudentsList" type="text/x-handlebars-template">
 	<table id="tblApprover" class="table table-striped table-bordered dt-responsive nowrap collapsed">
+		<thead>
 		<tr>
 			<th><spring:message code="prop.dps.student.student.id"/></th>
 			<th><spring:message code="prop.dps.student.student.name"/></th>
@@ -250,7 +323,8 @@
 			<th><spring:message code="prop.dps.student.student.college"/></th>
 			<th><spring:message code="prop.dps.student.student.program"/></th>
 		</tr>
-		
+		</thead>
+		<tbody>
 		{{#each students}}
 			<tr>
 				<td><a class="clsLinkStudentGrades" href="#" roleType="{{encryptStr ../roleType}}"  studentNo="{{encryptStr academicDetail.studentNo}}" stdStatCode="{{encryptStr academicDetail.stdStatCode}}" studentId="{{academicDetail.id}}" studentName="{{academicDetail.studentName}}">{{academicDetail.id}}</a></td>
@@ -260,12 +334,15 @@
 				<td>{{academicDetail.degree}}</td>
 			</tr>
 		{{/each}}
+		</tbody>
 	</table>
 </script>
 
 <script id="hbStudentGradesForApprove" type="text/x-handlebars-template">
-		<table id="tblGradeChangeHistory" class="table table-striped table-bordered dt-responsive  collapsed ">
+		<table id="tblGradeChangeHistory02" class="table table-striped table-bordered dt-responsive  collapsed ">
+				<thead>
 				<tr>
+					<th><spring:message code="prop.dps.gradechange.seq.no"/></th>
 					<th><spring:message code="prop.dps.gradechange.course.code"/></th>
 					<th><spring:message code="prop.dps.gradechange.section"/></th>
 					<th><spring:message code="prop.dps.gradechange.grade.code.existing"/></th>
@@ -276,8 +353,11 @@
 					<th><spring:message code="prop.dps.gradechange.dean.dps"/></th>
 					<th></th>
 				</tr>
+				</thead>
+				<tbody>
 			{{#each courseGrade}}
 					<tr>
+						<td>{{recordSequence}}</td>
 						<td>{{course.lAbrCourseNo}}</td>
 						<td><center>{{sectionNo}}</center></td>
 						<td><center>{{grade.gradeValOld}}</center></td>
@@ -294,5 +374,6 @@
 						</td>
 					</tr>
 			{{/each}}
+			</tbody>
 		</table>
 </script>

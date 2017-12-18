@@ -63,6 +63,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import com.google.gson.Gson;
@@ -126,6 +127,7 @@ public class GradeChangeController
 	private String approverWelcome(PortletRequest request, Model model, Locale locale)
 	{
 		Employee employee	=	null;
+		String	employeeNumber	=	null;
 		try
 		{
 			employee = dpsServiceDao.getEmployee(request,locale);
@@ -136,6 +138,13 @@ public class GradeChangeController
 			logger.error("No records available. Probably user doesnot logged in ");
 		}
 		
+		boolean booRule = gradeChangeService.isRuleComplete();
+		if(employee.getEmpNumber().substring(0,1).equals("e"))
+		{
+			employeeNumber	=	employee.getEmpNumber().substring(1);
+		}
+		
+		model.addAttribute("courseList", gradeChangeService.getCourseList(employeeNumber, locale));
 		model.addAttribute("employee", employee);
 		model.addAttribute("appApprove", Constants.CONST_SQL_STATUS_CODE_ACCPT);
 		model.addAttribute("appRecect", Constants.CONST_SQL_STATUS_CODE_REJCT);
@@ -145,6 +154,51 @@ public class GradeChangeController
 		
 		return "/grade/gradechange/approver/welcomeGradeChangeApprover";
 	}
+	
+	
+	/**
+	 * 
+	 * method name  : getStudentList
+	 * @param lAbrCourseNo
+	 * @param request
+	 * @param response
+	 * @param locale
+	 * @throws IOException
+	 * GradeChangeController
+	 * return type  : void
+	 * 
+	 * purpose		: List of students as resource
+	 *
+	 * Date    		:	Dec 14, 2017 4:08:54 PM
+	 */
+	@ResourceMapping(value="resourceStudentList")
+	private	void getStudentList(@RequestParam("lAbrCourseNo") String lAbrCourseNo, ResourceRequest request, ResourceResponse response, Locale locale ) throws IOException
+	{
+		Gson		gson		= 	new Gson();
+		String	employeeNumber	=	null;
+		
+		Employee employee;
+		try
+		{
+			employee = dpsServiceDao.getEmployee(request,locale);
+			if(employee.getEmpNumber().substring(0,1).equals("e"))
+			{
+				employeeNumber	=	employee.getEmpNumber().substring(1);
+			}
+			List<Student> students	=	gradeChangeService.getStudentList(employeeNumber, lAbrCourseNo, locale);
+			
+			response.getWriter().print(gson.toJson(students));
+		}
+		catch (ExceptionEmptyResultset ex)
+		{
+			logger.error("Error fetching student list "+ex.getMessage());
+			response.getWriter().print("");
+		}
+		
+		
+		
+	}
+	
 	
 	/**
 	 * 
@@ -165,8 +219,7 @@ public class GradeChangeController
 	private	void getStudentGrades(@ModelAttribute("gradeChangeModel") GradeChangeModel gradeChangeModel, ResourceRequest request, ResourceResponse response, Locale locale) throws IOException 
 	{
 		Gson		gson		= 	new Gson();
-		String 			studentId		=	crypto.decrypt(gradeChangeModel.getSalt(), gradeChangeModel.getFour(),  gradeChangeModel.getStudentId());
-		gradeChangeModel.setStudentId(studentId);
+		gradeChangeModel.decrypt(crypto, gradeChangeModel.getSalt(), gradeChangeModel.getFour(), gradeChangeModel);
 		try
 		{
 			List<GradeDTO> 	gradeList		=	gradeChangeService.getStudentGrades(dpsServiceDao.getEmpNumber(request), locale, gradeChangeModel);	
@@ -211,10 +264,9 @@ public class GradeChangeController
 											) throws IOException
 	{
 		Gson		gson		= 	new Gson();
-		String 			studentId		=	crypto.decrypt(gradeChangeModelHistory.getSalt(), gradeChangeModelHistory.getFour(),  gradeChangeModelHistory.getStudentId());
-		
-		gradeChangeModelHistory.setStudentId(studentId);
-		
+
+		gradeChangeModelHistory.decrypt(crypto, gradeChangeModelHistory.getSalt(), gradeChangeModelHistory.getFour(), gradeChangeModelHistory);
+
 		try
 		{
 			List<GradeDTO> 	gradeChangeList		=	gradeChangeService.getGradeHistory(gradeChangeModelHistory, locale);	
@@ -249,8 +301,8 @@ public class GradeChangeController
 			, 	ResourceResponse response
 			, 	Locale locale)
 	{	
-
-		gradeChangeService.instructorApplyForGradeChange(gradeChangeModel,request);
+		gradeChangeModel.decrypt(crypto, gradeChangeModel.getSalt(), gradeChangeModel.getFour(), gradeChangeModel);
+		gradeChangeService.instructorApplyForGradeChange(gradeChangeModel,request, locale);
 	}
 	
 	/**
@@ -376,4 +428,7 @@ public class GradeChangeController
 				response.getWriter().print(gson.toJson(""));
 			}
 	}
+	
+	
+	
 }

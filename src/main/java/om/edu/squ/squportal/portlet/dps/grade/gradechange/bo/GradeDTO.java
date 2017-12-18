@@ -42,6 +42,7 @@ public class GradeDTO
 	private		String			recordSequence;
 	private		String			studentId;
 	private		String			studentNo;
+	private		String			studentName;
 	private		String			stdStatCode;
 	private		String			courseYear;
 	private		String			semester;
@@ -52,6 +53,7 @@ public class GradeDTO
 	private		Grade			grade;
 	private		String			comments;
 	private		boolean			updatable;
+	private		boolean			changable;
 	private		String			statusCode;
 	private		String			statusDesc;
 	
@@ -129,6 +131,26 @@ public class GradeDTO
 		this.studentNo = studentNo;
 	}
 	
+	/**
+	 * Getter Method	: getStudentName
+	 * @return the studentName
+	 * 
+	 * Date				: Dec 16, 2017
+	 */
+	public String getStudentName()
+	{
+		return this.studentName;
+	}
+	/**
+	 * Setter method : setStudentName
+	 * @param studentName the studentName to set
+	 * 
+	 * Date          : Dec 16, 2017 8:34:00 PM
+	 */
+	public void setStudentName(String studentName)
+	{
+		this.studentName = studentName;
+	}
 	/**
 	 * Getter Method	: getStdStatCode
 	 * @return the stdStatCode
@@ -313,7 +335,26 @@ public class GradeDTO
 	{
 		this.updatable = updatable;
 	}
-	
+	/**
+	 * Getter Method	: isChangable
+	 * @return the changable
+	 * 
+	 * Date				: Dec 18, 2017
+	 */
+	public boolean isChangable()
+	{
+		return this.changable;
+	}
+	/**
+	 * Setter method : setChangable
+	 * @param changable the changable to set
+	 * 
+	 * Date          : Dec 18, 2017 12:34:46 PM
+	 */
+	public void setChangable(boolean changable)
+	{
+		this.changable = changable;
+	}
 	/**
 	 * Getter Method	: getStatusCode
 	 * @return the statusCode
@@ -485,15 +526,17 @@ public class GradeDTO
 	{
 		return "GradeDTO [recordSequence=" + this.recordSequence
 				+ ", studentId=" + this.studentId + ", studentNo="
-				+ this.studentNo + ", stdStatCode=" + this.stdStatCode
-				+ ", courseYear=" + this.courseYear + ", semester="
-				+ this.semester + ", sectCode=" + this.sectCode + ", course="
-				+ this.course + ", sectionNo=" + this.sectionNo + ", grade="
-				+ this.grade + ", comments=" + this.comments + ", updatable="
-				+ this.updatable + ", statusCode=" + this.statusCode
-				+ ", statusDesc=" + this.statusDesc + ", userName="
-				+ this.userName + ", roleType=" + this.roleType + ", hod="
-				+ this.hod + ", dpsAsstDean=" + this.dpsAsstDean + ", dpsDean="
+				+ this.studentNo + ", studentName=" + this.studentName
+				+ ", stdStatCode=" + this.stdStatCode + ", courseYear="
+				+ this.courseYear + ", semester=" + this.semester
+				+ ", sectCode=" + this.sectCode + ", course=" + this.course
+				+ ", sectionNo=" + this.sectionNo + ", grade=" + this.grade
+				+ ", comments=" + this.comments + ", updatable="
+				+ this.updatable + ", changable=" + this.changable
+				+ ", statusCode=" + this.statusCode + ", statusDesc="
+				+ this.statusDesc + ", userName=" + this.userName
+				+ ", roleType=" + this.roleType + ", hod=" + this.hod
+				+ ", dpsAsstDean=" + this.dpsAsstDean + ", dpsDean="
 				+ this.dpsDean + ", approver=" + this.approver + "]";
 	}
 	
