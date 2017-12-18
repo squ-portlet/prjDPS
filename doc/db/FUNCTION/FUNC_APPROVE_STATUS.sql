@@ -1,4 +1,4 @@
-create or replace FUNCTION FUNC_APPROVE_STATUS(paramStudentNo VARCHAR2, paramRoleName VARCHAR2 , paramFormName VARCHAR2) return VARCHAR2 as
+create or replace FUNCTION FUNC_APPROVE_STATUS(paramStudentNo VARCHAR2, paramRoleName VARCHAR2 , paramFormName VARCHAR2, paramSequence VARCHAR2 DEFAULT NULL) return VARCHAR2 as
 /*
   Function Name : FUNC_APPROVE_STATUS
   
@@ -25,7 +25,12 @@ begin
                                  AND  APP_TX.STDNO          = paramStudentNo
                                  AND  APP_M.APPROVALCD      = APP_TX.APPROVALCD
                                  AND CODES.L_ABR_CODE       = paramRoleName
-                                 AND  OBJ.OBJECTNM          = paramFormName;
+                                 AND  OBJ.OBJECTNM          = paramFormName
+                                 AND  (
+                                      paramSequence is null
+                                      OR APP_TX.REQUESTCD = paramSequence
+                                 )
+                                 ;
           begin
             IF (COUNT_REC = 0) THEN
                 RESULT_STATUS:='NA';
@@ -73,7 +78,15 @@ begin
                                                                 WHERE 
                                                                           STDNO          = paramStudentNo
                                                                       AND APPROVALCD     =  APP_M.APPROVALCD
+                                                                      AND  (
+                                                                          paramSequence is null
+                                                                          OR REQUESTCD = paramSequence
+                                                                     ) 
                                                                 )
+                                 AND  (
+                                      paramSequence is null
+                                      OR APP_TX.REQUESTCD = paramSequence
+                                 )                                                                
                                   AND   ROWNUM              =   1;                   
                 end;
             END IF;
