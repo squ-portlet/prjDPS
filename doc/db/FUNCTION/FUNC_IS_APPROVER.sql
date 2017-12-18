@@ -16,7 +16,6 @@ create or replace FUNCTION            FUNC_IS_APPROVER
   Author : Bhabesh
   Create Date : 20-February-2017
   Modify Date : 06-December-2017 (introduce REQUESTCD from APPROVAL_TRANSACTION)
-  Modify Date : 08-December-2017 (Check whether the cursor is empty)
 */
 COUNT_REC       NUMBER          :=0;
 COUNT_REC_OTHER NUMBER          :=0;
@@ -102,6 +101,10 @@ BEGIN
                           FETCH CUR_APP INTO CNT_STD, APP_STATUS,APP_SEQ ;
                               IF (((SEQ_NO - 1) = APP_SEQ) AND APP_STATUS = 'ACCPT') THEN
                                   IS_LINK_AVL := 'Y';
+                                  EXIT;
+                              END IF;
+                               IF (((SEQ_NO - 1) = APP_SEQ) AND APP_STATUS = 'REJCT') THEN
+                                  IS_LINK_AVL := 'N';
                                   EXIT;
                               END IF;
                               IF (APP_SEQ >= SEQ_NO ) THEN
