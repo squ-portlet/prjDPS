@@ -559,9 +559,6 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 		
 		namedParameterMap.put("paramFormName",Constants.CONST_FORM_NAME_DPS_GRADE_CHANGE );
 		namedParameterMap.put("paramRoleName", roleType);
-		
-		logger.info("namedParameterMap : "+namedParameterMap);
-		
 
 		return nPJdbcTemplDpsGradeChange.query(SQL_GRADE_CHANGE_SELECT_COURSE_TEMP, namedParameterMap, rowMapper);
 	}

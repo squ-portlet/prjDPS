@@ -9,9 +9,6 @@
 <script type="text/javascript">
 	$(function(){
 
-		extensionStudentDataModel
-		
-
 		/*********
 		* Approver should can not reject without specifying reasons
 		*/

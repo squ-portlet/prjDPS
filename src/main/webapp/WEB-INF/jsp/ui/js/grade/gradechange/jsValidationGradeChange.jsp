@@ -26,5 +26,26 @@
 			}
 
 		});
+		
+		
+		
+		/*********
+		* Approver should can not reject without specifying reasons
+		*/
+		$('#formModalApprover').validate({
+			rules: {
+				txtMessage: {
+					required : true
+				}
+			},
+			messages:
+			{
+				txtMessage: '<spring:message code="prop.dps.gradechange.error.comment.required"/>'
+			}
+
+		});
+
+		
+		
 	});
 </script>

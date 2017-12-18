@@ -179,7 +179,7 @@
           	<div id="idApprovalMsg"></div>
             <div id="idComment">
             	<div class="col-sm-2"><spring:message code="prop.dps.approver.modal.body.approve.comment.text"></spring:message></div>
-            	<div class="col-sm-8" id="idCommentTxtArea"><textarea id="txtMessage" name="txtMessage" rows="" cols=""></textarea></div>
+            	<div class="col-sm-8" id="idCommentTxtArea"></div>
             </div>
           </div>
           </form>

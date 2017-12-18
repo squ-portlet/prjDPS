@@ -399,7 +399,7 @@
 	/* Submit button of modal form to approve or reject */
 		$(document).on("click", "#linkSubmitApprove", function(event){
 			event.preventDefault();
-			
+			if ($('#formModalApprover').valid()) {
 			var gradeChangeModel = {
 					recordSequence	:	$('#recordSequence').val(),
 					studentNo		:	$('#studentNo').val(),
@@ -434,7 +434,7 @@
 				}
 			});
 			
-			
+		}	
 			
 		})
 		
