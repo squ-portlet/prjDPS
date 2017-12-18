@@ -13,7 +13,7 @@
 				selectGradeValNew:{
 					required : true
 				},
-				txtMessage: {
+				txtMessage02: {
 					required : true
 				}
 				
@@ -21,7 +21,7 @@
 			messages:
 			{
 				selectGradeValNew: '<spring:message code="prop.dps.gradechange.error.new.grade.required"/>',
-				txtMessage: '<spring:message code="prop.dps.gradechange.error.comment.required"/>'
+				txtMessage02: '<spring:message code="prop.dps.gradechange.error.comment.required"/>'
 					
 			}
 

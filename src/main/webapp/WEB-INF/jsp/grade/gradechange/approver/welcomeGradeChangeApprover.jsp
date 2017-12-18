@@ -254,7 +254,7 @@
 								<div class="row container-fluid">
 										<div class="form-group">
 											<label class="control-label col-sm-2" for="divTxtComments"><spring:message code="prop.dps.gradechange.comments"/></label>
-											<div class="col-sm-3" id="divTxtComments"><textarea id="txtMessage" name="txtMessage" class="txtComments" rows="2" cols="20" style="width:auto" required></textarea></div>
+											<div class="col-sm-3" id="divTxtComments"><textarea id="txtMessage02" name="txtMessage02" class="txtComments" rows="2" cols="20" style="width:auto" required></textarea></div>
 										</div>
 								</div>
 							
@@ -294,7 +294,11 @@
 						<td>{{course.lAbrCourseNo}}</td>
 						<td>{{sectionNo}}</center></td>
 						<td>{{grade.gradeValOld}}</td>
-						<td>{{grade.gradeValNew}}</td>
+						<td>{{grade.gradeValNew}}
+								<a href="#" comments="{{comments}}" class="classPopMsgInstructor">
+									<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+								</a>
+						</td>
 						<td>{{statusDesc}}</td>
 						<td>{{{hod.roleStausIkon}}}</td>
 						<td>{{{dpsAsstDean.roleStausIkon}}}</td>

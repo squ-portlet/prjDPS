@@ -313,9 +313,6 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 		namedParameterMap.put("paramADeanPRoleName", Constants.CONST_SQL_ROLE_NAME_DPS_ASSISTANT_DEAN);
 		namedParameterMap.put("paramDeanPRoleName", Constants.CONST_SQL_ROLE_NAME_DPS_DEAN);
 		
-		logger.info("dto : "+dto);
-		logger.info("namedParameterMap : "+namedParameterMap);
-		
 		try
 		{
 			return nPJdbcTemplDpsGradeChange.query(SQL_GRADE_SELECT_HISORY, namedParameterMap, rowMapper);

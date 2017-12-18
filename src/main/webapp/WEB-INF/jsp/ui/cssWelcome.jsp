@@ -148,6 +148,10 @@
 	background-color: #434a54;
 }  
 
+.popover-content {
+    background-color: white;
+}
+
 /* Liferay modal form */
 .aui .modal {
 height: inherit;

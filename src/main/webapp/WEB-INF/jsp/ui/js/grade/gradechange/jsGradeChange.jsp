@@ -296,7 +296,7 @@
 					lAbrCrsNo		:	data.getAttribute("labrcourseno"),
 					gradeCodeOld	:	data.getAttribute("gradecodeold"),
 					gradeCodeNew	:	newGradeCode,
-					comments		:	$(data).closest('tr').find('.txtComments').val(),
+					comments		:	$('.txtComments').val(),
 					salt			:	salt,
 					four			:	four
 			};
@@ -323,6 +323,23 @@
 			
 			
 		}
+	
+		/* popover for Instructor comments*/
+		$(document).on("click",".classPopMsgInstructor",function(event){
+			event.preventDefault();
+			$('.classPopMsgInstructor').popover({
+				html: true,
+				title: '<spring:message code="prop.dps.gradechange.popover.title.instructor.message"/>',
+				placement: 'top',
+				container: 'body',
+				content : function()
+				{
+					return this.getAttribute("comments")
+				}
+			});
+		});
+	
+	
 	
 		/* Load and display course data with grade for approver */
 		$(document).on("click", ".clsLinkStudentGrades", function(event){
