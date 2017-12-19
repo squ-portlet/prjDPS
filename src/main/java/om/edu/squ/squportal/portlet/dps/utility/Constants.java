@@ -147,6 +147,14 @@ public interface Constants
 	public static final	String	CONST_COLMN_ROLE_DPS_ASST_DEAN_STATUS						=	"DPS_ASST_DEAN_STATUS";
 	public static final	String	CONST_COLMN_ROLE_DPS_DEAN_STATUS							=	"DPS_DEAN_STATUS";
 	
+	public static final	String	CONST_COLMN_ROLE_HOD_COMMENT								=	"HOD_COMMENT";
+	public static final	String	CONST_COLMN_ROLE_ADVISOR_COMMENT							=	"ADVISOR_COMMENT";
+	public static final	String	CONST_COLMN_ROLE_SUPERVISOR_COMMENT							=	"SUPERVISOR_COMMENT";
+	public static final	String	CONST_COLMN_ROLE_COLLEGE_DEAN_COMMENT						=	"COLLEGE_DEAN_COMMENT";
+	public static final	String	CONST_COLMN_ROLE_DPS_ASST_DEAN_COMMENT						=	"DPS_ASST_DEAN_COMMENT";
+	public static final	String	CONST_COLMN_ROLE_DPS_DEAN_COMMENT							=	"DPS_DEAN_COMMENT";
+	
+	
 	public static final	String	CONST_COLMN_ROLE_IS_APPROVER								=	"IS_APPROVER";
 	
 	public static final	String	CONST_COLMN_SEQUENCE_NO										=	"SEQUENCE_NUMBER";

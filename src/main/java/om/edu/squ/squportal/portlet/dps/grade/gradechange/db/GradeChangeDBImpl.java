@@ -285,13 +285,16 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 				
 				hod.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_HOD_STATUS));
 				hod.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_HOD_STATUS)));
+				hod.setComments(rs.getString(Constants.CONST_COLMN_ROLE_HOD_COMMENT));
+				
 
 				dpsAsstDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_DPS_ASST_DEAN_STATUS));
 				dpsAsstDean.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_DPS_ASST_DEAN_STATUS)));
+				dpsAsstDean.setComments(rs.getString(Constants.CONST_COLMN_ROLE_DPS_ASST_DEAN_COMMENT));
 
 				dpsDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_DPS_DEAN_STATUS));
 				dpsDean.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_DPS_DEAN_STATUS)));
-
+				dpsDean.setComments(rs.getString(Constants.CONST_COLMN_ROLE_DPS_DEAN_COMMENT));
 
 				gradeDto.setHod(hod);
 				gradeDto.setDpsAsstDean(dpsAsstDean);
@@ -493,13 +496,15 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 				
 				hod.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_HOD_STATUS));
 				hod.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_HOD_STATUS)));
+				hod.setComments(rs.getString(Constants.CONST_COLMN_ROLE_HOD_COMMENT));
 
 				dpsAsstDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_DPS_ASST_DEAN_STATUS));
 				dpsAsstDean.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_DPS_ASST_DEAN_STATUS)));
-
+				dpsAsstDean.setComments(rs.getString(Constants.CONST_COLMN_ROLE_DPS_ASST_DEAN_COMMENT));
+				
 				dpsDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_DPS_DEAN_STATUS));
 				dpsDean.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_DPS_DEAN_STATUS)));
-
+				dpsDean.setComments(rs.getString(Constants.CONST_COLMN_ROLE_DPS_DEAN_COMMENT));
 
 				gradeDto.setHod(hod);
 				gradeDto.setDpsAsstDean(dpsAsstDean);

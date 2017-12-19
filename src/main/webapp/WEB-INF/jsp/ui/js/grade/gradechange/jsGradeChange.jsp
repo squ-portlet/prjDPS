@@ -338,7 +338,53 @@
 				}
 			});
 		});
-	
+
+		
+		/* popover for HOD comments*/
+		$(document).on("click",".classPopMsgHOD",function(event){
+			event.preventDefault();
+			$('.classPopMsgHOD').popover({
+				html: true,
+				title: '<spring:message code="prop.dps.gradechange.popover.title.hod.message"/>',
+				placement: 'top',
+				container: 'body',
+				content : function()
+				{
+					return this.getAttribute("comments")
+				}
+			});
+		});
+		
+		/* popover for Assistant Dean PG comments*/
+		$(document).on("click",".classPopMsgAsstDeanP",function(event){
+			event.preventDefault();
+			$('.classPopMsgAsstDeanP').popover({
+				html: true,
+				title: '<spring:message code="prop.dps.gradechange.popover.title.asst.deanp.message"/>',
+				placement: 'top',
+				container: 'body',
+				content : function()
+				{
+					return this.getAttribute("comments")
+				}
+			});
+		});
+		
+		/* popover for Dean PG comments*/
+		$(document).on("click",".classPopMsgDeanP",function(event){
+			event.preventDefault();
+			$('.classPopMsgDeanP').popover({
+				html: true,
+				title: '<spring:message code="prop.dps.gradechange.popover.title.deanp.message"/>',
+				placement: 'top',
+				container: 'body',
+				content : function()
+				{
+					return this.getAttribute("comments")
+				}
+			});
+		});
+		
 	
 	
 		/* Load and display course data with grade for approver */

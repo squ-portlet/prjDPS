@@ -216,7 +216,7 @@
 		              WHERE
 		                    GRADECD = TGRADE.GRADECD_NEW
 		          )																AS		GRADE_VAL_NEW
-			  	, COMMENTS                                    					AS 		COMMENTS
+			  	, TGRADE.COMMENTS                                    					AS 		COMMENTS
 			  	, (
 		        	SELECT
 		        		L_ABR_CODE
@@ -252,8 +252,26 @@
 		                     :paramDeanPRoleName, 
 		                     :paramFormName,
 		                     TGRADE.REC_SEQ_NO
-		                     )                              					AS  	DPS_DEAN_STATUS   
-                     
+		                     )                              					AS  	DPS_DEAN_STATUS  
+		                      
+              , FUNC_APPROVER_COMMENT(
+		                     TGRADE.STDNO,
+		                     :paramHodRoleName, 
+		                     :paramFormName,
+		                     TGRADE.REC_SEQ_NO
+		                     )                              					AS  	HOD_COMMENT  
+		      , FUNC_APPROVER_COMMENT(
+		                     TGRADE.STDNO,
+		                     :paramADeanPRoleName, 
+		                     :paramFormName,
+		                     TGRADE.REC_SEQ_NO
+		                     )                              					AS  	DPS_ASST_DEAN_COMMENT  
+		      , FUNC_APPROVER_COMMENT(
+		                     TGRADE.STDNO,
+		                     :paramDeanPRoleName, 
+		                     :paramFormName,
+		                     TGRADE.REC_SEQ_NO
+		                     )                              					AS  	DPS_DEAN_COMMENT         
 		FROM
               T_STD_GRADES  		  TGRADE
 		      ,   V_STDINFO_PORTAL    VSP
@@ -496,7 +514,7 @@
 		              WHERE
 		                    GRADECD = T_GRADE.GRADECD_NEW
 		          )																AS		GRADE_VAL_NEW
-			  	, COMMENTS                                    					AS 		COMMENTS
+			  	, T_GRADE.COMMENTS                                    					AS 		COMMENTS
 			  	, (
 		        	SELECT
 		        		L_ABR_CODE
@@ -546,6 +564,24 @@
 		                     :paramFormName,
 		                     T_GRADE.REC_SEQ_NO
 		                     )                              					AS  	DPS_DEAN_STATUS 
+              , FUNC_APPROVER_COMMENT(
+		                     T_GRADE.STDNO,
+		                     :paramHodRoleName, 
+		                     :paramFormName,
+		                     T_GRADE.REC_SEQ_NO
+		                     )                              					AS  	HOD_COMMENT  
+		      , FUNC_APPROVER_COMMENT(
+		                     T_GRADE.STDNO,
+		                     :paramADeanPRoleName, 
+		                     :paramFormName,
+		                     T_GRADE.REC_SEQ_NO
+		                     )                              					AS  	DPS_ASST_DEAN_COMMENT  
+		      , FUNC_APPROVER_COMMENT(
+		                     T_GRADE.STDNO,
+		                     :paramDeanPRoleName, 
+		                     :paramFormName,
+		                     T_GRADE.REC_SEQ_NO
+		                     )                              					AS  	DPS_DEAN_COMMENT  		                     
 			      ,	FUNC_IS_APPROVER(
 							                  T_GRADE.STDNO
 							                , T_GRADE.STDSTATCD

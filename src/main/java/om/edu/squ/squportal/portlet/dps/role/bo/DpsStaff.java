@@ -41,6 +41,7 @@ public class DpsStaff
 {
 	private	String	access;
 	private	String	sequence;
+	
 	/**
 	 * Getter Method	: getAccess
 	 * @return the access

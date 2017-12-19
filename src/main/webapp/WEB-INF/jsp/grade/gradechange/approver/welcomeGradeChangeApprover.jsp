@@ -300,9 +300,32 @@
 								</a>
 						</td>
 						<td>{{statusDesc}}</td>
-						<td>{{{hod.roleStausIkon}}}</td>
-						<td>{{{dpsAsstDean.roleStausIkon}}}</td>
-						<td>{{{dpsDean.roleStausIkon}}}</td>
+						<td>
+								{{{hod.roleStausIkon}}}
+								
+								{{#if hod.comments}}
+										<a href="#" comments="{{hod.comments}}" class="classPopMsgHOD">
+											<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+										</a> 
+								{{/if}}
+						</td>
+						<td>
+								{{{dpsAsstDean.roleStausIkon}}}  
+								{{#if dpsAsstDean.comments}}
+										<a href="#" comments="{{dpsAsstDean.comments}}" class="classPopMsgAsstDeanP">
+											<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+										</a> 
+								{{/if}}
+
+						</td>
+						<td>
+								{{{dpsDean.roleStausIkon}}}  
+								{{#if dpsDean.comments}}
+										<a href="#" comments="{{dpsDean.comments}}" class="classPopMsgDeanP">
+											<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+										</a> 
+								{{/if}}	
+						</td>
 					</tr>
 			{{/each}}
 		</tbody>
@@ -365,11 +388,45 @@
 						<td>{{course.lAbrCourseNo}}</td>
 						<td><center>{{sectionNo}}</center></td>
 						<td><center>{{grade.gradeValOld}}</center></td>
-						<td><center>{{grade.gradeValNew}}</center></td>
+						<td>
+							<center>
+										{{grade.gradeValNew}} &nbsp;
+									<a href="#" comments="{{comments}}" class="classPopMsgInstructor">
+										<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+									</a> 
+							</center>
+						</td>
 						<td><center>{{statusDesc}}</center></td>
-						<td><center>{{{hod.roleStausIkon}}}</center></td>
-						<td><center>{{{dpsAsstDean.roleStausIkon}}}</center></td>
-						<td><center>{{{dpsDean.roleStausIkon}}}</center></td>
+						<td>
+							<center>
+								{{{hod.roleStausIkon}}} &nbsp;
+								{{#if hod.comments}}
+										<a href="#" comments="{{hod.comments}}" class="classPopMsgHOD">
+											<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+										</a> 
+								{{/if}}
+							</center>
+						</td>
+						<td>
+							<center>
+								{{{dpsAsstDean.roleStausIkon}}} &nbsp;
+								{{#if dpsAsstDean.comments}}
+										<a href="#" comments="{{dpsAsstDean.comments}}" class="classPopMsgAsstDeanP">
+											<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+										</a> 
+								{{/if}}
+							</center>
+						</td>
+						<td>
+							<center>
+								{{{dpsDean.roleStausIkon}}} &nbsp;
+								{{#if dpsDean.comments}}
+										<a href="#" comments="{{dpsDean.comments}}" class="classPopMsgDeanP">
+											<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+										</a> 
+								{{/if}}	
+							</center>
+						</td>
 						<td>
 						{{#if approver}}
 									<div class="col-xs-4"><label><input type="radio" studentNo="{{encryptStr studentNo}}" stdStatCode="{{encryptStr stdStatCode}}" recno="{{encryptStr recordSequence}}" sectCode="{{encryptStr sectCode}}" courseNo="{{encryptStr course.courseNo}}" lAbrCourseNo2="{{encryptStr course.lAbrCourseNo}}"  sectionNo="{{encryptStr sectionNo}}"  courseYear2="{{encryptStr courseYear}}" semester="{{encryptStr semester}}" roleName="{{../roleName}}" class ="clsAppAction" name="appAction" id="appRadio1" value="${appApprove}" data-toggle="modal" data-target="#modalApprovForm"><spring:message code="prop.dps.role.approve.text"/></label> </div> 
