@@ -390,6 +390,9 @@
 		/* Load and display course data with grade for approver */
 		$(document).on("click", ".clsLinkStudentGrades", function(event){
 			var roleType	=	this.getAttribute("roleType");
+			var studentId	=	this.getAttribute("studentId");
+			var studentName	=	this.getAttribute("studentName");
+			
 			var gradeChangeModel = {
 					studentNo		:	this.getAttribute("studentNo"),
 					stdStatCode		:	this.getAttribute("stdstatcode"), 
@@ -406,7 +409,7 @@
 				success		:	function(data)
 				{
 							var	courseGrade	=	JSON.parse(data);
-							var courseGradeJson = {'courseGrade':courseGrade, 'roleName': roleType};
+							var courseGradeJson = {'courseGrade':courseGrade, 'roleName': roleType, 'studentId':studentId,'studentName':studentName};
 							hbDataLoadAction(courseGradeJson, '#hbStudentGradesForApprove', '#divStudentGradesForApprove');
 							var tablGradeChangeHistory02 = $('#tblGradeChangeHistory02').DataTable({
 								 select: true,
