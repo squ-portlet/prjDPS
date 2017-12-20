@@ -438,7 +438,7 @@
 			              WHERE
 			                   STDNO = T_GRADE.STDNO
 			            )                                     					AS 		DATE_WATCH
-	          ,		FUNC_IS_APPROVER(
+	          ,		NVL(FUNC_IS_APPROVER(
 								                  T_GRADE.STDNO
 								                , T_GRADE.STDSTATCD
 								                , :paramFormName
@@ -454,7 +454,7 @@
 				                                          AND SECTCD 	=	T_GRADE.SECTCD
 				                                	) 
 	                              
-	                            	)											AS 		IS_APPROVER			            
+	                            	),'N')										AS 		IS_APPROVER			            
 		FROM
 				  T_STD_GRADES 	T_GRADE
 				, V_STDINFO_PORTAL  PORTAL
@@ -610,14 +610,14 @@
 		                     :paramFormName,
 		                     T_GRADE.REC_SEQ_NO
 		                     )                              					AS  	DPS_DEAN_COMMENT  		                     
-			      ,	FUNC_IS_APPROVER(
+			   , NVL(FUNC_IS_APPROVER(
 							                  T_GRADE.STDNO
 							                , T_GRADE.STDSTATCD
 							                , :paramFormName
 							                , :paramRoleName
 							                , :paramEmpNo
 							                , T_GRADE.REC_SEQ_NO
-			                          )						 					AS		IS_APPROVER	           
+			                          ),'N')				 					AS		IS_APPROVER	           
 		FROM
 				  T_STD_GRADES 	T_GRADE
 				, V_STDINFO_PORTAL  PORTAL
