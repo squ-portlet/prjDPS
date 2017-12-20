@@ -69,37 +69,7 @@
 				 		
 				 </table>
 
-<!-- 				
-					<form id="modelGrade" name="modelGrade" method="post" >
-						<div class="form-group">
-							<label for="studentId"><spring:message code="prop.dps.gradechange.student.id"/></label>	
-							<input type="text" class="form-control" id="studentId" placeholder="Enter Student Id">		
-						</div>
-						<div class="form-group">
-							<label for="courseYear"><spring:message code="prop.dps.gradechange.course.year"/></label>	
-							<input type="text" class="form-control" id="courseYear" placeholder="Enter Year of the Course">		
-						</div>
-						<div class="form-group">
-							<label for="semCode"><spring:message code="prop.dps.gradechange.semCode"/></label>	
-							<select id="semCode">
-								<option value=''><spring:message code="prop.dps.gradechange.select"/></option>
-								<option value='<spring:message code="prop.dps.gradechange.semCode.02"/>' ><spring:message code="prop.dps.gradechange.semCode.02.spring"/></option>
-								<option value='<spring:message code="prop.dps.gradechange.semCode.03"/>' > <spring:message code="prop.dps.gradechange.semCode.03.summer"/> </option>
-								<option value='<spring:message code="prop.dps.gradechange.semCode.04"/>' > <spring:message code="prop.dps.gradechange.semCode.04.fall"/> </option>
-								
-							</select>		
-						</div>
-						<div class="form-group">
-							<label for="lAbrCrsNo"><spring:message code="prop.dps.gradechange.course.code"/></label>	
-							<input type="text" class="form-control" id="lAbrCrsNo" placeholder="Enter CourseNo">		
-						</div>
-						<div>
-							<button type="button" id="bttnGradeSearch" class="btn btn-default" ">
-		  						<span class="glyphicon glyphicon-search" aria-hidden="true"></span> <spring:message code="prop.dps.gradechange.button.search"/>
-							</button>
-						</div>
-					</form>
--->				
+		
 					
 				</div>
 			</div>
@@ -354,7 +324,13 @@
 		<tbody>
 		{{#each students}}
 			<tr>
-				<td><a class="clsLinkStudentGrades" href="#" roleType="{{encryptStr ../roleType}}"  studentNo="{{encryptStr academicDetail.studentNo}}" stdStatCode="{{encryptStr academicDetail.stdStatCode}}" studentId="{{academicDetail.id}}" studentName="{{academicDetail.studentName}}">{{academicDetail.id}}</a></td>
+				<td>
+					<a class="clsLinkStudentGrades" href="#" roleType="{{encryptStr ../roleType}}"  studentNo="{{encryptStr academicDetail.studentNo}}" stdStatCode="{{encryptStr academicDetail.stdStatCode}}" studentId="{{academicDetail.id}}" studentName="{{academicDetail.studentName}}">{{academicDetail.id}}</a>
+					&nbsp; 
+					{{#if academicDetail.recordApprove}}
+						<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+					{{/if}}		
+				</td>
 				<td>{{academicDetail.studentName}}</td>
 				<td>{{academicDetail.cohort}}</td>
 				<td>{{academicDetail.college}}</td>
@@ -366,6 +342,15 @@
 </script>
 
 <script id="hbStudentGradesForApprove" type="text/x-handlebars-template">
+		<div>
+				<ol class="breadcrumb">
+					<li>
+							<center>
+									<span class="glyphicon glyphicon-education" aria-hidden="true"></span>  {{studentName}} <span class="badge"> {{studentId}} </span>
+							</center>
+					</li>
+				</ol>
+		</div>
 		<table id="tblGradeChangeHistory02" class="table table-striped table-bordered dt-responsive  collapsed ">
 				<thead>
 				<tr>
@@ -384,7 +369,10 @@
 				<tbody>
 			{{#each courseGrade}}
 					<tr>
-						<td>{{recordSequence}}</td>
+						<td>
+								{{recordSequence}} &nbsp; 
+							{{#if approver}}<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>{{/if}}
+						</td>
 						<td>{{course.lAbrCourseNo}}</td>
 						<td><center>{{sectionNo}}</center></td>
 						<td><center>{{grade.gradeValOld}}</center></td>

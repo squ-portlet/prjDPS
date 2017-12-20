@@ -402,6 +402,14 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 				academicDetail.setCollege(rs.getString(Constants.CONST_COLMN_COLLEGE_NAME));
 				academicDetail.setDegree(rs.getString(Constants.CONST_COLMN_DEGREE_NAME));
 				academicDetail.setCohort(rs.getInt(Constants.CONST_COLMN_COHORT));
+				if(rs.getString(Constants.CONST_COLMN_ROLE_IS_APPROVER).equals(Constants.CONST_YES))
+				{
+					academicDetail.setRecordApprove(true);
+				}
+				else
+				{
+					academicDetail.setRecordApprove(false);
+				}
 				
 				student.setAcademicDetail(academicDetail);
 				
@@ -415,6 +423,9 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 		namedParameterMap.put("paramAdvisor", null);
 		namedParameterMap.put("paramDeptCode", null);
 		namedParameterMap.put("paramColCode", null);
+		namedParameterMap.put("paramFormName", Constants.CONST_FORM_NAME_DPS_GRADE_CHANGE);
+		namedParameterMap.put("paramRoleName", roleType);
+		namedParameterMap.put("paramEmpNo", employee.getEmpNumber());
 
 		switch (roleType)
 		{
@@ -433,7 +444,6 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 			default:
 				break;
 		}
-		
 		
 		 return nPJdbcTemplDpsGradeChange.query(SQL_GRADE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE, namedParameterMap, rowMapper);
 	}

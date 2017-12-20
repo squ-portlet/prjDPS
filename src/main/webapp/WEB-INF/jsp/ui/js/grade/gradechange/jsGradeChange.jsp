@@ -61,6 +61,7 @@
 				hbDataLoadAction(studentsJson, '#hbGradeStudentsList', '#divGradeStudentsList');
 				
 				var tablApprover = $('#tblApprover').DataTable({
+					"order": [],
 					 select: true,
 					 "sDom":  '<f><t><"col-sm-5"i><"col-sm-12"p><"clearfix">'
 				 });
