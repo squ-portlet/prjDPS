@@ -94,10 +94,11 @@ BEGIN
                             ORDER BY APP_M.APPROVAL_SEQUENCE; 
                       BEGIN
                         OPEN CUR_APP;
-                        FETCH CUR_APP INTO CNT_STD, APP_STATUS,APP_SEQ ;
-                        IF CUR_APP%FOUND THEN
                         LOOP
-                          
+                          EXIT WHEN CUR_APP%NOTFOUND;
+                              IF (APP_SEQ >= SEQ_NO ) THEN
+                                EXIT;
+                              END IF;
                           FETCH CUR_APP INTO CNT_STD, APP_STATUS,APP_SEQ ;
                               IF (((SEQ_NO - 1) = APP_SEQ) AND APP_STATUS = 'ACCPT') THEN
                                   IS_LINK_AVL := 'Y';
@@ -107,11 +108,8 @@ BEGIN
                                   IS_LINK_AVL := 'N';
                                   EXIT;
                               END IF;
-                              IF (APP_SEQ >= SEQ_NO ) THEN
-                                EXIT;
-                              END IF;
+
                         END LOOP;
-                        END IF;
                         CLOSE CUR_APP;
                       END;
                     END IF;
