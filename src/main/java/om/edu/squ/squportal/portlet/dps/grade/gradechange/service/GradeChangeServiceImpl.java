@@ -127,7 +127,7 @@ public class GradeChangeServiceImpl implements GradeChangeService
 	 */
 	public List<Grade> getGrades(Locale locale)
 	{
-		return gradeChangeDBDao.getGrades(locale);
+		return gradeChangeDBDao.getGrades(null, locale);
 	}
 	
 	/**

@@ -171,18 +171,29 @@
        ]]>
 	</entry>
 	<entry key="dps.grades.select.grade.values">
-		SELECT
-		          GV.GRADECD                          							AS  	GRADE_CODE
-		       ,  DECODE
-		                (
-		                  :paramLocale
-		                  , 'ar', GV.A_ABR_GVAL
-		                  , GV.L_ABR_GVAL
-		                )                             							AS  	GRADE_VAL
-		FROM  
-		      GRADE_VAL GV
-		
-		ORDER BY GRADE_VAL	
+			SELECT  
+					DISTINCT
+			         SC.L_ABR_CODE
+			         ,  GV.GRADECD                            					AS  GRADE_CODE
+			         ,  DECODE(
+			                      :paramLocale
+			                    , 'ar', GV.A_ABR_GVAL
+			                    , GV.L_ABR_GVAL
+					         )                             						AS  GRADE_VAL
+			
+			 FROM    CRS_ATTRIBUTES CA,
+			         CRS_BASIC      CB,
+			         GRADE_VAL_RANGE GVR,
+			         GRADE_VAL GV,
+			         SIS_CODES SC
+			 WHERE CA.CRSGRDMTDCD = GVR.CRSGRDMTDCD
+			 AND   CA.CRSGRDMTDCD = SC.SISCODECD
+			 AND   GVR.GRADECD    = GV.GRADECD
+			 AND   CB.CRSNO       = CA.CRSNO
+			 AND   CB.L_ABR_CRSNO = :paramLAbrCrsNo   
+			 
+			 ORDER BY GRADE_VAL
+ 	
 	</entry>
 	<entry key="dps.grades.select.grade.change.history">
 

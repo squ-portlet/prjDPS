@@ -214,9 +214,9 @@
 									<div class="col-sm-2" id="divGradeValNew">
 										<select class="gradeValNew btn input-xs" id="selectGradeValNew" name="selectGradeValNew"  style="width:auto" required >
 											<option value=""><spring:message code="prop.dps.gradechange.select"/><option>
-											<c:forEach items="${grades}" var="grade">
-												<option value="${grade.gradeCode}">${grade.gradeVal}</option>
-											</c:forEach>
+											{{#each grades}}
+												<option value="{{gradeCode}}">{{gradeVal}}</option>
+											{{/each}}
 										</select>						
 									</div>
 							</div>

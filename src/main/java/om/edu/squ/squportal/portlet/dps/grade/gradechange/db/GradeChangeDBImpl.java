@@ -121,7 +121,7 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 	 *
 	 * Date    		:	Nov 15, 2017 10:08:43 AM
 	 */
-	public List<GradeDTO>	getStudentGrades(boolean isRuleGradeChangeTimingFollowed, GradeDTO gradeDTO, String employeeNo, Locale locale) throws NoDBRecordException
+	public List<GradeDTO>	getStudentGrades(boolean isRuleGradeChangeTimingFollowed, GradeDTO gradeDTO, String employeeNo, final Locale locale) throws NoDBRecordException
 	{
 
 		String			SQL_GRADE_CHANGE_STUDENT_LIST_OF_EXISTING_GRADE	=	queryGradeChange.getProperty(Constants.CONST_SQL_GRADE_CHANGE_STUDENT_LIST_OF_EXISTING_GRADE);
@@ -136,6 +136,10 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 				GradeDTO	gradeDTO	=	new GradeDTO();
 				Course		course		=	new Course();
 				Grade		grade		=	new Grade();
+				List<Grade> grades		=	null;
+				
+				grades	=	getGrades(rs.getString(Constants.CONST_COLMN_L_ABR_CRSNO), locale);
+				gradeDTO.setGrades(grades);
 				
 				gradeDTO.setSectCode(rs.getString(Constants.CONST_COLMN_SECT_CODE));
 				course.setCourseNo(rs.getString(Constants.CONST_COLMN_COURSE_NO));
@@ -215,7 +219,7 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 	 *
 	 * Date    		:	Nov 19, 2017 1:44:54 PM
 	 */
-	public List<Grade> getGrades(Locale locale)
+	public List<Grade> getGrades(String lAbrCourseNo, Locale locale)
 	{
 		String	SQL_GRADE_VALUE_LIST		=	queryGradeChange.getProperty(Constants.CONST_SQL_GRADE_VALUE_LIST);
 		RowMapper<Grade> rowMapper			=	new RowMapper<Grade>()
@@ -233,6 +237,7 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 		
 		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
 		namedParameterMap.put("paramLocale", locale.getLanguage());
+		namedParameterMap.put("paramLAbrCrsNo", lAbrCourseNo);
 		
 		return nPJdbcTemplDpsGradeChange.query(SQL_GRADE_VALUE_LIST, namedParameterMap, rowMapper);
 	}
@@ -603,7 +608,15 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 		namedParameterMap.put("paramSem", gradeDTO.getSemester());
 		namedParameterMap.put("paramCourseLAbrCode", gradeDTO.getCourse().getlAbrCourseNo());
 		namedParameterMap.put("paramSeqNo", gradeDTO.getRecordSequence());
-		return nPJdbcTemplDpsGradeChange.update(SQL_GRADE_CHANGE_UPDATE_APPROVAL_TEMP, namedParameterMap);
+		try
+		{
+			return nPJdbcTemplDpsGradeChange.update(SQL_GRADE_CHANGE_UPDATE_APPROVAL_TEMP, namedParameterMap);
+		}
+		catch(UncategorizedSQLException exDB)
+		{
+			logger.error("Error in grade update. Details : "+exDB.getMessage());
+			return -1;
+		}
 	}
 	
 	/**

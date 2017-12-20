@@ -29,6 +29,8 @@
  */
 package om.edu.squ.squportal.portlet.dps.grade.gradechange.bo;
 
+import java.util.List;
+
 import om.edu.squ.squportal.portlet.dps.role.bo.DPSAsstDean;
 import om.edu.squ.squportal.portlet.dps.role.bo.DpsDean;
 import om.edu.squ.squportal.portlet.dps.role.bo.HOD;
@@ -51,6 +53,7 @@ public class GradeDTO
 	private		Course			course;
 	private		String			sectionNo;
 	private		Grade			grade;
+	private		List<Grade> 	grades;						//	List of allowed grade for a particular course
 	private		String			comments;
 	private		boolean			updatable;
 	private		boolean			changable;
@@ -294,6 +297,27 @@ public class GradeDTO
 	}
 	
 	
+	
+	/**
+	 * Getter Method	: getGrades
+	 * @return the grades
+	 * 
+	 * Date				: Dec 20, 2017
+	 */
+	public List<Grade> getGrades()
+	{
+		return this.grades;
+	}
+	/**
+	 * Setter method : setGrades
+	 * @param grades the grades to set
+	 * 
+	 * Date          : Dec 20, 2017 2:40:43 PM
+	 */
+	public void setGrades(List<Grade> grades)
+	{
+		this.grades = grades;
+	}
 	/**
 	 * Getter Method	: getComments
 	 * @return the comments
@@ -531,12 +555,12 @@ public class GradeDTO
 				+ this.courseYear + ", semester=" + this.semester
 				+ ", sectCode=" + this.sectCode + ", course=" + this.course
 				+ ", sectionNo=" + this.sectionNo + ", grade=" + this.grade
-				+ ", comments=" + this.comments + ", updatable="
-				+ this.updatable + ", changable=" + this.changable
-				+ ", statusCode=" + this.statusCode + ", statusDesc="
-				+ this.statusDesc + ", userName=" + this.userName
-				+ ", roleType=" + this.roleType + ", hod=" + this.hod
-				+ ", dpsAsstDean=" + this.dpsAsstDean + ", dpsDean="
+				+ ", grades=" + this.grades + ", comments=" + this.comments
+				+ ", updatable=" + this.updatable + ", changable="
+				+ this.changable + ", statusCode=" + this.statusCode
+				+ ", statusDesc=" + this.statusDesc + ", userName="
+				+ this.userName + ", roleType=" + this.roleType + ", hod="
+				+ this.hod + ", dpsAsstDean=" + this.dpsAsstDean + ", dpsDean="
 				+ this.dpsDean + ", approver=" + this.approver + "]";
 	}
 	

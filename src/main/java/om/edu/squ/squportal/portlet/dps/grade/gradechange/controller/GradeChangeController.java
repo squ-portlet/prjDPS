@@ -150,8 +150,6 @@ public class GradeChangeController
 		model.addAttribute("appRecect", Constants.CONST_SQL_STATUS_CODE_REJCT);
 		model.addAttribute("roleDpsStaff", Constants.CONST_SQL_ROLE_NAME_DPS_STAFF);
 		
-		model.addAttribute("grades", gradeChangeService.getGrades(locale));
-		
 		return "/grade/gradechange/approver/welcomeGradeChangeApprover";
 	}
 	
@@ -223,6 +221,7 @@ public class GradeChangeController
 		try
 		{
 			List<GradeDTO> 	gradeList		=	gradeChangeService.getStudentGrades(dpsServiceDao.getEmpNumber(request), locale, gradeChangeModel);	
+			
 			if( (null == gradeList) || gradeList.size()==0)
 			{
 				response.setProperty(ResourceResponse.HTTP_STATUS_CODE, Integer.toString(HttpServletResponse.SC_INTERNAL_SERVER_ERROR));

@@ -70,6 +70,7 @@ public interface GradeChangeDBDao
 	/**
 	 * 
 	 * method name  : getGrades
+	 * @param lAbrCourseNo TODO
 	 * @param locale
 	 * @return
 	 * GradeChangeDBImpl
@@ -79,7 +80,7 @@ public interface GradeChangeDBDao
 	 *
 	 * Date    		:	Nov 19, 2017 1:44:54 PM
 	 */
-	public List<Grade> getGrades(Locale locale);
+	public List<Grade> getGrades(String lAbrCourseNo, Locale locale);
 	
 	/**
 	 * 
