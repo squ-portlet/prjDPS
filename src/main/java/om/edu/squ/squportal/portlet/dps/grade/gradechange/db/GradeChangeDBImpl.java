@@ -443,12 +443,16 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 			case Constants.CONST_ROLE_NAME_HOD:
 				namedParameterMap.put("paramDeptCode", employee.getDepartment().getDeptCode());
 				break;
+			case Constants.CONST_ROLE_NAME_ASST_DEAN_P:
+				namedParameterMap.put("paramColCode", employee.getBranch().getBranchCode());
+				break;	
 			case Constants.CONST_ROLE_NAME_COL_DEAN:
 				namedParameterMap.put("paramColCode", employee.getBranch().getBranchCode());
 				break;	
 			default:
 				break;
 		}
+	
 		
 		 return nPJdbcTemplDpsGradeChange.query(SQL_GRADE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE, namedParameterMap, rowMapper);
 	}
@@ -561,6 +565,9 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 			case Constants.CONST_ROLE_NAME_HOD:
 				namedParameterMap.put("paramDeptCode", employee.getDepartment().getDeptCode());
 				break;
+			case Constants.CONST_ROLE_NAME_ASST_DEAN_P:
+				namedParameterMap.put("paramColCode", employee.getBranch().getBranchCode());
+				break;				
 			case Constants.CONST_ROLE_NAME_COL_DEAN:
 				namedParameterMap.put("paramColCode", employee.getBranch().getBranchCode());
 				break;	

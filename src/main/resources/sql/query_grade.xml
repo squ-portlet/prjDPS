@@ -478,7 +478,7 @@
 		
 		          AND 
 		              ( 
-		                      :paramColCode = COL.COLCENCD		 		--  College DEAN/ ASST DEAN
+		                      :paramColCode = SECT.COLCENCD		 		--  College DEAN/ ASST DEAN
 		                  OR  :paramColCode IS NULL               		-- 	DPS DEAN / DPS STAFF
 		              )
                        
@@ -641,7 +641,7 @@
 		
 		          AND 
 		              ( 
-		                      :paramColCode = COL.COLCENCD		 		--  College DEAN/ ASST DEAN
+		                      :paramColCode = SECT.COLCENCD		 		--  College DEAN/ ASST DEAN
 		                  OR  :paramColCode IS NULL               		-- 	DPS DEAN / DPS STAFF
 		              )
                        
