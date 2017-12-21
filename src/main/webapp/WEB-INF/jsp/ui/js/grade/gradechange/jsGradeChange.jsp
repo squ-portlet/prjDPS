@@ -47,6 +47,7 @@
 		
 		$('#idDivInstructor').hide();
 		$('#divStudentGradesForApprove').html('');
+		$('#divGradeStudentsList').html('');
 		
 
 		$.ajax({
@@ -57,14 +58,27 @@
 			success	:	function(data)
 			{
 				var students=JSON.parse(data);
-				var studentsJson={'students':students,'roleType':'${myRole.roleName}'};
-				hbDataLoadAction(studentsJson, '#hbGradeStudentsList', '#divGradeStudentsList');
+				if($.trim(students))
+					{
+						var studentsJson={'students':students,'roleType':'${myRole.roleName}'};
+						hbDataLoadAction(studentsJson, '#hbGradeStudentsList', '#divGradeStudentsList');
+						
+						var tablApprover = $('#tblApprover').DataTable({
+							"order": [],
+							 select: true,
+							 "sDom":  '<f><t><"col-sm-5"i><"col-sm-12"p><"clearfix">'
+						 });
+					}
+				else
+					{
+					
+					var htmlMsg='<div class="alert alert-warning" role="alert"> \
+					  				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> \
+					  				<spring:message code="prop.dps.gradechange.error.valid.students.required"/> \
+								</div>';
 				
-				var tablApprover = $('#tblApprover').DataTable({
-					"order": [],
-					 select: true,
-					 "sDom":  '<f><t><"col-sm-5"i><"col-sm-12"p><"clearfix">'
-				 });
+						$('#divGradeStudentsList').html(htmlMsg);
+					}
 			},
 			error	:	function(xhr, status)
 			{

@@ -58,30 +58,35 @@
 	<div class="row">
 		
 		<div class="col-sm-2">
-			<div class="panel panel-default">
-				<div class="panel-body">
-
-				 <table class="table table-condensed dt-responsive collapsed ">
-				 		<thead>
-				 			<tr>
-				 				<th><spring:message code="prop.dps.gradechange.course.name"/></th>
-				 			</tr>
-				 		</thead>
-				 				 <c:forEach items="${courseList}" var="course">
-				 				 	<tr>	
-				 				 		<td><a href="#" class="clsLinkCourseNo" lAbrCourseNo='${course.course.lAbrCourseNo}' sectionNo='${course.sectionNo}'>${course.course.lAbrCourseNo}/${course.sectionNo}</a></td>
-				 				 	</tr>
-				 				 </c:forEach>
-				 		<tbody>
-				 		
-				 		</tbody>
-				 		
-				 </table>
-
-		
-					
+		<c:choose>
+			<c:when test="${not empty courseList}">			
+				<div class="panel panel-default">
+					<div class="panel-body">
+							 <table class="table table-condensed dt-responsive collapsed ">
+							 		<thead>
+							 			<tr>
+							 				<th><spring:message code="prop.dps.gradechange.course.name"/></th>
+							 			</tr>
+							 		</thead>
+							 		<tbody>
+							 				 <c:forEach items="${courseList}" var="course">
+							 				 	<tr>	
+							 				 		<td><a href="#" class="clsLinkCourseNo" lAbrCourseNo='${course.course.lAbrCourseNo}' sectionNo='${course.sectionNo}'>${course.course.lAbrCourseNo}/${course.sectionNo}</a></td>
+							 				 	</tr>
+							 				 </c:forEach>
+							 		</tbody>
+							 </table>
+					</div>
 				</div>
-			</div>
+			</c:when>
+		 	<c:otherwise>
+				 <div class="alert alert-warning" role="alert">
+		  			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+		  			&nbsp;
+		  			<spring:message code="prop.dps.gradechange.error.valid.course.required"/>
+				</div>
+			 </c:otherwise>
+		</c:choose>			
 		</div>
 		
 		<div class="col-sm-4 container-fluid">
@@ -257,8 +262,6 @@
 		<table id="tblGradeChangeHistory" class="table table-striped table-bordered dt-responsive  collapsed ">
 		<thead>
 				<tr>
-					<th><spring:message code="prop.dps.gradechange.course.code"/></th>
-					<th><spring:message code="prop.dps.gradechange.section"/></th>
 					<th><spring:message code="prop.dps.gradechange.grade.code.existing"/></th>
 					<th><spring:message code="prop.dps.gradechange.grade.code.new"/></th>
 					<th><spring:message code="prop.dps.gradechange.status"/></th>
@@ -270,8 +273,6 @@
 		<tbody>
 			{{#each .}}
 					<tr>
-						<td>{{course.lAbrCourseNo}}</td>
-						<td>{{sectionNo}}</center></td>
 						<td>{{grade.gradeValOld}}</td>
 						<td>{{grade.gradeValNew}}
 								<a href="#" comments="{{comments}}" class="classPopMsgInstructor">
