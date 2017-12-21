@@ -11,6 +11,15 @@
 
 
 <c:set var="varRoleName"/>
+
+	<c:if test="${not empSISValid}">
+		<div class="alert alert-warning" role="alert">
+  			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  			&nbsp;
+  			<spring:message code="prop.dps.gradechange.error.valid.employee.required"/>
+		</div>
+	</c:if>
+
 	<ul class="nav nav-tabs">
 		
 		<c:if test="${(not empty employee) }">
@@ -44,7 +53,7 @@
 	</div>
 </c:if>	
 
-<c:if test="${varRoleName ne roleDpsStaff }">
+<c:if test="${(not empty employee) && varRoleName ne roleDpsStaff }">
 <div id="idDivInstructor" class="section container-fluid">
 	<div class="row">
 		

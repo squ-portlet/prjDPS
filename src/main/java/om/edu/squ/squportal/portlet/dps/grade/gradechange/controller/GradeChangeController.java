@@ -137,19 +137,28 @@ public class GradeChangeController
 		{
 			logger.error("No records available. Probably user doesnot logged in ");
 		}
-		
+
 		boolean booRule = gradeChangeService.isRuleComplete();
-		if(employee.getEmpNumber().substring(0,1).equals("e"))
+		
+		if(null == employee)
 		{
-			employeeNumber	=	employee.getEmpNumber().substring(1);
+			model.addAttribute("empSISValid", false);
 		}
-		
-		model.addAttribute("courseList", gradeChangeService.getCourseList(employeeNumber, locale));
-		model.addAttribute("employee", employee);
-		model.addAttribute("appApprove", Constants.CONST_SQL_STATUS_CODE_ACCPT);
-		model.addAttribute("appRecect", Constants.CONST_SQL_STATUS_CODE_REJCT);
-		model.addAttribute("roleDpsStaff", Constants.CONST_SQL_ROLE_NAME_DPS_STAFF);
-		
+		else
+		{
+			model.addAttribute("empSISValid", true);
+			
+			if(employee.getEmpNumber().substring(0,1).equals("e"))
+			{
+				employeeNumber	=	employee.getEmpNumber().substring(1);
+			}
+			
+			model.addAttribute("courseList", gradeChangeService.getCourseList(employeeNumber, locale));
+			model.addAttribute("employee", employee);
+			model.addAttribute("appApprove", Constants.CONST_SQL_STATUS_CODE_ACCPT);
+			model.addAttribute("appRecect", Constants.CONST_SQL_STATUS_CODE_REJCT);
+			model.addAttribute("roleDpsStaff", Constants.CONST_SQL_ROLE_NAME_DPS_STAFF);
+		}
 		return "/grade/gradechange/approver/welcomeGradeChangeApprover";
 	}
 	
