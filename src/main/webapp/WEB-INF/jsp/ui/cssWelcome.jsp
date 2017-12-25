@@ -64,6 +64,10 @@
 <c:url value="${urlCdn}/handlebars/4.0.5/handlebars-v4.0.5.js" var="urlJsHandleBars"/>
 <%-- <c:url value="${urlCdn}/handlebars/4.0.5/handlebars.runtime-v4.0.5.js" var="urlJsHandleBarsRunTime"/> --%>
 
+<!-- ------------ cryptojs js declaration -->
+<c:url value="${urlCdn}/cryptojs/3.1.2/rollups/aes.js" var="urlCryptoJsAES"/>
+<c:url value="${urlCdn}/cryptojs/3.1.2/rollups/pbkdf2.js" var="urlCryptoJsPBKDF2"/>
+
 <!-- ******************** CSS implementation************************ --> 
 <c:if test="${rc.locale.language == 'en'}" > 
  <link rel="stylesheet" type="text/css" href="${urlCssBootstrap}" />
@@ -111,6 +115,10 @@
 <script type="text/javascript" src="${urlJsHandleBars}"></script>
 <script type="text/javascript" src="${urlJsHandleBarsRunTime}"></script>
 
+	<!-- ------------ cryptojs js implementation -->
+<script type="text/javascript" src="${urlCryptoJsAES}"></script>
+<script type="text/javascript" src="${urlCryptoJsPBKDF2}"></script>
+
 	 <c:if test="${rc.locale.language == 'en'}" >
 		 <c:set var="glphiconNext">
 		 	<span class="glyphicon glyphicon-triangle-right" aria-hidden="true" ></span>
@@ -139,6 +147,10 @@
 .aui .popover{
 	background-color: #434a54;
 }  
+
+.popover-content {
+    background-color: white;
+}
 
 /* Liferay modal form */
 .aui .modal {
@@ -179,6 +191,22 @@ background-color:transparent;
   max-width: @modal-lg;
 }
 
+
+.verticaltext {
+    transform: rotate(-90deg);
+    transform-origin: right, top;
+    -ms-transform: rotate(-90deg);
+    -ms-transform-origin:right, top;
+    -webkit-transform: rotate(-90deg);
+    -webkit-transform-origin:right, top;
+    position: absolute; 
+    color: #ed217c;
+}
+
+.input-xs, select.input-xs {
+  height: 20px;
+  line-height: 20px;
+}
 
 </style>
 
@@ -288,4 +316,57 @@ background-color:transparent;
 
 
 </script>
+<script>
+	/*
+	*	Initializing cryptojs in UI 
+	*/
 
+
+		var AesUtil = function(keySize, iterationCount) {
+			  this.keySize = keySize / 32;
+			  this.iterationCount = iterationCount;
+			};
+
+			AesUtil.prototype.generateKey = function(salt, passPhrase) {
+			  var key = CryptoJS.PBKDF2(
+			      passPhrase, 
+			      CryptoJS.enc.Hex.parse(salt),
+			      { keySize: this.keySize, iterations: this.iterationCount });
+			  return key;
+			};
+
+			AesUtil.prototype.encrypt = function(salt, iv, passPhrase, plainText) {
+			  var key = this.generateKey(salt, passPhrase);
+			  var encrypted = CryptoJS.AES.encrypt(
+			      plainText,
+			      key,
+			      { iv: CryptoJS.enc.Hex.parse(iv) });
+			  return encrypted.ciphertext.toString(CryptoJS.enc.Base64);
+			};
+
+			AesUtil.prototype.decrypt = function(salt, iv, passPhrase, cipherText) {
+			  var key = this.generateKey(salt, passPhrase);
+			  var cipherParams = CryptoJS.lib.CipherParams.create({
+			    ciphertext: CryptoJS.enc.Base64.parse(cipherText)
+			  });
+			  var decrypted = CryptoJS.AES.decrypt(
+			      cipherParams,
+			      key,
+			      { iv: CryptoJS.enc.Hex.parse(iv) });
+			  return decrypted.toString(CryptoJS.enc.Utf8);
+			};		
+	
+
+			/* ****** encryption - cryptojs - implementation in UI ****** */
+			var iterationCount = ${cryptoIterationCount};
+			var keySize = ${cryptoKeySize};
+			
+			var passphrase = '${cryptoPassPhrase}';
+
+			var four = CryptoJS.lib.WordArray.random(128/8).toString(CryptoJS.enc.Hex);
+			var salt = CryptoJS.lib.WordArray.random(128/8).toString(CryptoJS.enc.Hex);
+
+			var aesUtil = new AesUtil(keySize, iterationCount);
+			/* **************************** */			
+			
+</script>

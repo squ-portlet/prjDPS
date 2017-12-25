@@ -50,6 +50,7 @@ public interface Constants
 	
 	public static final	String	COST_COL_DPS_EMP_NO											=	"EMPNO";
 	public static final	String	COST_COL_DPS_USER_NAME										=	"USERNAME";
+	public static final	String	COST_COL_DPS_USER_ACCOUNT_CODE								=	"USER_ACCT_CD";					//	This code helps to identify the user (other user might prevent)
 	public static final	String	COST_COL_DPS_BRANCH_CODE									=	"BRANCH_CODE";
 	public static final	String	COST_COL_DPS_DEPT_CODE										=	"DEPT_CODE";
 	public static final	String	COST_COL_DPS_EMP_EMAIL										=	"EMP_EMAIL";
@@ -100,6 +101,10 @@ public interface Constants
 	public static final	String	CONST_COLMN_CREDITS											=	"CREDITS";
 	public static final	String	CONST_COLMN_TUTION_FEE										=	"TUTION_FEE";
 	public static final	String	CONST_COLMN_STUDENT_MODE									=	"STD_MODE";
+	public static final	String	CONST_COLMN_GRADE_CODE										=	"GRADE_CODE";
+	public static final	String	CONST_COLMN_GRADE_VAL										=	"GRADE_VAL";
+	public static final	String	CONST_COLMN_GRADE_VAL_OLD									=	"GRADE_VAL_OLD";
+	public static final	String	CONST_COLMN_GRADE_VAL_NEW									=	"GRADE_VAL_NEW";
 
 	public static final	String	CONST_COLMN_SISCODECD										=	"SISCODECD";
 	public static final	String	CONST_COLMN_STATUS_CODE										=	"STATUS_CODE";
@@ -121,6 +126,9 @@ public interface Constants
 	public static final	String	CONST_COLMN_POSTPONE_REASON_NAME							=	"POSTPONE_REASON_NAME";
 	public static final	String	CONST_COLMN_POSTPONE_OTHER_REASON							=	"POSTPONE_OTHER_REASON";
 	
+	public static final	String	CONST_COLMN_POSTPONE_GRADE_IS_UPDATABLE						=	"IS_UPDATABLE";
+	public static final	String	CONST_COLMN_IS_CHANGE_ALLOWED								=	"CHANGE_ALLOWED";
+	
 	public static final	String	CONST_COLMN_APPROVAL_CODE									=	"APPROVAL_CODE";
 	public static final	String	CONST_COLMN_APPROVER_ROLE_CODE								=	"APPROVER_ROLE_CODE";
 	public static final	String	CONST_COLMN_APPROVER_ROLE_NAME								=	"APPROVER_ROLE_NAME";
@@ -132,12 +140,24 @@ public interface Constants
 	public static final	String	CONST_COLMN_APPROVAL_CODE_DPS_DEAN							=	"DPS_DEAN_APPROVAL_CODE";
 	
 	
+	public static final	String	CONST_COLMN_ROLE_HOD_STATUS									=	"HOD_STATUS";
 	public static final	String	CONST_COLMN_ROLE_ADVISOR_STATUS								=	"ADVISOR_STATUS";
 	public static final	String	CONST_COLMN_ROLE_SUPERVISOR_STATUS							=	"SUPERVISOR_STATUS";
 	public static final	String	CONST_COLMN_ROLE_COLLEGE_DEAN_STATUS						=	"COLLEGE_DEAN_STATUS";
+	public static final	String	CONST_COLMN_ROLE_DPS_ASST_DEAN_STATUS						=	"DPS_ASST_DEAN_STATUS";
 	public static final	String	CONST_COLMN_ROLE_DPS_DEAN_STATUS							=	"DPS_DEAN_STATUS";
 	
+	public static final	String	CONST_COLMN_ROLE_HOD_COMMENT								=	"HOD_COMMENT";
+	public static final	String	CONST_COLMN_ROLE_ADVISOR_COMMENT							=	"ADVISOR_COMMENT";
+	public static final	String	CONST_COLMN_ROLE_SUPERVISOR_COMMENT							=	"SUPERVISOR_COMMENT";
+	public static final	String	CONST_COLMN_ROLE_COLLEGE_DEAN_COMMENT						=	"COLLEGE_DEAN_COMMENT";
+	public static final	String	CONST_COLMN_ROLE_DPS_ASST_DEAN_COMMENT						=	"DPS_ASST_DEAN_COMMENT";
+	public static final	String	CONST_COLMN_ROLE_DPS_DEAN_COMMENT							=	"DPS_DEAN_COMMENT";
+	
+	
 	public static final	String	CONST_COLMN_ROLE_IS_APPROVER								=	"IS_APPROVER";
+	
+	public static final	String	CONST_COLMN_SEQUENCE_NO										=	"SEQUENCE_NUMBER";
 	
 	public static final String	CONST_PARAM_NAME_STUDENT_NO									=	"paramStudentNo";
 	public static final String	CONST_PARAM_NAME_FORM_NAME									=	"paramFormName";
@@ -181,11 +201,14 @@ public interface Constants
 	public static final	String	CONST_SQL_ROLE_SUPERVISOR									=	"2012";   // SUPRVS
 	public static final	String	CONST_SQL_ROLE_COL_DEAN										=	"1883";	  // DEAN
 	public static final	String	CONST_SQL_ROLE_DPS_DEAN										=	"5548";
-*/	
+	
+*/	public static final	String	CONST_SQL_ROLE_NAME_HOD										=	"HOD"; 
 	public static final	String	CONST_SQL_ROLE_NAME_ADVISOR									=	"ADVISOR";
 	public static final	String	CONST_SQL_ROLE_NAME_SUPERVISOR								=	"SUPRVS";   
 	public static final	String	CONST_SQL_ROLE_NAME_COL_DEAN								=	"DEAN";	  
 	public static final	String	CONST_SQL_ROLE_NAME_DPS_DEAN								=	"DEANP";
+	public static final	String	CONST_SQL_ROLE_NAME_DPS_ASSISTANT_DEAN						=	"ADEANP"; 
+	public static final	String	CONST_SQL_ROLE_NAME_DPS_STAFF								=	"DPS"; 
 	
 	/******************************************************/
 	
@@ -193,8 +216,10 @@ public interface Constants
 //	public static final	String	CONST_FORM_DPS_EXTENSION_STUDY								=	"3413";
 
 	public static final	String	CONST_FORM_NAME_DPS_DROP_W									=	"DPS7";
+	public static final	String	CONST_FORM_NAME_DPS_GRADE_CHANGE							=	"DPS9"; 
 	public static final	String	CONST_FORM_NAME_DPS_POSTPONE_STUDY							=	"DPS13";
-	public static final	String	CONST_FORM_NAME_DPS_EXTENSION_STUDY							=	"DPS19";	
+	public static final	String	CONST_FORM_NAME_DPS_EXTENSION_STUDY							=	"DPS19";
+	
 	
 	/************* PROPERTY FILE ******************************/
 	public	static	String	RESOURCE_PROPERTY_FILE_NAME										=	"messages";
@@ -241,6 +266,20 @@ public interface Constants
 	public	static	final	String	CONST_SQL_POSTPONE_INSERT_STUDENT						=	"dps.postpone.insert.student";
 	public	static	final	String	CONST_SQL_POSTPONE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	"dps.postpone.select.student.records.by.employee";
 	public	static	final	String	CONST_SQL_POSTPONE_UPDATE_STATUS_STUDENT				=	"dps.postpone.update.status.student";
+	
+	/* ---  SQL - DPS - Grade Change property--------------------- */
+	public	static	final	String	CONST_SQL_GRADE_SELECT_COURSE_LIST						=	"dps.grades.select.course.list";
+	public	static	final	String	CONST_SQL_GRADE_SELECT_STUDENT_LIST						=	"dps.grades.select.student.list";
+	public	static	final	String	CONST_SQL_GRADE_CHANGE_STUDENT_LIST_OF_EXISTING_GRADE	=	"dps.grades.select.student.grades";
+	public	static	final	String	CONST_SQL_GRADE_VALUE_LIST								=	"dps.grades.select.grade.values";
+	public	static	final	String	CONST_SQL_GRADE_SELECT_HISORY							=	"dps.grades.select.grade.change.history";
+	public	static	final	String	CONST_SQL_GRADE_INSERT_APPLY_INSTRUCTOR					=	"dps.grades.insert.grade.apply.instructor";
+	public	static	final	String	CONST_SQL_GRADE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE		=	"dps.grades.select.student.records.by.employee";
+	public	static	final	String	CONST_SQL_GRADE_CHANGE_SELECT_COURSE_TEMP				=	"dps.grade.select.course.temp.for.grade.change";
+	public	static	final	String	CONST_SQL_GRADE_CHANGE_UPDATE_APPROVAL_TEMP				=	"dps.grades.update.grade.change.approval.by.approver";
+	public	static	final	String	CONST_SQL_GRADE_SELECT_RULE_TEST_CURRENT_YEAR_SEM		=	"dps.grades.select.rule.test.current.year.sem";
+	public	static	final	String	CONST_SQL_GRADE_SELECT_RULE_YEAR_SEM					=	"dps.grades.select.rule.grade.change.year.sem";
+	
 
 	/* ---  SQL - DPS - Drop With W -- Stored Procedure -- --------------------- */	
 	public	static	final	String	CONST_PROC_DROPW_WITHDRAW_COURSE						=	"PROC_WITHDRAW_COURSE";
@@ -272,6 +311,7 @@ public interface Constants
 	public	static	final	String	CONST_PROP_SQL_ROLE_IS_POST_GRAD_ASST_DEAN				=	"sql.role.is.college.post.graduate.asst.dean";
 	public	static	final	String	CONST_PROP_SQL_ROLE_IS_COLLEGE_DEAN						=	"sql.role.is.extension.col.dean";
 	public	static	final	String	CONST_PROP_SQL_ROLE_IS_DPS_DEAN							=	"sql.role.is.dps.dean";
+	public	static	final	String	CONST_PROP_SQL_ROLE_IS_DPS_ADMIN_STAFF					=	"sql.role.is.college.post.graduate.dps.admin.staff";
 	public	static	final	String	CONST_PROP_SQL_ROLE_APPROVAL_CODE						=	"sql.role.approval.code";
 	public	static	final	String	CONST_PROP_SQL_ROLE_STATUS_CODE							=	"sql.role.status.code";
 	
@@ -281,10 +321,11 @@ public interface Constants
 	public	static	final	String	CONST_ROLE_NAME_ADVISOR									=	"ADVISOR";
 	public	static	final	String	CONST_ROLE_NAME_SUPERVISOR								=	"SUPRVS";
 	public	static	final	String	CONST_ROLE_NAME_HOD										=	"HOD";
-	public	static	final	String	CONST_ROLE_NAME_ASST_DEAN								=	"ADEANP";
+	public	static	final	String	CONST_ROLE_NAME_ASST_DEAN_P								=	"ADEANP";
 	public	static	final	String	CONST_ROLE_NAME_COL_DEAN								=	"DEAN";
 	public	static	final	String	CONST_ROLE_NAME_DPS_DEAN								=	"DEANP";
 	public	static	final	String	CONST_ROLE_NAME_DPS_STAFF								=	"DPS";
+	public	static	final	String	CONST_ROLE_NAME_DPS_ADMIN_STAFF							=	"ADMINP";
 	
 	
 	public	static	final	String	CONST_THESIS_SEMINAR_SEMINAR_01							=	"SEM1";
@@ -316,7 +357,8 @@ public interface Constants
 	public	static	final	boolean	CONST_TEST_ENVIRONMENT									=	true;
 	public	static	final	String	CONST_EMAIL_FROM										=	"portal_feedback@squ.edu.om";
 	public	static	final	String	CONST_DUMMY_USER_EMAIL_TO								=	"bhabesh@squ.edu.om";
-	public	static	final	String	CONST_DUMMY_USER_SMS_TO									=	"-----"; //TODO Change to phone number only in development environment 
+
+	public	static	final	String	CONST_DUMMY_USER_SMS_TO									=	"----"; //TODO Change to phone number only in development environment 
 	
 	
 }

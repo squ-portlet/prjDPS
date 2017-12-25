@@ -1,4 +1,4 @@
-create or replace PROCEDURE SP_APPROVER_NEXT
+create or replace PROCEDURE            SP_APPROVER_NEXT
 (
   paramStudentNo IN VARCHAR2                      --  Student Number
 , paramFormName IN VARCHAR2                       --  DPS Form Name
@@ -71,7 +71,7 @@ BEGIN
     WHEN 'N' THEN
         BEGIN
           T_ROLE_ABBR := paramRoleName;
-          APP_EMP_NUM := FUNC_STUDENT_APPROVER(paramStudentNo,T_ROLE_ABBR);
+          APP_EMP_NUM := FUNC_STUDENT_APPROVER(paramStudentNo,T_ROLE_ABBR,paramFormName);
           paramApproverIsNext := 'N';
         END;
     WHEN 'Y' THEN

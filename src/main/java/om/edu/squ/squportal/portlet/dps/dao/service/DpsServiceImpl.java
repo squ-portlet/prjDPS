@@ -271,9 +271,9 @@ public class DpsServiceImpl implements DpsServiceDao
 		{
 						roleNameValues.add(new RoleNameValue(Constants.CONST_ROLE_NAME_HOD, UtilProperty.getMessage("prop.dps.role.hod.text", null, locale)));
 		}
-		if (employee.isCollegeAsstDean()) 
+		if (employee.isCollegeAsstDeanP()) 
 		{
-						roleNameValues.add(new RoleNameValue(Constants.CONST_ROLE_NAME_ASST_DEAN, UtilProperty.getMessage("prop.dps.role.asst.dean.text", null, locale)));
+						roleNameValues.add(new RoleNameValue(Constants.CONST_ROLE_NAME_ASST_DEAN_P, UtilProperty.getMessage("prop.dps.role.asst.dean.text", null, locale)));
 		}
 		if (employee.isCollegeDean()) 
 		{

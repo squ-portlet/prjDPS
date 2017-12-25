@@ -49,7 +49,7 @@ public class Employee
 	private	boolean				advisor;
 	private	boolean				supervisor;
 	private	boolean				hod;
-	private	boolean				collegeAsstDean;
+	private	boolean				collegeAsstDeanP;
 	private	boolean				collegeDean;
 	private	boolean				dpsDean;
 	private	boolean				dpsStaff;
@@ -60,7 +60,7 @@ public class Employee
 		this.advisor			=	employee.isAdvisor();
 		this.supervisor			=	employee.isSupervisor();
 		this.hod				=	employee.isHod();
-		this.collegeAsstDean	=	employee.isCollegeAsstDean();
+		this.collegeAsstDeanP	=	employee.isCollegeAsstDeanP();
 		this.collegeDean		=	employee.isCollegeDean();
 		this.dpsDean			=	employee.isDpsDean();
 		this.dpsStaff			=	employee.isDpsStaff();
@@ -278,25 +278,25 @@ public class Employee
 	}
 
 	/**
-	 * Getter Method	: isCollegeAsstDean
-	 * @return the collegeAsstDean
+	 * Getter Method	: isCollegeAsstDeanP
+	 * @return the collegeAsstDeanP
 	 * 
 	 * Date				: Feb 13, 2017
 	 */
-	public boolean isCollegeAsstDean()
+	public boolean isCollegeAsstDeanP()
 	{
-		return this.collegeAsstDean;
+		return this.collegeAsstDeanP;
 	}
 
 	/**
-	 * Setter method : setCollegeAsstDean
-	 * @param collegeAsstDean the collegeAsstDean to set
+	 * Setter method : setCollegeAsstDeanP
+	 * @param collegeAsstDeanP the collegeAsstDeanP to set
 	 * 
 	 * Date          : Feb 13, 2017 3:36:46 PM
 	 */
-	public void setCollegeAsstDean(boolean collegeAsstDean)
+	public void setCollegeAsstDeanP(boolean collegeAsstDeanP)
 	{
-		this.collegeAsstDean = collegeAsstDean;
+		this.collegeAsstDeanP = collegeAsstDeanP;
 	}
 
 	/**
@@ -375,7 +375,7 @@ public class Employee
 				+ this.userName + ", branch=" + this.branch + ", department="
 				+ this.department + ", email=" + this.email + ", advisor="
 				+ this.advisor + ", supervisor=" + this.supervisor + ", hod="
-				+ this.hod + ", collegeAsstDean=" + this.collegeAsstDean
+				+ this.hod + ", collegeAsstDeanP=" + this.collegeAsstDeanP
 				+ ", collegeDean=" + this.collegeDean + ", dpsDean="
 				+ this.dpsDean + ", dpsStaff=" + this.dpsStaff + "]";
 	}

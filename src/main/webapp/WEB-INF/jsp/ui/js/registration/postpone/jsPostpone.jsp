@@ -168,8 +168,6 @@ $(document).ajaxStop(function(){
 		
 		$('#linkSubmitApprove').click(function(event) {
 			
-			console.log("studentNo : "+ this.getAttribute("studentno"));
-			
 			if ($('#formModalApprover').valid()) {
 		    	var postponeDTO	= {
 		    			studentNo 		: $('#studentno').val(),

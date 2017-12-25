@@ -43,6 +43,7 @@ public class CollegeAsstDean
 	private	String	sequence;
 	private	String	rolecode;
 	private	String	approvalcode;
+	private	String	comments;
 	/**
 	 * Getter Method	: getAccess
 	 * @return the access
@@ -128,6 +129,27 @@ public class CollegeAsstDean
 	{
 		this.approvalcode = approvalcode;
 	}
+	
+	/**
+	 * Getter Method	: getComments
+	 * @return the comments
+	 * 
+	 * Date				: Dec 19, 2017
+	 */
+	public String getComments()
+	{
+		return this.comments;
+	}
+	/**
+	 * Setter method : setComments
+	 * @param comments the comments to set
+	 * 
+	 * Date          : Dec 19, 2017 10:39:45 AM
+	 */
+	public void setComments(String comments)
+	{
+		this.comments = comments;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -136,7 +158,8 @@ public class CollegeAsstDean
 	{
 		return "CollegeAsstDean [access=" + this.access + ", sequence="
 				+ this.sequence + ", rolecode=" + this.rolecode
-				+ ", approvalcode=" + this.approvalcode + "]";
+				+ ", approvalcode=" + this.approvalcode + ", comments="
+				+ this.comments + "]";
 	}
 
 

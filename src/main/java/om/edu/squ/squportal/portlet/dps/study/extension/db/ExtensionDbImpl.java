@@ -401,7 +401,7 @@ public class ExtensionDbImpl implements ExtensionDbDao
 			case Constants.CONST_ROLE_NAME_HOD:
 				namedParameterMap.put("paramDeptCode", employee.getDepartment().getDeptCode());
 				break;
-			case Constants.CONST_ROLE_NAME_ASST_DEAN:
+			case Constants.CONST_ROLE_NAME_ASST_DEAN_P:
 				namedParameterMap.put("paramColCode", employee.getBranch().getBranchCode());
 				break;
 			case Constants.CONST_ROLE_NAME_COL_DEAN:

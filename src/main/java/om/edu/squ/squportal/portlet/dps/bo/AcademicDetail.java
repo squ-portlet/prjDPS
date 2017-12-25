@@ -50,6 +50,7 @@ public class AcademicDetail
 	private	int		fromCCYrCode;						// Course Start year code
 	private	int		fromSemCode;						// Course Start semester
 	private	int		cohort;
+	private	boolean	recordApprove;
 	
 	/**
 	 * Getter Method	: getId
@@ -357,6 +358,27 @@ public class AcademicDetail
 	{
 		this.cohort = cohort;
 	}
+	
+	/**
+	 * Getter Method	: isRecordApprove
+	 * @return the recordApprove
+	 * 
+	 * Date				: Dec 19, 2017
+	 */
+	public boolean isRecordApprove()
+	{
+		return this.recordApprove;
+	}
+	/**
+	 * Setter method : setRecordApprove
+	 * @param recordApprove the recordApprove to set
+	 * 
+	 * Date          : Dec 19, 2017 4:44:58 PM
+	 */
+	public void setRecordApprove(boolean recordApprove)
+	{
+		this.recordApprove = recordApprove;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -372,7 +394,8 @@ public class AcademicDetail
 				+ this.stdStatCode + ", status=" + this.status
 				+ ", estimatedSemesters=" + this.estimatedSemesters
 				+ ", fromCCYrCode=" + this.fromCCYrCode + ", fromSemCode="
-				+ this.fromSemCode + ", cohort=" + this.cohort + "]";
+				+ this.fromSemCode + ", cohort=" + this.cohort
+				+ ", recordApprove=" + this.recordApprove + "]";
 	}
 
 	

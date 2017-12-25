@@ -2,6 +2,7 @@ create or replace FUNCTION FUNC_STUDENT_APPROVER
 (
   paramStudentNo IN VARCHAR2 
 , ParamRoleName IN VARCHAR2 
+, paramFormName IN VARCHAR2 DEFAULT NULL
 ) RETURN VARCHAR2 AS 
 /*
   Function Name : FUNC_STUDENT_APPROVER
@@ -10,6 +11,7 @@ create or replace FUNCTION FUNC_STUDENT_APPROVER
 
   Author : Bhabesh
   Create Date : 21-February-2017
+  Modify Date : 13-December-2017 -- Adding HOD and ADEANP role
 */
 APP_EMP_NUM   VARCHAR2(10);
 BEGIN
@@ -67,6 +69,57 @@ BEGIN
                 )
                 WHERE
                       ROWNUM = 1;
+                      
+       WHEN 'HOD' THEN
+                      SELECT USERNAME
+                         INTO APP_EMP_NUM
+                         FROM 
+                         (
+                              SELECT 
+                                      LTRIM(USERS.USERNAME,'e') AS USERNAME
+                                FROM    
+                                      SIS_USERS           USERS
+                                      , SIS_CODES         CODES
+                                      , V_STDINFO_PORTAL  PORTAL
+                                      , COL_CEN           COLCEN
+                                WHERE
+                                          USERS.USERCATEGORY = CODES.SISCODECD
+                                     AND  CODES.L_ABR_CODE LIKE 'HOD' 
+                                     AND USERS.STATUSACTIVE='Y'
+                                     AND  COLCEN.L_ABR_CC = PORTAL.COLLEGE_CODE
+                                     AND  COLCEN.COLCENCD = USERS.COLCENCD
+                                     AND  USERS.DEPTNO    =FUNC_RECENT_COURSE_DEPARTMENT (paramStudentNo,paramFormName,ParamRoleName)
+                                     AND  PORTAL.STDNO = paramStudentNo
+                                     
+                                     ORDER BY UPDTDTE DESC
+                          )
+                          WHERE
+                                ROWNUM = 1;                 
+
+       WHEN 'ADEANP' THEN
+               SELECT USERNAME
+               INTO APP_EMP_NUM
+               FROM 
+               (
+                      SELECT 
+                            LTRIM(USERS.USERNAME,'e') AS USERNAME
+                      FROM    
+                            SIS_USERS           USERS
+                            , SIS_CODES         CODES
+                            , V_STDINFO_PORTAL  PORTAL
+                            , COL_CEN           COLCEN
+                      WHERE
+                                USERS.USERCATEGORY = CODES.SISCODECD
+                           AND  CODES.L_ABR_CODE LIKE 'ADEANP' 
+                           AND USERS.STATUSACTIVE='Y'
+                           AND  COLCEN.L_ABR_CC = PORTAL.COLLEGE_CODE
+                           AND  COLCEN.COLCENCD = USERS.COLCENCD
+                           AND  PORTAL.STDNO = paramStudentNo
+ 
+                           ORDER BY UPDTDTE DESC
+                ) 
+                WHERE
+                      ROWNUM = 1;                                                
  
        WHEN 'DEANP' THEN
                       SELECT 

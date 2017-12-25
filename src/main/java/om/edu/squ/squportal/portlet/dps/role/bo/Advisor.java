@@ -45,6 +45,7 @@ public class Advisor
 	private	String	approvalcode;
 	private	String	roleStatus;
 	private	String	roleStausIkon;
+	private	String	comments;
 	
 	/**
 	 * Getter Method	: getAccess
@@ -172,6 +173,27 @@ public class Advisor
 	{
 		this.roleStausIkon = roleStausIkon;
 	}
+	
+	/**
+	 * Getter Method	: getComments
+	 * @return the comments
+	 * 
+	 * Date				: Dec 19, 2017
+	 */
+	public String getComments()
+	{
+		return this.comments;
+	}
+	/**
+	 * Setter method : setComments
+	 * @param comments the comments to set
+	 * 
+	 * Date          : Dec 19, 2017 10:46:01 AM
+	 */
+	public void setComments(String comments)
+	{
+		this.comments = comments;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -181,7 +203,8 @@ public class Advisor
 		return "Advisor [access=" + this.access + ", sequence=" + this.sequence
 				+ ", rolecode=" + this.rolecode + ", approvalcode="
 				+ this.approvalcode + ", roleStatus=" + this.roleStatus
-				+ ", roleStausIkon=" + this.roleStausIkon + "]";
+				+ ", roleStausIkon=" + this.roleStausIkon + ", comments="
+				+ this.comments + "]";
 	}
 	
 	

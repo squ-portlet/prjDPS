@@ -43,6 +43,10 @@ public class HOD
 	private	String	sequence;
 	private	String	rolecode;
 	private	String	approvalcode;
+	private	String	roleStatus;
+	private	String	roleStausIkon;	
+	private	String	comments;
+	
 	/**
 	 * Getter Method	: getAccess
 	 * @return the access
@@ -128,6 +132,68 @@ public class HOD
 	{
 		this.approvalcode = approvalcode;
 	}
+	
+	/**
+	 * Getter Method	: getRoleStatus
+	 * @return the roleStatus
+	 * 
+	 * Date				: Nov 22, 2017
+	 */
+	public String getRoleStatus()
+	{
+		return this.roleStatus;
+	}
+	/**
+	 * Setter method : setRoleStatus
+	 * @param roleStatus the roleStatus to set
+	 * 
+	 * Date          : Nov 22, 2017 2:35:29 PM
+	 */
+	public void setRoleStatus(String roleStatus)
+	{
+		this.roleStatus = roleStatus;
+	}
+	/**
+	 * Getter Method	: getRoleStausIkon
+	 * @return the roleStausIkon
+	 * 
+	 * Date				: Nov 22, 2017
+	 */
+	public String getRoleStausIkon()
+	{
+		return this.roleStausIkon;
+	}
+	/**
+	 * Setter method : setRoleStausIkon
+	 * @param roleStausIkon the roleStausIkon to set
+	 * 
+	 * Date          : Nov 22, 2017 2:35:29 PM
+	 */
+	public void setRoleStausIkon(String roleStausIkon)
+	{
+		this.roleStausIkon = roleStausIkon;
+	}
+	
+	/**
+	 * Getter Method	: getComments
+	 * @return the comments
+	 * 
+	 * Date				: Dec 19, 2017
+	 */
+	public String getComments()
+	{
+		return this.comments;
+	}
+	/**
+	 * Setter method : setComments
+	 * @param comments the comments to set
+	 * 
+	 * Date          : Dec 19, 2017 10:17:55 AM
+	 */
+	public void setComments(String comments)
+	{
+		this.comments = comments;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -136,7 +202,9 @@ public class HOD
 	{
 		return "HOD [access=" + this.access + ", sequence=" + this.sequence
 				+ ", rolecode=" + this.rolecode + ", approvalcode="
-				+ this.approvalcode + "]";
+				+ this.approvalcode + ", roleStatus=" + this.roleStatus
+				+ ", roleStausIkon=" + this.roleStausIkon + ", comments="
+				+ this.comments + "]";
 	}
 
 	

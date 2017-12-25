@@ -333,7 +333,7 @@ public class DropWDBImpl implements DropWDBDao
 			case Constants.CONST_ROLE_NAME_HOD:
 				namedParameterMap.put("paramDeptCode", employee.getDepartment().getDeptCode());
 				break;
-			case Constants.CONST_ROLE_NAME_ASST_DEAN:
+			case Constants.CONST_ROLE_NAME_ASST_DEAN_P:
 				namedParameterMap.put("paramColCode", employee.getBranch().getBranchCode());
 				break;
 			case Constants.CONST_ROLE_NAME_COL_DEAN:
@@ -476,8 +476,6 @@ public class DropWDBImpl implements DropWDBDao
 		paramMap.put(Constants.CONST_PROC_COL_NAME_P_SECTCD, dropWDTO.getSectCode());
 		paramMap.put(Constants.CONST_PROC_COL_NAME_P_SECTNO, dropWDTO.getSectionNo());
 		paramMap.put(Constants.CONST_PROC_COL_NAME_P_USER, dropWDTO.getUserName());
-		
-		logger.info("paramMap : "+paramMap);
 		
 		try
 		{
