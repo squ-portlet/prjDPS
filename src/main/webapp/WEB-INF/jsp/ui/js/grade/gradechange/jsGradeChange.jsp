@@ -49,6 +49,7 @@
 		$('#divStudentGradesForApprove').html('');
 		$('#divGradeStudentsList').html('');
 		
+		
 
 		$.ajax({
 			url		:	"${varResoureAjaxGradeChangeDataByRole}",
@@ -95,6 +96,7 @@
 	
 		$('#idDivInstructor').show();
 		$('#divGradeStudentsList').html('');
+		$('#divStudentGradesForApprove').html('');
 		
 	});
 	
@@ -104,6 +106,7 @@
 		$('#divStudentList').html('');
 		$('#divGradeList').html('');
 		$('#divGradeChangeHistory').html('');
+		$('#divStudentGradesForApprove').html('');
 		var lAbrCourseNoModel	=	{
 				lAbrCourseNo	:	this.getAttribute("lAbrCourseNo")
 		};
@@ -143,6 +146,7 @@
 		event.preventDefault();
 		$('#divGradeList').html('');
 		$('#divGradeChangeHistory').html('');
+		$('#divStudentGradesForApprove').html('');
 		
 		var gradeChangeModel	=	{
 				studentId	:	this.getAttribute("studentId"),
