@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import om.edu.squ.squportal.notification.exception.NotificationException;
+import om.edu.squ.squportal.portlet.dps.bo.Course;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
@@ -83,6 +84,24 @@ public class PostponeServiceImpl implements PostponeService
 	public List<PostponeReason> getPostponeReasons(Locale locale)
 	{
 		return postponeDBDao.getPostponeReasons(locale);
+	}
+	
+	/**
+	 * 
+	 * method name  : getExistingGrades
+	 * @param studentNo
+	 * @param locale
+	 * @return
+	 * PostponeDBImpl
+	 * return type  : List<Course>
+	 * 
+	 * purpose		: Get existing grades
+	 *
+	 * Date    		:	Dec 25, 2017 10:44:04 PM
+	 */
+	public List<Course> getExistingGrades(String studentNo, Locale locale)
+	{
+		return postponeDBDao.getExistingGrades(studentNo, locale);
 	}
 	
 	/**

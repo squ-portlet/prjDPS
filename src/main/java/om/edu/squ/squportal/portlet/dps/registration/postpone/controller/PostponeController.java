@@ -38,6 +38,7 @@ import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import javax.servlet.http.HttpServletResponse;
 
+import om.edu.squ.squportal.portlet.dps.bo.Course;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
@@ -111,8 +112,9 @@ public class PostponeController
 	 */
 	private	String studentWelcome(PortletRequest request, Model model, Locale locale) throws NotCorrectDBRecordException
 	{
-		User	user	=	dpsServiceDao.getUser(request);
-		Student student	= dpsServiceDao.getStudent(user.getUserId(), null, new Locale("en"));
+		User			user	=	dpsServiceDao.getUser(request);
+		Student 		student	= 	dpsServiceDao.getStudent(user.getUserId(), null, new Locale("en"));
+		List<Course> 	courses	=	postponeService.getExistingGrades(student.getAcademicDetail().getStudentNo(), locale);
 		
 		if(!model.containsAttribute("postponeStudentDataModel"))
 		{
@@ -120,10 +122,18 @@ public class PostponeController
 			model.addAttribute("postponeStudentDataModel", postponeStudentDataModel);
 		}
 		
-		model.addAttribute("student", student);
-		model.addAttribute("currYearSem", dpsServiceDao.getCurrentYearSemester(locale));
-		model.addAttribute("nextYearSemester", dpsServiceDao.getNextYearSemester(locale));
-		model.addAttribute("reasonList", postponeService.getPostponeReasons(locale));
+		if(null == courses || courses.size() == 0)
+			
+		{
+			model.addAttribute("student", student);
+			model.addAttribute("currYearSem", dpsServiceDao.getCurrentYearSemester(locale));
+			model.addAttribute("nextYearSemester", dpsServiceDao.getNextYearSemester(locale));
+			model.addAttribute("reasonList", postponeService.getPostponeReasons(locale));
+		}
+		else
+		{
+			model.addAttribute("existingGrades", courses);
+		}
 		
 		return "/registration/postpone/student/welcomePostponeStudent";
 	}

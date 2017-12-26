@@ -37,6 +37,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
+import om.edu.squ.squportal.portlet.dps.bo.Course;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeReason;
@@ -99,6 +100,45 @@ public class PostponeDBImpl implements PostponeDBDao
 	{
 		this.nPJdbcTemplDpsPostpone = nPJdbcTemplDpsPostpone;
 	}
+	
+	/**
+	 * 
+	 * method name  : getExistingGrades
+	 * @param studentNo
+	 * @param locale
+	 * @return
+	 * PostponeDBImpl
+	 * return type  : List<Course>
+	 * 
+	 * purpose		: Get existing grades
+	 *
+	 * Date    		:	Dec 25, 2017 10:44:04 PM
+	 */
+	public List<Course> getExistingGrades(String studentNo, Locale locale)
+	{
+		String	SQL_POSTPONE_SELECT_EXISTING_GRADES	=	queryPostpone.getProperty(Constants.CONST_SQL_POSTPONE_SELECT_EXISTING_GRADES);
+		RowMapper<Course> rowMapper		=	new RowMapper<Course>()
+		{
+			
+			@Override
+			public Course mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				Course	course	=	new Course();
+				course.setlAbrCourseNo(rs.getString(Constants.CONST_COLMN_L_ABR_CRSNO));
+				course.setCourseName(rs.getString(Constants.CONST_COLMN_COURSE_NAME));
+				course.setGradeValue(rs.getString(Constants.CONST_COLMN_GRADE_VAL));
+				return course;
+			}
+		};
+		
+		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+		namedParameterMap.put("paramLocale", locale.getLanguage());
+		namedParameterMap.put("paramStdNo", studentNo);
+		
+				
+		return nPJdbcTemplDpsPostpone.query(SQL_POSTPONE_SELECT_EXISTING_GRADES, namedParameterMap, rowMapper);
+	}
+	
 	
 	/**
 	 * 
