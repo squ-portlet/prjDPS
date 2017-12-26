@@ -559,4 +559,34 @@ public class DpsServiceImpl implements DpsServiceDao
 	}
 	
 	
+	/**** POSTPONE RULE ****/
+	
+	/**
+	 * 
+	 * method name  : isPostponeCountWithinLimit
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * DpsServiceImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		: Find whether the max limit of postpone reached
+	 *
+	 * Date    		:	Dec 26, 2017 1:57:12 PM
+	 */
+	public boolean isPostponeCountWithinLimit(String studentNo, String stdStatCode)
+	{
+		boolean	postponeLimit	=	false;
+		int resultLimit	=	ruleService.countPostpone(studentNo, stdStatCode);
+		postponeLimit	=	(resultLimit<=Constants.CONST_RULE_POSTPONE_STUDENT_MAXIMUM_ALLOWED)?true:false;
+		if(!postponeLimit)
+		{
+			logger.error(
+							"Student:: student no : {}, statcode : {}, already reached allowed number of postpone : {}"
+							,studentNo,stdStatCode,Constants.CONST_RULE_POSTPONE_STUDENT_MAXIMUM_ALLOWED
+						);
+		}
+		return (postponeLimit);
+				
+	}
 }

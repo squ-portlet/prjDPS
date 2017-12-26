@@ -194,6 +194,9 @@ public interface Constants
 	public static final	String	CONST_RULE_DROP_W_PERIOD_NOT_APPLIED						=	"0";
 	public static final	String	CONST_RULE_DROP_W_STUDENT_MODE_NOT_APPLIED					=	"NOT_AVAILABLE";
 	
+	
+	public static final	int		CONST_RULE_POSTPONE_STUDENT_MAXIMUM_ALLOWED					=	2;
+	
 	/************* SQL CONSTANT STATUS CODE ******************************/
 	
 	/************* SQL CONSTANT ROLE CODE ******************************/

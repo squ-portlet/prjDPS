@@ -50,6 +50,7 @@ import om.edu.squ.squportal.portlet.dps.registration.postpone.db.PostponeDBDao;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentModel;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
+import om.edu.squ.squportal.portlet.dps.rule.service.Rule;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 import om.edu.squ.squportal.portlet.dps.utility.UtilProperty;
 
@@ -67,8 +68,13 @@ public class PostponeServiceImpl implements PostponeService
 	PostponeDBDao	postponeDBDao;
 	@Autowired
 	DPSNotification	dpsNotification;
+
+	
+	private	boolean		rulePostponeCountWithinLimit	=	false;
 	
 	
+
+
 	/**
 	 * 
 	 * method name  : getPostponeReasons
@@ -126,7 +132,7 @@ public class PostponeServiceImpl implements PostponeService
 		if(!studentModel.getYearSem().equals(""))
 		{
 			PostponeDTO			dto				=	new PostponeDTO(student,studentModel,userName);
-								result 			=  	postponeDBDao.setPostponeByStudent(dto);
+								result 			=  	(rulePostponeCountWithinLimit)?postponeDBDao.setPostponeByStudent(dto):0;
 		}
 		if(result>0)
 		{
@@ -321,5 +327,40 @@ public class PostponeServiceImpl implements PostponeService
 		
 		return dtoResult;
 	}
+	
+	/**
+	 * 
+	 * method name  : isRuleComplete
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * PostponeServiceImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Dec 26, 2017 2:05:05 PM
+	 */
+	public boolean isRuleComplete(String studentNo, String stdStatCode)
+	{
+		/*
+		 * Rule 1 : Allowed for Maximum two semester
+		 * */
+		rulePostponeCountWithinLimit	=	dpsServiceDao.isPostponeCountWithinLimit(studentNo, stdStatCode);
+		
+		if(Constants.CONST_TEST_ENVIRONMENT)
+		{
+			
+		}
+		else
+		{
+			
+		}
+		
+		
+		//Please don't change the return value
+		return true;
+	}
+	
 	
 }

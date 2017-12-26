@@ -84,6 +84,7 @@ public class PostponeController
 	{
 		User	user	=	dpsServiceDao.getUser(request);
 
+		model.addAttribute("postponeLimit", Constants.CONST_RULE_POSTPONE_STUDENT_MAXIMUM_ALLOWED);
 		if(user.getUserType().equals(Constants.USER_TYPE_STUDENT))
 		{
 			

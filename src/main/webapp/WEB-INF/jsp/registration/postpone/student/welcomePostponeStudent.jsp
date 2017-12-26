@@ -50,7 +50,7 @@
    		<c:otherwise>
 		    <div class="section">
 		      <div class="container-fluid">
-			      <div class="row">
+			      <div class="row" id="rowButtonAddPostpone">
 						<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalPostponeForm"><spring:message code="prop.dps.postpone.student.apply"/></button>	      
 			      </div>
 		      </div>

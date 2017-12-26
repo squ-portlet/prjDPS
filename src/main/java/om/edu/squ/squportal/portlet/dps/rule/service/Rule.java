@@ -97,6 +97,21 @@ public interface Rule
 
 	/**
 	 * 
+	 * method name  : countPostpone
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * RuleServiceImpl
+	 * return type  : int
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Mar 14, 2017 1:08:11 PM
+	 */
+	public int countPostpone(String studentNo, String stdStatCode);
+	
+	/**
+	 * 
 	 * method name  : extensionRecordAlreadyExist
 	 * @param studentNo
 	 * @param stdStatCode

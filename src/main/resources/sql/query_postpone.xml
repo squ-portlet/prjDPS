@@ -120,17 +120,18 @@
 								:paramDpsDeanRoleName
 								)															AS		DPS_DEAN_APPROVAL_CODE														               
 		FROM 
-		    STD_POSTPONE POSTPN,
-		    SIS_CODES     SISCD
+		    T_REG_POSTPONE 	POSTPN,
+		    SIS_CODES     	SISCD
 		
 		WHERE
 		        POSTPN.PSTREASONCD=SISCD.SISCODECD
 		    AND STDNO = :paramStdNo    
     </entry>
     <entry key="dps.postpone.insert.student">
-		INSERT INTO STD_POSTPONE
+		INSERT INTO T_REG_POSTPONE
 		(
-			  STDNO 
+			  REC_SEQ_NO
+			, STDNO 
 			, STDSTATCD 
 			, FROMCCYRCD 
 			, FROMSEMCD 
@@ -144,7 +145,8 @@
 		)
 		VALUES 
 		(
-			  :paramStdNo
+			  DPS_SQ.NEXTVAL
+			, :paramStdNo
 			, :paramStdStatCode
 			, :paramFromYearCode
 			, :paramFromSemCode
@@ -245,12 +247,12 @@
                               ,FUNC_IS_SUPERVISOR_AVAILABLE(POST.STDNO,POST.STDSTATCD)  AS 	HAS_THESIS     		                                          
                                         
 					    FROM     
-					          STD_POSTPONE        POST
-					          ,V_STDINFO_PORTAL   PORTAL
-					          ,COL_CEN            COL
-					          , STD_THESIS        THESIS
-					          , V_DEPT_MAJOR      DEPT_MAJ
-					          , COL_DEPT          DEPT
+					          	T_REG_POSTPONE     	POST
+					          ,	V_STDINFO_PORTAL   	PORTAL
+					          ,	COL_CEN            	COL
+					          , STD_THESIS        	THESIS
+					          , V_DEPT_MAJOR      	DEPT_MAJ
+					          , COL_DEPT          	DEPT
 					    WHERE
 					              DEPT.COLCENCD     = COL.COLCENCD
 					          AND DEPT_MAJ.DEPTNO   = DEPT.DEPTNO (+)

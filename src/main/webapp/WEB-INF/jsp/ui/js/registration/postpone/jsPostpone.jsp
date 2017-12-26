@@ -38,7 +38,14 @@ $(document).ajaxStop(function(){
 			success	:	function(data)
 			{
 				var	postponeDTOs = JSON.parse(data);
+				if(postponeDTOs.length == ${postponeLimit})
+					{
+						$('#rowButtonAddPostpone').html('');
+						var alertText = {'alertText':'<spring:message code="error.dps.postpone.student.maximum.number.of.postpone.rached"/>'};
+						dataLoad(alertText, '#hbAlertPostponeStudies', '#alertPostponeStudies');
+					}
 				dataLoad(postponeDTOs, '#hbPostponeStudies', '#tblPostponeStudies');
+				
 			},
 			error	:	function(xhr, status, error)
 			{
@@ -70,7 +77,14 @@ $(document).ajaxStop(function(){
 					success	:	function(data)
 					{
 						var	postponeDTOs = JSON.parse(data);
+						if(postponeDTOs.length == ${postponeLimit})
+						{
+							$('#rowButtonAddPostpone').html('');
+							var alertText = {'alertText':'<spring:message code="error.dps.postpone.student.maximum.number.of.postpone.rached"/>'};
+							dataLoad(alertText, '#hbAlertPostponeStudies', '#alertPostponeStudies');
+						}						
 						dataLoad(postponeDTOs, '#hbPostponeStudies', '#tblPostponeStudies');
+						
 					},
 					error	:	function(xhr, status, error)
 					{
