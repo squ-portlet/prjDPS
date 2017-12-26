@@ -50,6 +50,7 @@ import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStud
 import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentModel;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.service.PostponeService;
 import om.edu.squ.squportal.portlet.dps.role.bo.RoleNameValue;
+import om.edu.squ.squportal.portlet.dps.security.Crypto;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 import om.edu.squ.squportal.portlet.dps.utility.UtilProperty;
 
@@ -84,7 +85,14 @@ public class PostponeController
 	{
 		User	user	=	dpsServiceDao.getUser(request);
 
+		/**** Security - data encryption keys *****/
+		model.addAttribute("cryptoIterationCount", Crypto.CRYPTO_ITERATION_COUNT);
+		model.addAttribute("cryptoKeySize", Crypto.CRYPTO_KEY_SIZE);
+		model.addAttribute("cryptoPassPhrase", Crypto.CRYPTO_PASSCODE);
+		/* ************************************* */
+		
 		model.addAttribute("postponeLimit", Constants.CONST_RULE_POSTPONE_STUDENT_MAXIMUM_ALLOWED);
+		
 		if(user.getUserType().equals(Constants.USER_TYPE_STUDENT))
 		{
 			
@@ -94,6 +102,9 @@ public class PostponeController
 		{
 			return approverWelcome(request,model,locale);
 		} 
+		
+		
+		
 	}
 	
 	/**
@@ -223,17 +234,14 @@ public class PostponeController
 		
 		if((null != postponeDTOs) && (postponeDTOs.size() != 0) )
 		{
-
 			strJson	=	gson.toJson(postponeDTOs);
-
 		}
 		else
 		{
-			
 			isError	=	true;
 			strJson = UtilProperty.getMessage("err.dps.service.postpone.student.no.postpone.records", null, locale);
-
 		}
+
 		
 		
 		try
