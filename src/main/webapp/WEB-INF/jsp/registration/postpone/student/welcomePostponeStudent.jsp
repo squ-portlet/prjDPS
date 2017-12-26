@@ -7,7 +7,12 @@
 
 	<%@include file="../../../ui/cssWelcome.jsp" %>	
 	<%@include file="../../../ui/js/registration/postpone/jsPostpone.jsp" %>
-	
+
+ 
+ 	<!-- Alert for any issues -->
+     <div  id="alertPostponeStudies"></div>
+     <br>
+     
    <c:choose>
    		<c:when test="${not empty existingGrades}">
    			<div class="alert alert-warning">
@@ -57,11 +62,11 @@
 		    </div>
 	    </c:otherwise>
    </c:choose> 
-    <div id="tblPostponeStudies" >
-    	
-    </div>
-    <div id="alertPostponeStudies">
-    </div>
+
+	
+ 	<!-- Postpone data -->
+    <div  id="tblPostponeStudies" ></div>
+
     
     
 

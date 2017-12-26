@@ -29,6 +29,8 @@ $(document).ajaxStop(function(){
 
 		};
 		
+		$('#alertPostponeStudies').html('');
+		
 /* Default screen with postpone data for student*/
 		$.ajax({
 			url		:	"${varAjaxResourceStudentSubmit}",
@@ -44,6 +46,12 @@ $(document).ajaxStop(function(){
 						var alertText = {'alertText':'<spring:message code="error.dps.postpone.student.maximum.number.of.postpone.rached"/>'};
 						dataLoad(alertText, '#hbAlertPostponeStudies', '#alertPostponeStudies');
 					}
+				
+				if(removePostponeSubmit(postponeDTOs))
+				{
+					$('#rowButtonAddPostpone').html('');
+				}
+				
 				dataLoad(postponeDTOs, '#hbPostponeStudies', '#tblPostponeStudies');
 				
 			},
@@ -69,6 +77,8 @@ $(document).ajaxStop(function(){
 					reasonOther	:	$('#reasonOther').val()
 			};
 			
+			$('#alertPostponeStudies').html('');
+			
 			$.ajax({
 					url		:	"${varAjaxResourceStudentSubmit}",
 					type	:	'POST',
@@ -82,20 +92,47 @@ $(document).ajaxStop(function(){
 							$('#rowButtonAddPostpone').html('');
 							var alertText = {'alertText':'<spring:message code="error.dps.postpone.student.maximum.number.of.postpone.rached"/>'};
 							dataLoad(alertText, '#hbAlertPostponeStudies', '#alertPostponeStudies');
-						}						
+						}
+						
+						if(removePostponeSubmit(postponeDTOs))
+						{
+							$('#rowButtonAddPostpone').html('');
+						}
+						
 						dataLoad(postponeDTOs, '#hbPostponeStudies', '#tblPostponeStudies');
 						
 					},
 					error	:	function(xhr, status, error)
 					{
-						$('#modalAlertErrMsg').html(xhr.responseText);
-						$('#alertModal').modal('toggle');
-						$('#divImgAjaxLoading').hide();
+				
+						var alertText = {'alertText':xhr.responseText};
+
+						<c:if test="${empty existingGrades}">
+							dataLoad(alertText, '#hbAlertPostponeStudies', '#alertPostponeStudies');
+						</c:if>
 					}
 			});
 			
 		});
 	
+	/* Findout for any existing progress/pending postpone  */
+		function removePostponeSubmit(data)
+		{
+			var status_progress_pending=false;
+			
+			for(var i = 0; i < data.length; i++) {
+			    var postpone = data[i];
+					if((postpone.statusCodeName === '${statusProgress}') ||
+							(postpone.statusCodeName === '${statusPending}')
+					 )
+					{
+						status_progress_pending = true;
+					}
+			}
+			
+			return status_progress_pending;
+		}
+
 
 
 /* Approver */

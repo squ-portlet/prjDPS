@@ -124,4 +124,19 @@ public interface PostponeService
 	 * Date    		:	Nov 7, 2017 5:55:12 PM
 	 */
 	public PostponeDTO setRoleTransaction(PostponeDTO dto, Employee employee, Locale locale);
+	
+	/**
+	 * 
+	 * method name  : isRuleComplete
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * PostponeServiceImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Dec 26, 2017 2:05:05 PM
+	 */
+	public boolean isRuleComplete(String studentNo, String stdStatCode);
 }

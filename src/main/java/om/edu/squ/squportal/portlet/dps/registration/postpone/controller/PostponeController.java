@@ -92,6 +92,8 @@ public class PostponeController
 		/* ************************************* */
 		
 		model.addAttribute("postponeLimit", Constants.CONST_RULE_POSTPONE_STUDENT_MAXIMUM_ALLOWED);
+		model.addAttribute("statusProgress", Constants.CONST_SQL_STATUS_CODE_NAME_PROGRESS);
+		model.addAttribute("statusPending", Constants.CONST_SQL_STATUS_CODE_NAME_PENDING);
 		
 		if(user.getUserType().equals(Constants.USER_TYPE_STUDENT))
 		{
@@ -127,6 +129,9 @@ public class PostponeController
 		User			user	=	dpsServiceDao.getUser(request);
 		Student 		student	= 	dpsServiceDao.getStudent(user.getUserId(), null, new Locale("en"));
 		List<Course> 	courses	=	postponeService.getExistingGrades(student.getAcademicDetail().getStudentNo(), locale);
+		
+		/* Implementing rules */
+		postponeService.isRuleComplete(student.getAcademicDetail().getStudentNo(), student.getAcademicDetail().getStdStatCode());
 		
 		if(!model.containsAttribute("postponeStudentDataModel"))
 		{
