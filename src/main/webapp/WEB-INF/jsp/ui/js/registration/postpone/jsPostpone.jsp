@@ -42,9 +42,12 @@ $(document).ajaxStop(function(){
 			},
 			error	:	function(xhr, status, error)
 			{
-				$('#modalAlertErrMsg').html(xhr.responseText);
-				$('#alertModal').modal('toggle');
-				$('#divImgAjaxLoading').hide();
+				var alertText = {'alertText':xhr.responseText};
+
+				<c:if test="${empty existingGrades}">
+					dataLoad(alertText, '#hbAlertPostponeStudies', '#alertPostponeStudies');
+				</c:if>
+				
 			}
 		});
 		

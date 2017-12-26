@@ -230,7 +230,7 @@ public class PostponeController
 		{
 			
 			isError	=	true;
-			strJson = UtilProperty.getMessage("err.dps.service.not.available.text", null, locale);
+			strJson = UtilProperty.getMessage("err.dps.service.postpone.student.no.postpone.records", null, locale);
 
 		}
 		

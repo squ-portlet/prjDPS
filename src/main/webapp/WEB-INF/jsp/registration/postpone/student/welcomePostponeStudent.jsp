@@ -10,14 +10,14 @@
 	
    <c:choose>
    		<c:when test="${not empty existingGrades}">
-   			<div class=" alert alert-warning">
+   			<div class="alert alert-warning">
    				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
    				<spring:message code="prop.dps.postpone.error.student.existing.grades"/>
    			</div>
    			
    			<div class="panel panel-default">
 			  <div class="panel-heading">
-			    <h4 class="panel-title"><spring:message code="prop.dps.postpone.student.course.existing.grades"/></h4>
+			    <h4 class="panel-title alert alert-warning"><spring:message code="prop.dps.postpone.student.course.existing.grades"/></h4>
 			  </div>
 			  <div class="panel-body">
 			    
@@ -60,7 +60,11 @@
     <div id="tblPostponeStudies" >
     	
     </div>
+    <div id="alertPostponeStudies">
+    </div>
     
+    
+
     
     
 <div id="modalContainerPostponeForm" class="container-fluid">
@@ -156,6 +160,13 @@
         </div>
     </div>
 
+<script id="hbAlertPostponeStudies" type="text/x-handlebars-template" >
+    <div class="alert alert-warning alert-dismissible" role="alert">
+  		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  		<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> {{alertText}}
+		<div id="alertPostponeStudiesMsgText"></div>
+	</div>
+</script>
 
 <script id="hbPostponeStudies" type="text/x-handlebars-template" >
     <div class="section">
