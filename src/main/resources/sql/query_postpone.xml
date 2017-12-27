@@ -4,13 +4,13 @@
     <comment>DPS Postponement Queries</comment>
     <entry key="dps.postpone.select.existing.grade">
 		    SELECT 
-					GRADE.L_ABR_CRSNO   						AS  	L_ABR_CRSNO
-					, GVAL.L_ABR_GVAL   						AS  	GRADE_VAL
+					GRADE.L_ABR_CRSNO   													AS  	L_ABR_CRSNO
+					, GVAL.L_ABR_GVAL   													AS  	GRADE_VAL
 					, DECODE(
 					          :paramLocale
 					          , 'ar', A_CRSSNM
 					          , CRSSNM
-					)                   						AS  	COURSE_NAME
+					)                   													AS  	COURSE_NAME
 			FROM 
 			      STD_GRADES  GRADE
 			    , GRADE_VAL   GVAL
@@ -24,12 +24,12 @@
     </entry>
     <entry key="dps.postpone.select.postpone.reasons">
     	SELECT 
-			CODE.SISCODECD										AS		SISCODECD	
+			CODE.SISCODECD																	AS		SISCODECD	
 			,DECODE 
 					(
 					  :paramLocale,
 					  'en', CODE.CODENM, CODE.A_CODENM
-					)     										AS		POSTPONE_REASON_NAME
+					)     																	AS		POSTPONE_REASON_NAME
 		FROM 
 		    SIS_CODES CODE,
         	SIS_CODE_TYPES CODE_TYPE
@@ -86,22 +86,26 @@
 		          , FUNC_APPROVE_STATUS(
 	                            POSTPN.STDNO,
 	                            :paramAdvisorRoleName, 
-	                            :paramFormName
+	                            :paramFormName,
+	                            POSTPN.REC_SEQ_NO
 	                            )                           								AS  	ADVISOR_STATUS            																		
 	          , FUNC_APPROVE_STATUS(
 	                            POSTPN.STDNO,
 	                            :paramSupervisorRoleName, 
-	                            :paramFormName
+	                            :paramFormName,
+	                            POSTPN.REC_SEQ_NO
 	                            )                           								AS  	SUPERVISOR_STATUS
 	        , FUNC_APPROVE_STATUS(
 	                            POSTPN.STDNO,
 	                            :paramColDeanRoleName, 
-	                            :paramFormName
+	                            :paramFormName,
+	                            POSTPN.REC_SEQ_NO
 	                            )                           								AS  	COLLEGE_DEAN_STATUS
 	        , FUNC_APPROVE_STATUS(
 	                            POSTPN.STDNO,
 	                            :paramDpsDeanRoleName, 
-	                            :paramFormName
+	                            :paramFormName,
+	                            POSTPN.REC_SEQ_NO
 	                            )                           								AS  	DPS_DEAN_STATUS	 
 			, FUNC_GET_APPROVALCODE(
 								:paramFormName,
@@ -174,32 +178,32 @@
 					  FROM
 					(  
 					    SELECT DISTINCT
-					            POST.STDNO                                     	AS  STUDENT_NO
-					          , PORTAL.STD_ID									AS	STUDENT_ID  
+					            POST.STDNO                                     				AS  	STUDENT_NO
+					          , PORTAL.STD_ID												AS		STUDENT_ID  
 					          , DECODE
 					                  (
 					                      :paramLocal
 					                      ,'en',PORTAL.STD_NAME
 					                      , PORTAL.A_STD_NAME
-					                  )                                       	AS  STUDENT_NAME        
-					          , POST.STDSTATCD                                 	AS  STDSTATCD
-					          , PORTAL.COHORT                                 	AS  COHORT
-					          , POST.TOCCYRCD                                  	AS  TOCCYRCD                              
-					          , POST.TOSEMCD                                   	AS  TOSEMCD
+					                  )                                       				AS  	STUDENT_NAME        
+					          , POST.STDSTATCD                                 				AS  	STDSTATCD
+					          , PORTAL.COHORT                                 				AS  	COHORT
+					          , POST.TOCCYRCD                                  				AS  	TOCCYRCD                              
+					          , POST.TOSEMCD                                   				AS  	TOSEMCD
 					          , COL.COLCENCD
 					          , DECODE
 					                (
 					                    :paramLocal
 					                    ,'en', PORTAL.DEGREE_NAME
 					                    ,PORTAL.A_DEGREE_NAME
-					                )                                         	AS  DEGREE_NAME
+					                )                                         				AS  	DEGREE_NAME
 					          , DECODE 
 					                (
 					                      :paramLocal
 					                      ,'en', PORTAL.COLLEGENM
 					                      , PORTAL.A_COLLEGENM
-					                )                                         	AS  COLLEGE_NAME
-					          , POST.POSTREQ_STATUSCD                          	AS  STATUS_CODE
+					                )                                         				AS  	COLLEGE_NAME
+					          , POST.POSTREQ_STATUSCD                          				AS  	STATUS_CODE
 					          , (
 					              SELECT 
 					                  DECODE
@@ -211,40 +215,45 @@
 					                    SIS_CODES
 					                  WHERE 
 					                    SISCODECD = POST.POSTREQ_STATUSCD
-					            )                                             	AS  STATUS_DESC
-					          , POST.CREATE_DATE                               	AS  CREATE_DATE
+					            )                                             				AS  	STATUS_DESC
+					          , POST.CREATE_DATE                               				AS  	CREATE_DATE
 
 
 	                          , FUNC_APPROVE_STATUS(
 	                                              POST.STDNO,
 	                                              :paramAdvisorRoleName, 
-	                                              :paramFormName
-	                                              )                           	AS  ADVISOR_STATUS 
+	                                              :paramFormName,
+	                                              POST.REC_SEQ_NO
+	                                              )                           				AS  	ADVISOR_STATUS 
 
                       
 	                          , FUNC_APPROVE_STATUS(
 	                                              POST.STDNO,
 	                                              :paramSupervisorRoleName, 
-	                                              :paramFormName
-	                                              )                           	AS  SUPERVISOR_STATUS
+	                                              :paramFormName,
+	                                              POST.REC_SEQ_NO
+	                                              )                           				AS  	SUPERVISOR_STATUS
 	                          , FUNC_APPROVE_STATUS(
 	                                              POST.STDNO,
 	                                              :paramColDeanRoleName, 
-	                                              :paramFormName
-	                                              )                           	AS  COLLEGE_DEAN_STATUS
+	                                              :paramFormName,
+	                                              POST.REC_SEQ_NO
+	                                              )                           				AS  	COLLEGE_DEAN_STATUS
 	                          , FUNC_APPROVE_STATUS(
 	                                              POST.STDNO,
 	                                              :paramDpsDeanRoleName, 
-	                                              :paramFormName
-	                                              )                           	AS  DPS_DEAN_STATUS
+	                                              :paramFormName,
+	                                              POST.REC_SEQ_NO
+	                                              )                           				AS  	DPS_DEAN_STATUS
 	                          ,	FUNC_IS_APPROVER(
 												 		  POST.STDNO
 												 		, POST.STDSTATCD
 												 		, :paramFormName
 												 		, :paramRoleName
 												 		, :paramEmpNo
-	                         						)						 	AS	IS_APPROVER
-                              ,FUNC_IS_SUPERVISOR_AVAILABLE(POST.STDNO,POST.STDSTATCD)  AS 	HAS_THESIS     		                                          
+												 		, POST.REC_SEQ_NO
+	                         						)						 				AS		IS_APPROVER
+                              ,	FUNC_IS_SUPERVISOR_AVAILABLE(POST.STDNO,POST.STDSTATCD)  	AS 		HAS_THESIS     		                                          
                                         
 					    FROM     
 					          	T_REG_POSTPONE     	POST
@@ -292,18 +301,18 @@
     </entry>
     <entry key="dps.postpone.update.status.student">
 				UPDATE
-				    STD_POSTPONE
+				    T_REG_POSTPONE
 				SET
 				    POSTREQ_STATUSCD =   (
-									                                SELECT
-									                                    CODES.SISCODECD	
-									                                FROM
-									                                        SIS_CODES       CODES
-									                                    ,   SIS_CODE_TYPES  TYPES
-									                                WHERE
-									                                        CODES.SISCODETYPCD =  TYPES.SISCODETYPCD
-									                                    AND TYPES.SISCODETYPNM = 'APPROVAL_STATUS'
-									                                    AND CODES.L_ABR_CODE  = :paramStatusCodeName
+					                                SELECT
+					                                    CODES.SISCODECD	
+					                                FROM
+					                                        SIS_CODES       CODES
+					                                    ,   SIS_CODE_TYPES  TYPES
+					                                WHERE
+					                                        CODES.SISCODETYPCD =  TYPES.SISCODETYPCD
+					                                    AND TYPES.SISCODETYPNM = 'APPROVAL_STATUS'
+					                                    AND CODES.L_ABR_CODE  = :paramStatusCodeName
 				                              )
 				    , COMMNT			= :paramComment					                            
 				    , USRACCTCD       = :paramUserName
