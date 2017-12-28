@@ -178,7 +178,8 @@
 					  FROM
 					(  
 					    SELECT DISTINCT
-					            POST.STDNO                                     				AS  	STUDENT_NO
+					    	    POST.REC_SEQ_NO												AS		SEQUENCE_NUMBER
+					          , POST.STDNO                                     				AS  	STUDENT_NO
 					          , PORTAL.STD_ID												AS		STUDENT_ID  
 					          , DECODE
 					                  (
@@ -216,8 +217,6 @@
 					                  WHERE 
 					                    SISCODECD = POST.POSTREQ_STATUSCD
 					            )                                             				AS  	STATUS_DESC
-					          , POST.CREATE_DATE                               				AS  	CREATE_DATE
-
 
 	                          , FUNC_APPROVE_STATUS(
 	                                              POST.STDNO,
@@ -245,15 +244,36 @@
 	                                              :paramFormName,
 	                                              POST.REC_SEQ_NO
 	                                              )                           				AS  	DPS_DEAN_STATUS
-	                          ,	FUNC_IS_APPROVER(
+	                          ,	NVL(FUNC_IS_APPROVER(
 												 		  POST.STDNO
 												 		, POST.STDSTATCD
 												 		, :paramFormName
 												 		, :paramRoleName
 												 		, :paramEmpNo
-												 		, POST.REC_SEQ_NO
-	                         						)						 				AS		IS_APPROVER
-                              ,	FUNC_IS_SUPERVISOR_AVAILABLE(POST.STDNO,POST.STDSTATCD)  	AS 		HAS_THESIS     		                                          
+												 		, (
+															SELECT 
+																  MAX(REC_SEQ_NO)
+															FROM 
+																  T_REG_POSTPONE
+															WHERE
+																	  STDNO 	= 	POST.STDNO
+																  AND STDSTATCD =	POST.STDSTATCD
+															) 
+	                         						),'N')						 			AS		IS_APPROVER
+                              ,	FUNC_IS_SUPERVISOR_AVAILABLE(POST.STDNO,POST.STDSTATCD)  	AS 		HAS_THESIS   
+  							  , 	(
+							              			SELECT 
+							                      		DECODE (
+							                                	MAX (UPDDTE)
+							                                , 	NULL, MAX (CREATE_DATE)
+							                                , 	MAX (UPDDTE)
+							                             )
+							                                
+										              FROM 
+										                    T_REG_POSTPONE
+										              WHERE
+										                   STDNO = POST.STDNO
+								     )                                     					AS 		DATE_WATCH                                		                                          
                                         
 					    FROM     
 					          	T_REG_POSTPONE     	POST
@@ -297,7 +317,7 @@
 								      OR  :paramStdNo IS NULL
 								)
 					)
-					ORDER BY  CREATE_DATE DESC    
+					ORDER BY IS_APPROVER DESC, DATE_WATCH DESC    
     </entry>
     <entry key="dps.postpone.update.status.student">
 				UPDATE

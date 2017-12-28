@@ -257,7 +257,7 @@ public class PostponeServiceImpl implements PostponeService
 								transactionDTO.setAppEmpNo(employee.getEmpNumber());
 								transactionDTO.setAppEmpName(employee.getUserName());
 								transactionDTO.setComments(dto.getCommentEng());
-								transactionDTO.setRequestCode(Constants.CONST_REQUEST_CODE_DEFAULT);
+								transactionDTO.setRequestCode(dto.getRecordSequence());
 		
 		ApprovalDTO				approvalDTO				=	dpsServiceDao.setRoleTransaction(
 																									transactionDTO

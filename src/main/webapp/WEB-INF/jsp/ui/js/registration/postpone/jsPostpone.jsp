@@ -23,6 +23,9 @@ $(document).ajaxStop(function(){
 
 	$(function(){
 		var varRoleName;
+		var	tblPostponeApprover;
+		var	tblRowIndexApprover;
+		var	tblRowDataApprover;
 		
 		var studentModel = {
 				yearSem		: 	''
@@ -162,19 +165,42 @@ $(document).ajaxStop(function(){
 						success	:	function(data)
 						{
 							$("#divImgAjaxLoading").hide();
+							console.log("data list : "+JSON.stringify(data));
 							var postpone=JSON.parse(data);
 							if($.trim(postpone))
 								{
+								
 									dataLoad(postpone,'#hbPostponeApprover','#divPostponeApprover');
-									$('#tblPostponeApprover').DataTable({
+									
+									tblPostponeApprover = $('#tblPostponeApprover').DataTable({
 											"sDom":  '<f><t><"col-sm-5"i><"col-sm-2"l><"col-sm-12"p><"clearfix">', 
 											"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+									
+											
 											/*
 											"oLanguage": {
 												  "sUrl": "${urlCdn}/DataTables/language/lang_${rc.locale.language}.txt"
 												},
 												*/
-											"order": []
+											"order": [],
+											rowId: 'recordSequence',
+											"columns" :
+												[
+												 {'data':null,
+												  'defaultContent' : ''	 
+												 },
+												 {'data':'recordSequence'},
+												 {'data':'studentId'},
+												 {'data':'studentName'},
+												 {'data':'cohort'},
+												 {'data':'collegeName'},
+												 {'data':'degreeName'},
+												 {'data':'advisor.roleStausIkon'},
+												 {'data':'supervisor.roleStausIkon'},
+												 {'data':'collegeDean.roleStausIkon'},
+												 {'data':'dpsDean.roleStausIkon'},
+												 {'data':'approver'}
+												 ]
 										
 										});
 								}
@@ -199,6 +225,7 @@ $(document).ajaxStop(function(){
 			event.preventDefault();
 			$(this).prop("checked", true);
 			$('#txtModalAppFormStatus').val($(this).val());
+			$('#recordSequence').val(this.getAttribute("recordSequence"));
 			$('#studentno').val(this.getAttribute("studentno"));
 			$('#studentstatCode').val(this.getAttribute("studentstatCode"));
 			if($(this).val() == '${appApprove}')
@@ -216,6 +243,10 @@ $(document).ajaxStop(function(){
 				$('#idApprovalMsg').html("<spring:message code='prop.dps.postpone.approver.reject.text'/>");
 				$('#linkSubmitApprove').addClass('btn-danger').removeClass('btn-success');
 			}
+			tblRowDataApprover 	= 	tblPostponeApprover.table(0).row( this ).data();
+			tblRowIndexApprover	=	tblPostponeApprover.row(this).index();
+			
+			
 		});
 		
 
@@ -224,6 +255,7 @@ $(document).ajaxStop(function(){
 			
 			if ($('#formModalApprover').valid()) {
 		    	var postponeDTO	= {
+		    			recordSequence	: $('#recordSequence').val(),
 		    			studentNo 		: $('#studentno').val(),
 						studentStatCode		: $('#studentstatCode').val(),
 						statusCodeName	: $('#txtModalAppFormStatus').val(),
@@ -239,6 +271,15 @@ $(document).ajaxStop(function(){
 		    			data		:	postponeDTO,
 		    			success		:	function(data)
 		    			{
+		    				var postpone = JSON.parse(data);
+		    				tblRowDataApprover.recordSequence=postpone.recordSequence;
+		    				tblRowDataApprover.studentId=postpone.studentId;
+		    				tblRowDataApprover.advisor.roleStausIkon=postpone.advisor.roleStausIkon;
+		    				tblRowDataApprover.supervisor.roleStausIkon=postpone.supervisor.roleStausIkon;
+		    				tblRowDataApprover.collegeDean.roleStausIkon=postpone.collegeDean.roleStausIkon;
+		    				tblRowDataApprover.dpsDean.roleStausIkon=postpone.dpsDean.roleStausIkon;
+		    				tblRowDataApprover.approver='';
+		    				tblPostponeApprover.row( tblRowIndexApprover ).data(tblRowDataApprover).draw();
 		    				
 		    			},
 		    			error	:	function(xhr, status, error)

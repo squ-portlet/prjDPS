@@ -40,6 +40,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
         	<input type="hidden" id="txtModalAppFormStatus" >
+        	<input type="hidden" id="recordSequence">
         	<input type="hidden" id="studentno">
         	<input type="hidden" id="studentstatCode">
           <div class="modal-header">
@@ -74,6 +75,8 @@
 			 <table id="tblPostponeApprover" class="table table-striped table-bordered dt-responsive nowrap collapsed">
               <thead>
                 <tr>
+				  <th></th>
+				  <th ><spring:message code="prop.dps.sequence.number"/></th>
                   <th ><spring:message code="prop.dps.student.student.id"/></th>
                   <th ><spring:message code="prop.dps.student.student.name"/></th>
                   <th ><spring:message code="prop.dps.student.student.cohort"/></th>
@@ -91,7 +94,15 @@
               <tbody>
                 {{#each .}}
 	                <tr>
-						<td>{{studentId}}</td>
+						<td></td>
+						<td>{{recordSequence}}</td>
+						<td>
+							{{studentId}}
+				
+							{{#if approver}}
+								<span id="{{studentNo}}-approve" class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+							{{/if}}
+						</td>
 						<td>{{studentName}}</td>
 						<td>{{cohort}}</td>
 						<td>{{collegeName}}</td>
@@ -104,8 +115,8 @@
 						<td>
 							{{#if approver}}
 								<div class="col-xs-10">
-											<div class="col-xs-2"><label><input type="radio" class ="clsAppAction" name="appAction" id="appRadio1" value="${appApprove}" data-toggle="modal" data-target="#modalApprovForm" studentno={{studentNo}} studentstatCode={{studentStatCode}}><spring:message code="prop.dps.role.approve.text"/></label> </div>
-											<div class="col-xs-2"><label><input type="radio" class ="clsAppAction" name="appAction" id="appRadio2" value="${appRecect}" data-toggle="modal" data-target="#modalApprovForm" studentno={{studentNo}} studentstatCode={{studentStatCode}}> <spring:message code="prop.dps.role.reject.text"/> </label></div> 
+											<div class="col-xs-2"><label><input type="radio" class ="clsAppAction" name="appAction" id="appRadio1" value="${appApprove}" data-toggle="modal" data-target="#modalApprovForm" recordSequence={{recordSequence}} studentno={{studentNo}} studentstatCode={{studentStatCode}}><spring:message code="prop.dps.role.approve.text"/></label> </div>
+											<div class="col-xs-2"><label><input type="radio" class ="clsAppAction" name="appAction" id="appRadio2" value="${appRecect}" data-toggle="modal" data-target="#modalApprovForm" recordSequence={{recordSequence}} studentno={{studentNo}} studentstatCode={{studentStatCode}}> <spring:message code="prop.dps.role.reject.text"/> </label></div> 
 								</div>
 							{{/if}}
 						</td>	                

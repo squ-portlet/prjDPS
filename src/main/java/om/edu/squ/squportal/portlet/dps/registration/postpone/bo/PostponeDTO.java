@@ -42,6 +42,7 @@ import om.edu.squ.squportal.portlet.dps.role.bo.Supervisor;
  */
 public class PostponeDTO
 {
+	private	String		recordSequence;
 	private String		studentNo;
 	private	String		studentId;
 	private	String		studentStatCode;
@@ -131,6 +132,28 @@ public class PostponeDTO
 	}
 	
 	
+	/**
+	 * Getter Method	: getRecordSequence
+	 * @return the recordSequence
+	 * 
+	 * Date				: Dec 28, 2017
+	 */
+	public String getRecordSequence()
+	{
+		return this.recordSequence;
+	}
+
+	/**
+	 * Setter method : setRecordSequence
+	 * @param recordSequence the recordSequence to set
+	 * 
+	 * Date          : Dec 28, 2017 3:33:36 PM
+	 */
+	public void setRecordSequence(String recordSequence)
+	{
+		this.recordSequence = recordSequence;
+	}
+
 	/**
 	 * Getter Method	: getStudentNo
 	 * @return the studentNo
@@ -866,7 +889,8 @@ public class PostponeDTO
 	@Override
 	public String toString()
 	{
-		return "PostponeDTO [studentNo=" + this.studentNo + ", studentId="
+		return "PostponeDTO [recordSequence=" + this.recordSequence
+				+ ", studentNo=" + this.studentNo + ", studentId="
 				+ this.studentId + ", studentStatCode=" + this.studentStatCode
 				+ ", studentName=" + this.studentName + ", cohort="
 				+ this.cohort + ", collegeName=" + this.collegeName

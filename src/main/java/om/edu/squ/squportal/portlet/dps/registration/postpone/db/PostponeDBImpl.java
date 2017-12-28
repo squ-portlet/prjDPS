@@ -334,6 +334,7 @@ public class PostponeDBImpl implements PostponeDBDao
 				CollegeDean		collegeDean		=	new CollegeDean();
 				DpsDean			dpsDean			=	new DpsDean();
 				
+				dto.setRecordSequence(rs.getString(Constants.CONST_COLMN_SEQUENCE_NO));
 				dto.setStudentId(rs.getString(Constants.CONST_COLMN_STUDENT_ID));
 				dto.setStudentNo(rs.getString(Constants.CONST_COLMN_STUDENT_NO));
 				dto.setStudentStatCode(rs.getString(Constants.CONST_COLMN_STDSTATCD));
@@ -389,7 +390,7 @@ public class PostponeDBImpl implements PostponeDBDao
 		namedParameterMap.put("paramSupervisor", null);
 		namedParameterMap.put("paramDeptCode", null);
 		namedParameterMap.put("paramRoleName", roleType);
-		namedParameterMap.put("paramFormName", Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY);
+		namedParameterMap.put("paramFormName", Constants.CONST_FORM_NAME_DPS_POSTPONE_STUDY);
 		namedParameterMap.put("paramEmpNo", employee.getEmpNumber());
 		
 		namedParameterMap.put("paramAdvisorRoleName", Constants.CONST_SQL_ROLE_NAME_ADVISOR);
@@ -397,7 +398,7 @@ public class PostponeDBImpl implements PostponeDBDao
 		namedParameterMap.put("paramColDeanRoleName", Constants.CONST_SQL_ROLE_NAME_COL_DEAN);
 		namedParameterMap.put("paramDpsDeanRoleName", Constants.CONST_SQL_ROLE_NAME_DPS_DEAN);
 		
-		namedParameterMap.put("paramFormName", Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY);
+		namedParameterMap.put("paramFormName", Constants.CONST_FORM_NAME_DPS_POSTPONE_STUDY);
 		
 		switch (roleType)
 		{
@@ -424,7 +425,6 @@ public class PostponeDBImpl implements PostponeDBDao
 		{
 			namedParameterMap.put("paramStdNo", studentNo);
 		}
-		
 		
 		return nPJdbcTemplDpsPostpone.query(SQL_POSTPONE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE, namedParameterMap, rowMapper);
 	}
