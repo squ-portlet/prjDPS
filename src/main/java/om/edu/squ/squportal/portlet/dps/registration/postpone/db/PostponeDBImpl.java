@@ -215,13 +215,25 @@ public class PostponeDBImpl implements PostponeDBDao
 				{
 					dto.setReasonDesc(rs.getString(Constants.CONST_COLMN_POSTPONE_REASON_NAME));
 				}
-				advisor.setApprovalcode(rs.getString(Constants.CONST_COLMN_APPROVAL_CODE_ADVISOR));
-				advisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS));
-				advisor.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS)));
 				
-				supervisor.setApprovalcode(rs.getString(Constants.CONST_COLMN_APPROVAL_CODE_SUPERVISOR));
-				supervisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_SUPERVISOR_STATUS));
-				supervisor.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_SUPERVISOR_STATUS)));
+				if(rs.getString(Constants.CONST_COLMN_STUDENT_HAS_THESIS).equals(Constants.CONST_YES))
+				{
+					supervisor.setApprovalcode(rs.getString(Constants.CONST_COLMN_APPROVAL_CODE_SUPERVISOR));
+					supervisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_SUPERVISOR_STATUS));
+					supervisor.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_SUPERVISOR_STATUS)));
+					
+					advisor.setRoleStatus(Constants.CONST_NOT_USED);
+					advisor.setRoleStausIkon(RoleTagGlyphicon.showIkon(Constants.CONST_NOT_USED));
+				}
+				else
+				{
+					advisor.setApprovalcode(rs.getString(Constants.CONST_COLMN_APPROVAL_CODE_ADVISOR));
+					advisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS));
+					advisor.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS)));
+					
+					supervisor.setRoleStatus(Constants.CONST_NOT_USED);
+					supervisor.setRoleStausIkon(RoleTagGlyphicon.showIkon(Constants.CONST_NOT_USED));
+				}
 				
 				collegeDean.setApprovalcode(rs.getString(Constants.CONST_COLMN_APPROVAL_CODE_COLLEGE_DEAN));
 				collegeDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_COLLEGE_DEAN_STATUS));
@@ -319,7 +331,7 @@ public class PostponeDBImpl implements PostponeDBDao
 	 *
 	 * Date    		:	Sep 13, 2017 4:48:56 PM
 	 */
-	public List<PostponeDTO> getPostponeForApprovers(String roleType, Employee employee, Locale locale, String studentNo)
+	public List<PostponeDTO> getPostponeForApprovers(final String roleType, Employee employee, Locale locale, String studentNo)
 	{
 		String SQL_POSTPONE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE		=	queryPostpone.getProperty(Constants.CONST_SQL_POSTPONE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE);
 		RowMapper<PostponeDTO> rowMapper	=	new RowMapper<PostponeDTO>()
@@ -342,6 +354,7 @@ public class PostponeDBImpl implements PostponeDBDao
 				dto.setCohort(rs.getString(Constants.CONST_COLMN_COHORT));
 				dto.setCollegeName(rs.getString(Constants.CONST_COLMN_COLLEGE_NAME));
 				dto.setDegreeName(rs.getString(Constants.CONST_COLMN_DEGREE_NAME));
+				dto.setStatusDesc(rs.getString(Constants.CONST_COLMN_STATUS_DESC));
 				
 				collegeDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_COLLEGE_DEAN_STATUS));
 				collegeDean.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_COLLEGE_DEAN_STATUS)));
@@ -352,18 +365,24 @@ public class PostponeDBImpl implements PostponeDBDao
 				if(rs.getString(Constants.CONST_COLMN_ROLE_IS_APPROVER).equals(Constants.CONST_YES))
 				{
 					dto.setApprover(true);
+					dto.setApproverApplicable(true);
 				}
 				else
 				{
 					dto.setApprover(false);
+					dto.setApproverApplicable(false);
 				}
 				
 				if(rs.getString(Constants.CONST_COLMN_STUDENT_HAS_THESIS).equals(Constants.CONST_YES))
 				{
 					supervisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_SUPERVISOR_STATUS));
 					supervisor.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_SUPERVISOR_STATUS)));
-					advisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS));
-					advisor.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS)));
+					advisor.setRoleStatus(Constants.CONST_NOT_USED);
+					advisor.setRoleStausIkon(RoleTagGlyphicon.showIkon(Constants.CONST_NOT_USED));
+					if(roleType.equals(Constants.CONST_SQL_ROLE_NAME_ADVISOR))
+					{
+						dto.setApproverApplicable(false);
+					}
 					
 				}
 				else

@@ -122,7 +122,8 @@
 			, FUNC_GET_APPROVALCODE(
 								:paramFormName,
 								:paramDpsDeanRoleName
-								)															AS		DPS_DEAN_APPROVAL_CODE														               
+								)															AS		DPS_DEAN_APPROVAL_CODE
+ 			, FUNC_IS_SUPERVISOR_AVAILABLE(POSTPN.STDNO,POSTPN.STDSTATCD)  					AS 		HAS_THESIS 																						               
 		FROM 
 		    T_REG_POSTPONE 	POSTPN,
 		    SIS_CODES     	SISCD

@@ -278,7 +278,7 @@ $(document).ajaxStop(function(){
 		    				tblRowDataApprover.supervisor.roleStausIkon=postpone.supervisor.roleStausIkon;
 		    				tblRowDataApprover.collegeDean.roleStausIkon=postpone.collegeDean.roleStausIkon;
 		    				tblRowDataApprover.dpsDean.roleStausIkon=postpone.dpsDean.roleStausIkon;
-		    				tblRowDataApprover.approver='';
+		    				tblRowDataApprover.approver=postpone.statusDesc;
 		    				tblPostponeApprover.row( tblRowIndexApprover ).data(tblRowDataApprover).draw();
 		    				
 		    			},
@@ -306,7 +306,20 @@ $(document).ajaxStop(function(){
 			
 		}
 		
+		Handlebars.registerHelper('ifCond', function(v1, v2, options) {
+			  if(v1 === v2) {
+			    return options.fn(this);
+			  }
+			  return options.inverse(this);
+			});
 		
+		
+		Handlebars.registerHelper('ifNotCond', function(v1, v2, options) {
+			  if(v1 !== v2) {
+			    return options.fn(this);
+			  }
+			  return options.inverse(this);
+			});
 		
 	});
 </script>

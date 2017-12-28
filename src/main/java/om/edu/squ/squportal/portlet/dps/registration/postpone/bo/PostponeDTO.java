@@ -75,7 +75,10 @@ public class PostponeDTO
 	private	String		approvalCode;
 	private	String		activityDate;
 	private	boolean		statusReject;
-	
+	private	boolean		approverApplicable;									/* When more than one approver might available at same level 
+																				-- like advisor and supervisor. both can not be considered as approver. 
+																				    In this situation this boolean value might help
+																			 */
 	
 	
 	/**
@@ -883,6 +886,28 @@ public class PostponeDTO
 		this.statusReject = statusReject;
 	}
 
+	/**
+	 * Getter Method	: isApproverApplicable
+	 * @return the approverApplicable
+	 * 
+	 * Date				: Dec 29, 2017
+	 */
+	public boolean isApproverApplicable()
+	{
+		return this.approverApplicable;
+	}
+
+	/**
+	 * Setter method : setApproverApplicable
+	 * @param approverApplicable the approverApplicable to set
+	 * 
+	 * Date          : Dec 29, 2017 12:16:18 AM
+	 */
+	public void setApproverApplicable(boolean approverApplicable)
+	{
+		this.approverApplicable = approverApplicable;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -910,7 +935,8 @@ public class PostponeDTO
 				+ ", dpsDean=" + this.dpsDean + ", approver=" + this.approver
 				+ ", roleName=" + this.roleName + ", approvalCode="
 				+ this.approvalCode + ", activityDate=" + this.activityDate
-				+ ", statusReject=" + this.statusReject + "]";
+				+ ", statusReject=" + this.statusReject
+				+ ", approverApplicable=" + this.approverApplicable + "]";
 	}
 	
 	

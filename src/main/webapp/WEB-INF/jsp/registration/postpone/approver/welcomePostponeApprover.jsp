@@ -100,7 +100,9 @@
 							{{studentId}}
 				
 							{{#if approver}}
-								<span id="{{studentNo}}-approve" class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+									{{#if approverApplicable}}
+										<span id="{{studentNo}}-approve" class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+									{{/if}}
 							{{/if}}
 						</td>
 						<td>{{studentName}}</td>
@@ -114,10 +116,16 @@
 						<td>{{{dpsDean.roleStausIkon}}}</td>
 						<td>
 							{{#if approver}}
-								<div class="col-xs-10">
+								{{#if approverApplicable}}
+									<div class="col-xs-10">
 											<div class="col-xs-2"><label><input type="radio" class ="clsAppAction" name="appAction" id="appRadio1" value="${appApprove}" data-toggle="modal" data-target="#modalApprovForm" recordSequence={{recordSequence}} studentno={{studentNo}} studentstatCode={{studentStatCode}}><spring:message code="prop.dps.role.approve.text"/></label> </div>
 											<div class="col-xs-2"><label><input type="radio" class ="clsAppAction" name="appAction" id="appRadio2" value="${appRecect}" data-toggle="modal" data-target="#modalApprovForm" recordSequence={{recordSequence}} studentno={{studentNo}} studentstatCode={{studentStatCode}}> <spring:message code="prop.dps.role.reject.text"/> </label></div> 
-								</div>
+									</div>
+								{{else}}
+									{{statusDesc}}
+								{{/if}}
+							{{else}}
+								{{statusDesc}}
 							{{/if}}
 						</td>	                
 	                </tr>
