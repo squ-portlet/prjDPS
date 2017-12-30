@@ -34,7 +34,7 @@ $(document).ajaxStop(function(){
 		
 /* Default screen with postpone data for student*/
 
- 	<c:if test="$(isUserTypeStudent)">
+ 	<c:if test="${isUserTypeStudent}">
 		$.ajax({
 			url		:	"${varAjaxResourceStudentSubmit}",
 			type	:	'POST',
@@ -69,10 +69,29 @@ $(document).ajaxStop(function(){
 			}
 		});
 	</c:if>	
-		
+	
+	/* Show the other reason text */
+		$("#reasonCode").change(function(){
+	
+			if($("#reasonCode").val()=='4533')
+			{
+				$("#divPostponeReasonOther").show();
+				$("#divReasonOtherTxt").html('<textarea  id="reasonOther" name="reasonOther" required/>');
+			}
+			else
+			{
+				$("#divPostponeReasonOther").hide();
+				$("#divExtReasonOther").hide();
+				$("#divReasonOtherTxt").html('');
+			}
+			
+		});
+	
+	
 		
 /* Submit by student*/
-		$('#bttnCompetentSubmit').click(function(){
+		$('#bttnCompetentSubmit').click(function(event){
+		if ($('#postponeStudentDataModel').valid()) {
 			$('#modalPostponeForm').modal('toggle');
 			var studentModel = {
 					yearSem		: 	$('input[name=yearSem]').val(),
@@ -115,7 +134,7 @@ $(document).ajaxStop(function(){
 						</c:if>
 					}
 			});
-			
+		}	
 		});
 	
 	/* Findout for any existing progress/pending postpone  */

@@ -24,7 +24,26 @@
 			}
 
 		});
-
+		
+		/*
+			If other reason selected, student must provide the reason
+		*/		
+		$('#postponeStudentDataModel').validate({
+			rules: {
+				yearSem : {
+					required : true
+				},
+				reasonOther: {
+					required : true
+				}
+			},
+			messages:
+			{
+				yearSem: '<spring:message code="error.dps.postpone.student.semester.empty"/>',
+				reasonOther: '<spring:message code="error.dps.postpone.student.other.reason.empty"/>'
+			}
+		});
+		
 		
 	});
 </script>

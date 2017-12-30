@@ -84,9 +84,10 @@
 	      </div>
 
      
-		 <form:form    modelAttribute="postponeStudentDataModel" >
+		 
 			      <div class="modal-body">
 						    <div class="section">
+						<form:form    modelAttribute="postponeStudentDataModel" >						    
 						      <div class="container">
 						        <div class="row">
 <!-- 						          <div class="col-md-6"> -->
@@ -96,12 +97,12 @@
 						                </div>
 						                <div class="col-sm-8">
 						                  <label class="radio-inline">
-						                   	<form:radiobutton path="yearSem" value="${currYearSem.year}-${currYearSem.semesterCode}"/>${currYearSem.year},${currYearSem.semesterName}
+						                   	<form:radiobutton path="yearSem" value="${currYearSem.year}-${currYearSem.semesterCode}"  />${currYearSem.year},${currYearSem.semesterName}
 						                  </label>
 										<c:if test="{{not empty nextYearSemester}" >
 						                  <br>
 						                  <label class="radio-inline">
-					                    	<form:radiobutton path="yearSem" value="${nextYearSemester.year}-${nextYearSemester.semesterCode}"/>${nextYearSemester.year},${nextYearSemester.semesterName}
+					                    	<form:radiobutton path="yearSem" value="${nextYearSemester.year}-${nextYearSemester.semesterCode}"   />${nextYearSemester.year},${nextYearSemester.semesterName}
 						                   </label>
 						                 </c:if>
 						                </div>
@@ -110,7 +111,7 @@
 						       <div class="row">						              
 						              <div class="form-group">
 						                <div class="col-sm-2">
-						                  <label for="inputPassword3" class="control-label"><spring:message code="prop.dps.postpone.student.applications.form.reason.for.not.completing"/></label>
+						                  <label for="reasonCode" class="control-label"><spring:message code="prop.dps.postpone.student.applications.form.reason.for.not.completing"/></label>
 						                </div>
 						                <div class="col-sm-8">
 						                
@@ -122,16 +123,18 @@
 						              </div>
 <!-- 						          </div> -->
 						        </div>
-						        <div class="row" id="divExtReasonOther" style="display: none;">
+						        <div class="row" id="divPostponeReasonOther" style="display: none;">
 						        	<div class="form-group">
 						        		<div class="col-sm-2">
-						        			<label for="inputEmail3" class="control-label"><spring:message code="prop.dps.postpone.select.reason.other.text"/></label>
+						        			<label for="reasonOther" class="control-label"><spring:message code="prop.dps.postpone.select.reason.other.text"/></label>
 						        		</div>
-						        		<div class="col-sm-8">
-						        			<form:textarea path="reasonOther"/>
+						        		<div class="col-sm-8" id="divReasonOtherTxt">
+						        			
 						        		</div>
 						        	</div>
 						        </div>
+						       </div>
+						    </form:form> 
 						      </div>
 						    </div>
 			      </div>
@@ -140,7 +143,7 @@
 			        <button type="button" id="bttnCompetentCancel" class="btn btn-default" data-dismiss="modal"><spring:message code="prop.dps.postpone.student.applications.form.submit.no"/></button>
 			        <button  type="button" id="bttnCompetentSubmit" class="btn btn-primary"><spring:message code="prop.dps.postpone.student.applications.form.submit.yes"/></button>
 			      </div>
-	      </form:form>
+	      
 	      
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
