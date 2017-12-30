@@ -11,8 +11,6 @@
 
 <script type="text/javascript">
 
-$('#divImgAjaxLoading').hide(); //initially hide the divImgAjaxLoading icon
-
 $(document).ajaxStart(function(){
     $('#divImgAjaxLoading').show();
 });
@@ -35,6 +33,8 @@ $(document).ajaxStop(function(){
 		$('#alertPostponeStudies').html('');
 		
 /* Default screen with postpone data for student*/
+
+ 	<c:if test="$(isUserTypeStudent)">
 		$.ajax({
 			url		:	"${varAjaxResourceStudentSubmit}",
 			type	:	'POST',
@@ -68,7 +68,7 @@ $(document).ajaxStop(function(){
 				
 			}
 		});
-		
+	</c:if>	
 		
 		
 /* Submit by student*/
@@ -155,7 +155,7 @@ $(document).ajaxStop(function(){
 				};
 				$("#divAlertData").hide();
 				
-				$("#divImgAjaxLoading").show();
+
 				
 				$.ajax({
 						url		:	"${varAjaxResourcePostponeDataByRole}",
@@ -164,7 +164,7 @@ $(document).ajaxStop(function(){
 						data	:	roleNameValue,
 						success	:	function(data)
 						{
-							$("#divImgAjaxLoading").hide();
+
 							console.log("data list : "+JSON.stringify(data));
 							var postpone=JSON.parse(data);
 							if($.trim(postpone))
@@ -211,7 +211,7 @@ $(document).ajaxStop(function(){
 						},
 						error	:	function(xhr, status)
 						{
-							$("#divImgAjaxLoading").hide();
+
 						}
 				});
 				

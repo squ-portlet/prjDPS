@@ -94,6 +94,8 @@ public class PostponeController
 		model.addAttribute("postponeLimit", Constants.CONST_RULE_POSTPONE_STUDENT_MAXIMUM_ALLOWED);
 		model.addAttribute("statusProgress", Constants.CONST_SQL_STATUS_CODE_NAME_PROGRESS);
 		model.addAttribute("statusPending", Constants.CONST_SQL_STATUS_CODE_NAME_PENDING);
+		model.addAttribute("isUserTypeStudent", user.getUserType().equals(Constants.USER_TYPE_STUDENT));
+			
 		
 		if(user.getUserType().equals(Constants.USER_TYPE_STUDENT))
 		{
@@ -229,7 +231,13 @@ public class PostponeController
 		try
 		{
 			student			=	dpsServiceDao.getStudent(user.getUserId(), null, new Locale("en"));
-			postponeDTOs = postponeService.setPostponeByStudent(student, studentModel,request.getRemoteUser(), locale);
+			if(null == student || null == student.getAcademicDetail())
+			{
+				/* Service enquired by staff and not student */
+			}
+			{
+				postponeDTOs = postponeService.setPostponeByStudent(student, studentModel,request.getRemoteUser(), locale);
+			}
 		}
 		catch (NotCorrectDBRecordException ex)
 		{
