@@ -215,6 +215,7 @@ public class PostponeDBImpl implements PostponeDBDao
 				{
 					dto.setReasonDesc(rs.getString(Constants.CONST_COLMN_POSTPONE_REASON_NAME));
 				}
+				dto.setCommentEng(rs.getString(Constants.CONST_COLMN_COMMENT));
 				
 				if(rs.getString(Constants.CONST_COLMN_STUDENT_HAS_THESIS).equals(Constants.CONST_YES))
 				{
@@ -355,7 +356,7 @@ public class PostponeDBImpl implements PostponeDBDao
 				dto.setCollegeName(rs.getString(Constants.CONST_COLMN_COLLEGE_NAME));
 				dto.setDegreeName(rs.getString(Constants.CONST_COLMN_DEGREE_NAME));
 				dto.setStatusDesc(rs.getString(Constants.CONST_COLMN_STATUS_DESC));
-				
+				dto.setReasonDesc(rs.getString(Constants.CONST_COLMN_POSTPONE_REASON_NAME));
 				collegeDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_COLLEGE_DEAN_STATUS));
 				collegeDean.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_COLLEGE_DEAN_STATUS)));
 				
@@ -396,6 +397,14 @@ public class PostponeDBImpl implements PostponeDBDao
 				dto.setSupervisor(supervisor);
 				dto.setCollegeDean(collegeDean);
 				dto.setDpsDean(dpsDean);
+				
+				dto.setStatusCodeName(rs.getString(Constants.CONST_COLMN_STATUS_CODE_NAME));
+				if(rs.getString(Constants.CONST_COLMN_STATUS_CODE_NAME).equals(Constants.CONST_SQL_STATUS_CODE_REJCT))
+				{
+					dto.setStatusReject(true);
+				}
+				
+				dto.setCommentEng(rs.getString(Constants.CONST_COLMN_COMMENT));
 				
 				return dto;
 			}

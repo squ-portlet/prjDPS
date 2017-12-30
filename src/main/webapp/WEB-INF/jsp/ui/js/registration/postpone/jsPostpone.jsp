@@ -136,7 +136,26 @@ $(document).ajaxStop(function(){
 			});
 		}	
 		});
-	
+
+		/* Alert messages for mainly rejection cases */
+		$(document).on("click", ".clsMsgErrStudent", function(event){
+			event.preventDefault();
+			var alertMsg	=	this.getAttribute("msg");
+
+			var alertMsgJson = {'appAlertMsg': alertMsg};
+			dataLoad(alertMsgJson, '#hbAlert', '#divAlertApprover');
+		});
+
+		
+		
+		$(document).on("click", ".clsMsgErrApprover", function(event){
+			event.preventDefault();
+			var alertMsg	=	this.getAttribute("msg");
+			
+			var alertMsgJson = {'appAlertMsg': alertMsg};
+			dataLoad(alertMsgJson, '#hbAlert', '#divAlertApprover');
+		});		
+		
 	/* Findout for any existing progress/pending postpone  */
 		function removePostponeSubmit(data)
 		{
@@ -183,8 +202,6 @@ $(document).ajaxStop(function(){
 						data	:	roleNameValue,
 						success	:	function(data)
 						{
-
-							console.log("data list : "+JSON.stringify(data));
 							var postpone=JSON.parse(data);
 							if($.trim(postpone))
 								{
@@ -214,6 +231,7 @@ $(document).ajaxStop(function(){
 												 {'data':'cohort'},
 												 {'data':'collegeName'},
 												 {'data':'degreeName'},
+												 {'data':'reasonDesc'},
 												 {'data':'advisor.roleStausIkon'},
 												 {'data':'supervisor.roleStausIkon'},
 												 {'data':'collegeDean.roleStausIkon'},

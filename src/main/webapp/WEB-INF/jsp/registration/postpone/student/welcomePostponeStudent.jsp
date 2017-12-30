@@ -8,7 +8,14 @@
 	<%@include file="../../../ui/cssWelcome.jsp" %>	
 	<%@include file="../../../ui/js/registration/postpone/jsPostpone.jsp" %>
 
- 
+		<c:url value="/ui/ajax-loader.gif" var="imgAjaxLoader"/>		
+		<div class="row" id="divImgAjaxLoading" style="display: none;">
+			<div class="col-sm-5"></div>
+			<div class="col-sm-1">
+				<img alt="Loading ...." src="${imgAjaxLoader}">
+			</div>
+		</div>
+		
  	<!-- Alert for any issues -->
      <div  id="alertPostponeStudies"></div>
      <br>
@@ -66,7 +73,7 @@
 	
  	<!-- Postpone data -->
     <div  id="tblPostponeStudies" ></div>
-
+	 <div  id="divAlertApprover" ></div>
     
     
 
@@ -168,6 +175,18 @@
         </div>
     </div>
 
+<script id="hbAlert" type="text/x-handlebars-template">
+	<div id="idAlert" class="alert alert-warning alert-dismissible fade in" role="alert"> 
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+			<h4>
+				<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> 
+				 <spring:message code="prop.dps.postpone.alert"/>
+			</h4>
+			<hr>
+				<p id="idAlertText">{{appAlertMsg}}</p> 
+	</div> 
+</script>
+
 <script id="hbAlertPostponeStudies" type="text/x-handlebars-template" >
     <div class="alert alert-warning alert-dismissible" role="alert">
   		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -177,15 +196,10 @@
 </script>
 
 <script id="hbPostponeStudies" type="text/x-handlebars-template" >
-    <div class="section">
+    <br>
+	<div class="section">
       	<div class="container-fluid">
-			<c:url value="/ui/ajax-loader.gif" var="imgAjaxLoader"/>		
-			<div class="row" id="divImgAjaxLoading" style="display: none;">
-				<div class="col-sm-5"></div>
-				<div class="col-sm-1">
-					<img alt="Loading ...." src="${imgAjaxLoader}">
-				</div>
-			</div>
+			<div class="row">
 			       <table class="table table-striped table-bordered dt-responsive nowrap collapsed">
 		              <thead>
 		                <tr>
@@ -219,9 +233,9 @@
 		              			
 		              			<td>{{statusDesc}} &nbsp;
 		              					{{#if statusReject}}
-		              						<a href="#" class="clsMsgErr" msg='{{commentEng}}'>
+		              						<a href="#" class="clsMsgErrStudent" msg='{{commentEng}}'>
 				              						<font color="default">
-				              							<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+				              							<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
 				              						</font>
 		              						</a>
 		              					{{/if}}
@@ -232,6 +246,7 @@
 		              	{{/each}}
 		              </tbody>
 		            </table>
-	</div>
 			</div>
+		</div>
+	</div>
 </script>    

@@ -192,6 +192,17 @@
 					          , PORTAL.COHORT                                 				AS  	COHORT
 					          , POST.TOCCYRCD                                  				AS  	TOCCYRCD                              
 					          , POST.TOSEMCD                                   				AS  	TOSEMCD
+					          , DECODE
+					          (
+					            SISCD.L_ABR_CODE
+					            ,'OTHR',POST.OTHER_REASON, 
+					              DECODE
+					              (
+					                  :paramLocal
+					                  ,'en', SISCD.CODENM, SISCD.A_CODENM
+					              )
+					            )                                           				AS 		POSTPONE_REASON_NAME
+					          , POST.OTHER_REASON											AS		POSTPONE_OTHER_REASON						          
 					          , COL.COLCENCD
 					          , DECODE
 					                (
@@ -206,6 +217,13 @@
 					                      , PORTAL.A_COLLEGENM
 					                )                                         				AS  	COLLEGE_NAME
 					          , POST.POSTREQ_STATUSCD                          				AS  	STATUS_CODE
+					        , (
+					        	SELECT
+					        		L_ABR_CODE
+					        	FROM SIS_CODES
+					            WHERE 
+					            	SISCODECD= POST.POSTREQ_STATUSCD
+					        	)															AS		STATUS_CODE_NAME					          
 					          , (
 					              SELECT 
 					                  DECODE
@@ -218,7 +236,7 @@
 					                  WHERE 
 					                    SISCODECD = POST.POSTREQ_STATUSCD
 					            )                                             				AS  	STATUS_DESC
-
+							  , POST.COMMNT													AS		COMMENTS
 	                          , FUNC_APPROVE_STATUS(
 	                                              POST.STDNO,
 	                                              :paramAdvisorRoleName, 
@@ -283,8 +301,10 @@
 					          , STD_THESIS        	THESIS
 					          , V_DEPT_MAJOR      	DEPT_MAJ
 					          , COL_DEPT          	DEPT
+					          , SIS_CODES     		SISCD
 					    WHERE
 					              DEPT.COLCENCD     = COL.COLCENCD
+					          AND POST.PSTREASONCD	=	SISCD.SISCODECD
 					          AND DEPT_MAJ.DEPTNO   = DEPT.DEPTNO (+)
 					          AND POST.STDNO         = PORTAL.STDNO
 					          AND THESIS.STDNO(+)      = POST.STDNO 															 
