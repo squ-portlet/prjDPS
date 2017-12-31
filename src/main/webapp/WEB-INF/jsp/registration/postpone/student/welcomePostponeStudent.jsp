@@ -7,6 +7,7 @@
 
 	<%@include file="../../../ui/cssWelcome.jsp" %>	
 	<%@include file="../../../ui/js/registration/postpone/jsPostpone.jsp" %>
+	<%@include file="../../../ui/js/registration/postpone/jsValidationPostpone.jsp" %>
 
 		<c:url value="/ui/ajax-loader.gif" var="imgAjaxLoader"/>		
 		<div class="row" id="divImgAjaxLoading" style="display: none;">

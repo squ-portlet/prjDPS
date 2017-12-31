@@ -77,6 +77,7 @@ $(document).ajaxStop(function(){
 			{
 				$("#divPostponeReasonOther").show();
 				$("#divReasonOtherTxt").html('<textarea  id="reasonOther" name="reasonOther" required/>');
+				validatePostponeStudentDataModel();
 			}
 			else
 			{
