@@ -129,6 +129,7 @@ public class PostponeServiceImpl implements PostponeService
 	{
 		int 				result			=	0;
 		List<PostponeDTO>	postponeDTOs	=	null;
+		String 				approverRole	=	null;	
 		if(!studentModel.getYearSem().equals(""))
 		{
 			PostponeDTO			dto				=	new PostponeDTO(student,studentModel,userName);
@@ -141,10 +142,19 @@ public class PostponeServiceImpl implements PostponeService
 
 			try
 			{
+				if(dpsServiceDao.isSupervisorAvailable(student.getAcademicDetail().getStudentNo(), student.getAcademicDetail().getStdStatCode()))
+				{
+					approverRole	=	Constants.CONST_SQL_ROLE_NAME_SUPERVISOR;
+				}
+				else
+				{
+					approverRole	=	Constants.CONST_SQL_ROLE_NAME_ADVISOR;
+				}
+				
 				NotifierPeople notifierPeople = dpsServiceDao.getNotifierPeople(
 																					student.getAcademicDetail().getStudentNo(), 
 																					Constants.CONST_FORM_NAME_DPS_POSTPONE_STUDY, 
-																					Constants.CONST_SQL_ROLE_NAME_ADVISOR, 
+																					approverRole, 
 																					false, 
 																					locale
 																				);
