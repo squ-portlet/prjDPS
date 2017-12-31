@@ -630,7 +630,19 @@ public class DpsServiceImpl implements DpsServiceDao
 				
 	}
 	
-	
+	/**
+	 * 
+	 * method name  : getRoleObjectFromList
+	 * @param roleName
+	 * @param roleNameValues
+	 * @return
+	 * DpsServiceImpl
+	 * return type  : RoleNameValue
+	 * 
+	 * purpose		:  Get particular Object from list
+	 *
+	 * Date    		:	Dec 31, 2017 1:08:53 PM
+	 */
 	private	RoleNameValue	getRoleObjectFromList(String roleName, List<RoleNameValue> roleNameValues)
 	{
 		RoleNameValue	result	=	null;

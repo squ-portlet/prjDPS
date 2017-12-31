@@ -153,7 +153,7 @@ public class PostponeServiceImpl implements PostponeService
 				
 				NotifierPeople notifierPeople = dpsServiceDao.getNotifierPeople(
 																					student.getAcademicDetail().getStudentNo(), 
-																					null, 
+																					student.getAcademicDetail().getStdStatCode(), 
 																					Constants.CONST_FORM_NAME_DPS_POSTPONE_STUDY, 
 																					approverRole, 
 																					false, locale
@@ -306,12 +306,11 @@ public class PostponeServiceImpl implements PostponeService
 				/* -- Notification -- Start --*/
 					NotifierPeople	notifierPeople	=	dpsServiceDao.getNotifierPeople(
 																							dto.getStudentNo()
-																						, 	null
+																						, 	dto.getStudentStatCode()
 																						, 	Constants.CONST_FORM_NAME_DPS_POSTPONE_STUDY
 																						, 	dto.getRoleName()
 																						, true, locale
 																						);
-					
 					notifierPeople.setFormNameEng(UtilProperty.getMessage("prop.dps.form.name.postpone", null));
 					notifierPeople.setFormNameAr(UtilProperty.getMessage("prop.dps.form.name.postpone", null, new Locale("ar")));
 					notifierPeople.setServiceUrl(UtilProperty.getMessage("prop.dps.url.postpone", null));					
