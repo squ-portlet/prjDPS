@@ -258,6 +258,7 @@ public interface DpsServiceDao
 	 * 
 	 * method name  : getNotifierPeople
 	 * @param studentNo
+	 * @param studentStatCode TODO
 	 * @param formName
 	 * @param roleName
 	 * @param isHigherApproverRequired
@@ -273,10 +274,10 @@ public interface DpsServiceDao
 	 */
 	public NotifierPeople getNotifierPeople(
 												String studentNo, 
+												String studentStatCode, 
 												String formName, 
-												String roleName, 
-												boolean isHigherApproverRequired,
-												Locale locale 
+												String roleName,
+												boolean isHigherApproverRequired, Locale locale 
 											) throws NotCorrectDBRecordException;
 	
 	/**
