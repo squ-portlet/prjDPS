@@ -123,10 +123,10 @@ public class DropWServiceImpl implements DropWService
 			{
 				NotifierPeople notifierPeople = dpsServiceDao.getNotifierPeople(
 																					student.getAcademicDetail().getStudentNo(), 
+																					null, 
 																					Constants.CONST_FORM_NAME_DPS_DROP_W, 
 																					Constants.CONST_SQL_ROLE_NAME_ADVISOR, 
-																					false, 
-																					locale
+																					false, locale
 																				);
 	
 				notifierPeople.setFormNameEng(UtilProperty.getMessage("prop.dps.form.name.dropw", null));
@@ -331,10 +331,10 @@ public class DropWServiceImpl implements DropWService
 
 				NotifierPeople notifierPeople = dpsServiceDao.getNotifierPeople(
 																					dropWDTO.getStudentNo(), 
+																					null, 
 																					Constants.CONST_FORM_NAME_DPS_DROP_W, 
 																					Constants.CONST_SQL_ROLE_NAME_ADVISOR, 
-																					true, 
-																					locale
+																					true, locale
 																				);
 	
 				

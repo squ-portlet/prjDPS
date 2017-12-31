@@ -32,6 +32,7 @@ package om.edu.squ.squportal.portlet.dps.registration.postpone.service;
 import java.util.List;
 import java.util.Locale;
 
+import om.edu.squ.squportal.portlet.dps.bo.Course;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
@@ -44,6 +45,21 @@ import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStud
  */
 public interface PostponeService
 {
+	/**
+	 * 
+	 * method name  : getExistingGrades
+	 * @param studentNo
+	 * @param locale
+	 * @return
+	 * PostponeDBImpl
+	 * return type  : List<Course>
+	 * 
+	 * purpose		: Get existing grades
+	 *
+	 * Date    		:	Dec 25, 2017 10:44:04 PM
+	 */
+	public List<Course> getExistingGrades(String studentNo, Locale locale);
+	
 	/**
 	 * 
 	 * method name  : getPostponeReasons
@@ -108,4 +124,19 @@ public interface PostponeService
 	 * Date    		:	Nov 7, 2017 5:55:12 PM
 	 */
 	public PostponeDTO setRoleTransaction(PostponeDTO dto, Employee employee, Locale locale);
+	
+	/**
+	 * 
+	 * method name  : isRuleComplete
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * PostponeServiceImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Dec 26, 2017 2:05:05 PM
+	 */
+	public boolean isRuleComplete(String studentNo, String stdStatCode);
 }

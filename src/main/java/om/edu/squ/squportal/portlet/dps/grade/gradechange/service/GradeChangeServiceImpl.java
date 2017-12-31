@@ -218,10 +218,10 @@ public class GradeChangeServiceImpl implements GradeChangeService
 				{
 					NotifierPeople	notifierPeople	=	dpsServiceDao.getNotifierPeople(
 							 																gradeChangeModel.getStudentNo()
+							 															, 	null
 							 															, 	Constants.CONST_FORM_NAME_DPS_GRADE_CHANGE
 							 															, 	Constants.CONST_SQL_ROLE_NAME_HOD
-							 															, 	false
-							 															, 	locale
+							 															, 	false, locale
 							 															);
 					
 					notifierPeople.setFormNameEng(UtilProperty.getMessage("prop.dps.form.name.grade.change", null));
@@ -425,10 +425,10 @@ public class GradeChangeServiceImpl implements GradeChangeService
 					/* -- Notification -- Start --*/
 					NotifierPeople notifierPeople = dpsServiceDao.getNotifierPeople(
 																							gradeDTO.getStudentNo()
+																						, 	null
 																						, 	Constants.CONST_FORM_NAME_DPS_GRADE_CHANGE
 																						, 	roleName
-																						, 	true
-																						, 	locale
+																						, 	true, locale
 																					);
 					
 					notifierPeople.setFormNameEng(UtilProperty.getMessage("prop.dps.form.name.grade.change", null));

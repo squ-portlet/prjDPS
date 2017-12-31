@@ -119,10 +119,10 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 				{
 					NotifierPeople notifierPeople = dpsServiceDao.getNotifierPeople(
 																						extensionDTO.getStudentNo(), 
+																						null, 
 																						Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY, 
 																						Constants.CONST_SQL_ROLE_NAME_SUPERVISOR, 
-																						false, 
-																						locale
+																						false, locale
 																					);
 		
 					notifierPeople.setFormNameEng(UtilProperty.getMessage("prop.dps.form.name.extension", null));
@@ -291,10 +291,10 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 
 									NotifierPeople notifierPeople = dpsServiceDao.getNotifierPeople(
 																										extensionDTOTr.getStudentNo(), 
+																										null, 
 																										Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY, 
 																										extensionDTOTr.getRoleName(), 
-																										true, 
-																										locale
+																										true, locale
 																									);
 									notifierPeople.setFormNameEng(UtilProperty.getMessage("prop.dps.form.name.extension", null));
 									notifierPeople.setFormNameAr(UtilProperty.getMessage("prop.dps.form.name.extension", null, new Locale("ar")));

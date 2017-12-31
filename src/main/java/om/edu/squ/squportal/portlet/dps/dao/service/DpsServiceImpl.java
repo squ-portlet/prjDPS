@@ -30,6 +30,7 @@
 package om.edu.squ.squportal.portlet.dps.dao.service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -394,6 +395,7 @@ public class DpsServiceImpl implements DpsServiceDao
 	 * 
 	 * method name  : getNotifierPeople
 	 * @param studentNo
+	 * @param studentStatCode
 	 * @param formName
 	 * @param roleName
 	 * @param isHigherApproverRequired
@@ -409,10 +411,10 @@ public class DpsServiceImpl implements DpsServiceDao
 	 */
 	public NotifierPeople getNotifierPeople(
 												String studentNo, 
+												String studentStatCode, 
 												String formName, 
-												String roleName, 
-												boolean isHigherApproverRequired,
-												Locale locale 
+												String roleName,
+												boolean isHigherApproverRequired, Locale locale 
 											) throws NotCorrectDBRecordException
 	{
 		NotifierPeople	notifierPeople	=	new NotifierPeople();
@@ -423,7 +425,9 @@ public class DpsServiceImpl implements DpsServiceDao
 		List<RoleNameValue> roleList			=	null;
 		String				statusDescriptionEng=	null;
 		String				statusDescriptionAr	=	null;
+		boolean				isSupervisor		=	false;
 		
+
 		
 		if(isHigherApproverRequired)
 		{
@@ -432,6 +436,42 @@ public class DpsServiceImpl implements DpsServiceDao
 					approver		=	dpsDbDao.getHigherApprover(studentNo, formName, roleName, Constants.CONST_NO);
 
 		roleList	=	roleService.getRoles(formName, locale);
+		
+		if(null != studentStatCode)
+		{
+			isSupervisor		=	isSupervisorAvailable(studentNo, studentStatCode);
+			if(isSupervisor)
+			{
+				switch (formName)
+				{
+					case Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY:
+						 roleList.remove(getRoleObjectFromList(Constants.CONST_SQL_ROLE_NAME_ADVISOR, roleList));
+						break;
+					case Constants.CONST_FORM_NAME_DPS_POSTPONE_STUDY:
+						 roleList.remove(getRoleObjectFromList(Constants.CONST_SQL_ROLE_NAME_ADVISOR, roleList));
+						break;
+					
+					default:
+						break;
+				}
+			}
+			else
+			{
+				switch (formName)
+				{
+					case Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY:
+						 roleList.remove(getRoleObjectFromList(Constants.CONST_SQL_ROLE_NAME_SUPERVISOR, roleList));
+						break;
+					case Constants.CONST_FORM_NAME_DPS_POSTPONE_STUDY:
+						 roleList.remove(getRoleObjectFromList(Constants.CONST_SQL_ROLE_NAME_SUPERVISOR, roleList));
+						break;
+					
+					default:
+						break;
+				}
+			}
+		}
+		
 		notifierPeople.setStudent(student);
 		notifierPeople.setApprover(approver);
 		notifierPeople.setApproverHigher(approverHigher);
@@ -559,4 +599,64 @@ public class DpsServiceImpl implements DpsServiceDao
 	}
 	
 	
+	/**** POSTPONE RULE ****/
+	
+	/**
+	 * 
+	 * method name  : isPostponeCountWithinLimit
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * DpsServiceImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		: Find whether the max limit of postpone reached
+	 *
+	 * Date    		:	Dec 26, 2017 1:57:12 PM
+	 */
+	public boolean isPostponeCountWithinLimit(String studentNo, String stdStatCode)
+	{
+		boolean	postponeLimit	=	false;
+		int resultLimit	=	ruleService.countPostpone(studentNo, stdStatCode);
+		postponeLimit	=	(resultLimit<=Constants.CONST_RULE_POSTPONE_STUDENT_MAXIMUM_ALLOWED)?true:false;
+		if(!postponeLimit)
+		{
+			logger.error(
+							"Student:: student no : {}, statcode : {}, already reached allowed number of postpone : {}"
+							,studentNo,stdStatCode,Constants.CONST_RULE_POSTPONE_STUDENT_MAXIMUM_ALLOWED
+						);
+		}
+		return (postponeLimit);
+				
+	}
+	
+	/**
+	 * 
+	 * method name  : getRoleObjectFromList
+	 * @param roleName
+	 * @param roleNameValues
+	 * @return
+	 * DpsServiceImpl
+	 * return type  : RoleNameValue
+	 * 
+	 * purpose		:  Get particular Object from list
+	 *
+	 * Date    		:	Dec 31, 2017 1:08:53 PM
+	 */
+	private	RoleNameValue	getRoleObjectFromList(String roleName, List<RoleNameValue> roleNameValues)
+	{
+		RoleNameValue	result	=	null;
+		Iterator<RoleNameValue> 	iterator	=	roleNameValues.iterator();
+		while(iterator.hasNext())
+		{
+			RoleNameValue	roleNameValue	=	iterator.next();
+			if(roleNameValue.getRoleName().equals(roleName))
+			{
+				result	=	roleNameValue;
+				break;
+			}
+		}
+		
+		return result;
+	}
 }

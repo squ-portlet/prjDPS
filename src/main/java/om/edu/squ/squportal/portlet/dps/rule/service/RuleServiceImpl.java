@@ -204,7 +204,7 @@ public class RuleServiceImpl implements Rule
 	 *
 	 * Date    		:	Mar 14, 2017 1:08:11 PM
 	 */
-	private int countPostpone(String studentNo, String stdStatCode)
+	public int countPostpone(String studentNo, String stdStatCode)
 	{
 		return ruleDbDao.countPostpone(studentNo, stdStatCode);
 	}

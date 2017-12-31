@@ -2,14 +2,34 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
     <comment>DPS Postponement Queries</comment>
+    <entry key="dps.postpone.select.existing.grade">
+		    SELECT 
+					GRADE.L_ABR_CRSNO   													AS  	L_ABR_CRSNO
+					, GVAL.L_ABR_GVAL   													AS  	GRADE_VAL
+					, DECODE(
+					          :paramLocale
+					          , 'ar', A_CRSSNM
+					          , CRSSNM
+					)                   													AS  	COURSE_NAME
+			FROM 
+			      STD_GRADES  GRADE
+			    , GRADE_VAL   GVAL
+			    , CRS_BASIC   COURSE
+			WHERE
+			      GRADE.STDNO 	= 	:paramStdNo 
+			  AND GRADE.CCYRCD 	= 	(SELECT CCYRCD FROM CURRENT_YR_SEM)
+			  AND GRADE.SEMCD 	= 	(SELECT SEMCD FROM CURRENT_YR_SEM)
+			  AND GRADE.GRADECD = 	GVAL.GRADECD
+			  AND GRADE.CRSNO = 	COURSE.CRSNO
+    </entry>
     <entry key="dps.postpone.select.postpone.reasons">
     	SELECT 
-			CODE.SISCODECD										AS		SISCODECD	
+			CODE.SISCODECD																	AS		SISCODECD	
 			,DECODE 
 					(
 					  :paramLocale,
 					  'en', CODE.CODENM, CODE.A_CODENM
-					)     										AS		POSTPONE_REASON_NAME
+					)     																	AS		POSTPONE_REASON_NAME
 		FROM 
 		    SIS_CODES CODE,
         	SIS_CODE_TYPES CODE_TYPE
@@ -66,22 +86,26 @@
 		          , FUNC_APPROVE_STATUS(
 	                            POSTPN.STDNO,
 	                            :paramAdvisorRoleName, 
-	                            :paramFormName
+	                            :paramFormName,
+	                            POSTPN.REC_SEQ_NO
 	                            )                           								AS  	ADVISOR_STATUS            																		
 	          , FUNC_APPROVE_STATUS(
 	                            POSTPN.STDNO,
 	                            :paramSupervisorRoleName, 
-	                            :paramFormName
+	                            :paramFormName,
+	                            POSTPN.REC_SEQ_NO
 	                            )                           								AS  	SUPERVISOR_STATUS
 	        , FUNC_APPROVE_STATUS(
 	                            POSTPN.STDNO,
 	                            :paramColDeanRoleName, 
-	                            :paramFormName
+	                            :paramFormName,
+	                            POSTPN.REC_SEQ_NO
 	                            )                           								AS  	COLLEGE_DEAN_STATUS
 	        , FUNC_APPROVE_STATUS(
 	                            POSTPN.STDNO,
 	                            :paramDpsDeanRoleName, 
-	                            :paramFormName
+	                            :paramFormName,
+	                            POSTPN.REC_SEQ_NO
 	                            )                           								AS  	DPS_DEAN_STATUS	 
 			, FUNC_GET_APPROVALCODE(
 								:paramFormName,
@@ -98,19 +122,21 @@
 			, FUNC_GET_APPROVALCODE(
 								:paramFormName,
 								:paramDpsDeanRoleName
-								)															AS		DPS_DEAN_APPROVAL_CODE														               
+								)															AS		DPS_DEAN_APPROVAL_CODE
+ 			, FUNC_IS_SUPERVISOR_AVAILABLE(POSTPN.STDNO,POSTPN.STDSTATCD)  					AS 		HAS_THESIS 																						               
 		FROM 
-		    STD_POSTPONE POSTPN,
-		    SIS_CODES     SISCD
+		    T_REG_POSTPONE 	POSTPN,
+		    SIS_CODES     	SISCD
 		
 		WHERE
 		        POSTPN.PSTREASONCD=SISCD.SISCODECD
 		    AND STDNO = :paramStdNo    
     </entry>
     <entry key="dps.postpone.insert.student">
-		INSERT INTO STD_POSTPONE
+		INSERT INTO T_REG_POSTPONE
 		(
-			  STDNO 
+			  REC_SEQ_NO
+			, STDNO 
 			, STDSTATCD 
 			, FROMCCYRCD 
 			, FROMSEMCD 
@@ -124,7 +150,8 @@
 		)
 		VALUES 
 		(
-			  :paramStdNo
+			  DPS_SQ.NEXTVAL
+			, :paramStdNo
 			, :paramStdStatCode
 			, :paramFromYearCode
 			, :paramFromSemCode
@@ -152,32 +179,51 @@
 					  FROM
 					(  
 					    SELECT DISTINCT
-					            POST.STDNO                                     	AS  STUDENT_NO
-					          , PORTAL.STD_ID									AS	STUDENT_ID  
+					    	    POST.REC_SEQ_NO												AS		SEQUENCE_NUMBER
+					          , POST.STDNO                                     				AS  	STUDENT_NO
+					          , PORTAL.STD_ID												AS		STUDENT_ID  
 					          , DECODE
 					                  (
 					                      :paramLocal
 					                      ,'en',PORTAL.STD_NAME
 					                      , PORTAL.A_STD_NAME
-					                  )                                       	AS  STUDENT_NAME        
-					          , POST.STDSTATCD                                 	AS  STDSTATCD
-					          , PORTAL.COHORT                                 	AS  COHORT
-					          , POST.TOCCYRCD                                  	AS  TOCCYRCD                              
-					          , POST.TOSEMCD                                   	AS  TOSEMCD
+					                  )                                       				AS  	STUDENT_NAME        
+					          , POST.STDSTATCD                                 				AS  	STDSTATCD
+					          , PORTAL.COHORT                                 				AS  	COHORT
+					          , POST.TOCCYRCD                                  				AS  	TOCCYRCD                              
+					          , POST.TOSEMCD                                   				AS  	TOSEMCD
+					          , DECODE
+					          (
+					            SISCD.L_ABR_CODE
+					            ,'OTHR',POST.OTHER_REASON, 
+					              DECODE
+					              (
+					                  :paramLocal
+					                  ,'en', SISCD.CODENM, SISCD.A_CODENM
+					              )
+					            )                                           				AS 		POSTPONE_REASON_NAME
+					          , POST.OTHER_REASON											AS		POSTPONE_OTHER_REASON						          
 					          , COL.COLCENCD
 					          , DECODE
 					                (
 					                    :paramLocal
 					                    ,'en', PORTAL.DEGREE_NAME
 					                    ,PORTAL.A_DEGREE_NAME
-					                )                                         	AS  DEGREE_NAME
+					                )                                         				AS  	DEGREE_NAME
 					          , DECODE 
 					                (
 					                      :paramLocal
 					                      ,'en', PORTAL.COLLEGENM
 					                      , PORTAL.A_COLLEGENM
-					                )                                         	AS  COLLEGE_NAME
-					          , POST.POSTREQ_STATUSCD                          	AS  STATUS_CODE
+					                )                                         				AS  	COLLEGE_NAME
+					          , POST.POSTREQ_STATUSCD                          				AS  	STATUS_CODE
+					        , (
+					        	SELECT
+					        		L_ABR_CODE
+					        	FROM SIS_CODES
+					            WHERE 
+					            	SISCODECD= POST.POSTREQ_STATUSCD
+					        	)															AS		STATUS_CODE_NAME					          
 					          , (
 					              SELECT 
 					                  DECODE
@@ -189,50 +235,76 @@
 					                    SIS_CODES
 					                  WHERE 
 					                    SISCODECD = POST.POSTREQ_STATUSCD
-					            )                                             	AS  STATUS_DESC
-					          , POST.CREATE_DATE                               	AS  CREATE_DATE
-
-
+					            )                                             				AS  	STATUS_DESC
+							  , POST.COMMNT													AS		COMMENTS
 	                          , FUNC_APPROVE_STATUS(
 	                                              POST.STDNO,
 	                                              :paramAdvisorRoleName, 
-	                                              :paramFormName
-	                                              )                           	AS  ADVISOR_STATUS 
+	                                              :paramFormName,
+	                                              POST.REC_SEQ_NO
+	                                              )                           				AS  	ADVISOR_STATUS 
 
                       
 	                          , FUNC_APPROVE_STATUS(
 	                                              POST.STDNO,
 	                                              :paramSupervisorRoleName, 
-	                                              :paramFormName
-	                                              )                           	AS  SUPERVISOR_STATUS
+	                                              :paramFormName,
+	                                              POST.REC_SEQ_NO
+	                                              )                           				AS  	SUPERVISOR_STATUS
 	                          , FUNC_APPROVE_STATUS(
 	                                              POST.STDNO,
 	                                              :paramColDeanRoleName, 
-	                                              :paramFormName
-	                                              )                           	AS  COLLEGE_DEAN_STATUS
+	                                              :paramFormName,
+	                                              POST.REC_SEQ_NO
+	                                              )                           				AS  	COLLEGE_DEAN_STATUS
 	                          , FUNC_APPROVE_STATUS(
 	                                              POST.STDNO,
 	                                              :paramDpsDeanRoleName, 
-	                                              :paramFormName
-	                                              )                           	AS  DPS_DEAN_STATUS
-	                          ,	FUNC_IS_APPROVER(
+	                                              :paramFormName,
+	                                              POST.REC_SEQ_NO
+	                                              )                           				AS  	DPS_DEAN_STATUS
+	                          ,	NVL(FUNC_IS_APPROVER(
 												 		  POST.STDNO
 												 		, POST.STDSTATCD
 												 		, :paramFormName
 												 		, :paramRoleName
 												 		, :paramEmpNo
-	                         						)						 	AS	IS_APPROVER
-                              ,FUNC_IS_SUPERVISOR_AVAILABLE(POST.STDNO,POST.STDSTATCD)  AS 	HAS_THESIS     		                                          
+												 		, (
+															SELECT 
+																  MAX(REC_SEQ_NO)
+															FROM 
+																  T_REG_POSTPONE
+															WHERE
+																	  STDNO 	= 	POST.STDNO
+																  AND STDSTATCD =	POST.STDSTATCD
+															) 
+	                         						),'N')						 			AS		IS_APPROVER
+                              ,	FUNC_IS_SUPERVISOR_AVAILABLE(POST.STDNO,POST.STDSTATCD)  	AS 		HAS_THESIS   
+  							  , 	(
+							              			SELECT 
+							                      		DECODE (
+							                                	MAX (UPDDTE)
+							                                , 	NULL, MAX (CREATE_DATE)
+							                                , 	MAX (UPDDTE)
+							                             )
+							                                
+										              FROM 
+										                    T_REG_POSTPONE
+										              WHERE
+										                   STDNO = POST.STDNO
+								     )                                     					AS 		DATE_WATCH                                		                                          
                                         
 					    FROM     
-					          STD_POSTPONE        POST
-					          ,V_STDINFO_PORTAL   PORTAL
-					          ,COL_CEN            COL
-					          , STD_THESIS        THESIS
-					          , V_DEPT_MAJOR      DEPT_MAJ
-					          , COL_DEPT          DEPT
+					          	T_REG_POSTPONE     	POST
+					          ,	V_STDINFO_PORTAL   	PORTAL
+					          ,	COL_CEN            	COL
+					          , STD_THESIS        	THESIS
+					          , V_DEPT_MAJOR      	DEPT_MAJ
+					          , COL_DEPT          	DEPT
+					          , SIS_CODES     		SISCD
 					    WHERE
 					              DEPT.COLCENCD     = COL.COLCENCD
+					          AND POST.PSTREASONCD	=	SISCD.SISCODECD
 					          AND DEPT_MAJ.DEPTNO   = DEPT.DEPTNO (+)
 					          AND POST.STDNO         = PORTAL.STDNO
 					          AND THESIS.STDNO(+)      = POST.STDNO 															 
@@ -266,22 +338,22 @@
 								      OR  :paramStdNo IS NULL
 								)
 					)
-					ORDER BY  CREATE_DATE DESC    
+					ORDER BY IS_APPROVER DESC, DATE_WATCH DESC    
     </entry>
     <entry key="dps.postpone.update.status.student">
 				UPDATE
-				    STD_POSTPONE
+				    T_REG_POSTPONE
 				SET
 				    POSTREQ_STATUSCD =   (
-									                                SELECT
-									                                    CODES.SISCODECD	
-									                                FROM
-									                                        SIS_CODES       CODES
-									                                    ,   SIS_CODE_TYPES  TYPES
-									                                WHERE
-									                                        CODES.SISCODETYPCD =  TYPES.SISCODETYPCD
-									                                    AND TYPES.SISCODETYPNM = 'APPROVAL_STATUS'
-									                                    AND CODES.L_ABR_CODE  = :paramStatusCodeName
+					                                SELECT
+					                                    CODES.SISCODECD	
+					                                FROM
+					                                        SIS_CODES       CODES
+					                                    ,   SIS_CODE_TYPES  TYPES
+					                                WHERE
+					                                        CODES.SISCODETYPCD =  TYPES.SISCODETYPCD
+					                                    AND TYPES.SISCODETYPNM = 'APPROVAL_STATUS'
+					                                    AND CODES.L_ABR_CODE  = :paramStatusCodeName
 				                              )
 				    , COMMNT			= :paramComment					                            
 				    , USRACCTCD       = :paramUserName
