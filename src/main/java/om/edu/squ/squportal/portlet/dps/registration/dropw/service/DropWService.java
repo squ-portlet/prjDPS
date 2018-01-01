@@ -98,6 +98,7 @@ public interface DropWService
 	 * @param studentNo
 	 * @param stdStatCode
 	 * @param courseNo TODO
+	 * @param sectNo TODO
 	 * @return
 	 * DropWServiceImpl
 	 * return type  : boolean
@@ -106,7 +107,7 @@ public interface DropWService
 	 *
 	 * Date    		:	May 17, 2017 3:11:11 PM
 	 */
-	public boolean isRuleStudentComplete(String studentNo, String stdStatCode, String courseNo);
+	public boolean isRuleStudentComplete(String studentNo, String stdStatCode, String courseNo, String sectNo);
 	
 	/**
 	 * 

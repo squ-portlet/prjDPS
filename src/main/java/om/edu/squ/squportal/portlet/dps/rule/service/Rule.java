@@ -132,6 +132,7 @@ public interface Rule
 	 * @param totalRegisteredCredit
 	 * @param selectedCourseCredit
 	 * @param studyModeType
+	 * @param sectNo TODO
 	 * @return
 	 * RuleServiceImpl
 	 * return type  : boolean
@@ -140,7 +141,7 @@ public interface Rule
 	 *
 	 * Date    		:	Aug 16, 2017 4:00:37 PM
 	 */
-	public boolean isDropwTotalRegisteredCreditRuleExist(int totalRegisteredCredit,  int selectedCourseCredit, String studyModeType);
+	public boolean isDropwTotalRegisteredCreditRuleExist(int totalRegisteredCredit,  int selectedCourseCredit, String studyModeType, String sectNo);
 	
 	/**
 	 * 

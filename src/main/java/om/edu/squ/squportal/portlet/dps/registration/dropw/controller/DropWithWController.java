@@ -146,7 +146,7 @@ public class DropWithWController
 		model.addAttribute("isRuleStudentComplete", dropWService.isRuleStudentComplete(
 																							student.getAcademicDetail().getStudentNo(), 
 																							student.getAcademicDetail().getStdStatCode(), 
-																							null
+																							null, null
 																						)
 							);
 		model.addAttribute("courseList", dropWService.getCourseList(student, locale));
@@ -217,7 +217,7 @@ public class DropWithWController
 		
 		try
 		{
-			if(dropWService.isRuleStudentComplete(student.getAcademicDetail().getStudentNo(), student.getAcademicDetail().getStdStatCode(), dropCourseModel.getCourseNo()))
+			if(dropWService.isRuleStudentComplete(student.getAcademicDetail().getStudentNo(), student.getAcademicDetail().getStdStatCode(), dropCourseModel.getCourseNo(), dropCourseModel.getSectNo()))
 			{
 				if(dropWService.isRuleModeCreditApplied())
 				{

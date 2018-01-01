@@ -385,9 +385,9 @@ public class DpsServiceImpl implements DpsServiceDao
 	 *
 	 * Date    		:	Aug 17, 2017 5:05:04 PM
 	 */
-	public int getSelectedRegisteredCourseCredit(String studentNo, String stdStatCode, String courseNo)
+	public int getSelectedRegisteredCourseCredit(String studentNo, String stdStatCode, String courseNo, String sectNo)
 	{
-		return dpsDbDao.getSelectedRegisteredCourseCredit(studentNo, stdStatCode, courseNo);
+		return dpsDbDao.getSelectedRegisteredCourseCredit(studentNo, stdStatCode, courseNo, sectNo);
 	}
 	
 	
