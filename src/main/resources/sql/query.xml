@@ -182,13 +182,20 @@
     </entry>
     <entry key="dps.select.student.selected.registered.course.credit">
 			SELECT 
-			      CRSCRED
+			       DECODE(
+				              MOD(SECTNO,10)
+				              , 0, CRSCRED, 0
+            		)
 			FROM
 			      V_STD_CURREG
 			WHERE
 			            STDNO = :paramStdNo
 			      AND   STDSTATCD = :paramStdStatCode
-			      AND   CRSNO     = :paramCourseNo    	
+			      AND   CRSNO     = :paramCourseNo  
+			      AND	(
+			      			:paramSectNo IS NULL
+			      		OR  SECTNO = :paramSectNo
+			      )  	
     </entry>
     <entry key="dps.function.is.supervisor.available">
     	SELECT 
