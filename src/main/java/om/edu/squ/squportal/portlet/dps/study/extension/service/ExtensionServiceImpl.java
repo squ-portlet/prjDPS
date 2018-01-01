@@ -107,21 +107,32 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 	 */
 	public int setExtensionByStudent(Student student, ExtensionStudentDataModel extensionStudentDataModel, String userName, Locale locale)
 	{
-		int result = 0;
+		int 				result 			= 	0;
+		String 				approverRole	=	null;
 		ExtensionDTO	extensionDTO	=	new ExtensionDTO(student, extensionStudentDataModel, userName);
 		result	=	extensionDbDao.setExtensionByStudent(extensionDTO);
 
 		
 		if(result > 0)
 		{
+			
+			if(dpsServiceDao.isSupervisorAvailable(student.getAcademicDetail().getStudentNo(), student.getAcademicDetail().getStdStatCode()))
+			{
+				approverRole	=	Constants.CONST_SQL_ROLE_NAME_SUPERVISOR;
+			}
+			else
+			{
+				approverRole	=	Constants.CONST_SQL_ROLE_NAME_ADVISOR;
+			}
+			
 				/* -- Notification -- Start --*/
 				try
 				{
 					NotifierPeople notifierPeople = dpsServiceDao.getNotifierPeople(
 																						extensionDTO.getStudentNo(), 
-																						null, 
+																						student.getAcademicDetail().getStdStatCode(), 
 																						Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY, 
-																						Constants.CONST_SQL_ROLE_NAME_SUPERVISOR, 
+																						approverRole, 
 																						false, locale
 																					);
 		
@@ -291,7 +302,7 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 
 									NotifierPeople notifierPeople = dpsServiceDao.getNotifierPeople(
 																										extensionDTOTr.getStudentNo(), 
-																										null, 
+																										extensionDTOStudent.getStdStatCode(), 
 																										Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY, 
 																										extensionDTOTr.getRoleName(), 
 																										true, locale
