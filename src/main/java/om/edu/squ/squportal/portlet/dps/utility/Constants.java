@@ -105,6 +105,7 @@ public interface Constants
 	public static final	String	CONST_COLMN_GRADE_VAL										=	"GRADE_VAL";
 	public static final	String	CONST_COLMN_GRADE_VAL_OLD									=	"GRADE_VAL_OLD";
 	public static final	String	CONST_COLMN_GRADE_VAL_NEW									=	"GRADE_VAL_NEW";
+	public static final	String	CONST_COLMN_GRADE_IS_INCOMPLETE_GRADE						=	"IS_INCOMPLETE_GRADE";
 
 	public static final	String	CONST_COLMN_SISCODECD										=	"SISCODECD";
 	public static final	String	CONST_COLMN_STATUS_CODE										=	"STATUS_CODE";
