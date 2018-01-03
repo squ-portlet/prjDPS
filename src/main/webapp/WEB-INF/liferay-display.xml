@@ -33,5 +33,6 @@
 		<portlet id="dpsRegistrationDropWithW" />
 		<portlet id="dpsRegistrationPostpone" />
 		<portlet id="dpsGradeGradeChange" />
+		<portlet id="dpsIncompleteGrade" />
 	</category>
 </display>
