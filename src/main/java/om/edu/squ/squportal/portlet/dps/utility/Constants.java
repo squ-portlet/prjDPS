@@ -281,6 +281,11 @@ public interface Constants
 	public	static	final	String	CONST_SQL_GRADE_SELECT_RULE_TEST_CURRENT_YEAR_SEM		=	"dps.grades.select.rule.test.current.year.sem";
 	public	static	final	String	CONST_SQL_GRADE_SELECT_RULE_YEAR_SEM					=	"dps.grades.select.rule.grade.change.year.sem";
 	
+	/* ---  SQL - DPS - Incomplete Grade Notification property ------------------ */
+	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_SELECT_COURSE_LIST			=	"dps.incomplete.grade.select.course.list";	
+	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_SELECT_RULE_TEST_CURRENT_YEAR_SEM		=	"dps.incomplete.grades.select.rule.test.current.year.sem";
+	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_SELECT_RULE_YEAR_SEM			=	"dps.incomplete.grades.select.rule.grade.change.year.sem";
+	
 
 	/* ---  SQL - DPS - Drop With W -- Stored Procedure -- --------------------- */	
 	public	static	final	String	CONST_PROC_DROPW_WITHDRAW_COURSE						=	"PROC_WITHDRAW_COURSE";

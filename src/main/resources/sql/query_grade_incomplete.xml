@@ -2,4 +2,74 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
 	<comment>DPS Incomplete Grades Queries</comment>
+	
+	<entry key="dps.incomplete.grade.select.course.list">
+		<![CDATA[
+				SELECT
+				    DISTINCT
+				       SECT.L_ABR_CRSNO												AS    	L_ABR_CRSNO
+				    ,  SECT.CRSNO													AS		COURSE_NO
+				    ,  DECODE (
+					            :paramLocale
+					            , 'ar', COURSE.A_CRSLNM
+					            , COURSE.CRSLNM
+					          )  													AS 		COURSE_NAME
+				    , SECT.SECTNO													AS      SECTION_NO
+		FROM 
+              		SECT          SECT
+		        , 	SCHED_WEEKLY  SCHW
+		        , 	FAC_SURNM     FACULTY
+		        , 	CRS_BASIC     COURSE
+		      
+		WHERE
+		              SECT.CCYRCD = :paramYear
+		        AND   SECT.SEMCD = :paramSemester
+        
+		        AND   SCHW.SECTCD = SECT.SECTCD
+		        
+		        AND   SCHW.CRSNO  = SECT.CRSNO
+		        AND   SCHW.SECTNO = SECT.SECTNO
+		        
+		        AND   SCHW.FACSURNMCD=FACULTY.FAC_SURNMCD
+		        AND   FACULTY.EMPNO =:paramEmpNo
+		        AND   COURSE.CRSNO  = SECT.CRSNO
+		        AND   COURSE.CRSNO  = SCHW.CRSNO 
+		        
+		        ORDER BY L_ABR_CRSNO
+		   ]]>	
+	</entry>
+	<entry key="dps.incomplete.grades.select.rule.test.current.year.sem">
+			SELECT 
+			        CCYRCD      													AS    CCYRCD
+			      , SEMCD       													AS    SEMCD
+			FROM
+			      CURRENT_YR_SEM	
+		</entry>
+		<!-- TODO -->
+		<entry key="dps.incomplete.grades.select.rule.grade.change.year.sem">
+			SELECT 
+			          NVL(CCYRCD, 0) 												AS 		CCYRCD
+			        , NVL(SEMCD, 0) 												AS 		SEMCD
+			FROM
+			(
+			    SELECT 
+			            NULL AS CCYRCD
+			          , NULL AS SEMCD
+			    FROM
+			          DUAL
+			          
+			    UNION
+			    
+			    SELECT 
+			            CCYRCD
+			          , SEMCD
+			    FROM
+			          YR_SEM
+			    WHERE
+			          SYSDATE BETWEEN SEMENDDTE AND SEMENDDTE+30
+			)	
+			WHERE  ROWNUM = 1
+	    	ORDER BY CCYRCD DESC, SEMCD DESC
+		</entry>
+	
 </properties>

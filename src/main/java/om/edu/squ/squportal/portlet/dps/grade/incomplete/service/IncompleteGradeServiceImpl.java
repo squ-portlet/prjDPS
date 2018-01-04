@@ -29,11 +29,68 @@
  */
 package om.edu.squ.squportal.portlet.dps.grade.incomplete.service;
 
+import java.util.List;
+import java.util.Locale;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
+import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteBo;
+import om.edu.squ.squportal.portlet.dps.grade.incomplete.db.IncompleteGradeDBDao;
+import om.edu.squ.squportal.portlet.dps.notification.service.DPSNotification;
+import om.edu.squ.squportal.portlet.dps.security.Crypto;
+import om.edu.squ.squportal.portlet.dps.utility.Constants;
+
 /**
  * @author Bhabesh
  *
  */
 public class IncompleteGradeServiceImpl implements IncompleteGradeService
 {
+	@Autowired
+	DpsServiceDao			dpsServiceDao;
+	@Autowired
+	Crypto				crypto;
+	@Autowired
+	IncompleteGradeDBDao	incompleteGradeDBDao;
+	@Autowired
+	DPSNotification			dpsNotification;
+	
+	private boolean isRuleGradeChangeTimingFollowed;
+	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.grade.incomplete.service.IncompleteGradeService#getCourseList(java.lang.String, java.util.Locale)
+	 */
+	@Override
+	public List<GradeIncompleteBo> getCourseList( String employeeNo, Locale	locale)
+	{
+		return incompleteGradeDBDao.getCourseList(isRuleGradeChangeTimingFollowed, employeeNo, locale);
+	}
+	
+	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.grade.incomplete.service.IncompleteGradeService#isRuleComplete()
+	 */
+	public boolean isRuleComplete()
+	{
+		/*
+		 * Rule 1 : Grade Change is allowed within one month after final exam
+		 * */
+		
+		if(Constants.CONST_TEST_ENVIRONMENT)
+		{
+			
+			this.isRuleGradeChangeTimingFollowed	=	false;
+		}
+		else
+		{
+			/*Rule 1*/
+			this.isRuleGradeChangeTimingFollowed	=	true;
+		}
+		
+		return true;
+	}
 	
 }

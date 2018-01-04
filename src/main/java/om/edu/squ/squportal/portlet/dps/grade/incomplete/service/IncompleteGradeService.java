@@ -29,11 +29,42 @@
  */
 package om.edu.squ.squportal.portlet.dps.grade.incomplete.service;
 
+import java.util.List;
+import java.util.Locale;
+
+import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteBo;
+
 /**
  * @author Bhabesh
  *
  */
 public interface IncompleteGradeService
 {
+	/**
+	 * 
+	 * method name  : getCourseList
+	 * @param employeeNo
+	 * @param locale
+	 * @return
+	 * IncompleteGradeService
+	 * return type  : List<GradeIncompleteBo>
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Jan 3, 2018 3:22:51 PM
+	 */
+	public List<GradeIncompleteBo> getCourseList( String employeeNo, Locale	locale);
 	
+	/**
+	 * 
+	 * method name  : isRuleComplete
+	 * @return
+	 * IncompleteGradeService
+	 * return type  : boolean
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Jan 4, 2018 8:56:08 AM
+	 */
+	public boolean isRuleComplete();
 }

@@ -33,8 +33,11 @@ import java.util.Locale;
 
 import javax.portlet.PortletRequest;
 
+import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.User;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
+import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
+import om.edu.squ.squportal.portlet.dps.grade.incomplete.service.IncompleteGradeService;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
 import org.slf4j.Logger;
@@ -43,6 +46,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.google.gson.Gson;
 
 /**
  * @author Bhabesh
@@ -54,8 +59,9 @@ public class IncompleteGradeController
 {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
-	DpsServiceDao		dpsServiceDao;
-	
+	DpsServiceDao			dpsServiceDao;
+	@Autowired
+	IncompleteGradeService	incompleteGradeService;
 	
 	/**
 	 * 
@@ -96,12 +102,46 @@ public class IncompleteGradeController
 	 * IncompleteGradeController
 	 * return type  : String
 	 * 
-	 * purpose		:
+	 * purpose		: 
 	 *
 	 * Date    		:	Jan 3, 2018 10:25:52 AM
 	 */
 	private String approverWelcome(PortletRequest request, Model model, Locale locale)
 	{
+		Employee employee	=	null;
+		String	employeeNumber	=	null;
+		Gson	gson			=	new Gson();
+		
+		try
+		{
+			employee = dpsServiceDao.getEmployee(request,locale);
+			
+		}
+		catch (ExceptionEmptyResultset ex)
+		{
+			logger.error("No records available. Probably user doesnot logged in ");
+		}
+		
+		boolean booRule = incompleteGradeService.isRuleComplete();
+		
+		if(null == employee)
+		{
+			model.addAttribute("empSISValid", false);
+		}
+		else
+		{
+			if(employee.getEmpNumber().substring(0,1).equals("e"))
+			{
+				employeeNumber	=	employee.getEmpNumber().substring(1);
+			}
+			logger.info("courseList : "+gson.toJson(incompleteGradeService.getCourseList(employeeNumber, locale)));
+			model.addAttribute("empSISValid", true);
+			model.addAttribute("courseList", incompleteGradeService.getCourseList(employeeNumber, locale));
+			model.addAttribute("employee", employee);
+			model.addAttribute("appApprove", Constants.CONST_SQL_STATUS_CODE_ACCPT);
+			model.addAttribute("appRecect", Constants.CONST_SQL_STATUS_CODE_REJCT);
+			model.addAttribute("roleDpsStaff", Constants.CONST_SQL_ROLE_NAME_DPS_STAFF);
+		}
 		return "/grade/incomplete/approver/welcomeIncompleteGradeApprover";
 	}
 	

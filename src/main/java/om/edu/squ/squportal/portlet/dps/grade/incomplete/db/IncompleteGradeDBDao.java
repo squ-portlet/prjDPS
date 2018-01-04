@@ -29,11 +29,30 @@
  */
 package om.edu.squ.squportal.portlet.dps.grade.incomplete.db;
 
+import java.util.List;
+import java.util.Locale;
+
+import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteBo;
+
 /**
  * @author Bhabesh
  *
  */
 public interface IncompleteGradeDBDao
 {
-	
+	/**
+	 * 
+	 * method name  : getCourseList
+	 * @param isRuleGradeChangeTimingFollowed TODO
+	 * @param employeeNo
+	 * @param locale
+	 * @return
+	 * IncompleteGradeDBDao
+	 * return type  : List<GradeIncompleteBo>
+	 * 
+	 * purpose		: Fetch Course List
+	 *
+	 * Date    		:	Jan 3, 2018 3:11:15 PM
+	 */
+	public List<GradeIncompleteBo> getCourseList( boolean isRuleGradeChangeTimingFollowed, String employeeNo, Locale	locale);
 }
