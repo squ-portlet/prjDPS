@@ -72,6 +72,7 @@
 				<value>messages/registration/dropWithW/dropwithw</value>
 				<value>/messages/registration/postpone/postpone</value>
 				<value>/messages/grade/gradeChange/gradeChange</value>
+				<value>/messages/grade/incomplete/incompleteGrade.properties</value>
 			</list>
 		</property>	
 	</bean>

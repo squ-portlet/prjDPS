@@ -111,6 +111,11 @@
 			                    , 'ar', GV.A_ABR_GVAL
 			                    ,      GV.L_ABR_GVAL
 			                  )                                                 AS      GRADE_VAL
+			            , DECODE
+			            	(
+			            		UPPER(SUBSTR(GV.L_ABR_GVAL,1,1))
+			            		,'I','Y','N'
+			            	)													AS		IS_INCOMPLETE_GRADE	
 		                , (
 		                    SELECT 
 		                          COUNT(SCHEDW.FACSURNMCD)

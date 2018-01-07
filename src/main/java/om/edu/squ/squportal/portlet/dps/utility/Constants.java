@@ -105,6 +105,7 @@ public interface Constants
 	public static final	String	CONST_COLMN_GRADE_VAL										=	"GRADE_VAL";
 	public static final	String	CONST_COLMN_GRADE_VAL_OLD									=	"GRADE_VAL_OLD";
 	public static final	String	CONST_COLMN_GRADE_VAL_NEW									=	"GRADE_VAL_NEW";
+	public static final	String	CONST_COLMN_GRADE_IS_INCOMPLETE_GRADE						=	"IS_INCOMPLETE_GRADE";
 
 	public static final	String	CONST_COLMN_SISCODECD										=	"SISCODECD";
 	public static final	String	CONST_COLMN_STATUS_CODE										=	"STATUS_CODE";
@@ -283,6 +284,11 @@ public interface Constants
 	public	static	final	String	CONST_SQL_GRADE_CHANGE_UPDATE_APPROVAL_TEMP				=	"dps.grades.update.grade.change.approval.by.approver";
 	public	static	final	String	CONST_SQL_GRADE_SELECT_RULE_TEST_CURRENT_YEAR_SEM		=	"dps.grades.select.rule.test.current.year.sem";
 	public	static	final	String	CONST_SQL_GRADE_SELECT_RULE_YEAR_SEM					=	"dps.grades.select.rule.grade.change.year.sem";
+	
+	/* ---  SQL - DPS - Incomplete Grade Notification property ------------------ */
+	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_SELECT_COURSE_LIST			=	"dps.incomplete.grade.select.course.list";	
+	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_SELECT_RULE_TEST_CURRENT_YEAR_SEM		=	"dps.incomplete.grades.select.rule.test.current.year.sem";
+	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_SELECT_RULE_YEAR_SEM			=	"dps.incomplete.grades.select.rule.grade.change.year.sem";
 	
 
 	/* ---  SQL - DPS - Drop With W -- Stored Procedure -- --------------------- */	
