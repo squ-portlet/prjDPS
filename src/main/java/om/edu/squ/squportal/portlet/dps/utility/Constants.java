@@ -73,6 +73,7 @@ public interface Constants
 	public static final	String	CONST_COLMN_STUDENT_NO										=	"STUDENT_NO";
 	public static final	String	CONST_COLMN_STDSTATCD										=	"STDSTATCD";
 	public static final	String	CONST_COLMN_STUDENT_NAME									=	"STUDENT_NAME";
+	public static final	String	CONST_COLMN_STUDENT_GENDER									=	"STUDENT_GENDER";
 	public static final	String	CONST_COLMN_STUDENT_HOME_REGION								=	"STUDENT_HOME_REGION";
 	public static final	String	CONST_COLMN_STUDENT_HOME_WILAYAT							=	"STUDENT_HOME_WILAYAT";
 	public static final	String	CONST_COLMN_STUDENT_TOWN_VILLAGE							=	"STUDENT_TOWN_VILLAGE";
