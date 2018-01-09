@@ -35,7 +35,7 @@ import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
-import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteBo;
+import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteDTO;
 import om.edu.squ.squportal.portlet.dps.grade.incomplete.db.IncompleteGradeDBDao;
 import om.edu.squ.squportal.portlet.dps.notification.service.DPSNotification;
 import om.edu.squ.squportal.portlet.dps.security.Crypto;
@@ -63,9 +63,19 @@ public class IncompleteGradeServiceImpl implements IncompleteGradeService
 	 * @see om.edu.squ.squportal.portlet.dps.grade.incomplete.service.IncompleteGradeService#getCourseList(java.lang.String, java.util.Locale)
 	 */
 	@Override
-	public List<GradeIncompleteBo> getCourseList( String employeeNo, Locale	locale)
+	public List<GradeIncompleteDTO> getCourseList( String employeeNo, Locale	locale)
 	{
 		return incompleteGradeDBDao.getCourseList(isRuleGradeChangeTimingFollowed, employeeNo, locale);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.grade.incomplete.service.IncompleteGradeService#getStudentList(java.lang.String, java.lang.String, java.lang.String, java.util.Locale)
+	 */
+	@Override
+	public List<GradeIncompleteDTO> getStudentList(String employeeNo, String lAbrCourseNo,String sectionNo, Locale	locale)
+	{
+		return incompleteGradeDBDao.getStudentList(isRuleGradeChangeTimingFollowed, employeeNo, lAbrCourseNo, sectionNo, locale);
 	}
 	
 	
@@ -73,6 +83,7 @@ public class IncompleteGradeServiceImpl implements IncompleteGradeService
 	 * (non-Javadoc)
 	 * @see om.edu.squ.squportal.portlet.dps.grade.incomplete.service.IncompleteGradeService#isRuleComplete()
 	 */
+	@Override
 	public boolean isRuleComplete()
 	{
 		/*
