@@ -37,8 +37,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
+import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Course;
-import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteBo;
+import om.edu.squ.squportal.portlet.dps.bo.PersonalDetail;
+import om.edu.squ.squportal.portlet.dps.bo.Student;
+import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.Grade;
+import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteDTO;
 import om.edu.squ.squportal.portlet.dps.rule.bo.YearSemester;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
@@ -95,22 +99,25 @@ public class IncompleteGradeDBImpl implements IncompleteGradeDBDao
 	 * @see om.edu.squ.squportal.portlet.dps.grade.incomplete.db.IncompleteGradeDBDao#getCourseList(java.lang.String, java.util.Locale)
 	 */
 	@Override
-	public List<GradeIncompleteBo> getCourseList( boolean isRuleGradeChangeTimingFollowed, String employeeNo, Locale	locale)
+	public List<GradeIncompleteDTO> getCourseList( boolean isRuleGradeChangeTimingFollowed, String employeeNo, Locale	locale)
 	{
 		String			SQL_GRADE_SELECT_COURSE_LIST		=	queryIncompleteGrade.getProperty(Constants.CONST_SQL_INCOMPLETE_GRADE_SELECT_COURSE_LIST);
 		YearSemester	yearSemester						=	null;
 		
-		RowMapper<GradeIncompleteBo> 	rowMapper	=	new RowMapper<GradeIncompleteBo>()
+		RowMapper<GradeIncompleteDTO> 	rowMapper	=	new RowMapper<GradeIncompleteDTO>()
 		{
 			
 			@Override
-			public GradeIncompleteBo mapRow(ResultSet rs, int rowNum) throws SQLException
+			public GradeIncompleteDTO mapRow(ResultSet rs, int rowNum) throws SQLException
 			{
-				GradeIncompleteBo gradeDTO	=	new GradeIncompleteBo();
+				GradeIncompleteDTO gradeDTO	=	new GradeIncompleteDTO();
 					Course	course	=	new Course();
 					course.setlAbrCourseNo(rs.getString(Constants.CONST_COLMN_L_ABR_CRSNO));
 					course.setCourseName(rs.getString(Constants.CONST_COLMN_COURSE_NAME));
 					course.setSectionNo(rs.getString(Constants.CONST_COLMN_SECTION_NO));
+					course.setSectCode(rs.getString(Constants.CONST_COLMN_SECT_CODE));
+					course.setCourseYear(rs.getInt(Constants.COST_COL_DPS_COURSE_YEAR));
+					course.setSemester(rs.getInt(Constants.COST_COL_DPS_SEMESTER_CODE));
 					
 					gradeDTO.setCourse(course);
 					
@@ -177,6 +184,68 @@ public class IncompleteGradeDBImpl implements IncompleteGradeDBDao
 		return nPJdbcTemplDpsIncompleteGrade.queryForObject(SQL_GRADE_SELECT_RULE_YEAR_SEM, namedParameterMap, rowMapper);
 	}
 	
+	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.grade.incomplete.db.IncompleteGradeDBDao#getStudentList(boolean, java.lang.String, java.lang.String, java.lang.String, java.util.Locale)
+	 */
+	@Override
+	public List<GradeIncompleteDTO> getStudentList(boolean isRuleGradeChangeTimingFollowed, String employeeNo,String lAbrCourseNo, String sectionNo, Locale	locale)
+	{
+		YearSemester	yearSemester						=	null;
+		String	SQL_INCOMPLETE_GRADE_SELECT_STUDENT_LIST	=	queryIncompleteGrade.getProperty(Constants.CONST_SQL_INCOMPLETE_GRADE_SELECT_STUDENT_LIST);
+		RowMapper<GradeIncompleteDTO> 	rowMapper	=	new RowMapper<GradeIncompleteDTO>()
+		{
+			
+			@Override
+			public GradeIncompleteDTO mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				GradeIncompleteDTO	dto				=	new GradeIncompleteDTO();
+				
+				Student				student			=	new Student();
+				AcademicDetail		academicDetail	=	new AcademicDetail();
+				PersonalDetail		personalDetail	=	new PersonalDetail();
+				Grade				grade			=	new Grade();
+				
+				academicDetail.setId(rs.getString(Constants.CONST_COLMN_STUDENT_ID));
+				academicDetail.setStudentNo(rs.getString(Constants.CONST_COLMN_STUDENT_NO));
+				academicDetail.setStudentName(rs.getString(Constants.CONST_COLMN_STUDENT_NAME));
+				academicDetail.setStdStatCode(rs.getString(Constants.CONST_COLMN_STDSTATCD));
+				
+				personalDetail.setId(rs.getString(Constants.CONST_COLMN_STUDENT_ID));
+				personalDetail.setStudentNo(rs.getString(Constants.CONST_COLMN_STUDENT_NO));
+				personalDetail.setName(rs.getString(Constants.CONST_COLMN_STUDENT_NAME));
+				personalDetail.setGender(rs.getString(Constants.CONST_COLMN_STUDENT_GENDER));
+				
+				student.setAcademicDetail(academicDetail);
+				student.setPersonalDetail(personalDetail);
+				
+				grade.setGradeCode(rs.getString(Constants.CONST_COLMN_GRADE_CODE));
+				grade.setGradeVal(rs.getString(Constants.CONST_COLMN_GRADE_VAL));
+
+				dto.setStudent(student);
+				dto.setGrade(grade);
+				
+				return dto;
+				
+			}
+		};
+		
+		yearSemester	=	getCurrentYearSem();
+		
+		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+		namedParameterMap.put("paramLocale", locale.getLanguage());
+		namedParameterMap.put("paramEmpNo",employeeNo);
+		namedParameterMap.put("paramYear", String.valueOf(yearSemester.getYear()));
+		namedParameterMap.put("paramSem", String.valueOf(yearSemester.getSemester()));	
+		namedParameterMap.put("paramLAbrCourseNo",lAbrCourseNo);
+		namedParameterMap.put("paramSectionNo",sectionNo);
+		
+		
+		
+		return nPJdbcTemplDpsIncompleteGrade.query(SQL_INCOMPLETE_GRADE_SELECT_STUDENT_LIST, namedParameterMap, rowMapper);
+	}
+
 	
 	
 		

@@ -15,6 +15,9 @@
 					            , COURSE.CRSLNM
 					          )  													AS 		COURSE_NAME
 				    , SECT.SECTNO													AS      SECTION_NO
+				    , SECT.SECTCD                       							AS  	SECT_CODE
+				    , SECT.CCYRCD                       							AS  	CCYRCD
+            		, SECT.SEMCD                        							AS  	SEMCD
 		FROM 
               		SECT          SECT
 		        , 	SCHED_WEEKLY  SCHW
@@ -71,5 +74,44 @@
 			WHERE  ROWNUM = 1
 	    	ORDER BY CCYRCD DESC, SEMCD DESC
 		</entry>
-	
+	<entry key="dps.incomplete.grades.select.students">
+			SELECT  DISTINCT 
+				 	ST.STD_ID                          								AS  	STUDENT_ID
+	            ,	SI.STDNO                          								AS  	STUDENT_NO
+	            ,	SI.STDSTATCD													AS		STDSTATCD
+	            , 	DECODE
+	                     (
+	                       :paramLocale
+	                        , 'en' ,SI.STD_NAME
+	                        , A_STD_NAME
+	                       )                       									AS  	STUDENT_NAME
+	            ,	SI.GENDER                   									AS  	STUDENT_GENDER
+	            ,	GRADES.GRADECD													AS		GRADE_CODE
+	            ,	( 
+		                 SELECT  
+		                       L_ABR_GVAL 
+		                 FROM 
+		                       GRADE_VAL 
+		                 WHERE
+		                       GRADECD = GRADES.GRADECD
+		              )                         									AS 		GRADE_VAL
+	            ,	GRADES.GRADUSRACCTCD
+			FROM  
+					V_STDTIMETABLE_PORTAL 	ST
+			    ,	V_STDINFO_PORTAL 		SI 
+			    ,	STD_GRADES      		GRADES
+			WHERE 
+					 		ST.COURSE_CODE		= 	:paramLAbrCourseNo 
+					 AND	ST.SECTNO			=	:paramSectionNo 
+					 AND	ST.STD_ID			= 	SI.STD_ID 
+					 AND	ST.EMPNO			=	:paramEmpNo	
+	                 AND	ST.STDNO			=	GRADES.STDNO(+)
+	                 AND	ST.COURSE_CODE		=	GRADES.L_ABR_CRSNO (+)
+	                 AND	ST.SECTNO			=	GRADES.SECTNO (+)
+	                 AND	GRADES.CCYRCD (+) 	= 	:paramYear
+		             AND	GRADES.SEMCD (+) 	= 	:paramSem
+		             AND 	SI.ACTIVE 			= 	'Y' 
+			                  
+					 ORDER BY GRADUSRACCTCD DESC, ST.STD_ID	
+	</entry>
 </properties>

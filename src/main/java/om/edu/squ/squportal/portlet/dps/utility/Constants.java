@@ -73,6 +73,7 @@ public interface Constants
 	public static final	String	CONST_COLMN_STUDENT_NO										=	"STUDENT_NO";
 	public static final	String	CONST_COLMN_STDSTATCD										=	"STDSTATCD";
 	public static final	String	CONST_COLMN_STUDENT_NAME									=	"STUDENT_NAME";
+	public static final	String	CONST_COLMN_STUDENT_GENDER									=	"STUDENT_GENDER";
 	public static final	String	CONST_COLMN_STUDENT_HOME_REGION								=	"STUDENT_HOME_REGION";
 	public static final	String	CONST_COLMN_STUDENT_HOME_WILAYAT							=	"STUDENT_HOME_WILAYAT";
 	public static final	String	CONST_COLMN_STUDENT_TOWN_VILLAGE							=	"STUDENT_TOWN_VILLAGE";
@@ -289,6 +290,7 @@ public interface Constants
 	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_SELECT_COURSE_LIST			=	"dps.incomplete.grade.select.course.list";	
 	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_SELECT_RULE_TEST_CURRENT_YEAR_SEM		=	"dps.incomplete.grades.select.rule.test.current.year.sem";
 	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_SELECT_RULE_YEAR_SEM			=	"dps.incomplete.grades.select.rule.grade.change.year.sem";
+	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_SELECT_STUDENT_LIST			=	"dps.incomplete.grades.select.students";
 	
 
 	/* ---  SQL - DPS - Drop With W -- Stored Procedure -- --------------------- */	

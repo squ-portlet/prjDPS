@@ -8,9 +8,9 @@
  *
  * FrameWork			:	Spring 4.0.8 (Annotation) Portlet
  * 
- * File Name			:	GradeIncompleteBo.java
+ * File Name			:	Grade.java
  * Package Name			:	om.edu.squ.squportal.portlet.dps.grade.incomplete.bo
- * Date of creation		:	Jan 3, 2018  2:58:34 PM
+ * Date of creation		:	Jan 8, 2018  5:37:55 PM
  * Date of modification :	
  * 
  * Summary				:	
@@ -29,45 +29,62 @@
  */
 package om.edu.squ.squportal.portlet.dps.grade.incomplete.bo;
 
-import om.edu.squ.squportal.portlet.dps.bo.Course;
-
 /**
  * @author Bhabesh
  *
  */
-public class GradeIncompleteBo
+public class Grade
 {
-	private	Course	course;
-
+	private	String	gradeCode;
+	private	String	gradeVal;
 	/**
-	 * Getter Method	: getCourse
-	 * @return the course
+	 * Getter Method	: getGradeCode
+	 * @return the gradeCode
 	 * 
-	 * Date				: Jan 3, 2018
+	 * Date				: Jan 8, 2018
 	 */
-	public Course getCourse()
+	public String getGradeCode()
 	{
-		return this.course;
+		return this.gradeCode;
 	}
-
 	/**
-	 * Setter method : setCourse
-	 * @param course the course to set
+	 * Setter method : setGradeCode
+	 * @param gradeCode the gradeCode to set
 	 * 
-	 * Date          : Jan 3, 2018 2:59:14 PM
+	 * Date          : Jan 8, 2018 5:38:29 PM
 	 */
-	public void setCourse(Course course)
+	public void setGradeCode(String gradeCode)
 	{
-		this.course = course;
+		this.gradeCode = gradeCode;
 	}
-
+	/**
+	 * Getter Method	: getGradeVal
+	 * @return the gradeVal
+	 * 
+	 * Date				: Jan 8, 2018
+	 */
+	public String getGradeVal()
+	{
+		return this.gradeVal;
+	}
+	/**
+	 * Setter method : setGradeVal
+	 * @param gradeVal the gradeVal to set
+	 * 
+	 * Date          : Jan 8, 2018 5:38:29 PM
+	 */
+	public void setGradeVal(String gradeVal)
+	{
+		this.gradeVal = gradeVal;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString()
 	{
-		return "GradeIncompleteBo [course=" + this.course + "]";
+		return "Grade [gradeCode=" + this.gradeCode + ", gradeVal="
+				+ this.gradeVal + "]";
 	}
 	
 	

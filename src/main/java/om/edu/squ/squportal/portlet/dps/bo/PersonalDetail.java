@@ -39,6 +39,7 @@ public class PersonalDetail
 	private	String	studentNo;
 	private	String	studentUserName;
 	private	String	name;
+	private	String	gender;
 	private	String	phone;
 	private	String	email;
 	private	String	region;
@@ -127,6 +128,26 @@ public class PersonalDetail
 	public void setName(String name)
 	{
 		this.name = name;
+	}
+	/**
+	 * Getter Method	: getGender
+	 * @return the gender
+	 * 
+	 * Date				: Jan 8, 2018
+	 */
+	public String getGender()
+	{
+		return this.gender;
+	}
+	/**
+	 * Setter method : setGender
+	 * @param gender the gender to set
+	 * 
+	 * Date          : Jan 8, 2018 5:27:12 PM
+	 */
+	public void setGender(String gender)
+	{
+		this.gender = gender;
 	}
 	/**
 	 * Getter Method	: getPhone
@@ -276,10 +297,11 @@ public class PersonalDetail
 	{
 		return "PersonalDetail [id=" + this.id + ", studentNo="
 				+ this.studentNo + ", studentUserName=" + this.studentUserName
-				+ ", name=" + this.name + ", phone=" + this.phone + ", email="
-				+ this.email + ", region=" + this.region + ", willayat="
-				+ this.willayat + ", town=" + this.town + ", poBox="
-				+ this.poBox + ", postalCode=" + this.postalCode + "]";
+				+ ", name=" + this.name + ", gender=" + this.gender
+				+ ", phone=" + this.phone + ", email=" + this.email
+				+ ", region=" + this.region + ", willayat=" + this.willayat
+				+ ", town=" + this.town + ", poBox=" + this.poBox
+				+ ", postalCode=" + this.postalCode + "]";
 	}
 
 	

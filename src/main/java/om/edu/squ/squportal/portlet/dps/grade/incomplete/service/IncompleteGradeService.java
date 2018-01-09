@@ -32,7 +32,7 @@ package om.edu.squ.squportal.portlet.dps.grade.incomplete.service;
 import java.util.List;
 import java.util.Locale;
 
-import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteBo;
+import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteDTO;
 
 /**
  * @author Bhabesh
@@ -47,13 +47,30 @@ public interface IncompleteGradeService
 	 * @param locale
 	 * @return
 	 * IncompleteGradeService
-	 * return type  : List<GradeIncompleteBo>
+	 * return type  : List<GradeIncompleteDTO>
 	 * 
 	 * purpose		:
 	 *
 	 * Date    		:	Jan 3, 2018 3:22:51 PM
 	 */
-	public List<GradeIncompleteBo> getCourseList( String employeeNo, Locale	locale);
+	public List<GradeIncompleteDTO> getCourseList( String employeeNo, Locale	locale);
+	
+	/**
+	 * 
+	 * method name  : getStudentList
+	 * @param employeeNo
+	 * @param lAbrCourseNo
+	 * @param sectionNo
+	 * @param locale
+	 * @return
+	 * IncompleteGradeService
+	 * return type  : List<GradeIncompleteDTO>
+	 * 
+	 * purpose		: Get Student List
+	 *
+	 * Date    		:	Jan 8, 2018 6:34:47 PM
+	 */
+	public List<GradeIncompleteDTO> getStudentList(String employeeNo, String lAbrCourseNo,String sectionNo, Locale	locale);
 	
 	/**
 	 * 
@@ -67,4 +84,6 @@ public interface IncompleteGradeService
 	 * Date    		:	Jan 4, 2018 8:56:08 AM
 	 */
 	public boolean isRuleComplete();
+	
+	
 }

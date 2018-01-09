@@ -29,15 +29,21 @@
  */
 package om.edu.squ.squportal.portlet.dps.grade.incomplete.controller;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
 
 import javax.portlet.PortletRequest;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.User;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
+import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteDTO;
 import om.edu.squ.squportal.portlet.dps.grade.incomplete.service.IncompleteGradeService;
+import om.edu.squ.squportal.portlet.dps.security.Crypto;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
 import org.slf4j.Logger;
@@ -46,6 +52,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import com.google.gson.Gson;
 
@@ -81,6 +89,13 @@ public class IncompleteGradeController
 	private	String welcome(PortletRequest request, Model model, Locale locale)
 	{
 		User	user	=	dpsServiceDao.getUser(request);
+		
+		/**** Security - data encryption keys *****/
+		model.addAttribute("cryptoIterationCount", Crypto.CRYPTO_ITERATION_COUNT);
+		model.addAttribute("cryptoKeySize", Crypto.CRYPTO_KEY_SIZE);
+		model.addAttribute("cryptoPassPhrase", Crypto.CRYPTO_PASSCODE);
+		/* ************************************* */
+		
 		if(user.getUserType().equals(Constants.USER_TYPE_STUDENT))
 		{
 			return null;
@@ -108,7 +123,7 @@ public class IncompleteGradeController
 	 */
 	private String approverWelcome(PortletRequest request, Model model, Locale locale)
 	{
-		Employee employee	=	null;
+		Employee employee		=	null;
 		String	employeeNumber	=	null;
 		Gson	gson			=	new Gson();
 		
@@ -143,6 +158,45 @@ public class IncompleteGradeController
 			model.addAttribute("roleDpsStaff", Constants.CONST_SQL_ROLE_NAME_DPS_STAFF);
 		}
 		return "/grade/incomplete/approver/welcomeIncompleteGradeApprover";
+	}
+	
+	/**
+	 * 
+	 * method name  : getStudentList
+	 * @param lAbrCourseNo
+	 * @param sectionNo
+	 * @param response
+	 * @param locale
+	 * @throws IOException
+	 * IncompleteGradeController
+	 * return type  : void
+	 * 
+	 * purpose		: provide list of students as json
+	 *
+	 * Date    		:	Jan 8, 2018 6:48:20 PM
+	 */
+	@ResourceMapping(value="resourceStudentList")
+	private	void getStudentList(@RequestParam("lAbrCourseNo") String lAbrCourseNo, @RequestParam("sectionNo") String sectionNo, ResourceRequest request,ResourceResponse response, Locale locale ) throws IOException
+	{
+		Employee 	employee		=	null;
+		String		employeeNumber	=	null;
+		Gson		gson			=	new Gson();
+		try
+		{
+			employee = dpsServiceDao.getEmployee(request,locale);
+			
+		}
+		catch (ExceptionEmptyResultset ex)
+		{
+			logger.error("No records available. Probably user doesnot logged in ");
+		}
+		if(employee.getEmpNumber().substring(0,1).equals("e"))
+		{
+			employeeNumber	=	employee.getEmpNumber().substring(1);
+		}
+		List<GradeIncompleteDTO> studentList	=	incompleteGradeService.getStudentList(employeeNumber, lAbrCourseNo, sectionNo, locale);
+		
+		response.getWriter().print(gson.toJson(studentList));
 	}
 	
 }
