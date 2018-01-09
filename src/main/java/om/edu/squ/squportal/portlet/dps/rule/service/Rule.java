@@ -97,6 +97,21 @@ public interface Rule
 
 	/**
 	 * 
+	 * method name  : countPostpone
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * RuleServiceImpl
+	 * return type  : int
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Mar 14, 2017 1:08:11 PM
+	 */
+	public int countPostpone(String studentNo, String stdStatCode);
+	
+	/**
+	 * 
 	 * method name  : extensionRecordAlreadyExist
 	 * @param studentNo
 	 * @param stdStatCode
@@ -117,6 +132,7 @@ public interface Rule
 	 * @param totalRegisteredCredit
 	 * @param selectedCourseCredit
 	 * @param studyModeType
+	 * @param sectNo TODO
 	 * @return
 	 * RuleServiceImpl
 	 * return type  : boolean
@@ -125,7 +141,7 @@ public interface Rule
 	 *
 	 * Date    		:	Aug 16, 2017 4:00:37 PM
 	 */
-	public boolean isDropwTotalRegisteredCreditRuleExist(int totalRegisteredCredit,  int selectedCourseCredit, String studyModeType);
+	public boolean isDropwTotalRegisteredCreditRuleExist(int totalRegisteredCredit,  int selectedCourseCredit, String studyModeType, String sectNo);
 	
 	/**
 	 * 

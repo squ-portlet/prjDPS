@@ -37,6 +37,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
+import om.edu.squ.squportal.portlet.dps.bo.Course;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeReason;
@@ -99,6 +100,45 @@ public class PostponeDBImpl implements PostponeDBDao
 	{
 		this.nPJdbcTemplDpsPostpone = nPJdbcTemplDpsPostpone;
 	}
+	
+	/**
+	 * 
+	 * method name  : getExistingGrades
+	 * @param studentNo
+	 * @param locale
+	 * @return
+	 * PostponeDBImpl
+	 * return type  : List<Course>
+	 * 
+	 * purpose		: Get existing grades
+	 *
+	 * Date    		:	Dec 25, 2017 10:44:04 PM
+	 */
+	public List<Course> getExistingGrades(String studentNo, Locale locale)
+	{
+		String	SQL_POSTPONE_SELECT_EXISTING_GRADES	=	queryPostpone.getProperty(Constants.CONST_SQL_POSTPONE_SELECT_EXISTING_GRADES);
+		RowMapper<Course> rowMapper		=	new RowMapper<Course>()
+		{
+			
+			@Override
+			public Course mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				Course	course	=	new Course();
+				course.setlAbrCourseNo(rs.getString(Constants.CONST_COLMN_L_ABR_CRSNO));
+				course.setCourseName(rs.getString(Constants.CONST_COLMN_COURSE_NAME));
+				course.setGradeValue(rs.getString(Constants.CONST_COLMN_GRADE_VAL));
+				return course;
+			}
+		};
+		
+		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+		namedParameterMap.put("paramLocale", locale.getLanguage());
+		namedParameterMap.put("paramStdNo", studentNo);
+		
+				
+		return nPJdbcTemplDpsPostpone.query(SQL_POSTPONE_SELECT_EXISTING_GRADES, namedParameterMap, rowMapper);
+	}
+	
 	
 	/**
 	 * 
@@ -175,13 +215,26 @@ public class PostponeDBImpl implements PostponeDBDao
 				{
 					dto.setReasonDesc(rs.getString(Constants.CONST_COLMN_POSTPONE_REASON_NAME));
 				}
-				advisor.setApprovalcode(rs.getString(Constants.CONST_COLMN_APPROVAL_CODE_ADVISOR));
-				advisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS));
-				advisor.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS)));
+				dto.setCommentEng(rs.getString(Constants.CONST_COLMN_COMMENT));
 				
-				supervisor.setApprovalcode(rs.getString(Constants.CONST_COLMN_APPROVAL_CODE_SUPERVISOR));
-				supervisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_SUPERVISOR_STATUS));
-				supervisor.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_SUPERVISOR_STATUS)));
+				if(rs.getString(Constants.CONST_COLMN_STUDENT_HAS_THESIS).equals(Constants.CONST_YES))
+				{
+					supervisor.setApprovalcode(rs.getString(Constants.CONST_COLMN_APPROVAL_CODE_SUPERVISOR));
+					supervisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_SUPERVISOR_STATUS));
+					supervisor.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_SUPERVISOR_STATUS)));
+					
+					advisor.setRoleStatus(Constants.CONST_NOT_USED);
+					advisor.setRoleStausIkon(RoleTagGlyphicon.showIkon(Constants.CONST_NOT_USED));
+				}
+				else
+				{
+					advisor.setApprovalcode(rs.getString(Constants.CONST_COLMN_APPROVAL_CODE_ADVISOR));
+					advisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS));
+					advisor.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS)));
+					
+					supervisor.setRoleStatus(Constants.CONST_NOT_USED);
+					supervisor.setRoleStausIkon(RoleTagGlyphicon.showIkon(Constants.CONST_NOT_USED));
+				}
 				
 				collegeDean.setApprovalcode(rs.getString(Constants.CONST_COLMN_APPROVAL_CODE_COLLEGE_DEAN));
 				collegeDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_COLLEGE_DEAN_STATUS));
@@ -279,7 +332,7 @@ public class PostponeDBImpl implements PostponeDBDao
 	 *
 	 * Date    		:	Sep 13, 2017 4:48:56 PM
 	 */
-	public List<PostponeDTO> getPostponeForApprovers(String roleType, Employee employee, Locale locale, String studentNo)
+	public List<PostponeDTO> getPostponeForApprovers(final String roleType, Employee employee, Locale locale, String studentNo)
 	{
 		String SQL_POSTPONE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE		=	queryPostpone.getProperty(Constants.CONST_SQL_POSTPONE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE);
 		RowMapper<PostponeDTO> rowMapper	=	new RowMapper<PostponeDTO>()
@@ -294,6 +347,7 @@ public class PostponeDBImpl implements PostponeDBDao
 				CollegeDean		collegeDean		=	new CollegeDean();
 				DpsDean			dpsDean			=	new DpsDean();
 				
+				dto.setRecordSequence(rs.getString(Constants.CONST_COLMN_SEQUENCE_NO));
 				dto.setStudentId(rs.getString(Constants.CONST_COLMN_STUDENT_ID));
 				dto.setStudentNo(rs.getString(Constants.CONST_COLMN_STUDENT_NO));
 				dto.setStudentStatCode(rs.getString(Constants.CONST_COLMN_STDSTATCD));
@@ -301,7 +355,8 @@ public class PostponeDBImpl implements PostponeDBDao
 				dto.setCohort(rs.getString(Constants.CONST_COLMN_COHORT));
 				dto.setCollegeName(rs.getString(Constants.CONST_COLMN_COLLEGE_NAME));
 				dto.setDegreeName(rs.getString(Constants.CONST_COLMN_DEGREE_NAME));
-				
+				dto.setStatusDesc(rs.getString(Constants.CONST_COLMN_STATUS_DESC));
+				dto.setReasonDesc(rs.getString(Constants.CONST_COLMN_POSTPONE_REASON_NAME));
 				collegeDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_COLLEGE_DEAN_STATUS));
 				collegeDean.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_COLLEGE_DEAN_STATUS)));
 				
@@ -311,18 +366,24 @@ public class PostponeDBImpl implements PostponeDBDao
 				if(rs.getString(Constants.CONST_COLMN_ROLE_IS_APPROVER).equals(Constants.CONST_YES))
 				{
 					dto.setApprover(true);
+					dto.setApproverApplicable(true);
 				}
 				else
 				{
 					dto.setApprover(false);
+					dto.setApproverApplicable(false);
 				}
 				
 				if(rs.getString(Constants.CONST_COLMN_STUDENT_HAS_THESIS).equals(Constants.CONST_YES))
 				{
 					supervisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_SUPERVISOR_STATUS));
 					supervisor.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_SUPERVISOR_STATUS)));
-					advisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS));
-					advisor.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS)));
+					advisor.setRoleStatus(Constants.CONST_NOT_USED);
+					advisor.setRoleStausIkon(RoleTagGlyphicon.showIkon(Constants.CONST_NOT_USED));
+					if(roleType.equals(Constants.CONST_SQL_ROLE_NAME_ADVISOR))
+					{
+						dto.setApproverApplicable(false);
+					}
 					
 				}
 				else
@@ -337,6 +398,14 @@ public class PostponeDBImpl implements PostponeDBDao
 				dto.setCollegeDean(collegeDean);
 				dto.setDpsDean(dpsDean);
 				
+				dto.setStatusCodeName(rs.getString(Constants.CONST_COLMN_STATUS_CODE_NAME));
+				if(rs.getString(Constants.CONST_COLMN_STATUS_CODE_NAME).equals(Constants.CONST_SQL_STATUS_CODE_REJCT))
+				{
+					dto.setStatusReject(true);
+				}
+				
+				dto.setCommentEng(rs.getString(Constants.CONST_COLMN_COMMENT));
+				
 				return dto;
 			}
 		};
@@ -349,7 +418,7 @@ public class PostponeDBImpl implements PostponeDBDao
 		namedParameterMap.put("paramSupervisor", null);
 		namedParameterMap.put("paramDeptCode", null);
 		namedParameterMap.put("paramRoleName", roleType);
-		namedParameterMap.put("paramFormName", Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY);
+		namedParameterMap.put("paramFormName", Constants.CONST_FORM_NAME_DPS_POSTPONE_STUDY);
 		namedParameterMap.put("paramEmpNo", employee.getEmpNumber());
 		
 		namedParameterMap.put("paramAdvisorRoleName", Constants.CONST_SQL_ROLE_NAME_ADVISOR);
@@ -357,7 +426,7 @@ public class PostponeDBImpl implements PostponeDBDao
 		namedParameterMap.put("paramColDeanRoleName", Constants.CONST_SQL_ROLE_NAME_COL_DEAN);
 		namedParameterMap.put("paramDpsDeanRoleName", Constants.CONST_SQL_ROLE_NAME_DPS_DEAN);
 		
-		namedParameterMap.put("paramFormName", Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY);
+		namedParameterMap.put("paramFormName", Constants.CONST_FORM_NAME_DPS_POSTPONE_STUDY);
 		
 		switch (roleType)
 		{
@@ -384,7 +453,6 @@ public class PostponeDBImpl implements PostponeDBDao
 		{
 			namedParameterMap.put("paramStdNo", studentNo);
 		}
-		
 		
 		return nPJdbcTemplDpsPostpone.query(SQL_POSTPONE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE, namedParameterMap, rowMapper);
 	}

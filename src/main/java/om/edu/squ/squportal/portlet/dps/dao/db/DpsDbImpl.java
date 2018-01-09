@@ -481,7 +481,7 @@ public class DpsDbImpl implements DpsDbDao
 	 *
 	 * Date    		:	Aug 17, 2017 5:05:04 PM
 	 */
-	public int getSelectedRegisteredCourseCredit(String studentNo, String stdStatCode, String courseNo)
+	public int getSelectedRegisteredCourseCredit(String studentNo, String stdStatCode, String courseNo, String sectNo)
 	{
 		String 		SQL_STUDENT_SELECTED_COURSE_CREDIT				=	queryProps.getProperty(Constants.CONST_SQL_STUDENT_SELECTED_COURSE_CREDIT);
 		
@@ -489,6 +489,15 @@ public class DpsDbImpl implements DpsDbDao
 		namedParameterMap.put("paramStdNo", studentNo);
 		namedParameterMap.put("paramStdStatCode", stdStatCode);
 		namedParameterMap.put("paramCourseNo", courseNo);
+		if(null == sectNo)
+		{
+			namedParameterMap.put("paramSectNo", null);
+		}
+		else
+		{
+			namedParameterMap.put("paramSectNo", sectNo);
+		}
+			
 		
 		return nPJdbcTemplDps.queryForInt(SQL_STUDENT_SELECTED_COURSE_CREDIT, namedParameterMap);
 	}

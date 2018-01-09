@@ -180,6 +180,7 @@ public interface DpsDbDao
 	 * @param studentNo
 	 * @param stdStatCode
 	 * @param courseNo
+	 * @param sectNo TODO
 	 * @return
 	 * DpsDbImpl
 	 * return type  : int
@@ -188,7 +189,7 @@ public interface DpsDbDao
 	 *
 	 * Date    		:	Aug 17, 2017 5:05:04 PM
 	 */
-	public int getSelectedRegisteredCourseCredit(String studentNo, String stdStatCode, String courseNo);
+	public int getSelectedRegisteredCourseCredit(String studentNo, String stdStatCode, String courseNo, String sectNo);
 	
 	/**
 	 * 

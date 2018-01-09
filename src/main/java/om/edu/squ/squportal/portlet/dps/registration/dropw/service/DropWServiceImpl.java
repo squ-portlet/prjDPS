@@ -123,10 +123,10 @@ public class DropWServiceImpl implements DropWService
 			{
 				NotifierPeople notifierPeople = dpsServiceDao.getNotifierPeople(
 																					student.getAcademicDetail().getStudentNo(), 
+																					null, 
 																					Constants.CONST_FORM_NAME_DPS_DROP_W, 
 																					Constants.CONST_SQL_ROLE_NAME_ADVISOR, 
-																					false, 
-																					locale
+																					false, locale
 																				);
 	
 				notifierPeople.setFormNameEng(UtilProperty.getMessage("prop.dps.form.name.dropw", null));
@@ -331,10 +331,10 @@ public class DropWServiceImpl implements DropWService
 
 				NotifierPeople notifierPeople = dpsServiceDao.getNotifierPeople(
 																					dropWDTO.getStudentNo(), 
+																					null, 
 																					Constants.CONST_FORM_NAME_DPS_DROP_W, 
 																					Constants.CONST_SQL_ROLE_NAME_ADVISOR, 
-																					true, 
-																					locale
+																					true, locale
 																				);
 	
 				
@@ -382,7 +382,7 @@ public class DropWServiceImpl implements DropWService
 	 *
 	 * Date    		:	May 17, 2017 3:11:11 PM
 	 */
-	public boolean isRuleStudentComplete(String studentNo, String stdStatCode, String courseNo)
+	public boolean isRuleStudentComplete(String studentNo, String stdStatCode, String courseNo, String sectNo)
 	{
 		/*Rule 1 : 	Full Time need 9 Credit after drop
 		 * 			Part Time need 3 Credit after drop
@@ -399,15 +399,15 @@ public class DropWServiceImpl implements DropWService
 			this.stdModeCreditApplied	=	ruleService.isDropwTotalRegisteredCreditRuleExist(
 																						totalCredit, 
 																						0,
-																						studyModeType
+																						studyModeType, null
 																					);
 		}
 		else
 		{
 			this.stdModeCreditApplied	=	ruleService.isDropwTotalRegisteredCreditRuleExist(
 																						totalCredit, 
-																						dpsServiceDao.getSelectedRegisteredCourseCredit(studentNo, stdStatCode, courseNo),
-																						studyModeType
+																						dpsServiceDao.getSelectedRegisteredCourseCredit(studentNo, stdStatCode, courseNo, sectNo),
+																						studyModeType, null
 																					);
 		}
 		
