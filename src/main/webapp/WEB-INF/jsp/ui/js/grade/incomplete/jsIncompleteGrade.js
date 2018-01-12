@@ -5,6 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <portlet:resourceURL id="resourceStudentList" var="varResourceStudentList"/>
+<portlet:resourceURL id="resourceAjaxNotify" var="varResourceAjaxNotify"/>
 
 <script type="text/javascript">
 
@@ -17,6 +18,9 @@
 	});
 	
 	$(function(){
+		/* Datatable for students */
+		var tablStudentList;
+		
 		<c:forEach items="${employee.myRoles}" var="myRole">
 		// Clicking on tabs to make it active (other than Home tab)
 			$("#role-${myRole.roleName}").click(function(){
@@ -62,10 +66,12 @@
 			};
 			
 			var lAbrCourseNo	=	this.getAttribute("lAbrCourseNo");
+			var	courseNo		=	this.getAttribute("courseNo");
 			var sectionNo		=	this.getAttribute("sectionNo");
 			var sectCode		=	this.getAttribute("sectCode");
 			var courseYear		=	this.getAttribute("courseYear");
 			var semester		=	this.getAttribute("semester");
+			
 				
 			
 			$.ajax({
@@ -76,12 +82,75 @@
 					success	: function(data)
 					{
 						var students	=	JSON.parse(data); 
-						var studentsJson = {'students':students, 'lAbrCourseNo':lAbrCourseNo, 'sectionNo':sectionNo, 'sectCode':sectCode, 'courseYear':courseYear,'semester':semester };
+						var studentsJson = {'students':students, 'lAbrCourseNo':lAbrCourseNo, 'courseNo' : courseNo,  'sectionNo':sectionNo, 'sectCode':sectCode, 'courseYear':courseYear,'semester':semester };
 						 hbDataLoadAction(studentsJson, '#hbStudentList', '#divStudentList');
-						 var tablStudentList = $('#tblStudentList').DataTable({
+						 
+						 tablStudentList = $('#tblStudentList').DataTable({
 							 select: true,
 							 "order": [],
-							 "sDom":  '<f><t><"col-sm-5"i><"col-sm-12"p><"clearfix">'
+							 "sDom":  '<f><t><"col-sm-5"i><"col-sm-12"p><"clearfix">',
+							 "columnDefs": [
+								               {
+								                   "targets": [ 0 ],
+								                   "visible": false
+								               },
+
+								               {
+								                   "targets": [ 1 ],
+								                   "visible": false
+								               },
+								               
+								               {
+								                   "targets": [ 2 ],
+								                   "visible": false
+								               },
+								               {
+								                   "targets": [ 3 ],
+								                   "visible": false
+								               },
+								               {
+								                   "targets": [ 4 ],
+								                   "visible": false
+								               },
+								               {
+								                   "targets": [ 5 ],
+								                   "visible": false
+								               },
+
+								               {
+								                   "targets": [ 6 ],
+								                   "visible": false
+								               },							               
+								               {
+								                   "targets": [ 7 ],
+								                   "visible": false
+								               }								               
+								               /*								               
+								               ,{ "name": "studentNo",   "targets": 0 },
+								               { "name": "stdStatCode",  "targets": 1 },
+								               { "name": "courseYear", "targets": 2 },
+								               { "name": "semester",  "targets": 3 },
+								               { "name": "sectCode",    "targets": 4 }
+*/								               								               
+							               ],
+							               columns: [
+							                    
+							                     { "data": "studentNo" },
+					                             { "data": "stdStatCode"},
+					                             { "data": "courseYear" },
+					                             { "data": "semester" },
+					                             { "data": "sectCode" },
+					                             { "data": "lAbrCourseNo"},
+					                             { "data": "courseNo"},
+					                             { "data": "sectionNo"},
+					                             { "data": "id"},
+					                             { "data": "name"},
+					                             { "data": "grade"},
+					                             { "data": "action"}
+							                   
+							               ]
+						 
+							 
 						 });
 					},
 					error	: function(xhr, status,  error)
@@ -93,24 +162,66 @@
 		});
 		
 		/* onClick notify link */
-		$(document).on("click", ".clsLinkStudentNo", function(event){	
-		
-			var incompleteGradeNotifyModel = {
-					studentNo 		:	this.getAttribute("studentNo"),
-					stdStatCode		:	this.getAttribute("stdStatCode"),
-					courseYear		:	this.getAttribute("courseYear"),
-					semester		:	this.getAttribute("semester"),
-					sectCode		:	this.getAttribute("sectCode"),
-					lAbrCourseNo	:	this.getAttribute("lAbrCourseNo"),
-					sectionNo		:	this.getAttribute("sectionNo")
-			};
-			
-			//TODO - evoke a modal to confirm and submit
-			
+		$(document).on('click', '.clsLinkStudentNo', function(){	
+			$('#txtComments').val('');
+			$('#alertModal').modal('toggle');
+
 		});
 		
 		
-		
+		/* onClick the 'Yes'/Submit button of the modal form for notify */
+		$(document).on("click", "#btnSubmitNotification", function(event){	
+			
+			$('#alertModal').modal('toggle');
+			
+			var row  = $(this).parents('tr')[0];	
+			var rowData	=	tablStudentList.row($(this).parents('tr')[0]).data();
+			// var rowData = tablStudentList.row($(this).closest('tr')[0]).data();   // changing parents to closest also works
+
+
+/* TODO
+ tablStudentList
+			        .row( row)
+			        .data( rowData )
+			        .draw();
+ 
+ 
+ * */
+			
+			var incompleteGradeNotifyModel = {
+					studentNo 		:	rowData.studentNo,
+					stdStatCode		:	rowData.stdStatCode,
+					courseYear		:	rowData.courseYear,
+					semester		:	rowData.semester,
+					sectCode		:	rowData.sectCode,
+					lAbrCourseNo	:	rowData.lAbrCourseNo,
+					courseNo		:	rowData.courseNo,
+					sectionNo		:	rowData.sectionNo,
+					comment			:  $('#txtComments').val(),
+					salt			:	salt,
+					four			:	four
+			};
+			
+
+			$.ajax({
+						url		: 	'${varResourceAjaxNotify}',
+						type	:	'POST',
+						cache	:	false,
+						data	:	incompleteGradeNotifyModel,
+						success	:	function(data)
+						{
+							console.log("inside success --");
+						},
+						error	:  function(xhr, status,  error)
+						{
+							
+						}
+							
+			});
+			
+			
+
+		});
 		
 
 		/* Filling data using handlebar template*/

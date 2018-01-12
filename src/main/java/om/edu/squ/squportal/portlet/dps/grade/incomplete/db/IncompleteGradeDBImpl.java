@@ -41,6 +41,7 @@ import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Course;
 import om.edu.squ.squportal.portlet.dps.bo.PersonalDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.Grade;
 import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteDTO;
 import om.edu.squ.squportal.portlet.dps.rule.bo.YearSemester;
@@ -48,6 +49,7 @@ import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
@@ -113,6 +115,7 @@ public class IncompleteGradeDBImpl implements IncompleteGradeDBDao
 				GradeIncompleteDTO gradeDTO	=	new GradeIncompleteDTO();
 					Course	course	=	new Course();
 					course.setlAbrCourseNo(rs.getString(Constants.CONST_COLMN_L_ABR_CRSNO));
+					course.setCourseNo(rs.getString(Constants.CONST_COLMN_COURSE_NO));
 					course.setCourseName(rs.getString(Constants.CONST_COLMN_COURSE_NAME));
 					course.setSectionNo(rs.getString(Constants.CONST_COLMN_SECTION_NO));
 					course.setSectCode(rs.getString(Constants.CONST_COLMN_SECT_CODE));
@@ -246,6 +249,43 @@ public class IncompleteGradeDBImpl implements IncompleteGradeDBDao
 		return nPJdbcTemplDpsIncompleteGrade.query(SQL_INCOMPLETE_GRADE_SELECT_STUDENT_LIST, namedParameterMap, rowMapper);
 	}
 
+	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.grade.incomplete.db.IncompleteGradeDBDao#setInstructorNotifyForIncompleteGrade(om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteDTO)
+	 */
+	@Override
+	public int setInstructorNotifyForIncompleteGrade(GradeIncompleteDTO dto ) throws NotCorrectDBRecordException
+	{
+		String SQL_INCOMPLETE_GRADE_INSERT_NOTIFY_INSTRUCTOR	=	queryIncompleteGrade.getProperty(Constants.CONST_SQL_INCOMPLETE_GRADE_INSERT_NOTIFY_INSTRUCTOR);
+		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+		namedParameterMap.put("paramStdNo",dto.getStudent().getAcademicDetail().getStudentNo());
+		namedParameterMap.put("paramStdStatCode",dto.getStudent().getAcademicDetail().getStdStatCode());
+		namedParameterMap.put("paramYear",String.valueOf(dto.getCourse().getCourseYear()));
+		namedParameterMap.put("paramSem",String.valueOf(dto.getCourse().getSemester()));
+		namedParameterMap.put("paramSectCode",dto.getCourse().getSectCode());
+		namedParameterMap.put("paramCourseLAbrCode",dto.getCourse().getlAbrCourseNo());
+		namedParameterMap.put("paramCourseNo",dto.getCourse().getCourseNo());
+		namedParameterMap.put("paramSectNo",dto.getCourse().getSectionNo());
+		namedParameterMap.put("paramStatusCode",Constants.CONST_SQL_STATUS_CODE_NAME_PENDING);
+		namedParameterMap.put("paramUserName",dto.getUserName());
+		namedParameterMap.put("paramComment", dto.getComments());
+		
+
+		
+		try
+		{
+			return nPJdbcTemplDpsIncompleteGrade.update(SQL_INCOMPLETE_GRADE_INSERT_NOTIFY_INSTRUCTOR, namedParameterMap);
+		}
+		catch(DuplicateKeyException sqlEx)
+		{
+			logger.error("Violation of primary key. Details : {}",sqlEx.getMessage());
+			throw new NotCorrectDBRecordException(sqlEx.getMessage());
+		}
+		
+		
+		
+	}
 	
 	
 		

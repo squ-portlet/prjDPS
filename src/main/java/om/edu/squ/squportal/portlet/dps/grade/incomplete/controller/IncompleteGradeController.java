@@ -39,9 +39,11 @@ import javax.portlet.ResourceResponse;
 
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.User;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
 import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteDTO;
+import om.edu.squ.squportal.portlet.dps.grade.incomplete.model.IncompleteGradeModel;
 import om.edu.squ.squportal.portlet.dps.grade.incomplete.service.IncompleteGradeService;
 import om.edu.squ.squportal.portlet.dps.security.Crypto;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
@@ -51,6 +53,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
@@ -70,6 +73,8 @@ public class IncompleteGradeController
 	DpsServiceDao			dpsServiceDao;
 	@Autowired
 	IncompleteGradeService	incompleteGradeService;
+	@Autowired
+	Crypto			crypto;
 	
 	/**
 	 * 
@@ -197,6 +202,41 @@ public class IncompleteGradeController
 		List<GradeIncompleteDTO> studentList	=	incompleteGradeService.getStudentList(employeeNumber, lAbrCourseNo, sectionNo, locale);
 		
 		response.getWriter().print(gson.toJson(studentList));
+	}
+	
+	/**
+	 * 
+	 * method name  : getIncompleteGradeNotification
+	 * @param incompleteGradeModel
+	 * @param request
+	 * @param response
+	 * @param locale
+	 * IncompleteGradeController
+	 * return type  : void
+	 * 
+	 * purpose		: Send the incompleted grade notification to approvers and show the details to instructor
+	 *
+	 * Date    		:	Jan 11, 2018 12:49:44 PM
+	 * @throws NotCorrectDBRecordException 
+	 */
+	@ResourceMapping(value="resourceAjaxNotify")
+	private void getIncompleteGradeNotification(
+													@ModelAttribute("incompleteGradeNotifyModel") IncompleteGradeModel incompleteGradeModel
+												, 	ResourceRequest 	request
+												,	ResourceResponse	response
+												,	Locale				locale
+												) throws NotCorrectDBRecordException
+	{
+		
+		incompleteGradeModel.decrypt(crypto, incompleteGradeModel.getSalt(), incompleteGradeModel.getFour(), incompleteGradeModel);
+		GradeIncompleteDTO	dto	= new GradeIncompleteDTO(incompleteGradeModel);
+		dto.setUserName(dpsServiceDao.getEmpNumber(request));
+
+		incompleteGradeService.setInstructorNotifyForIncompleteGrade(dto);
+
+		
+		
+		
 	}
 	
 }

@@ -63,6 +63,7 @@
 									 				 		<td>
 									 				 			<a href="#" class="clsLinkCourseNo" 
 									 				 			lAbrCourseNo='${courseList.course.lAbrCourseNo}' 
+									 				 			courseNo='${courseList.course.courseNo}'
 									 				 			sectionNo='${courseList.course.sectionNo}'
 									 				 			sectCode='${courseList.course.sectCode}'
 									 				 			courseYear='${courseList.course.courseYear}'
@@ -106,10 +107,18 @@
                     <h4 class="modal-title"><font color="red"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></font> <spring:message code="prop.dps.alert.text"/></h4>
                 </div>
                 <div class="modal-body" id="modalAlertErrMsg">
-                    <p></p>
+                    <p><spring:message code="prop.dps.incomplete.grade.notify.alert.warning"/></p>
+                    <p>
+                    <label for="txtComments"><spring:message code="prop.dps.approver.modal.body.approve.comment.text"/></label>
+                    <textarea  id="txtComments" rows="" cols="">
+                    
+                    </textarea>
+                    
+                    </p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal"><spring:message code="prop.dps.modal.form.button.close.text"/></button>
+                	<button type="button" class="btn btn-primary" id="btnSubmitNotification"><spring:message code="prop.dps.role.submit.yes.text"/></button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal"><spring:message code="prop.dps.role.submit.no.text"/></button>
                 </div>
             </div>
         </div>
@@ -120,12 +129,21 @@
 			<table id="tblStudentList" class="table table-condensed table-bordered dt-responsive">
 				<thead>
 					<tr>
-						<th><spring:message code="prop.dps.incomplete.grade.notify.student.id"/></th>
+						<th>studentNo </th>
+						<th>stdStatCode</th>
+						<th>courseYear</th>
+						<th>semester</th>
+						<th>sectCode</th>
+						<th>lAbrCourseNo</th>
+						<th>courseNo</th>
+						<th>sectionNo</th>
+						<th><spring:message code="prop.dps.incomplete.grade.notify.student.id"/> </th>						
 						<th>
 							<spring:message code="prop.dps.incomplete.grade.notify.students"/>  
 								<span class="label label-default">{{lAbrCourseNo}}</span>
 								<span class="badge">{{sectionNo}}</span>
 						</th>
+						
 						<th><spring:message code="prop.dps.incomplete.grade.notify.grade.name"/></th>
 						<th><spring:message code="prop.dps.incomplete.grade.notify.action"/></th>
 
@@ -133,22 +151,21 @@
 				</thead>
 					{{#each students}}
 					<tr>
-						<td>
-								{{student.personalDetail.id}}
-						</td>
+
+						<td>{{encryptStr student.personalDetail.studentNo}}</td>
+						<td>{{encryptStr student.academicDetail.stdStatCode}}</td>
+						<td>{{encryptStr ../courseYear}}</td>
+						<td>{{encryptStr ../semester}}</td>
+						<td>{{encryptStr ../sectCode}}</td>
+						<td>{{encryptStr ../lAbrCourseNo}}</td>
+						<td>{{encryptStr ../courseNo}}</td>
+						<td>{{encryptStr ../sectionNo}}</td>
+						<td>{{student.personalDetail.id}}</td>
 						<td>{{student.personalDetail.name}}</td>
 						<td>{{grade.gradeVal}}</td>
 						<td>
 								{{#unless  grade.gradeCode}}
-									<a class="clsLinkStudentNo"  href="#" 
-														lAbrCourseNo="{{encryptStr ../lAbrCourseNo}}" 
-														studentNo="{{encryptStr student.personalDetail.studentNo}}"
-														stdStatCode="{{encryptStr student.academicDetail.stdStatCode}}"
-														sectionNo="{{encryptStr ../sectionNo}}"
-														sectCode="{{encryptStr ../sectCode}}"
-														courseYear="{{encryptStr ../courseYear}}"
-														semester="{{encryptStr ../semester}}"
-									>
+									<a class="clsLinkStudentNo"  href="#" >
 										<spring:message code="prop.dps.incomplete.grade.notify.text.notify" /> 
 										<span class="glyphicon glyphicon-send" aria-hidden="true"></span>
 									</a>

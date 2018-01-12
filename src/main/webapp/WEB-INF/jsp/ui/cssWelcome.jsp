@@ -154,7 +154,7 @@
 
 /* Liferay modal form */
 .aui .modal {
-height: inherit;
+height: fit-content;
 right:30%;
 /*left:30%;*/
 left:inherit;

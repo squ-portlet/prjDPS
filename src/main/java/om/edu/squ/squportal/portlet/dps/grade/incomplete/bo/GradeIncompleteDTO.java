@@ -29,8 +29,10 @@
  */
 package om.edu.squ.squportal.portlet.dps.grade.incomplete.bo;
 
+import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Course;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
+import om.edu.squ.squportal.portlet.dps.grade.incomplete.model.IncompleteGradeModel;
 
 /**
  * @author Bhabesh
@@ -41,7 +43,34 @@ public class GradeIncompleteDTO
 	private	Course	course;
 	private	Student	student;
 	private	Grade	grade;
+	private	String	comments;
+	private	String	userName;
+	
 
+	public GradeIncompleteDTO(){}
+	
+	public GradeIncompleteDTO(IncompleteGradeModel incompleteGradeModel )
+	{
+		Course			course			=	new Course();
+		Student			student			=	new Student();
+		AcademicDetail	academicDetail	=	new AcademicDetail();
+		
+		academicDetail.setStudentNo(incompleteGradeModel.getStudentNo());
+		academicDetail.setStdStatCode(incompleteGradeModel.getStdStatCode());
+		student.setAcademicDetail(academicDetail);
+		
+		course.setCourseYear(Integer.parseInt(incompleteGradeModel.getCourseYear()));
+		course.setSemester(Integer.parseInt(incompleteGradeModel.getSemester()));
+		course.setSectCode(incompleteGradeModel.getSectCode());
+		course.setlAbrCourseNo(incompleteGradeModel.getlAbrCourseNo());
+		course.setCourseNo(incompleteGradeModel.getCourseNo());
+		course.setSectionNo(incompleteGradeModel.getSectionNo());
+		
+		this.course 	=	course;
+		this.student	=	student;
+		this.comments	=	incompleteGradeModel.getComment();
+	}
+	
 	/**
 	 * Getter Method	: getCourse
 	 * @return the course
@@ -108,6 +137,50 @@ public class GradeIncompleteDTO
 		this.grade = grade;
 	}
 
+	/**
+	 * Getter Method	: getComments
+	 * @return the comments
+	 * 
+	 * Date				: Jan 11, 2018
+	 */
+	public String getComments()
+	{
+		return this.comments;
+	}
+
+	/**
+	 * Setter method : setComments
+	 * @param comments the comments to set
+	 * 
+	 * Date          : Jan 11, 2018 3:23:43 PM
+	 */
+	public void setComments(String comments)
+	{
+		this.comments = comments;
+	}
+
+	/**
+	 * Getter Method	: getUserName
+	 * @return the userName
+	 * 
+	 * Date				: Jan 11, 2018
+	 */
+	public String getUserName()
+	{
+		return this.userName;
+	}
+
+	/**
+	 * Setter method : setUserName
+	 * @param userName the userName to set
+	 * 
+	 * Date          : Jan 11, 2018 4:33:03 PM
+	 */
+	public void setUserName(String userName)
+	{
+		this.userName = userName;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -115,7 +188,8 @@ public class GradeIncompleteDTO
 	public String toString()
 	{
 		return "GradeIncompleteDTO [course=" + this.course + ", student="
-				+ this.student + ", grade=" + this.grade + "]";
+				+ this.student + ", grade=" + this.grade + ", comments="
+				+ this.comments + ", userName=" + this.userName + "]";
 	}
 	
 	

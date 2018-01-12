@@ -252,7 +252,8 @@ public class Course
 				+ this.lAbrCourseNo + ", courseName=" + this.courseName
 				+ ", sectCode=" + this.sectCode + ", sectionNo="
 				+ this.sectionNo + ", yearSemester=" + this.yearSemester
-				+ ", credits=" + this.credits + "]";
+				+ ", credits=" + this.credits + ", courseYear="
+				+ this.courseYear + ", semester=" + this.semester + "]";
 	}
 	
 	
