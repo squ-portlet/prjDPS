@@ -229,6 +229,7 @@ public interface DpsServiceDao
 	 * @param studentNo
 	 * @param stdStatCode
 	 * @param courseNo
+	 * @param sectNo TODO
 	 * @return
 	 * DpsDbImpl
 	 * return type  : int
@@ -237,7 +238,7 @@ public interface DpsServiceDao
 	 *
 	 * Date    		:	Aug 17, 2017 5:05:04 PM
 	 */
-	public int getSelectedRegisteredCourseCredit(String studentNo, String stdStatCode, String courseNo);
+	public int getSelectedRegisteredCourseCredit(String studentNo, String stdStatCode, String courseNo, String sectNo);
 	
 	/**
 	 * 
@@ -258,6 +259,7 @@ public interface DpsServiceDao
 	 * 
 	 * method name  : getNotifierPeople
 	 * @param studentNo
+	 * @param studentStatCode TODO
 	 * @param formName
 	 * @param roleName
 	 * @param isHigherApproverRequired
@@ -273,10 +275,10 @@ public interface DpsServiceDao
 	 */
 	public NotifierPeople getNotifierPeople(
 												String studentNo, 
+												String studentStatCode, 
 												String formName, 
-												String roleName, 
-												boolean isHigherApproverRequired,
-												Locale locale 
+												String roleName,
+												boolean isHigherApproverRequired, Locale locale 
 											) throws NotCorrectDBRecordException;
 	
 	/**
@@ -295,4 +297,22 @@ public interface DpsServiceDao
 	 * Date    		:	Aug 28, 2017 4:52:06 PM
 	 */
 	public boolean isSupervisorAvailable(String studentNo, String stdStatCode);
+	
+	
+	/**** POSTPONE RULE ****/
+	
+	/**
+	 * 
+	 * method name  : isPostponeCountWithinLimit
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * DpsServiceImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		: Find whether the max limit of postpone reached
+	 *
+	 * Date    		:	Dec 26, 2017 1:57:12 PM
+	 */
+	public boolean isPostponeCountWithinLimit(String studentNo, String stdStatCode);
 }

@@ -37,10 +37,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import om.edu.squ.squportal.notification.exception.NotificationException;
+import om.edu.squ.squportal.portlet.dps.bo.Course;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
+import om.edu.squ.squportal.portlet.dps.exception.ExceptionDropDownPeriod;
 import om.edu.squ.squportal.portlet.dps.notification.bo.NotifierPeople;
 import om.edu.squ.squportal.portlet.dps.notification.service.DPSNotification;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
@@ -49,6 +51,7 @@ import om.edu.squ.squportal.portlet.dps.registration.postpone.db.PostponeDBDao;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentModel;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
+import om.edu.squ.squportal.portlet.dps.rule.service.Rule;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 import om.edu.squ.squportal.portlet.dps.utility.UtilProperty;
 
@@ -66,8 +69,15 @@ public class PostponeServiceImpl implements PostponeService
 	PostponeDBDao	postponeDBDao;
 	@Autowired
 	DPSNotification	dpsNotification;
+	@Autowired
+	Rule					ruleService;
+
 	
+	private	boolean		rulePostponeCountWithinLimit	=	false;
 	
+	private	boolean		dropWTimeApplied				=	false;
+
+
 	/**
 	 * 
 	 * method name  : getPostponeReasons
@@ -87,6 +97,24 @@ public class PostponeServiceImpl implements PostponeService
 	
 	/**
 	 * 
+	 * method name  : getExistingGrades
+	 * @param studentNo
+	 * @param locale
+	 * @return
+	 * PostponeDBImpl
+	 * return type  : List<Course>
+	 * 
+	 * purpose		: Get existing grades
+	 *
+	 * Date    		:	Dec 25, 2017 10:44:04 PM
+	 */
+	public List<Course> getExistingGrades(String studentNo, Locale locale)
+	{
+		return postponeDBDao.getExistingGrades(studentNo, locale);
+	}
+	
+	/**
+	 * 
 	 * method name  : setPostponeByStudent
 	 * @param student 
 	 * @param studentModel
@@ -100,14 +128,22 @@ public class PostponeServiceImpl implements PostponeService
 	 *
 	 * Date    		:	Aug 7, 2017 5:00:53 PM
 	 */
-	public List<PostponeDTO> setPostponeByStudent(Student student, PostponeStudentModel studentModel, String userName, Locale locale)
+	public List<PostponeDTO> setPostponeByStudent(Student student, PostponeStudentModel studentModel, String userName, Locale locale) throws ExceptionDropDownPeriod
 	{
 		int 				result			=	0;
 		List<PostponeDTO>	postponeDTOs	=	null;
+		String 				approverRole	=	null;
+		
+		if(!dropWTimeApplied)
+		{
+			logger.error("Attempt of postpone beyond drop with w period");
+			throw new ExceptionDropDownPeriod("Drop with W period not covered.");
+		}
+		
 		if(!studentModel.getYearSem().equals(""))
 		{
 			PostponeDTO			dto				=	new PostponeDTO(student,studentModel,userName);
-								result 			=  	postponeDBDao.setPostponeByStudent(dto);
+								result 			=  	(rulePostponeCountWithinLimit)?postponeDBDao.setPostponeByStudent(dto):0;
 		}
 		if(result>0)
 		{
@@ -116,12 +152,21 @@ public class PostponeServiceImpl implements PostponeService
 
 			try
 			{
+				if(dpsServiceDao.isSupervisorAvailable(student.getAcademicDetail().getStudentNo(), student.getAcademicDetail().getStdStatCode()))
+				{
+					approverRole	=	Constants.CONST_SQL_ROLE_NAME_SUPERVISOR;
+				}
+				else
+				{
+					approverRole	=	Constants.CONST_SQL_ROLE_NAME_ADVISOR;
+				}
+				
 				NotifierPeople notifierPeople = dpsServiceDao.getNotifierPeople(
 																					student.getAcademicDetail().getStudentNo(), 
+																					student.getAcademicDetail().getStdStatCode(), 
 																					Constants.CONST_FORM_NAME_DPS_POSTPONE_STUDY, 
-																					Constants.CONST_SQL_ROLE_NAME_ADVISOR, 
-																					false, 
-																					locale
+																					approverRole, 
+																					false, locale
 																				);
 	
 				notifierPeople.setFormNameEng(UtilProperty.getMessage("prop.dps.form.name.postpone", null));
@@ -232,7 +277,7 @@ public class PostponeServiceImpl implements PostponeService
 								transactionDTO.setAppEmpNo(employee.getEmpNumber());
 								transactionDTO.setAppEmpName(employee.getUserName());
 								transactionDTO.setComments(dto.getCommentEng());
-								transactionDTO.setRequestCode(Constants.CONST_REQUEST_CODE_DEFAULT);
+								transactionDTO.setRequestCode(dto.getRecordSequence());
 		
 		ApprovalDTO				approvalDTO				=	dpsServiceDao.setRoleTransaction(
 																									transactionDTO
@@ -271,12 +316,11 @@ public class PostponeServiceImpl implements PostponeService
 				/* -- Notification -- Start --*/
 					NotifierPeople	notifierPeople	=	dpsServiceDao.getNotifierPeople(
 																							dto.getStudentNo()
+																						, 	dto.getStudentStatCode()
 																						, 	Constants.CONST_FORM_NAME_DPS_POSTPONE_STUDY
 																						, 	dto.getRoleName()
-																						, 	true
-																						, locale
+																						, true, locale
 																						);
-					
 					notifierPeople.setFormNameEng(UtilProperty.getMessage("prop.dps.form.name.postpone", null));
 					notifierPeople.setFormNameAr(UtilProperty.getMessage("prop.dps.form.name.postpone", null, new Locale("ar")));
 					notifierPeople.setServiceUrl(UtilProperty.getMessage("prop.dps.url.postpone", null));					
@@ -302,5 +346,54 @@ public class PostponeServiceImpl implements PostponeService
 		
 		return dtoResult;
 	}
+	
+	/**
+	 * 
+	 * method name  : isRuleComplete
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * PostponeServiceImpl
+	 * return type  : boolean
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Dec 26, 2017 2:05:05 PM
+	 */
+	public boolean isRuleComplete(String studentNo, String stdStatCode)
+	{
+		/*
+		 * Rule 1 : Allowed for Maximum two semester
+		 * */
+		rulePostponeCountWithinLimit	=	dpsServiceDao.isPostponeCountWithinLimit(studentNo, stdStatCode);
+		
+		
+		/*
+		 * Rule 2 : Drop with W period
+		 */
+		
+		if(ruleService.isDropWPeriod(studentNo, stdStatCode))
+		{
+			this.dropWTimeApplied	=	true;
+		}
+		else
+		{
+			this.dropWTimeApplied	=	false;
+		}
+		
+		
+		if(Constants.CONST_TEST_ENVIRONMENT)
+		{
+			this.dropWTimeApplied	=	true;
+		}
+		
+		
+		
+
+		
+		//Please don't change the return value
+		return true;
+	}
+	
 	
 }

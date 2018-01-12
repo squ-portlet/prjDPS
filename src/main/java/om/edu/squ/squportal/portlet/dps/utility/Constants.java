@@ -196,6 +196,9 @@ public interface Constants
 	public static final	String	CONST_RULE_DROP_W_PERIOD_NOT_APPLIED						=	"0";
 	public static final	String	CONST_RULE_DROP_W_STUDENT_MODE_NOT_APPLIED					=	"NOT_AVAILABLE";
 	
+	
+	public static final	int		CONST_RULE_POSTPONE_STUDENT_MAXIMUM_ALLOWED					=	2;
+	
 	/************* SQL CONSTANT STATUS CODE ******************************/
 	
 	/************* SQL CONSTANT ROLE CODE ******************************/
@@ -263,6 +266,7 @@ public interface Constants
 	public	static	final	String	CONST_SQL_DROPW_UPDATE_COURSE_TEMP						=	"dps.dropw.update.course.temp.for.drop";
 	
 	/* ---  SQL - DPS - Postponement of Studies property--------------------- */
+	public	static	final	String	CONST_SQL_POSTPONE_SELECT_EXISTING_GRADES				=	"dps.postpone.select.existing.grade";
 	public	static	final	String	CONST_SQL_POSTPONE_REASONS								=	"dps.postpone.select.postpone.reasons";
 	public	static	final	String	CONST_SQL_POSTPONE_SELECT_RECORDS_BY_STUDENT			=	"dps.postpone.select.student.records";
 	public	static	final	String	CONST_SQL_POSTPONE_INSERT_STUDENT						=	"dps.postpone.insert.student";

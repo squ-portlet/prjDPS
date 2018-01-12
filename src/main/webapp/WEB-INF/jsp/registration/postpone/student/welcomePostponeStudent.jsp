@@ -7,19 +7,77 @@
 
 	<%@include file="../../../ui/cssWelcome.jsp" %>	
 	<%@include file="../../../ui/js/registration/postpone/jsPostpone.jsp" %>
+	<%@include file="../../../ui/js/registration/postpone/jsValidationPostpone.jsp" %>
+
+		<c:url value="/ui/ajax-loader.gif" var="imgAjaxLoader"/>		
+		<div class="row" id="divImgAjaxLoading" style="display: none;">
+			<div class="col-sm-5"></div>
+			<div class="col-sm-1">
+				<img alt="Loading ...." src="${imgAjaxLoader}">
+			</div>
+		</div>
+		
+ 	<!-- Alert for any issues -->
+     <div  id="alertPostponeStudies"></div>
+     <br>
+     
+   <c:choose>
+   		<c:when test="${not empty existingGrades}">
+   			<div class="alert alert-warning">
+   				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+   				<spring:message code="prop.dps.postpone.error.student.existing.grades"/>
+   			</div>
+   			
+   			<div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h4 class="panel-title alert alert-warning"><spring:message code="prop.dps.postpone.student.course.existing.grades"/></h4>
+			  </div>
+			  <div class="panel-body">
+			    
+   				<table class="table table-bordered">
+   					<thead>
+   						<tr>
+   							<th><spring:message code="prop.dps.postpone.student.course.labrno"/></th>
+   							<th><spring:message code="prop.dps.postpone.student.course.name"/></th>
+   							<th><spring:message code="prop.dps.postpone.student.course.grade.value"/></th>
+   						</tr>
+   					</thead>
+   					<tbody>
+   						<c:forEach items="${existingGrades}" var="course">
+   							<tr>
+   								<td>${course.lAbrCourseNo}</td>
+   								<td>${course.courseName}</td>
+   								<td>${course.gradeValue}</td>
+   							</tr>
+   						</c:forEach>
+   					</tbody>
+   				</table>			    
+			    
+			  </div>
+			</div>
+   			
+   			
+
+   			
+   		</c:when>
+   		<c:otherwise>
+		    <div class="section">
+		      <div class="container-fluid">
+			      <div class="row" id="rowButtonAddPostpone">
+						<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalPostponeForm"><spring:message code="prop.dps.postpone.student.apply"/></button>	      
+			      </div>
+		      </div>
+		    </div>
+	    </c:otherwise>
+   </c:choose> 
+
 	
-    <div class="section">
-      <div class="container-fluid">
-	      <div class="row">
-				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalPostponeForm"><spring:message code="prop.dps.postpone.student.apply"/></button>	      
-	      </div>
-      </div>
-    </div>
+ 	<!-- Postpone data -->
+    <div  id="tblPostponeStudies" ></div>
+	 <div  id="divAlertApprover" ></div>
     
-    <div id="tblPostponeStudies" >
-    	
-    </div>
     
+
     
     
 <div id="modalContainerPostponeForm" class="container-fluid">
@@ -34,9 +92,10 @@
 	      </div>
 
      
-		 <form:form    modelAttribute="postponeStudentDataModel" >
+		 
 			      <div class="modal-body">
 						    <div class="section">
+						<form:form    modelAttribute="postponeStudentDataModel" >						    
 						      <div class="container">
 						        <div class="row">
 <!-- 						          <div class="col-md-6"> -->
@@ -46,12 +105,12 @@
 						                </div>
 						                <div class="col-sm-8">
 						                  <label class="radio-inline">
-						                   	<form:radiobutton path="yearSem" value="${currYearSem.year}-${currYearSem.semesterCode}"/>${currYearSem.year},${currYearSem.semesterName}
+						                   	<form:radiobutton path="yearSem" value="${currYearSem.year}-${currYearSem.semesterCode}"  />${currYearSem.year},${currYearSem.semesterName}
 						                  </label>
 										<c:if test="{{not empty nextYearSemester}" >
 						                  <br>
 						                  <label class="radio-inline">
-					                    	<form:radiobutton path="yearSem" value="${nextYearSemester.year}-${nextYearSemester.semesterCode}"/>${nextYearSemester.year},${nextYearSemester.semesterName}
+					                    	<form:radiobutton path="yearSem" value="${nextYearSemester.year}-${nextYearSemester.semesterCode}"   />${nextYearSemester.year},${nextYearSemester.semesterName}
 						                   </label>
 						                 </c:if>
 						                </div>
@@ -60,7 +119,7 @@
 						       <div class="row">						              
 						              <div class="form-group">
 						                <div class="col-sm-2">
-						                  <label for="inputPassword3" class="control-label"><spring:message code="prop.dps.postpone.student.applications.form.reason.for.not.completing"/></label>
+						                  <label for="reasonCode" class="control-label"><spring:message code="prop.dps.postpone.student.applications.form.reason.for.not.completing"/></label>
 						                </div>
 						                <div class="col-sm-8">
 						                
@@ -72,16 +131,18 @@
 						              </div>
 <!-- 						          </div> -->
 						        </div>
-						        <div class="row" id="divExtReasonOther" style="display: none;">
+						        <div class="row" id="divPostponeReasonOther" style="display: none;">
 						        	<div class="form-group">
 						        		<div class="col-sm-2">
-						        			<label for="inputEmail3" class="control-label"><spring:message code="prop.dps.postpone.select.reason.other.text"/></label>
+						        			<label for="reasonOther" class="control-label"><spring:message code="prop.dps.postpone.select.reason.other.text"/></label>
 						        		</div>
-						        		<div class="col-sm-8">
-						        			<form:textarea path="reasonOther"/>
+						        		<div class="col-sm-8" id="divReasonOtherTxt">
+						        			
 						        		</div>
 						        	</div>
 						        </div>
+						       </div>
+						    </form:form> 
 						      </div>
 						    </div>
 			      </div>
@@ -90,7 +151,7 @@
 			        <button type="button" id="bttnCompetentCancel" class="btn btn-default" data-dismiss="modal"><spring:message code="prop.dps.postpone.student.applications.form.submit.no"/></button>
 			        <button  type="button" id="bttnCompetentSubmit" class="btn btn-primary"><spring:message code="prop.dps.postpone.student.applications.form.submit.yes"/></button>
 			      </div>
-	      </form:form>
+	      
 	      
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
@@ -115,17 +176,31 @@
         </div>
     </div>
 
+<script id="hbAlert" type="text/x-handlebars-template">
+	<div id="idAlert" class="alert alert-warning alert-dismissible fade in" role="alert"> 
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+			<h4>
+				<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> 
+				 <spring:message code="prop.dps.postpone.alert"/>
+			</h4>
+			<hr>
+				<p id="idAlertText">{{appAlertMsg}}</p> 
+	</div> 
+</script>
+
+<script id="hbAlertPostponeStudies" type="text/x-handlebars-template" >
+    <div class="alert alert-warning alert-dismissible" role="alert">
+  		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  		<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> {{alertText}}
+		<div id="alertPostponeStudiesMsgText"></div>
+	</div>
+</script>
 
 <script id="hbPostponeStudies" type="text/x-handlebars-template" >
-    <div class="section">
+    <br>
+	<div class="section">
       	<div class="container-fluid">
-			<c:url value="/ui/ajax-loader.gif" var="imgAjaxLoader"/>		
-			<div class="row" id="divImgAjaxLoading" style="display: none;">
-				<div class="col-sm-5"></div>
-				<div class="col-sm-1">
-					<img alt="Loading ...." src="${imgAjaxLoader}">
-				</div>
-			</div>
+			<div class="row">
 			       <table class="table table-striped table-bordered dt-responsive nowrap collapsed">
 		              <thead>
 		                <tr>
@@ -159,9 +234,9 @@
 		              			
 		              			<td>{{statusDesc}} &nbsp;
 		              					{{#if statusReject}}
-		              						<a href="#" class="clsMsgErr" msg='{{commentEng}}'>
+		              						<a href="#" class="clsMsgErrStudent" msg='{{commentEng}}'>
 				              						<font color="default">
-				              							<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+				              							<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
 				              						</font>
 		              						</a>
 		              					{{/if}}
@@ -172,6 +247,7 @@
 		              	{{/each}}
 		              </tbody>
 		            </table>
-	</div>
 			</div>
+		</div>
+	</div>
 </script>    

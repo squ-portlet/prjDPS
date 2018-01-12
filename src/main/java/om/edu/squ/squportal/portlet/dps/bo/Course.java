@@ -42,8 +42,12 @@ public class Course
 	private	String	sectionNo;
 	private	String	yearSemester;
 	private	int		credits;
+
 	private	int		courseYear;
 	private	int		semester;
+
+	private	String	gradeValue;
+
 	
 	public Course(){}
 	public Course
@@ -203,6 +207,7 @@ public class Course
 	}
 	
 	/**
+
 	 * Getter Method	: getCourseYear
 	 * @return the courseYear
 	 * 
@@ -241,6 +246,26 @@ public class Course
 	public void setSemester(int semester)
 	{
 		this.semester = semester;
+
+	 * Getter Method	: getGradeValue
+	 * @return the gradeValue
+	 * 
+	 * Date				: Dec 25, 2017
+	 */
+	public String getGradeValue()
+	{
+		return this.gradeValue;
+	}
+	/**
+	 * Setter method : setGradeValue
+	 * @param gradeValue the gradeValue to set
+	 * 
+	 * Date          : Dec 25, 2017 9:29:32 PM
+	 */
+	public void setGradeValue(String gradeValue)
+	{
+		this.gradeValue = gradeValue;
+
 	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
@@ -254,6 +279,8 @@ public class Course
 				+ this.sectionNo + ", yearSemester=" + this.yearSemester
 				+ ", credits=" + this.credits + ", courseYear="
 				+ this.courseYear + ", semester=" + this.semester + "]";
+				+ ", credits=" + this.credits + ", gradeValue="
+				+ this.gradeValue + "]";
 	}
 	
 	

@@ -11,8 +11,6 @@
 
 <script type="text/javascript">
 
-$('#divImgAjaxLoading').hide(); //initially hide the divImgAjaxLoading icon
-
 $(document).ajaxStart(function(){
     $('#divImgAjaxLoading').show();
 });
@@ -23,13 +21,20 @@ $(document).ajaxStop(function(){
 
 	$(function(){
 		var varRoleName;
+		var	tblPostponeApprover;
+		var	tblRowIndexApprover;
+		var	tblRowDataApprover;
 		
 		var studentModel = {
 				yearSem		: 	''
 
 		};
 		
+		$('#alertPostponeStudies').html('');
+		
 /* Default screen with postpone data for student*/
+
+ 	<c:if test="${isUserTypeStudent}">
 		$.ajax({
 			url		:	"${varAjaxResourceStudentSubmit}",
 			type	:	'POST',
@@ -38,26 +43,64 @@ $(document).ajaxStop(function(){
 			success	:	function(data)
 			{
 				var	postponeDTOs = JSON.parse(data);
+				if(postponeDTOs.length == ${postponeLimit})
+					{
+						$('#rowButtonAddPostpone').html('');
+						var alertText = {'alertText':'<spring:message code="error.dps.postpone.student.maximum.number.of.postpone.rached"/>'};
+						dataLoad(alertText, '#hbAlertPostponeStudies', '#alertPostponeStudies');
+					}
+				
+				if(removePostponeSubmit(postponeDTOs))
+				{
+					$('#rowButtonAddPostpone').html('');
+				}
+				
 				dataLoad(postponeDTOs, '#hbPostponeStudies', '#tblPostponeStudies');
+				
 			},
 			error	:	function(xhr, status, error)
 			{
-				$('#modalAlertErrMsg').html(xhr.responseText);
-				$('#alertModal').modal('toggle');
-				$('#divImgAjaxLoading').hide();
+				var alertText = {'alertText':xhr.responseText};
+
+				<c:if test="${empty existingGrades}">
+					dataLoad(alertText, '#hbAlertPostponeStudies', '#alertPostponeStudies');
+				</c:if>
+				
 			}
 		});
-		
-		
+	</c:if>	
+	
+	/* Show the other reason text */
+		$("#reasonCode").change(function(){
+	
+			if($("#reasonCode").val()=='4533')
+			{
+				$("#divPostponeReasonOther").show();
+				$("#divReasonOtherTxt").html('<textarea  id="reasonOther" name="reasonOther" required/>');
+				validatePostponeStudentDataModel();
+			}
+			else
+			{
+				$("#divPostponeReasonOther").hide();
+				$("#divExtReasonOther").hide();
+				$("#divReasonOtherTxt").html('');
+			}
+			
+		});
+	
+	
 		
 /* Submit by student*/
-		$('#bttnCompetentSubmit').click(function(){
+		$('#bttnCompetentSubmit').click(function(event){
+		if ($('#postponeStudentDataModel').valid()) {
 			$('#modalPostponeForm').modal('toggle');
 			var studentModel = {
 					yearSem		: 	$('input[name=yearSem]').val(),
 					reasonCode	:	$('#reasonCode').val(),
 					reasonOther	:	$('#reasonOther').val()
 			};
+			
+			$('#alertPostponeStudies').html('');
 			
 			$.ajax({
 					url		:	"${varAjaxResourceStudentSubmit}",
@@ -67,18 +110,71 @@ $(document).ajaxStop(function(){
 					success	:	function(data)
 					{
 						var	postponeDTOs = JSON.parse(data);
+						if(postponeDTOs.length == ${postponeLimit})
+						{
+							$('#rowButtonAddPostpone').html('');
+							var alertText = {'alertText':'<spring:message code="error.dps.postpone.student.maximum.number.of.postpone.rached"/>'};
+							dataLoad(alertText, '#hbAlertPostponeStudies', '#alertPostponeStudies');
+						}
+						
+						if(removePostponeSubmit(postponeDTOs))
+						{
+							$('#rowButtonAddPostpone').html('');
+						}
+						
 						dataLoad(postponeDTOs, '#hbPostponeStudies', '#tblPostponeStudies');
+						
 					},
 					error	:	function(xhr, status, error)
 					{
-						$('#modalAlertErrMsg').html(xhr.responseText);
-						$('#alertModal').modal('toggle');
-						$('#divImgAjaxLoading').hide();
+				
+						var alertText = {'alertText':xhr.responseText};
+
+						<c:if test="${empty existingGrades}">
+							dataLoad(alertText, '#hbAlertPostponeStudies', '#alertPostponeStudies');
+						</c:if>
 					}
 			});
-			
+		}	
 		});
-	
+
+		/* Alert messages for mainly rejection cases */
+		$(document).on("click", ".clsMsgErrStudent", function(event){
+			event.preventDefault();
+			var alertMsg	=	this.getAttribute("msg");
+
+			var alertMsgJson = {'appAlertMsg': alertMsg};
+			dataLoad(alertMsgJson, '#hbAlert', '#divAlertApprover');
+		});
+
+		
+		
+		$(document).on("click", ".clsMsgErrApprover", function(event){
+			event.preventDefault();
+			var alertMsg	=	this.getAttribute("msg");
+			
+			var alertMsgJson = {'appAlertMsg': alertMsg};
+			dataLoad(alertMsgJson, '#hbAlert', '#divAlertApprover');
+		});		
+		
+	/* Findout for any existing progress/pending postpone  */
+		function removePostponeSubmit(data)
+		{
+			var status_progress_pending=false;
+			
+			for(var i = 0; i < data.length; i++) {
+			    var postpone = data[i];
+					if((postpone.statusCodeName === '${statusProgress}') ||
+							(postpone.statusCodeName === '${statusPending}')
+					 )
+					{
+						status_progress_pending = true;
+					}
+			}
+			
+			return status_progress_pending;
+		}
+
 
 
 /* Approver */
@@ -98,7 +194,7 @@ $(document).ajaxStop(function(){
 				};
 				$("#divAlertData").hide();
 				
-				$("#divImgAjaxLoading").show();
+
 				
 				$.ajax({
 						url		:	"${varAjaxResourcePostponeDataByRole}",
@@ -107,20 +203,42 @@ $(document).ajaxStop(function(){
 						data	:	roleNameValue,
 						success	:	function(data)
 						{
-							$("#divImgAjaxLoading").hide();
 							var postpone=JSON.parse(data);
 							if($.trim(postpone))
 								{
+								
 									dataLoad(postpone,'#hbPostponeApprover','#divPostponeApprover');
-									$('#tblPostponeApprover').DataTable({
+									
+									tblPostponeApprover = $('#tblPostponeApprover').DataTable({
 											"sDom":  '<f><t><"col-sm-5"i><"col-sm-2"l><"col-sm-12"p><"clearfix">', 
 											"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+									
+											
 											/*
 											"oLanguage": {
 												  "sUrl": "${urlCdn}/DataTables/language/lang_${rc.locale.language}.txt"
 												},
 												*/
-											"order": []
+											"order": [],
+											rowId: 'recordSequence',
+											"columns" :
+												[
+												 {'data':null,
+												  'defaultContent' : ''	 
+												 },
+												 {'data':'recordSequence'},
+												 {'data':'studentId'},
+												 {'data':'studentName'},
+												 {'data':'cohort'},
+												 {'data':'collegeName'},
+												 {'data':'degreeName'},
+												 {'data':'reasonDesc'},
+												 {'data':'advisor.roleStausIkon'},
+												 {'data':'supervisor.roleStausIkon'},
+												 {'data':'collegeDean.roleStausIkon'},
+												 {'data':'dpsDean.roleStausIkon'},
+												 {'data':'approver'}
+												 ]
 										
 										});
 								}
@@ -131,7 +249,7 @@ $(document).ajaxStop(function(){
 						},
 						error	:	function(xhr, status)
 						{
-							$("#divImgAjaxLoading").hide();
+
 						}
 				});
 				
@@ -145,6 +263,7 @@ $(document).ajaxStop(function(){
 			event.preventDefault();
 			$(this).prop("checked", true);
 			$('#txtModalAppFormStatus').val($(this).val());
+			$('#recordSequence').val(this.getAttribute("recordSequence"));
 			$('#studentno').val(this.getAttribute("studentno"));
 			$('#studentstatCode').val(this.getAttribute("studentstatCode"));
 			if($(this).val() == '${appApprove}')
@@ -162,6 +281,10 @@ $(document).ajaxStop(function(){
 				$('#idApprovalMsg').html("<spring:message code='prop.dps.postpone.approver.reject.text'/>");
 				$('#linkSubmitApprove').addClass('btn-danger').removeClass('btn-success');
 			}
+			tblRowDataApprover 	= 	tblPostponeApprover.table(0).row( this ).data();
+			tblRowIndexApprover	=	tblPostponeApprover.row(this).index();
+			
+			
 		});
 		
 
@@ -170,6 +293,7 @@ $(document).ajaxStop(function(){
 			
 			if ($('#formModalApprover').valid()) {
 		    	var postponeDTO	= {
+		    			recordSequence	: $('#recordSequence').val(),
 		    			studentNo 		: $('#studentno').val(),
 						studentStatCode		: $('#studentstatCode').val(),
 						statusCodeName	: $('#txtModalAppFormStatus').val(),
@@ -185,6 +309,15 @@ $(document).ajaxStop(function(){
 		    			data		:	postponeDTO,
 		    			success		:	function(data)
 		    			{
+		    				var postpone = JSON.parse(data);
+		    				tblRowDataApprover.recordSequence=postpone.recordSequence;
+		    				tblRowDataApprover.studentId=postpone.studentId;
+		    				tblRowDataApprover.advisor.roleStausIkon=postpone.advisor.roleStausIkon;
+		    				tblRowDataApprover.supervisor.roleStausIkon=postpone.supervisor.roleStausIkon;
+		    				tblRowDataApprover.collegeDean.roleStausIkon=postpone.collegeDean.roleStausIkon;
+		    				tblRowDataApprover.dpsDean.roleStausIkon=postpone.dpsDean.roleStausIkon;
+		    				tblRowDataApprover.approver=postpone.statusDesc;
+		    				tblPostponeApprover.row( tblRowIndexApprover ).data(tblRowDataApprover).draw();
 		    				
 		    			},
 		    			error	:	function(xhr, status, error)
@@ -211,7 +344,20 @@ $(document).ajaxStop(function(){
 			
 		}
 		
+		Handlebars.registerHelper('ifCond', function(v1, v2, options) {
+			  if(v1 === v2) {
+			    return options.fn(this);
+			  }
+			  return options.inverse(this);
+			});
 		
+		
+		Handlebars.registerHelper('ifNotCond', function(v1, v2, options) {
+			  if(v1 !== v2) {
+			    return options.fn(this);
+			  }
+			  return options.inverse(this);
+			});
 		
 	});
 </script>

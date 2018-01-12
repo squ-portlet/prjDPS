@@ -12,6 +12,7 @@ create or replace FUNCTION FUNC_STUDENT_APPROVER
   Author : Bhabesh
   Create Date : 21-February-2017
   Modify Date : 13-December-2017 -- Adding HOD and ADEANP role
+              : 31-December-2017 -- Check whether student is active
 */
 APP_EMP_NUM   VARCHAR2(10);
 BEGIN
@@ -65,6 +66,7 @@ BEGIN
                            AND  COLCEN.L_ABR_CC = PORTAL.COLLEGE_CODE
                            AND  COLCEN.COLCENCD = USERS.COLCENCD
                            AND  PORTAL.STDNO = paramStudentNo
+                           AND  PORTAL.ACTIVE='Y'
                            ORDER BY UPDTDTE DESC
                 )
                 WHERE

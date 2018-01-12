@@ -34,6 +34,7 @@ import java.util.Locale;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import om.edu.squ.squportal.portlet.dps.bo.Course;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeReason;
@@ -44,6 +45,21 @@ import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeReason;
  */
 public interface PostponeDBDao 
 {
+	/**
+	 * 
+	 * method name  : getExistingGrades
+	 * @param studentNo
+	 * @param locale
+	 * @return
+	 * PostponeDBImpl
+	 * return type  : List<Course>
+	 * 
+	 * purpose		: Get existing grades
+	 *
+	 * Date    		:	Dec 25, 2017 10:44:04 PM
+	 */
+	public List<Course> getExistingGrades(String studentNo, Locale locale);
+	
 	/**
 	 * 
 	 * method name  : getPostponeReasons

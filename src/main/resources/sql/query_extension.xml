@@ -244,13 +244,13 @@ SELECT *
 			                                              :paramDpsDeanRoleName, 
 			                                              :paramFormName
 			                                              )                           	AS  DPS_DEAN_STATUS
-			                          ,	FUNC_IS_APPROVER(
+			                          ,	NVL(FUNC_IS_APPROVER(
 														 		  EXT.STDNO
 														 		, EXT.STDSTATCD
 														 		, :paramFormName
 														 		, :paramRoleName
 														 		, :paramEmpNo
-			                         						)						 	AS	IS_APPROVER
+			                         						),'N')					 	AS	IS_APPROVER
                                 ,FUNC_IS_SUPERVISOR_AVAILABLE(EXT.STDNO,EXT.STDSTATCD)  AS 	HAS_THESIS     		                                          
                                           
 							    FROM     

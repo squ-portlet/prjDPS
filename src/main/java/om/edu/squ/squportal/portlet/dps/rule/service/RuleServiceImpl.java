@@ -204,7 +204,7 @@ public class RuleServiceImpl implements Rule
 	 *
 	 * Date    		:	Mar 14, 2017 1:08:11 PM
 	 */
-	private int countPostpone(String studentNo, String stdStatCode)
+	public int countPostpone(String studentNo, String stdStatCode)
 	{
 		return ruleDbDao.countPostpone(studentNo, stdStatCode);
 	}
@@ -262,7 +262,7 @@ public class RuleServiceImpl implements Rule
 	 *
 	 * Date    		:	Aug 16, 2017 4:00:37 PM
 	 */
-	public boolean isDropwTotalRegisteredCreditRuleExist(int totalRegisteredCredit,  int selectedCourseCredit, String studyModeType)
+	public boolean isDropwTotalRegisteredCreditRuleExist(int totalRegisteredCredit,  int selectedCourseCredit, String studyModeType, String sectNo)
 	{
 		boolean	result = false;
 		
