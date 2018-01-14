@@ -129,6 +129,7 @@
 			<table id="tblStudentList" class="table table-condensed table-bordered dt-responsive">
 				<thead>
 					<tr>
+						<th>tno</th>
 						<th>studentNo </th>
 						<th>stdStatCode</th>
 						<th>courseYear</th>
@@ -151,7 +152,7 @@
 				</thead>
 					{{#each students}}
 					<tr>
-
+						<td>{{sequenceNum}}</td>
 						<td>{{encryptStr student.personalDetail.studentNo}}</td>
 						<td>{{encryptStr student.academicDetail.stdStatCode}}</td>
 						<td>{{encryptStr ../courseYear}}</td>
@@ -167,7 +168,7 @@
 								{{#unless  grade.gradeCode}}
 									<a class="clsLinkStudentNo"  href="#" >
 										<spring:message code="prop.dps.incomplete.grade.notify.text.notify" /> 
-										<span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+										<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 									</a>
 								{{/unless}}
 						</td>

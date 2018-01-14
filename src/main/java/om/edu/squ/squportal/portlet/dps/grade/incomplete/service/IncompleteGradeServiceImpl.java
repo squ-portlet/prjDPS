@@ -81,12 +81,13 @@ public class IncompleteGradeServiceImpl implements IncompleteGradeService
 	
 	/*
 	 * (non-Javadoc)
-	 * @see om.edu.squ.squportal.portlet.dps.grade.incomplete.service.IncompleteGradeService#setInstructorNotifyForIncompleteGrade(om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteDTO)
+	 * @see om.edu.squ.squportal.portlet.dps.grade.incomplete.service.IncompleteGradeService#setInstructorNotifyForIncompleteGrade(java.lang.String, om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteDTO)
 	 */
 	@Override
-	public int setInstructorNotifyForIncompleteGrade(GradeIncompleteDTO dto ) throws NotCorrectDBRecordException
+	public String setInstructorNotifyForIncompleteGrade(GradeIncompleteDTO dto ) throws NotCorrectDBRecordException
 	{
-		return incompleteGradeDBDao.setInstructorNotifyForIncompleteGrade(dto);
+		double	sequenceNumber =	dpsServiceDao.getSequenceNumber();
+		return (incompleteGradeDBDao.setInstructorNotifyForIncompleteGrade(sequenceNumber, dto)>0)?String.format("%.0f",sequenceNumber):null;
 	}
 	
 	/*

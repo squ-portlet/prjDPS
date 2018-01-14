@@ -659,4 +659,14 @@ public class DpsServiceImpl implements DpsServiceDao
 		
 		return result;
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao#getSequenceNumber()
+	 */
+	@Override
+	public double getSequenceNumber()
+	{
+		return dpsDbDao.getSequenceNumber();
+	}
 }

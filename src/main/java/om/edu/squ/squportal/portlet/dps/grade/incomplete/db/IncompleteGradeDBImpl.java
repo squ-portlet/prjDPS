@@ -229,6 +229,15 @@ public class IncompleteGradeDBImpl implements IncompleteGradeDBDao
 				dto.setStudent(student);
 				dto.setGrade(grade);
 				
+				if(rs.getString(Constants.CONST_COLMN_RECORD_AVAILABLE).equals(Constants.CONST_YES))
+				{
+					dto.setHistoryAvailable(true);
+				}
+				else
+				{
+					dto.setHistoryAvailable(false);
+				}
+				
 				return dto;
 				
 			}
@@ -252,13 +261,14 @@ public class IncompleteGradeDBImpl implements IncompleteGradeDBDao
 	
 	/*
 	 * (non-Javadoc)
-	 * @see om.edu.squ.squportal.portlet.dps.grade.incomplete.db.IncompleteGradeDBDao#setInstructorNotifyForIncompleteGrade(om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteDTO)
+	 * @see om.edu.squ.squportal.portlet.dps.grade.incomplete.db.IncompleteGradeDBDao#setInstructorNotifyForIncompleteGrade(double, om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteDTO)
 	 */
 	@Override
-	public int setInstructorNotifyForIncompleteGrade(GradeIncompleteDTO dto ) throws NotCorrectDBRecordException
+	public int setInstructorNotifyForIncompleteGrade(double sequenceNo, GradeIncompleteDTO dto ) throws NotCorrectDBRecordException
 	{
 		String SQL_INCOMPLETE_GRADE_INSERT_NOTIFY_INSTRUCTOR	=	queryIncompleteGrade.getProperty(Constants.CONST_SQL_INCOMPLETE_GRADE_INSERT_NOTIFY_INSTRUCTOR);
 		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+		namedParameterMap.put("paramSeqenceNum",String.valueOf(sequenceNo));
 		namedParameterMap.put("paramStdNo",dto.getStudent().getAcademicDetail().getStudentNo());
 		namedParameterMap.put("paramStdStatCode",dto.getStudent().getAcademicDetail().getStdStatCode());
 		namedParameterMap.put("paramYear",String.valueOf(dto.getCourse().getCourseYear()));

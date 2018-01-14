@@ -45,6 +45,8 @@ public class GradeIncompleteDTO
 	private	Grade	grade;
 	private	String	comments;
 	private	String	userName;
+	private	boolean	historyAvailable;
+	private	String	sequenceNum;
 	
 
 	public GradeIncompleteDTO(){}
@@ -180,6 +182,49 @@ public class GradeIncompleteDTO
 	{
 		this.userName = userName;
 	}
+	/**
+	 * Getter Method	: isHistoryAvailable
+	 * @return the historyAvailable
+	 * 
+	 * Date				: Jan 14, 2018
+	 */
+	public boolean isHistoryAvailable()
+	{
+		return this.historyAvailable;
+	}
+
+	/**
+	 * Setter method : setHistoryAvailable
+	 * @param historyAvailable the historyAvailable to set
+	 * 
+	 * Date          : Jan 14, 2018 10:51:56 AM
+	 */
+	public void setHistoryAvailable(boolean historyAvailable)
+	{
+		this.historyAvailable = historyAvailable;
+	}
+
+	/**
+	 * Getter Method	: getSequenceNum
+	 * @return the sequenceNum
+	 * 
+	 * Date				: Jan 14, 2018
+	 */
+	public String getSequenceNum()
+	{
+		return this.sequenceNum;
+	}
+
+	/**
+	 * Setter method : setSequenceNum
+	 * @param sequenceNum the sequenceNum to set
+	 * 
+	 * Date          : Jan 14, 2018 11:46:53 AM
+	 */
+	public void setSequenceNum(String sequenceNum)
+	{
+		this.sequenceNum = sequenceNum;
+	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
@@ -189,8 +234,9 @@ public class GradeIncompleteDTO
 	{
 		return "GradeIncompleteDTO [course=" + this.course + ", student="
 				+ this.student + ", grade=" + this.grade + ", comments="
-				+ this.comments + ", userName=" + this.userName + "]";
+				+ this.comments + ", userName=" + this.userName
+				+ ", historyAvailable=" + this.historyAvailable
+				+ ", sequenceNum=" + this.sequenceNum + "]";
 	}
-	
 	
 }

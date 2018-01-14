@@ -541,5 +541,21 @@ public class DpsDbImpl implements DpsDbDao
 		
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.dao.db.DpsDbDao#getSequenceNumber()
+	 */
+	@Override
+	public double getSequenceNumber()
+	{
+		String	SQL_SEQUENCE_NUM				=	queryProps.getProperty(Constants.CONST_SQL_SEQUENCE_NUM);
+		
+		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+		
+		
+		
+		return nPJdbcTemplDps.queryForInt(SQL_SEQUENCE_NUM, namedParameterMap);
+	}
+	
 }
 

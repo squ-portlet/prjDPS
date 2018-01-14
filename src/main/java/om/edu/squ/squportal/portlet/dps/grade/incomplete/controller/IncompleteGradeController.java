@@ -36,6 +36,7 @@ import java.util.Locale;
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
+import javax.servlet.http.HttpServletResponse;
 
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.User;
@@ -218,6 +219,7 @@ public class IncompleteGradeController
 	 *
 	 * Date    		:	Jan 11, 2018 12:49:44 PM
 	 * @throws NotCorrectDBRecordException 
+	 * @throws IOException 
 	 */
 	@ResourceMapping(value="resourceAjaxNotify")
 	private void getIncompleteGradeNotification(
@@ -225,14 +227,26 @@ public class IncompleteGradeController
 												, 	ResourceRequest 	request
 												,	ResourceResponse	response
 												,	Locale				locale
-												) throws NotCorrectDBRecordException
+												) throws NotCorrectDBRecordException, IOException
 	{
+		Gson		gson		= 	new Gson();
 		
 		incompleteGradeModel.decrypt(crypto, incompleteGradeModel.getSalt(), incompleteGradeModel.getFour(), incompleteGradeModel);
 		GradeIncompleteDTO	dto	= new GradeIncompleteDTO(incompleteGradeModel);
 		dto.setUserName(dpsServiceDao.getEmpNumber(request));
 
-		incompleteGradeService.setInstructorNotifyForIncompleteGrade(dto);
+		String resultSeqNo = incompleteGradeService.setInstructorNotifyForIncompleteGrade(dto);
+		
+		if(null==resultSeqNo)
+		{
+			response.setProperty(ResourceResponse.HTTP_STATUS_CODE, Integer.toString(HttpServletResponse.SC_INTERNAL_SERVER_ERROR));
+			
+		}
+		else
+		{
+			response.getWriter().print(gson.toJson(resultSeqNo)); 
+			
+		}
 
 		
 		

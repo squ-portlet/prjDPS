@@ -124,6 +124,10 @@
 								               {
 								                   "targets": [ 7 ],
 								                   "visible": false
+								               },							               
+								               {
+								                   "targets": [ 8 ],
+								                   "visible": false
 								               }								               
 								               /*								               
 								               ,{ "name": "studentNo",   "targets": 0 },
@@ -134,7 +138,7 @@
 */								               								               
 							               ],
 							               columns: [
-							                    
+							                     { "data": "sequenceNum" },
 							                     { "data": "studentNo" },
 					                             { "data": "stdStatCode"},
 					                             { "data": "courseYear" },
@@ -177,16 +181,6 @@
 			var row  = $(this).parents('tr')[0];	
 			var rowData	=	tablStudentList.row($(this).parents('tr')[0]).data();
 			// var rowData = tablStudentList.row($(this).closest('tr')[0]).data();   // changing parents to closest also works
-
-
-/* TODO
- tablStudentList
-			        .row( row)
-			        .data( rowData )
-			        .draw();
- 
- 
- * */
 			
 			var incompleteGradeNotifyModel = {
 					studentNo 		:	rowData.studentNo,
@@ -210,7 +204,17 @@
 						data	:	incompleteGradeNotifyModel,
 						success	:	function(data)
 						{
-							console.log("inside success --");
+									var seqNo				=	JSON.parse(data);
+									var cellDataAction 		= 	'<span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>';
+										rowData.sequenceNum	=	seqNo;
+										rowData.id 			= 	'<a class="clsNotifyHistory" href="#">'+rowData.id+'</a>';
+										rowData.action		=	cellDataAction;
+
+										tablStudentList
+												        .row( row)
+												        .data( rowData )
+												        .draw();
+								
 						},
 						error	:  function(xhr, status,  error)
 						{
@@ -222,6 +226,8 @@
 			
 
 		});
+	
+		
 		
 
 		/* Filling data using handlebar template*/

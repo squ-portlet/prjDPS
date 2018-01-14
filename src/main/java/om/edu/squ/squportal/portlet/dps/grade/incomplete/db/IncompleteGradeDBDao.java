@@ -78,6 +78,7 @@ public interface IncompleteGradeDBDao
 	/**
 	 * 
 	 * method name  : setInstructorNotifyForIncompleteGrade
+	 * @param sequenceNo TODO
 	 * @param dto
 	 * @return
 	 * @throws NotCorrectDBRecordException
@@ -88,5 +89,5 @@ public interface IncompleteGradeDBDao
 	 *
 	 * Date    		:	Jan 11, 2018 4:57:17 PM
 	 */
-	public int setInstructorNotifyForIncompleteGrade(GradeIncompleteDTO dto ) throws NotCorrectDBRecordException;
+	public int setInstructorNotifyForIncompleteGrade(double sequenceNo, GradeIncompleteDTO dto ) throws NotCorrectDBRecordException;
 }

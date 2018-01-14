@@ -130,6 +130,7 @@ public interface Constants
 	
 	public static final	String	CONST_COLMN_POSTPONE_GRADE_IS_UPDATABLE						=	"IS_UPDATABLE";
 	public static final	String	CONST_COLMN_IS_CHANGE_ALLOWED								=	"CHANGE_ALLOWED";
+	public static final	String	CONST_COLMN_RECORD_AVAILABLE								=	"RECORD_AVAILABLE";
 	
 	public static final	String	CONST_COLMN_APPROVAL_CODE									=	"APPROVAL_CODE";
 	public static final	String	CONST_COLMN_APPROVER_ROLE_CODE								=	"APPROVER_ROLE_CODE";
@@ -222,8 +223,9 @@ public interface Constants
 
 	public static final	String	CONST_FORM_NAME_DPS_DROP_W									=	"DPS7";
 	public static final	String	CONST_FORM_NAME_DPS_GRADE_CHANGE							=	"DPS9"; 
-	public static final	String	CONST_FORM_NAME_DPS_POSTPONE_STUDY							=	"DPS13";
 	public static final	String	CONST_FORM_NAME_DPS_EXTENSION_STUDY							=	"DPS19";
+	public static final	String	CONST_FORM_NAME_DPS_POSTPONE_STUDY							=	"DPS13";
+	public static final	String	CONST_FORM_NAME_DPS_INCOMPLETE_GRADE_NOTIFY					=	"DPS8";
 	
 	
 	/************* PROPERTY FILE ******************************/
@@ -250,6 +252,7 @@ public interface Constants
 	
 	public static 	final	String	CONST_SP_APPROVER_NEXT									=	"dps.stored.procedure.sp.approver.next";
 	public static 	final	String	CONST_SQL_FUNC_IS_SUPERVISOR_AVAILABLE					=	"dps.function.is.supervisor.available";
+	public	static	final	String	CONST_SQL_SEQUENCE_NUM									=	"dps.sequence.no";
 	
 	/* ---  SQL - DPS - Extension property--------------------- */
 	public	static	final	String	CONST_SQL_EXTENSION_REASONS								=	"dps.extension.select.extension.reasons";

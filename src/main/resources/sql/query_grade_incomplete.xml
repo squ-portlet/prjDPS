@@ -96,6 +96,32 @@
 		                       GRADECD = GRADES.GRADECD
 		              )                         									AS 		GRADE_VAL
 	            ,	GRADES.GRADUSRACCTCD
+                ,	(
+			          SELECT 
+			                 DECODE(
+                                		COUNT(TN.STDNO)
+                                		,0,'N','Y'
+                            	)
+			          FROM
+			                T_STD_INCOMPLETE_GRADE_NOTIFY TN
+			          WHERE
+			                    
+			                    TN.STDSTATCD 	= 	SI.STDSTATCD
+			                AND TN.CCYRCD   	=  :paramYear
+			                AND TN.SEMCD    	=  :paramSem
+				      )  
+				                                                         		AS 		RECORD_AVAILABLE   
+				 ,(
+		                SELECT 
+		                      MAX(REC_SEQ_NO)
+		                FROM
+		                      T_STD_INCOMPLETE_GRADE_NOTIFY TN
+		                WHERE
+		                          
+		                          TN.STDSTATCD = SI.STDSTATCD
+		                      AND TN.CCYRCD   =  :paramYear
+		                      AND TN.SEMCD    =  :paramSem
+		            )                                                     		AS 		SEQUENCE_NUMBER   				                                                         		
 			FROM  
 					V_STDTIMETABLE_PORTAL 	ST
 			    ,	V_STDINFO_PORTAL 		SI 
@@ -134,7 +160,7 @@
 			  , COMMENTS
 			) 
 	VALUES (
-	            DPS_SQ.NEXTVAL
+	          	:paramSeqenceNum 
 	          , :paramStdNo
 	          , :paramStdStatCode
 	          , :paramYear
@@ -160,4 +186,6 @@
 	        )
 	
 	</entry>
+	
+
 </properties>
