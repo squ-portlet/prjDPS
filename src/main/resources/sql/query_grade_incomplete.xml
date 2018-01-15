@@ -96,6 +96,32 @@
 		                       GRADECD = GRADES.GRADECD
 		              )                         									AS 		GRADE_VAL
 	            ,	GRADES.GRADUSRACCTCD
+                ,	(
+			          SELECT 
+			                 DECODE(
+                                		COUNT(TN.STDNO)
+                                		,0,'N','Y'
+                            	)
+			          FROM
+			                T_STD_INCOMPLETE_GRADE_NOTIFY TN
+			          WHERE
+			                    
+			                    TN.STDSTATCD 	= 	SI.STDSTATCD
+			                AND TN.CCYRCD   	=  :paramYear
+			                AND TN.SEMCD    	=  :paramSem
+				      )  
+				                                                         		AS 		RECORD_AVAILABLE   
+				 ,(
+		                SELECT 
+		                      MAX(REC_SEQ_NO)
+		                FROM
+		                      T_STD_INCOMPLETE_GRADE_NOTIFY TN
+		                WHERE
+		                          
+		                          TN.STDSTATCD = SI.STDSTATCD
+		                      AND TN.CCYRCD   =  :paramYear
+		                      AND TN.SEMCD    =  :paramSem
+		            )                                                     		AS 		SEQUENCE_NUMBER   				                                                         		
 			FROM  
 					V_STDTIMETABLE_PORTAL 	ST
 			    ,	V_STDINFO_PORTAL 		SI 
@@ -114,4 +140,126 @@
 			                  
 					 ORDER BY GRADUSRACCTCD DESC, ST.STD_ID	
 	</entry>
+	<entry key="dps.incomplete.grades.insert.notify.by.instructor">
+	INSERT INTO 
+	T_STD_INCOMPLETE_GRADE_NOTIFY 
+			(
+			    REC_SEQ_NO
+			  , STDNO
+			  , STDSTATCD
+			  , CCYRCD
+			  , SEMCD
+			  , SECTCD
+			  , L_ABR_CRSNO
+			  , CRSNO
+			  , SECTNO
+			  , STATUSCD
+			
+			  , CREATE_DATE
+			  , CREATE_USERNAME
+			  , COMMENTS
+			) 
+	VALUES (
+	          	:paramSeqenceNum 
+	          , :paramStdNo
+	          , :paramStdStatCode
+	          , :paramYear
+	          , :paramSem
+	          , :paramSectCode
+	          , :paramCourseLAbrCode
+	          , :paramCourseNo
+	          , :paramSectNo
+	          , (
+	                   SELECT
+	                       CODES.SISCODECD	
+	                   FROM
+	                           SIS_CODES       CODES
+	                       ,   SIS_CODE_TYPES  TYPES
+	                   WHERE
+	                           CODES.SISCODETYPCD =  TYPES.SISCODETYPCD
+	                       AND TYPES.SISCODETYPNM = 'APPROVAL_STATUS'
+	                       AND CODES.L_ABR_CODE  = :paramStatusCode		    
+	            )
+	          , SYSDATE 
+	          , :paramUserName
+	          , :paramComment
+	        )
+	
+	</entry>
+	<entry key="dps.incomplete.grades.select.notify.history">
+			SELECT 
+              		VSP.STD_ID													AS		STUDENT_ID
+		        ,  T_NOTIFY.L_ABR_CRSNO											AS    	L_ABR_CRSNO
+		      	,   T_NOTIFY.SECTNO												AS		SECTION_NO
+
+			  	, T_NOTIFY.COMMENTS                                    			AS 		COMMENTS
+			  	, (
+		        	SELECT
+		        		L_ABR_CODE
+		        	FROM SIS_CODES
+		            WHERE 
+		            	SISCODECD= T_NOTIFY.STATUSCD
+		        	)															AS		STATUS_CODE_NAME
+	        	, (
+		            SELECT 
+		              DECODE 
+		              (
+		                :paramLocale
+		                ,'en', CODENM, A_CODENM
+		                )
+		              FROM SIS_CODES
+		              WHERE SISCODECD= T_NOTIFY.STATUSCD
+	            ) 																AS 		STATUS_DESC
+              
+		      , FUNC_APPROVE_STATUS(
+		                           T_NOTIFY.STDNO,
+		                           :paramHodRoleName, 
+		                           :paramFormName,
+		                           T_NOTIFY.REC_SEQ_NO
+		                           )                        					AS  	HOD_STATUS
+		     , FUNC_APPROVE_STATUS(
+		                     T_NOTIFY.STDNO,
+		                     :paramADeanPRoleName, 
+		                     :paramFormName,
+		                     T_NOTIFY.REC_SEQ_NO
+		                     )                              					AS  	DPS_ASST_DEAN_STATUS 
+		     , FUNC_APPROVE_STATUS(
+		                     T_NOTIFY.STDNO,
+		                     :paramDeanPRoleName, 
+		                     :paramFormName,
+		                     T_NOTIFY.REC_SEQ_NO
+		                     )                              					AS  	DPS_DEAN_STATUS  
+		                      
+              , FUNC_APPROVER_COMMENT(
+		                     T_NOTIFY.STDNO,
+		                     :paramHodRoleName, 
+		                     :paramFormName,
+		                     T_NOTIFY.REC_SEQ_NO
+		                     )                              					AS  	HOD_COMMENT  
+		      , FUNC_APPROVER_COMMENT(
+		                     T_NOTIFY.STDNO,
+		                     :paramADeanPRoleName, 
+		                     :paramFormName,
+		                     T_NOTIFY.REC_SEQ_NO
+		                     )                              					AS  	DPS_ASST_DEAN_COMMENT  
+		      , FUNC_APPROVER_COMMENT(
+		                     T_NOTIFY.STDNO,
+		                     :paramDeanPRoleName, 
+		                     :paramFormName,
+		                     T_NOTIFY.REC_SEQ_NO
+		                     )                              					AS  	DPS_DEAN_COMMENT         
+		FROM
+             	 T_STD_INCOMPLETE_GRADE_NOTIFY  		  	T_NOTIFY
+		      ,   V_STDINFO_PORTAL    						VSP
+
+          
+		WHERE
+				T_NOTIFY.REC_SEQ_NO	= :paramSequenceNo	      	
+		      	AND T_NOTIFY.STDNO 	= VSP.STDNO
+          		AND VSP.ACTIVE    	= 'Y'
+       
+          
+		ORDER BY T_NOTIFY.UPDATE_DATE DESC	
+	</entry>
+
 </properties>

@@ -207,4 +207,17 @@ public interface DpsDbDao
 	 * Date    		:	Aug 28, 2017 4:52:06 PM
 	 */
 	public boolean isSupervisorAvailable(String studentNo, String stdStatCode);
+	
+	/**
+	 * 
+	 * method name  : getSequenceNumber
+	 * @return
+	 * DpsDbDao
+	 * return type  : int
+	 * 
+	 * purpose		: Get Squence number
+	 *
+	 * Date    		:	Jan 14, 2018 12:40:56 PM
+	 */
+	public double getSequenceNumber();
 }

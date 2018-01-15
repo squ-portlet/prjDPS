@@ -203,5 +203,10 @@
     	FROM
     		DUAL
     </entry>
-    
+    <entry key="dps.sequence.no">
+		SELECT 
+					DPS_SQ.NEXTVAL 	 														AS	SEQUENCE_NUMBER
+		FROM 
+					DUAL
+	</entry>
 </properties>

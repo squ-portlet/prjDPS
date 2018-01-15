@@ -246,8 +246,9 @@ public class Course
 	public void setSemester(int semester)
 	{
 		this.semester = semester;
-
-	 * Getter Method	: getGradeValue
+	}
+	
+	/** Getter Method	: getGradeValue
 	 * @return the gradeValue
 	 * 
 	 * Date				: Dec 25, 2017
@@ -277,6 +278,8 @@ public class Course
 				+ this.lAbrCourseNo + ", courseName=" + this.courseName
 				+ ", sectCode=" + this.sectCode + ", sectionNo="
 				+ this.sectionNo + ", yearSemester=" + this.yearSemester
+				+ ", credits=" + this.credits + ", courseYear="
+				+ this.courseYear + ", semester=" + this.semester + "]"
 				+ ", credits=" + this.credits + ", gradeValue="
 				+ this.gradeValue + "]";
 	}

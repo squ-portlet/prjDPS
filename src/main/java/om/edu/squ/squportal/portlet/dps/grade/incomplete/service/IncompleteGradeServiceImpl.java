@@ -34,6 +34,8 @@ import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteDTO;
 import om.edu.squ.squportal.portlet.dps.grade.incomplete.db.IncompleteGradeDBDao;
@@ -77,7 +79,23 @@ public class IncompleteGradeServiceImpl implements IncompleteGradeService
 	{
 		return incompleteGradeDBDao.getStudentList(isRuleGradeChangeTimingFollowed, employeeNo, lAbrCourseNo, sectionNo, locale);
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.grade.incomplete.service.IncompleteGradeService#setInstructorNotifyForIncompleteGrade(java.lang.String, om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteDTO)
+	 */
+	@Override
+	public String setInstructorNotifyForIncompleteGrade(GradeIncompleteDTO dto ) throws NotCorrectDBRecordException
+	{
+		double	sequenceNumber =	dpsServiceDao.getSequenceNumber();
+		return (incompleteGradeDBDao.setInstructorNotifyForIncompleteGrade(sequenceNumber, dto)>0)?String.format("%.0f",sequenceNumber):null;
+	}
+
+
+	public List<GradeIncompleteDTO>  getIncompleteNotifyHistory(String recordSequence,  Locale locale) throws NoDBRecordException
+	{
+		return incompleteGradeDBDao.getIncompleteNotifyHistory( recordSequence, locale);
+	}
 	
 	/*
 	 * (non-Javadoc)
@@ -103,5 +121,8 @@ public class IncompleteGradeServiceImpl implements IncompleteGradeService
 		
 		return true;
 	}
+	
+
+
 	
 }
