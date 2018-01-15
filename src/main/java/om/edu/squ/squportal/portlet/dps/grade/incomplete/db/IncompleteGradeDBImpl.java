@@ -41,15 +41,21 @@ import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Course;
 import om.edu.squ.squportal.portlet.dps.bo.PersonalDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.Grade;
 import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteDTO;
+import om.edu.squ.squportal.portlet.dps.role.bo.DPSAsstDean;
+import om.edu.squ.squportal.portlet.dps.role.bo.DpsDean;
+import om.edu.squ.squportal.portlet.dps.role.bo.HOD;
 import om.edu.squ.squportal.portlet.dps.rule.bo.YearSemester;
+import om.edu.squ.squportal.portlet.dps.tags.RoleTagGlyphicon;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
@@ -238,6 +244,8 @@ public class IncompleteGradeDBImpl implements IncompleteGradeDBDao
 					dto.setHistoryAvailable(false);
 				}
 				
+				dto.setSequenceNum(rs.getString(Constants.CONST_COLMN_SEQUENCE_NO));
+				
 				return dto;
 				
 			}
@@ -293,10 +301,82 @@ public class IncompleteGradeDBImpl implements IncompleteGradeDBDao
 			throw new NotCorrectDBRecordException(sqlEx.getMessage());
 		}
 		
-		
-		
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.grade.incomplete.db.IncompleteGradeDBDao#getIncompleteNotifyHistory(java.lang.String, java.util.Locale)
+	 */
+	@Override
+	public List<GradeIncompleteDTO>  getIncompleteNotifyHistory(String recordSequence, Locale locale) throws NoDBRecordException
+	{
+		String 			SQL_INCOMPLETE_GRADE_SELECT_HISORY		=	queryIncompleteGrade.getProperty(Constants.CONST_SQL_INCOMPLETE_GRADE_SELECT_HISORY);
+		YearSemester	yearSemester							=	null;
+		
+		RowMapper<GradeIncompleteDTO> rowMapper	=	new RowMapper<GradeIncompleteDTO>()
+		{
+			
+			@Override
+			public GradeIncompleteDTO mapRow(ResultSet rs, int rowNum)
+					throws SQLException
+			{
+				GradeIncompleteDTO	dto			=	new GradeIncompleteDTO();
+				Course				course		=	new Course();
+				HOD					hod			=	new HOD();
+				DPSAsstDean			dpsAsstDean	=	new DPSAsstDean();
+				DpsDean				dpsDean		=	new DpsDean();
+				
+				course.setlAbrCourseNo(rs.getString(Constants.CONST_COLMN_L_ABR_CRSNO));
+				course.setSectionNo(rs.getString(Constants.CONST_COLMN_SECTION_NO));
+				
+				dto.setCourse(course);
+				
+				dto.setStatusDesc(rs.getString(Constants.CONST_COLMN_STATUS_DESC));
+				
+				hod.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_HOD_STATUS));
+				hod.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_HOD_STATUS)));
+				hod.setComments(rs.getString(Constants.CONST_COLMN_ROLE_HOD_COMMENT));
+				
+
+				dpsAsstDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_DPS_ASST_DEAN_STATUS));
+				dpsAsstDean.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_DPS_ASST_DEAN_STATUS)));
+				dpsAsstDean.setComments(rs.getString(Constants.CONST_COLMN_ROLE_DPS_ASST_DEAN_COMMENT));
+
+				dpsDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_DPS_DEAN_STATUS));
+				dpsDean.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_DPS_DEAN_STATUS)));
+				dpsDean.setComments(rs.getString(Constants.CONST_COLMN_ROLE_DPS_DEAN_COMMENT));
+				
+				dto.setHod(hod);
+				dto.setDpsAsstDean(dpsAsstDean);
+				dto.setDpsDean(dpsDean);
+				
+				return dto;
+			}
+		};
+		
+
+
+		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+
+		namedParameterMap.put("paramSequenceNo", recordSequence);
+		namedParameterMap.put("paramLocale", locale.getLanguage());
+		namedParameterMap.put("paramFormName", Constants.CONST_FORM_NAME_DPS_INCOMPLETE_GRADE_NOTIFY);
+		namedParameterMap.put("paramHodRoleName", Constants.CONST_SQL_ROLE_NAME_HOD);
+		namedParameterMap.put("paramADeanPRoleName", Constants.CONST_SQL_ROLE_NAME_DPS_ASSISTANT_DEAN);
+		namedParameterMap.put("paramDeanPRoleName", Constants.CONST_SQL_ROLE_NAME_DPS_DEAN);
+		
+		
+		
+		try
+		{
+			return nPJdbcTemplDpsIncompleteGrade.query(SQL_INCOMPLETE_GRADE_SELECT_HISORY, namedParameterMap, rowMapper);
+		}
+		catch(UncategorizedSQLException sqlEx)
+		{
+			logger.error("Error occur for sequence No :  ",recordSequence);
+			throw new NoDBRecordException(sqlEx.getMessage());
+		}
+	}
 	
 		
 	}

@@ -6,6 +6,7 @@
 
 <portlet:resourceURL id="resourceStudentList" var="varResourceStudentList"/>
 <portlet:resourceURL id="resourceAjaxNotify" var="varResourceAjaxNotify"/>
+<portlet:resourceURL id="resourceHistory" var="varResourceHistory"/>
 
 <script type="text/javascript">
 
@@ -174,60 +175,87 @@
 		
 		
 		/* onClick the 'Yes'/Submit button of the modal form for notify */
-		$(document).on("click", "#btnSubmitNotification", function(event){	
-			
-			$('#alertModal').modal('toggle');
-			
-			var row  = $(this).parents('tr')[0];	
-			var rowData	=	tablStudentList.row($(this).parents('tr')[0]).data();
-			// var rowData = tablStudentList.row($(this).closest('tr')[0]).data();   // changing parents to closest also works
-			
-			var incompleteGradeNotifyModel = {
-					studentNo 		:	rowData.studentNo,
-					stdStatCode		:	rowData.stdStatCode,
-					courseYear		:	rowData.courseYear,
-					semester		:	rowData.semester,
-					sectCode		:	rowData.sectCode,
-					lAbrCourseNo	:	rowData.lAbrCourseNo,
-					courseNo		:	rowData.courseNo,
-					sectionNo		:	rowData.sectionNo,
-					comment			:  $('#txtComments').val(),
-					salt			:	salt,
-					four			:	four
-			};
-			
-
-			$.ajax({
-						url		: 	'${varResourceAjaxNotify}',
-						type	:	'POST',
-						cache	:	false,
-						data	:	incompleteGradeNotifyModel,
-						success	:	function(data)
-						{
-									var seqNo				=	JSON.parse(data);
-									var cellDataAction 		= 	'<span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>';
-										rowData.sequenceNum	=	seqNo;
-										rowData.id 			= 	'<a class="clsNotifyHistory" href="#">'+rowData.id+'</a>';
-										rowData.action		=	cellDataAction;
-
-										tablStudentList
-												        .row( row)
-												        .data( rowData )
-												        .draw();
-								
-						},
-						error	:  function(xhr, status,  error)
-						{
-							
-						}
-							
-			});
-			
-			
-
-		});
-	
+				$(document).on("click", "#btnSubmitNotification", function(event){	
+					
+					$('#alertModal').modal('toggle');
+					
+					var row  = $(this).parents('tr')[0];	
+					var rowData	=	tablStudentList.row($(this).parents('tr')[0]).data();
+					// var rowData = tablStudentList.row($(this).closest('tr')[0]).data();   // changing parents to closest also works
+					
+					var incompleteGradeNotifyModel = {
+							studentNo 		:	rowData.studentNo,
+							stdStatCode		:	rowData.stdStatCode,
+							courseYear		:	rowData.courseYear,
+							semester		:	rowData.semester,
+							sectCode		:	rowData.sectCode,
+							lAbrCourseNo	:	rowData.lAbrCourseNo,
+							courseNo		:	rowData.courseNo,
+							sectionNo		:	rowData.sectionNo,
+							comment			:  $('#txtComments').val(),
+							salt			:	salt,
+							four			:	four
+					};
+					
 		
+					$.ajax({
+								url		: 	'${varResourceAjaxNotify}',
+								type	:	'POST',
+								cache	:	false,
+								data	:	incompleteGradeNotifyModel,
+								success	:	function(data)
+								{
+											var seqNo				=	JSON.parse(data);
+											var cellDataAction 		= 	'<span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>';
+												rowData.sequenceNum	=	seqNo;
+												rowData.id 			= 	'<a class="clsNotifyHistory" href="#">'+rowData.id+'</a>';
+												rowData.action		=	cellDataAction;
+		
+												tablStudentList
+														        .row( row)
+														        .data( rowData )
+														        .draw();
+										
+								},
+								error	:  function(xhr, status,  error)
+								{
+									
+								}
+									
+					});
+					
+					
+		
+				});
+	
+		/* Upon click of NotifyHistory by Instructor */		
+				$(document).on("click", ".clsNotifyHistory", function(event){
+					var row  = $(this).parents('tr')[0];	
+					var rowData	=	tablStudentList.row($(this).parents('tr')[0]).data();
+					
+					var incompleteGradeNotifyModel = {
+							recordSequence 		:	rowData.sequenceNum
+					};
+					
+					$.ajax({
+							url		:	'${varResourceHistory}',
+							type	:	'GET',
+							cache	:	false,
+							data	:	incompleteGradeNotifyModel,
+							success	:	function(data)
+							{
+								var incompleteNotifyHistory = JSON.parse(data);
+								//$('#divIncompleteGradeNotifyHistory').html('');
+								 hbDataLoadAction(incompleteNotifyHistory, '#hbIncompleteGradeNotifyHistory', '#divIncompleteGradeNotifyHistory');
+							},
+							error	:	function(xhr, status,  error)
+							{
+								
+							}
+					});
+					
+					
+				});
 		
 
 		/* Filling data using handlebar template*/

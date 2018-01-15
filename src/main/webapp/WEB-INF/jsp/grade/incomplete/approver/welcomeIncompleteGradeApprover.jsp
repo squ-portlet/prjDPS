@@ -89,8 +89,12 @@
 				</c:choose>			
 				</div>
 				
-				<div class="col-sm-6">
+				<div class="col-sm-5">
 					<div id="divStudentList"></div>
+				</div>
+				
+				<div class="col-sm-3">
+					<div id="divIncompleteGradeNotifyHistory">
 				</div>
 		</div>
 		
@@ -150,6 +154,7 @@
 
 					</tr>
 				</thead>
+				<tbody>
 					{{#each students}}
 					<tr>
 						<td>{{sequenceNum}}</td>
@@ -161,22 +166,77 @@
 						<td>{{encryptStr ../lAbrCourseNo}}</td>
 						<td>{{encryptStr ../courseNo}}</td>
 						<td>{{encryptStr ../sectionNo}}</td>
-						<td>{{student.personalDetail.id}}</td>
+						<td>
+							{{#if historyAvailable}}
+								<a class="clsNotifyHistory" href="#">{{student.personalDetail.id}}</a>
+							{{else}}
+								{{student.personalDetail.id}}
+							{{/if}}
+						</td>
 						<td>{{student.personalDetail.name}}</td>
 						<td>{{grade.gradeVal}}</td>
 						<td>
 								{{#unless  grade.gradeCode}}
-									<a class="clsLinkStudentNo"  href="#" >
-										<spring:message code="prop.dps.incomplete.grade.notify.text.notify" /> 
-										<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-									</a>
+									{{#if historyAvailable}}
+										<span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
+									{{else}}
+										<a class="clsLinkStudentNo"  href="#" >
+											<spring:message code="prop.dps.incomplete.grade.notify.text.notify" /> 
+											<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+										</a>
+									{{/if}}
 								{{/unless}}
 						</td>
 					</tr>
 					{{/each}}
-				<tbody>
-				
 				</tbody>				
 			</table>
 </script>
+
+<script id="hbIncompleteGradeNotifyHistory" type="text/x-handlebars-template">
+	<table id="tblIncompleteGradeNotifyHistory" class="table table-striped table-bordered dt-responsive  collapsed ">
+		<thead>
+			<tr>
+				<th><spring:message code="prop.dps.incomplete.grade.notify.status" /></th> 
+				<th><spring:message code="prop.dps.incomplete.grade.notify.hod" /></th>
+				<th><spring:message code="prop.dps.incomplete.grade.notify.dean.asst" /></th>
+				<th><spring:message code="prop.dps.incomplete.grade.notify.dean.dps" /></th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#each .}}
+			<tr>
+				<td>{{statusDesc}}</td>
+				<td>
+					{{{hod.roleStausIkon}}}
+							
+					{{#if hod.comments}}
+						<a href="#" comments="{{hod.comments}}" class="classPopMsgHOD">
+							<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+						</a> 
+					{{/if}}
+				</td>
+				<td>
+					{{{dpsAsstDean.roleStausIkon}}}  
+					{{#if dpsAsstDean.comments}}
+						<a href="#" comments="{{dpsAsstDean.comments}}" class="classPopMsgAsstDeanP">
+							<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+						</a> 
+					{{/if}}
+				</td>
+				<td>
+					{{{dpsDean.roleStausIkon}}}  
+					{{#if dpsDean.comments}}
+						<a href="#" comments="{{dpsDean.comments}}" class="classPopMsgDeanP">
+							<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+						</a> 
+					{{/if}}	
+				</td>
+			</tr>
+			{{/each}}
+		</tbody>
+	</table>
+</script>
+
+
 

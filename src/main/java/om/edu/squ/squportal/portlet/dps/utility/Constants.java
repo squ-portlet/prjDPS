@@ -222,10 +222,11 @@ public interface Constants
 //	public static final	String	CONST_FORM_DPS_EXTENSION_STUDY								=	"3413";
 
 	public static final	String	CONST_FORM_NAME_DPS_DROP_W									=	"DPS7";
+	public static final	String	CONST_FORM_NAME_DPS_INCOMPLETE_GRADE_NOTIFY					=	"DPS8";
 	public static final	String	CONST_FORM_NAME_DPS_GRADE_CHANGE							=	"DPS9"; 
 	public static final	String	CONST_FORM_NAME_DPS_EXTENSION_STUDY							=	"DPS19";
 	public static final	String	CONST_FORM_NAME_DPS_POSTPONE_STUDY							=	"DPS13";
-	public static final	String	CONST_FORM_NAME_DPS_INCOMPLETE_GRADE_NOTIFY					=	"DPS8";
+	
 	
 	
 	/************* PROPERTY FILE ******************************/
@@ -295,6 +296,7 @@ public interface Constants
 	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_SELECT_RULE_YEAR_SEM			=	"dps.incomplete.grades.select.rule.grade.change.year.sem";
 	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_SELECT_STUDENT_LIST			=	"dps.incomplete.grades.select.students";
 	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_INSERT_NOTIFY_INSTRUCTOR		=	"dps.incomplete.grades.insert.notify.by.instructor";
+	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_SELECT_HISORY				=	"dps.incomplete.grades.select.notify.history";
 	
 
 	/* ---  SQL - DPS - Drop With W -- Stored Procedure -- --------------------- */	

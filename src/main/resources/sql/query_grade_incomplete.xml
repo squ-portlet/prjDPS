@@ -186,6 +186,80 @@
 	        )
 	
 	</entry>
-	
+	<entry key="dps.incomplete.grades.select.notify.history">
+			SELECT 
+              		VSP.STD_ID													AS		STUDENT_ID
+		        ,  T_NOTIFY.L_ABR_CRSNO											AS    	L_ABR_CRSNO
+		      	,   T_NOTIFY.SECTNO												AS		SECTION_NO
+
+			  	, T_NOTIFY.COMMENTS                                    			AS 		COMMENTS
+			  	, (
+		        	SELECT
+		        		L_ABR_CODE
+		        	FROM SIS_CODES
+		            WHERE 
+		            	SISCODECD= T_NOTIFY.STATUSCD
+		        	)															AS		STATUS_CODE_NAME
+	        	, (
+		            SELECT 
+		              DECODE 
+		              (
+		                :paramLocale
+		                ,'en', CODENM, A_CODENM
+		                )
+		              FROM SIS_CODES
+		              WHERE SISCODECD= T_NOTIFY.STATUSCD
+	            ) 																AS 		STATUS_DESC
+              
+		      , FUNC_APPROVE_STATUS(
+		                           T_NOTIFY.STDNO,
+		                           :paramHodRoleName, 
+		                           :paramFormName,
+		                           T_NOTIFY.REC_SEQ_NO
+		                           )                        					AS  	HOD_STATUS
+		     , FUNC_APPROVE_STATUS(
+		                     T_NOTIFY.STDNO,
+		                     :paramADeanPRoleName, 
+		                     :paramFormName,
+		                     T_NOTIFY.REC_SEQ_NO
+		                     )                              					AS  	DPS_ASST_DEAN_STATUS 
+		     , FUNC_APPROVE_STATUS(
+		                     T_NOTIFY.STDNO,
+		                     :paramDeanPRoleName, 
+		                     :paramFormName,
+		                     T_NOTIFY.REC_SEQ_NO
+		                     )                              					AS  	DPS_DEAN_STATUS  
+		                      
+              , FUNC_APPROVER_COMMENT(
+		                     T_NOTIFY.STDNO,
+		                     :paramHodRoleName, 
+		                     :paramFormName,
+		                     T_NOTIFY.REC_SEQ_NO
+		                     )                              					AS  	HOD_COMMENT  
+		      , FUNC_APPROVER_COMMENT(
+		                     T_NOTIFY.STDNO,
+		                     :paramADeanPRoleName, 
+		                     :paramFormName,
+		                     T_NOTIFY.REC_SEQ_NO
+		                     )                              					AS  	DPS_ASST_DEAN_COMMENT  
+		      , FUNC_APPROVER_COMMENT(
+		                     T_NOTIFY.STDNO,
+		                     :paramDeanPRoleName, 
+		                     :paramFormName,
+		                     T_NOTIFY.REC_SEQ_NO
+		                     )                              					AS  	DPS_DEAN_COMMENT         
+		FROM
+             	 T_STD_INCOMPLETE_GRADE_NOTIFY  		  	T_NOTIFY
+		      ,   V_STDINFO_PORTAL    						VSP
+
+          
+		WHERE
+				T_NOTIFY.REC_SEQ_NO	= :paramSequenceNo	      	
+		      	AND T_NOTIFY.STDNO 	= VSP.STDNO
+          		AND VSP.ACTIVE    	= 'Y'
+       
+          
+		ORDER BY T_NOTIFY.UPDATE_DATE DESC	
+	</entry>
 
 </properties>

@@ -33,6 +33,9 @@ import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Course;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.grade.incomplete.model.IncompleteGradeModel;
+import om.edu.squ.squportal.portlet.dps.role.bo.DPSAsstDean;
+import om.edu.squ.squportal.portlet.dps.role.bo.DpsDean;
+import om.edu.squ.squportal.portlet.dps.role.bo.HOD;
 
 /**
  * @author Bhabesh
@@ -40,13 +43,18 @@ import om.edu.squ.squportal.portlet.dps.grade.incomplete.model.IncompleteGradeMo
  */
 public class GradeIncompleteDTO
 {
-	private	Course	course;
-	private	Student	student;
-	private	Grade	grade;
-	private	String	comments;
-	private	String	userName;
-	private	boolean	historyAvailable;
-	private	String	sequenceNum;
+	private		Course			course;
+	private		Student			student;
+	private		Grade			grade;
+	private		String			comments;
+	private		String			userName;
+	private		boolean			historyAvailable;
+	private		String			sequenceNum;
+	private		String			statusDesc;
+	
+	private		HOD				hod;
+	private		DPSAsstDean		dpsAsstDean;
+	private		DpsDean			dpsDean;
 	
 
 	public GradeIncompleteDTO(){}
@@ -226,6 +234,95 @@ public class GradeIncompleteDTO
 		this.sequenceNum = sequenceNum;
 	}
 
+	
+	/**
+	 * Getter Method	: getStatusDesc
+	 * @return the statusDesc
+	 * 
+	 * Date				: Jan 15, 2018
+	 */
+	public String getStatusDesc()
+	{
+		return this.statusDesc;
+	}
+
+	/**
+	 * Setter method : setStatusDesc
+	 * @param statusDesc the statusDesc to set
+	 * 
+	 * Date          : Jan 15, 2018 8:36:20 AM
+	 */
+	public void setStatusDesc(String statusDesc)
+	{
+		this.statusDesc = statusDesc;
+	}
+
+	/**
+	 * Getter Method	: getHod
+	 * @return the hod
+	 * 
+	 * Date				: Jan 15, 2018
+	 */
+	public HOD getHod()
+	{
+		return this.hod;
+	}
+
+	/**
+	 * Setter method : setHod
+	 * @param hod the hod to set
+	 * 
+	 * Date          : Jan 15, 2018 8:22:42 AM
+	 */
+	public void setHod(HOD hod)
+	{
+		this.hod = hod;
+	}
+
+	/**
+	 * Getter Method	: getDpsAsstDean
+	 * @return the dpsAsstDean
+	 * 
+	 * Date				: Jan 15, 2018
+	 */
+	public DPSAsstDean getDpsAsstDean()
+	{
+		return this.dpsAsstDean;
+	}
+
+	/**
+	 * Setter method : setDpsAsstDean
+	 * @param dpsAsstDean the dpsAsstDean to set
+	 * 
+	 * Date          : Jan 15, 2018 8:22:42 AM
+	 */
+	public void setDpsAsstDean(DPSAsstDean dpsAsstDean)
+	{
+		this.dpsAsstDean = dpsAsstDean;
+	}
+
+	/**
+	 * Getter Method	: getDpsDean
+	 * @return the dpsDean
+	 * 
+	 * Date				: Jan 15, 2018
+	 */
+	public DpsDean getDpsDean()
+	{
+		return this.dpsDean;
+	}
+
+	/**
+	 * Setter method : setDpsDean
+	 * @param dpsDean the dpsDean to set
+	 * 
+	 * Date          : Jan 15, 2018 8:22:42 AM
+	 */
+	public void setDpsDean(DpsDean dpsDean)
+	{
+		this.dpsDean = dpsDean;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -236,7 +333,9 @@ public class GradeIncompleteDTO
 				+ this.student + ", grade=" + this.grade + ", comments="
 				+ this.comments + ", userName=" + this.userName
 				+ ", historyAvailable=" + this.historyAvailable
-				+ ", sequenceNum=" + this.sequenceNum + "]";
+				+ ", sequenceNum=" + this.sequenceNum + ", statusDesc="
+				+ this.statusDesc + ", hod=" + this.hod + ", dpsAsstDean="
+				+ this.dpsAsstDean + ", dpsDean=" + this.dpsDean + "]";
 	}
 	
 }

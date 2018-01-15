@@ -40,6 +40,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.User;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
@@ -248,9 +249,47 @@ public class IncompleteGradeController
 			
 		}
 
+	}
+	
+	/**
+	 * 
+	 * method name  : getIncompleteGradeNotifyHistory
+	 * @param recordSequence
+	 * @param request
+	 * @param response
+	 * @param locale
+	 * IncompleteGradeController
+	 * return type  : void
+	 * 
+	 * purpose		: History of the notification details of a student
+	 *
+	 * Date    		:	Jan 15, 2018 12:48:19 PM
+	 * @throws IOException 
+	 * @throws NoDBRecordException 
+	 */
+	@ResourceMapping(value="resourceHistory")
+	private void getIncompleteGradeNotifyHistory(	
+														@RequestParam("recordSequence") String recordSequence
+													, 	ResourceRequest 	request
+													,	ResourceResponse	response
+													,	Locale				locale
+												) throws IOException  
+	{
+		Gson						gson	=	new Gson();	
 		
+		
+		try
+		{
+			List<GradeIncompleteDTO> 	dtos	=	incompleteGradeService.getIncompleteNotifyHistory(recordSequence, locale);
+			response.getWriter().print(gson.toJson(dtos));
+		}
+		catch(NoDBRecordException exRec)
+		{
+			response.setProperty(ResourceResponse.HTTP_STATUS_CODE, Integer.toString(HttpServletResponse.SC_INTERNAL_SERVER_ERROR));
+		}
 		
 		
 	}
+	
 	
 }
