@@ -315,4 +315,17 @@ public interface DpsServiceDao
 	 * Date    		:	Dec 26, 2017 1:57:12 PM
 	 */
 	public boolean isPostponeCountWithinLimit(String studentNo, String stdStatCode);
+	
+	/**
+	 * 
+	 * method name  : getSequenceNumber
+	 * @return
+	 * DpsDbDao
+	 * return type  : int
+	 * 
+	 * purpose		: Get Squence number
+	 *
+	 * Date    		:	Jan 14, 2018 12:40:56 PM
+	 */
+	public double getSequenceNumber();
 }

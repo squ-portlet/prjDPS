@@ -154,7 +154,7 @@
 
 /* Liferay modal form */
 .aui .modal {
-height: inherit;
+height: fit-content;
 right:30%;
 /*left:30%;*/
 left:inherit;
@@ -321,7 +321,14 @@ background-color:transparent;
 	*	Initializing cryptojs in UI 
 	*/
 
+	/* ****** encryption - cryptojs - implementation in UI ****** */
+	var iterationCount = ${cryptoIterationCount};
+	var keySize = ${cryptoKeySize};
+	
+	var passphrase = '${cryptoPassPhrase}';
 
+
+	
 		var AesUtil = function(keySize, iterationCount) {
 			  this.keySize = keySize / 32;
 			  this.iterationCount = iterationCount;
@@ -355,18 +362,13 @@ background-color:transparent;
 			      { iv: CryptoJS.enc.Hex.parse(iv) });
 			  return decrypted.toString(CryptoJS.enc.Utf8);
 			};		
-	
 
-			/* ****** encryption - cryptojs - implementation in UI ****** */
-			var iterationCount = ${cryptoIterationCount};
-			var keySize = ${cryptoKeySize};
 			
-			var passphrase = '${cryptoPassPhrase}';
-
 			var four = CryptoJS.lib.WordArray.random(128/8).toString(CryptoJS.enc.Hex);
 			var salt = CryptoJS.lib.WordArray.random(128/8).toString(CryptoJS.enc.Hex);
 
 			var aesUtil = new AesUtil(keySize, iterationCount);
-			/* **************************** */			
+			/* **************************** */	
+		
 			
 </script>

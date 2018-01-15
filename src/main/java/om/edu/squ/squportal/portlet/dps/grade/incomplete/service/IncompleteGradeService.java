@@ -32,6 +32,8 @@ package om.edu.squ.squportal.portlet.dps.grade.incomplete.service;
 import java.util.List;
 import java.util.Locale;
 
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteDTO;
 
 /**
@@ -71,6 +73,37 @@ public interface IncompleteGradeService
 	 * Date    		:	Jan 8, 2018 6:34:47 PM
 	 */
 	public List<GradeIncompleteDTO> getStudentList(String employeeNo, String lAbrCourseNo,String sectionNo, Locale	locale);
+	
+	/**
+	 * 
+	 * method name  : setInstructorNotifyForIncompleteGrade
+	 * @param dto
+	 * @return
+	 * @throws NotCorrectDBRecordException
+	 * IncompleteGradeDBImpl
+	 * return type  : int
+	 * 
+	 * purpose		: Insert Notification applied by Instructor 
+	 *
+	 * Date    		:	Jan 11, 2018 4:57:17 PM
+	 */
+	public String setInstructorNotifyForIncompleteGrade(GradeIncompleteDTO dto ) throws NotCorrectDBRecordException;
+
+	/**
+	 * 
+	 * method name  : getIncompleteNotifyHistory
+	 * @param recordSequence
+	 * @param locale
+	 * @return
+	 * @throws NoDBRecordException
+	 * IncompleteGradeService
+	 * return type  : List<GradeIncompleteDTO>
+	 * 
+	 * purpose		: Incomplete History requested by Instructor
+	 *
+	 * Date    		:	Jan 15, 2018 12:42:54 PM
+	 */
+	public List<GradeIncompleteDTO>  getIncompleteNotifyHistory(String recordSequence,  Locale locale) throws NoDBRecordException;
 	
 	/**
 	 * 
