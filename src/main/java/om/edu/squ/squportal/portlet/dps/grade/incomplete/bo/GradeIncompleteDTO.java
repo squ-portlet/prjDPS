@@ -65,6 +65,7 @@ public class GradeIncompleteDTO
 		Student			student			=	new Student();
 		AcademicDetail	academicDetail	=	new AcademicDetail();
 		
+		academicDetail.setId(incompleteGradeModel.getId());
 		academicDetail.setStudentNo(incompleteGradeModel.getStudentNo());
 		academicDetail.setStdStatCode(incompleteGradeModel.getStdStatCode());
 		student.setAcademicDetail(academicDetail);

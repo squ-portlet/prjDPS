@@ -78,6 +78,7 @@ public interface IncompleteGradeService
 	 * 
 	 * method name  : setInstructorNotifyForIncompleteGrade
 	 * @param dto
+	 * @param locale TODO
 	 * @return
 	 * @throws NotCorrectDBRecordException
 	 * IncompleteGradeDBImpl
@@ -87,7 +88,7 @@ public interface IncompleteGradeService
 	 *
 	 * Date    		:	Jan 11, 2018 4:57:17 PM
 	 */
-	public String setInstructorNotifyForIncompleteGrade(GradeIncompleteDTO dto ) throws NotCorrectDBRecordException;
+	public String setInstructorNotifyForIncompleteGrade(GradeIncompleteDTO dto, Locale locale ) throws NotCorrectDBRecordException;
 
 	/**
 	 * 

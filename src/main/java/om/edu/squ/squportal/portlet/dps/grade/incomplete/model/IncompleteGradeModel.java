@@ -37,6 +37,7 @@ import om.edu.squ.squportal.portlet.dps.security.Crypto;
  */
 public class IncompleteGradeModel
 {
+	private	String	id;
 	private	String	studentNo;
 	private	String	stdStatCode;
 	private	String	courseYear;
@@ -57,6 +58,7 @@ public class IncompleteGradeModel
 		IncompleteGradeModel	incompleteGradeModel	=	(IncompleteGradeModel) object;
 				if(null != salt && null != four)
 				{
+					this.id					=		incompleteGradeModel.getId();
 					this.studentNo			=		(null==incompleteGradeModel.getStudentNo() ) 	?  null	:	crypto.decrypt(salt,four,incompleteGradeModel.getStudentNo());
 					this.stdStatCode		=		(null==incompleteGradeModel.getStdStatCode() ) 	?  null	:	crypto.decrypt(salt,four,incompleteGradeModel.getStdStatCode());
 					this.courseYear			=		(null==incompleteGradeModel.getCourseYear() ) 	?  null	:	crypto.decrypt(salt,four,incompleteGradeModel.getCourseYear());
@@ -65,10 +67,32 @@ public class IncompleteGradeModel
 					this.lAbrCourseNo		=		(null==incompleteGradeModel.getlAbrCourseNo() ) ?  null	:	crypto.decrypt(salt,four,incompleteGradeModel.getlAbrCourseNo());
 					this.courseNo			=		(null==incompleteGradeModel.getCourseNo() ) 	?  null	:	crypto.decrypt(salt,four,incompleteGradeModel.getCourseNo());
 					this.sectionNo			=		(null==incompleteGradeModel.getSectionNo() ) 	?  null	:	crypto.decrypt(salt,four,incompleteGradeModel.getSectionNo());
-					//this.comment			=		(null==incompleteGradeModel.getComment() ) 		?  null	:	crypto.decrypt(salt,four,incompleteGradeModel.getComment());
+					this.comment			=		incompleteGradeModel.getComment();
 				}
 	}
 	
+	/**
+	 * Getter Method	: getId
+	 * @return the id
+	 * 
+	 * Date				: Jan 16, 2018
+	 */
+	public String getId()
+	{
+		return this.id;
+	}
+
+	/**
+	 * Setter method : setId
+	 * @param id the id to set
+	 * 
+	 * Date          : Jan 16, 2018 8:57:37 AM
+	 */
+	public void setId(String id)
+	{
+		this.id = id;
+	}
+
 	/**
 	 * Getter Method	: getStudentNo
 	 * @return the studentNo
@@ -297,13 +321,14 @@ public class IncompleteGradeModel
 	@Override
 	public String toString()
 	{
-		return "IncompleteGradeModel [studentNo=" + this.studentNo
-				+ ", stdStatCode=" + this.stdStatCode + ", courseYear="
-				+ this.courseYear + ", semester=" + this.semester
-				+ ", sectCode=" + this.sectCode + ", lAbrCourseNo="
-				+ this.lAbrCourseNo + ", courseNo=" + this.courseNo
-				+ ", sectionNo=" + this.sectionNo + ", comment=" + this.comment
-				+ ", salt=" + this.salt + ", four=" + this.four + "]";
+		return "IncompleteGradeModel [id=" + this.id + ", studentNo="
+				+ this.studentNo + ", stdStatCode=" + this.stdStatCode
+				+ ", courseYear=" + this.courseYear + ", semester="
+				+ this.semester + ", sectCode=" + this.sectCode
+				+ ", lAbrCourseNo=" + this.lAbrCourseNo + ", courseNo="
+				+ this.courseNo + ", sectionNo=" + this.sectionNo
+				+ ", comment=" + this.comment + ", salt=" + this.salt
+				+ ", four=" + this.four + "]";
 	}
 	
 	

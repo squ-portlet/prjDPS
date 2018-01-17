@@ -236,7 +236,7 @@ public class IncompleteGradeController
 		GradeIncompleteDTO	dto	= new GradeIncompleteDTO(incompleteGradeModel);
 		dto.setUserName(dpsServiceDao.getEmpNumber(request));
 
-		String resultSeqNo = incompleteGradeService.setInstructorNotifyForIncompleteGrade(dto);
+		String resultSeqNo = incompleteGradeService.setInstructorNotifyForIncompleteGrade(dto, locale);
 		
 		if(null==resultSeqNo)
 		{

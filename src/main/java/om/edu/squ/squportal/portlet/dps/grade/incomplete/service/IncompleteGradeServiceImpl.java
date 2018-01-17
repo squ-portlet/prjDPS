@@ -32,6 +32,8 @@ package om.edu.squ.squportal.portlet.dps.grade.incomplete.service;
 import java.util.List;
 import java.util.Locale;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
@@ -39,9 +41,11 @@ import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordExcep
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteDTO;
 import om.edu.squ.squportal.portlet.dps.grade.incomplete.db.IncompleteGradeDBDao;
+import om.edu.squ.squportal.portlet.dps.notification.bo.NotifierPeople;
 import om.edu.squ.squportal.portlet.dps.notification.service.DPSNotification;
 import om.edu.squ.squportal.portlet.dps.security.Crypto;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
+import om.edu.squ.squportal.portlet.dps.utility.UtilProperty;
 
 /**
  * @author Bhabesh
@@ -49,6 +53,7 @@ import om.edu.squ.squportal.portlet.dps.utility.Constants;
  */
 public class IncompleteGradeServiceImpl implements IncompleteGradeService
 {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	DpsServiceDao			dpsServiceDao;
 	@Autowired
@@ -82,13 +87,51 @@ public class IncompleteGradeServiceImpl implements IncompleteGradeService
 
 	/*
 	 * (non-Javadoc)
-	 * @see om.edu.squ.squportal.portlet.dps.grade.incomplete.service.IncompleteGradeService#setInstructorNotifyForIncompleteGrade(java.lang.String, om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteDTO)
+	 * @see om.edu.squ.squportal.portlet.dps.grade.incomplete.service.IncompleteGradeService#setInstructorNotifyForIncompleteGrade(om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteDTO, java.util.Locale)
 	 */
 	@Override
-	public String setInstructorNotifyForIncompleteGrade(GradeIncompleteDTO dto ) throws NotCorrectDBRecordException
+	public String setInstructorNotifyForIncompleteGrade(GradeIncompleteDTO dto, Locale locale ) throws NotCorrectDBRecordException
 	{
 		double	sequenceNumber =	dpsServiceDao.getSequenceNumber();
-		return (incompleteGradeDBDao.setInstructorNotifyForIncompleteGrade(sequenceNumber, dto)>0)?String.format("%.0f",sequenceNumber):null;
+		int result	=	incompleteGradeDBDao.setInstructorNotifyForIncompleteGrade(sequenceNumber, dto);
+		/* -- Notification -- Start --*/ 
+		if(result > 0)
+		{
+			try
+			{
+			NotifierPeople	notifierPeople	=	dpsServiceDao.getNotifierPeople(
+																						dto.getStudent().getAcademicDetail().getStudentNo()
+																					, 	dto.getStudent().getAcademicDetail().getStdStatCode()
+																					, 	Constants.CONST_FORM_NAME_DPS_INCOMPLETE_GRADE_NOTIFY
+																					, 	Constants.CONST_SQL_ROLE_NAME_HOD
+																					, 	false
+																					, 	locale
+																				);
+			
+			notifierPeople.setFormNameEng(UtilProperty.getMessage("prop.dps.form.name.incomplete.grade.notify.change", null));
+			notifierPeople.setFormNameAr(UtilProperty.getMessage("prop.dps.form.name.incomplete.grade.notify.change", null, new Locale("ar")));
+			notifierPeople.setServiceUrl(UtilProperty.getMessage("prop.dps.url.incomplete.grade.notify.change", null));
+			
+			dpsNotification.sendNotification(
+					UtilProperty.getMessage("prop.dps.incomplete.grade.notify.notification.subject", new String[]{notifierPeople.getStudent().getPersonalDetail().getId()})
+				, 	notifierPeople
+				, 	"null"
+				, 	Constants.CONST_TEST_ENVIRONMENT
+			);
+			}
+			catch (NotCorrectDBRecordException ex)
+			{
+				logger.error("Error in Notification : "+ex.getMessage());
+			}
+			 catch(Exception ex)
+			 {
+				 logger.error("Error in  notification for Instructor submit at Incomplete Grade Notification Service : {}",ex.getMessage());
+			 }
+				
+			
+		}
+		 /* -- Notification -- end --*/
+		return (result>0)?String.format("%.0f",sequenceNumber):null;
 	}
 
 
