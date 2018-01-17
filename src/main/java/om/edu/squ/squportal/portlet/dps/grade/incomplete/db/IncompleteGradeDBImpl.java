@@ -39,6 +39,7 @@ import java.util.Properties;
 
 import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Course;
+import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.PersonalDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
@@ -378,7 +379,83 @@ public class IncompleteGradeDBImpl implements IncompleteGradeDBDao
 		}
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.grade.incomplete.db.IncompleteGradeDBDao#getStudentDetailsForApprovers(java.lang.String, om.edu.squ.squportal.portlet.dps.bo.Employee, java.util.Locale)
+	 */
+	@Override
+	public List<Student> getStudentDetailsForApprovers(String roleType,  Employee employee, Locale locale)
+	{
+		String SQL_GRADE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	queryIncompleteGrade.getProperty(Constants.CONST_SQL_INCOMPLETE_GRADE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE);
 		
+		RowMapper<Student> rowMapper	= new RowMapper<Student>()
+		{
+			
+			@Override
+			public Student mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				Student student	= new Student();
+				AcademicDetail	academicDetail	=	new AcademicDetail();
+				academicDetail.setId(rs.getString(Constants.CONST_COLMN_STUDENT_ID));
+				academicDetail.setStudentNo(rs.getString(Constants.CONST_COLMN_STUDENT_NO));
+				academicDetail.setStdStatCode(rs.getString(Constants.CONST_COLMN_STDSTATCD));
+				academicDetail.setStudentName(rs.getString(Constants.CONST_COLMN_STUDENT_NAME));
+				academicDetail.setCollege(rs.getString(Constants.CONST_COLMN_COLLEGE_NAME));
+				academicDetail.setDegree(rs.getString(Constants.CONST_COLMN_DEGREE_NAME));
+				academicDetail.setCohort(rs.getInt(Constants.CONST_COLMN_COHORT));
+				
+				if(rs.getString(Constants.CONST_COLMN_ROLE_IS_APPROVER).equals(Constants.CONST_YES))
+				{
+					academicDetail.setRecordApprove(true);
+				}
+				else
+				{
+					academicDetail.setRecordApprove(false);
+				}
+				
+				student.setAcademicDetail(academicDetail);
+				
+				return student;
+			}
+		};
+		
+		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+		namedParameterMap.put("paramLocale", locale.getLanguage());
+		namedParameterMap.put("paramSupervisor", null );
+		namedParameterMap.put("paramAdvisor", null);
+		namedParameterMap.put("paramDeptCode", null);
+		namedParameterMap.put("paramColCode", null);
+		namedParameterMap.put("paramFormName", Constants.CONST_FORM_NAME_DPS_GRADE_CHANGE);
+		namedParameterMap.put("paramRoleName", roleType);
+		namedParameterMap.put("paramEmpNo", employee.getEmpNumber());
+
+		switch (roleType)
+		{
+			case Constants.CONST_ROLE_NAME_ADVISOR:
+				namedParameterMap.put("paramAdvisor", employee.getEmpNumber());
+				break;
+			case Constants.CONST_ROLE_NAME_SUPERVISOR:
+				namedParameterMap.put("paramSupervisor", employee.getEmpNumber());
+				break;
+			case Constants.CONST_ROLE_NAME_HOD:
+				namedParameterMap.put("paramDeptCode", employee.getDepartment().getDeptCode());
+				break;
+			case Constants.CONST_ROLE_NAME_ASST_DEAN_P:
+				namedParameterMap.put("paramColCode", employee.getBranch().getBranchCode());
+				break;	
+			case Constants.CONST_ROLE_NAME_COL_DEAN:
+				namedParameterMap.put("paramColCode", employee.getBranch().getBranchCode());
+				break;	
+			default:
+				break;
+		}
+		
+		return nPJdbcTemplDpsIncompleteGrade.query(SQL_GRADE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE, namedParameterMap, rowMapper);
+	}
+	
+	
+	
+	
 	}
 	
 	

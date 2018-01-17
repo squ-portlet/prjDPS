@@ -32,6 +32,8 @@ package om.edu.squ.squportal.portlet.dps.grade.incomplete.db;
 import java.util.List;
 import java.util.Locale;
 
+import om.edu.squ.squportal.portlet.dps.bo.Employee;
+import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteDTO;
@@ -107,4 +109,20 @@ public interface IncompleteGradeDBDao
 	 * Date    		:	Jan 15, 2018 9:07:52 AM
 	 */
 	public List<GradeIncompleteDTO>  getIncompleteNotifyHistory(String recordSequence, Locale locale) throws NoDBRecordException;
+	
+	/**
+	 * 
+	 * method name  : getStudentDetailsForApprovers
+	 * @param roleType
+	 * @param employee
+	 * @param locale
+	 * @return
+	 * IncompleteGradeDBDao
+	 * return type  : List<Student>
+	 * 
+	 * purpose		:	Get related students for specific approvers 
+	 *
+	 * Date    		:	Jan 17, 2018 11:11:03 AM
+	 */
+	public List<Student> getStudentDetailsForApprovers(String roleType,  Employee employee, Locale locale);
 }

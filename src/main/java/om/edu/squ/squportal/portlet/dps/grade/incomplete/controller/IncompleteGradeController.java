@@ -39,6 +39,7 @@ import javax.portlet.ResourceResponse;
 import javax.servlet.http.HttpServletResponse;
 
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
+import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
@@ -47,6 +48,7 @@ import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
 import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteDTO;
 import om.edu.squ.squportal.portlet.dps.grade.incomplete.model.IncompleteGradeModel;
 import om.edu.squ.squportal.portlet.dps.grade.incomplete.service.IncompleteGradeService;
+import om.edu.squ.squportal.portlet.dps.role.bo.RoleNameValue;
 import om.edu.squ.squportal.portlet.dps.security.Crypto;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
@@ -156,7 +158,6 @@ public class IncompleteGradeController
 			{
 				employeeNumber	=	employee.getEmpNumber().substring(1);
 			}
-			logger.info("courseList : "+gson.toJson(incompleteGradeService.getCourseList(employeeNumber, locale)));
 			model.addAttribute("empSISValid", true);
 			model.addAttribute("courseList", incompleteGradeService.getCourseList(employeeNumber, locale));
 			model.addAttribute("employee", employee);
@@ -290,6 +291,45 @@ public class IncompleteGradeController
 		
 		
 	}
+	
+	/**
+	 * 
+	 * method name  : getStudentDetailsForApprovers
+	 * @param roleNameValue
+	 * @param request
+	 * @param response
+	 * @param locale
+	 * @throws IOException
+	 * @throws NoDBRecordException
+	 * IncompleteGradeController
+	 * return type  : void
+	 * 
+	 * purpose		:Get list of Students details to approvers who applied for grade change
+	 *
+	 * Date    		:	Jan 17, 2018 11:33:10 AM
+	 */
+	@ResourceMapping(value="resoureAjaxStudentDataForApproversByRole")
+	public void getStudentDetailsForApprovers(@ModelAttribute("roleNameValue") RoleNameValue roleNameValue,
+			ResourceRequest request, ResourceResponse response, Locale locale
+			) throws IOException, NoDBRecordException
+	{
+		Gson		gson		= 	new Gson();
+		Employee	employee	=	null;
+		
+		try
+		{
+			employee					=	dpsServiceDao.getEmployee(request,locale);
+			List<Student> 	students	=	incompleteGradeService.getStudentDetailsForApprovers(roleNameValue.getRoleValue(), employee, locale);
+			response.getWriter().print(gson.toJson(students));
+		}
+		catch(ExceptionEmptyResultset ex)
+		{
+			response.getWriter().print(gson.toJson(""));
+		}
+		
+		
+	}
+	
 	
 	
 }

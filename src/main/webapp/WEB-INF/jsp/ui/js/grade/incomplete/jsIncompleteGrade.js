@@ -7,6 +7,7 @@
 <portlet:resourceURL id="resourceStudentList" var="varResourceStudentList"/>
 <portlet:resourceURL id="resourceAjaxNotify" var="varResourceAjaxNotify"/>
 <portlet:resourceURL id="resourceHistory" var="varResourceHistory"/>
+<portlet:resourceURL id="resoureAjaxStudentDataForApproversByRole" var="varAjaxStudentDataForApproversByRole"/>
 
 <script type="text/javascript">
 
@@ -34,15 +35,30 @@
 						roleValue:'${myRole.roleName}'
 				};
 
+				$('#idDivInstructor').hide();
+				$('#divStudentList').html('');
+				$('#divStudentsListForApprovers').html('');
+				
 				
 				$.ajax({
-					url		:	"${varResourceStudentList}",
+					url		:	"${varAjaxStudentDataForApproversByRole}",
 					type	: 	"POST",
 					cache	: 	false,
 					data	: 	roleNameValue,
 					success : 	function(data)
 					{
-						//TODO
+						var students=JSON.parse(data);
+						if($.trim(students))
+						{
+						var studentsJson={'students':students,'roleType':'${myRole.roleName}'};
+						hbDataLoadAction(studentsJson, '#hbStudentsListForApprovers', '#divStudentsListForApprovers');
+						}
+						
+						var tablApprover = $('#tblApprover').DataTable({
+							"order": [],
+							 select: true,
+							 "sDom":  '<f><t><"col-sm-5"i><"col-sm-12"p><"clearfix">'
+						 });
 						
 					},
 					error	:	function(xhr, status)
@@ -257,6 +273,8 @@
 					
 				});
 		
+				
+				
 
 		/* Filling data using handlebar template*/
 		function hbDataLoadAction(dataJson, hbTemplateId, divId)

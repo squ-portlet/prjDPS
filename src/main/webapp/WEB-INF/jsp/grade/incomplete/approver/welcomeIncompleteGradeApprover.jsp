@@ -102,6 +102,17 @@
 	</div>
 </c:if>		
 
+
+
+<!--  Approver -- list of approved students for grade change -->
+	
+<div class="section container-fluid">
+	<div class="row" id="divStudentsListForApprovers"></div>
+<!-- 	<div class="row" id="divStudentGradesForApprove"></div> -->
+</div>
+
+
+
 	   <!-- Modal HTML -->
     <div id="alertModal" class="modal" style="width: 20%;">
         <div class="modal-dialog modal-sm">
@@ -238,5 +249,36 @@
 	</table>
 </script>
 
+<script id="hbStudentsListForApprovers" type="text/x-handlebars-template">
+<table id="tblApprover" class="table table-striped table-bordered dt-responsive nowrap collapsed">
+		<thead>
+		<tr>
+			<th><spring:message code="prop.dps.student.student.id"/></th>
+			<th><spring:message code="prop.dps.student.student.name"/></th>
+			<th><spring:message code="prop.dps.student.student.cohort"/></th>
+			<th><spring:message code="prop.dps.student.student.college"/></th>
+			<th><spring:message code="prop.dps.student.student.program"/></th>
+		</tr>
+		</thead>
+		<tbody>
+		{{#each students}}
+			<tr>
+				<td>
+					<a class="clsLinkStudentGrades" href="#" roleType="{{encryptStr ../roleType}}"  studentNo="{{encryptStr academicDetail.studentNo}}" stdStatCode="{{encryptStr academicDetail.stdStatCode}}" studentId="{{academicDetail.id}}" studentName="{{academicDetail.studentName}}">{{academicDetail.id}}</a>
+					&nbsp; 
+					{{#if academicDetail.recordApprove}}
+						<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+					{{/if}}		
+				</td>
+				<td>{{academicDetail.studentName}}</td>
+				<td>{{academicDetail.cohort}}</td>
+				<td>{{academicDetail.college}}</td>
+				<td>{{academicDetail.degree}}</td>
+			</tr>
+		{{/each}}
+		</tbody>
+	</table>
+
+</script>
 
 

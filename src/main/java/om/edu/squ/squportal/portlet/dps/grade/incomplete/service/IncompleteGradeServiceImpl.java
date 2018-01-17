@@ -36,6 +36,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import om.edu.squ.squportal.portlet.dps.bo.Employee;
+import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
@@ -134,11 +136,30 @@ public class IncompleteGradeServiceImpl implements IncompleteGradeService
 		return (result>0)?String.format("%.0f",sequenceNumber):null;
 	}
 
-
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.grade.incomplete.service.IncompleteGradeService#getIncompleteNotifyHistory(java.lang.String, java.util.Locale)
+	 */
+	@Override
 	public List<GradeIncompleteDTO>  getIncompleteNotifyHistory(String recordSequence,  Locale locale) throws NoDBRecordException
 	{
 		return incompleteGradeDBDao.getIncompleteNotifyHistory( recordSequence, locale);
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.grade.incomplete.service.IncompleteGradeService#getStudentDetailsForApprovers(java.lang.String, om.edu.squ.squportal.portlet.dps.bo.Employee, java.util.Locale)
+	 */
+	@Override
+	public List<Student> getStudentDetailsForApprovers(String roleType,  Employee employee, Locale locale)
+	{
+		if(employee.getEmpNumber().substring(0,1).equals("e"))
+		{
+			employee.setEmpNumber(employee.getEmpNumber().substring(1));
+		}
+		return incompleteGradeDBDao.getStudentDetailsForApprovers(roleType, employee, locale);
+	}
+	
 	
 	/*
 	 * (non-Javadoc)

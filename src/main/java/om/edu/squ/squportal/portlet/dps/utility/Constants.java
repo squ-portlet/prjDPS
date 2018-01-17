@@ -297,6 +297,7 @@ public interface Constants
 	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_SELECT_STUDENT_LIST			=	"dps.incomplete.grades.select.students";
 	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_INSERT_NOTIFY_INSTRUCTOR		=	"dps.incomplete.grades.insert.notify.by.instructor";
 	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_SELECT_HISORY				=	"dps.incomplete.grades.select.notify.history";
+	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	"dps.incomplete.grades.select.student.records.by.employee";
 	
 
 	/* ---  SQL - DPS - Drop With W -- Stored Procedure -- --------------------- */	
