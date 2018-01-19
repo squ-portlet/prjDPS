@@ -52,7 +52,7 @@ public class GradeIncompleteDTO
 	private		String			sequenceNum;
 	private		String			statusDesc;
 	private		boolean			approver;
-	private		String			RecordSequence;
+	private		String			recordSequence;
 	
 	
 	private		HOD				hod;
@@ -291,7 +291,7 @@ public class GradeIncompleteDTO
 	 */
 	public String getRecordSequence()
 	{
-		return this.RecordSequence;
+		return this.recordSequence;
 	}
 
 	/**
@@ -302,7 +302,7 @@ public class GradeIncompleteDTO
 	 */
 	public void setRecordSequence(String recordSequence)
 	{
-		this.RecordSequence = recordSequence;
+		this.recordSequence = recordSequence;
 	}
 
 	/**
@@ -383,7 +383,7 @@ public class GradeIncompleteDTO
 				+ ", historyAvailable=" + this.historyAvailable
 				+ ", sequenceNum=" + this.sequenceNum + ", statusDesc="
 				+ this.statusDesc + ", approver=" + this.approver
-				+ ", RecordSequence=" + this.RecordSequence + ", hod="
+				+ ", RecordSequence=" + this.recordSequence + ", hod="
 				+ this.hod + ", dpsAsstDean=" + this.dpsAsstDean + ", dpsDean="
 				+ this.dpsDean + "]";
 	}

@@ -9,7 +9,6 @@
 <%@include file="../../../ui/js/grade/incomplete/jsIncompleteGrade.js" %>
 
 	<ul class="nav nav-tabs">
-		
 		<c:if test="${(not empty employee) }">
 		<li role="presentation" id="idNav-home" class="clsNavRole active"><a href="#">Home</a></li>	
 			<c:forEach items="${employee.myRoles}" var="myRole" varStatus="loop">
@@ -256,6 +255,7 @@
 			<th>t1</th>
 			<th>t2</th>
 			<th>t3</th>
+			<th>t4</th>
 			<th><spring:message code="prop.dps.student.student.id"/></th>
 			<th><spring:message code="prop.dps.student.student.name"/></th>
 			<th><spring:message code="prop.dps.student.student.cohort"/></th>
@@ -266,9 +266,10 @@
 		<tbody>
 		{{#each students}}
 			<tr>
-				<td>{{encryptStr ../roleType}}</td>
+				<td>{{../roleType}}</td>
 				<td>{{encryptStr academicDetail.studentNo}}</td>
 				<td>{{encryptStr academicDetail.stdStatCode}}</td>
+				<td>{{academicDetail.id}}</td>
 				<td>
 					<a class="clsLinkStudentWithNotification" href="#" >{{academicDetail.id}}</a>
 					&nbsp; 
@@ -284,7 +285,83 @@
 		{{/each}}
 		</tbody>
 	</table>
-
 </script>
+
+<script id="hbStudentNotificationDetailsForApprove" type="text/x-handlebars-template">
+		<div>
+				<ol class="breadcrumb">
+					<li>
+							<center>
+									<span class="glyphicon glyphicon-education" aria-hidden="true"></span>  {{studentName}} <span class="badge"> {{studentId}} </span>
+							</center>
+					</li>
+				</ol>
+		</div>
+		<table id="tblStudentNotificationDetailsForApprove" class="table table-striped table-bordered dt-responsive  collapsed ">
+				<thead>
+				<tr>
+					<th><spring:message code="prop.dps.gradechange.seq.no"/></th>
+					<th><spring:message code="prop.dps.gradechange.course.code"/></th>
+					<th><spring:message code="prop.dps.gradechange.section"/></th>
+					<th><spring:message code="prop.dps.gradechange.status"/></th>
+					<th><spring:message code="prop.dps.gradechange.hod"/></th>
+					<th><spring:message code="prop.dps.gradechange.dean.asst"/></th>
+					<th><spring:message code="prop.dps.gradechange.dean.dps"/></th>
+					<th></th>
+				</tr>
+				</thead>
+				<tbody>
+						{{#each notifyList}}
+							<tr>
+								<td>
+									{{recordSequence}}
+									{{#if approver}}<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>{{/if}}
+								</td>
+								<td>{{course.lAbrCourseNo}}</td>
+								<td>{{course.sectionNo}}</td>
+								<td><center>{{statusDesc}}</center></td>
+								<td>
+									<center>
+										{{{hod.roleStausIkon}}} &nbsp;
+										{{#if hod.comments}}
+											<a href="#" comments="{{hod.comments}}" class="classPopMsgHOD">
+												<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+											</a> 
+										{{/if}}
+									</center>
+								</td>
+								<td>
+									<center>
+										{{{dpsAsstDean.roleStausIkon}}} &nbsp;
+										{{#if dpsAsstDean.comments}}
+											<a href="#" comments="{{dpsAsstDean.comments}}" class="classPopMsgAsstDeanP">
+												<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+											</a> 
+										{{/if}}
+									</center>								
+								</td>
+								<td>
+									<center>
+										{{{dpsDean.roleStausIkon}}} &nbsp;
+										{{#if dpsDean.comments}}
+												<a href="#" comments="{{dpsDean.comments}}" class="classPopMsgDeanP">
+													<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+												</a> 
+										{{/if}}	
+									</center>
+								</td>
+								<td>
+									{{#if approver}}
+												<div class="col-xs-4"><label><input type="radio" studentNo="{{encryptStr student.academicDetail.studentNo}}" stdStatCode="{{encryptStr student.academicDetail.stdStatCode}}" recno="{{encryptStr recordSequence}}" sectCode="{{encryptStr course.sectCode}}" courseNo="{{encryptStr course.courseNo}}" lAbrCourseNo2="{{encryptStr course.lAbrCourseNo}}"  sectionNo="{{encryptStr course.sectionNo}}"  courseYear2="{{encryptStr course.courseYear}}" semester="{{encryptStr course.semester}}" roleName="{{../roleName}}" class ="clsAppAction" name="appAction" id="appRadio1" value="${appApprove}" data-toggle="modal" data-target="#modalApprovForm"><spring:message code="prop.dps.role.approve.text"/></label> </div> 
+												<div class="col-xs-2"><label><input type="radio" studentNo="{{encryptStr student.academicDetail.studentNo}}" stdStatCode="{{encryptStr student.academicDetail.stdStatCode}}" recno="{{encryptStr recordSequence}}" sectCode="{{encryptStr course.sectCode}}" courseNo="{{encryptStr course.courseNo}}" lAbrCourseNo2="{{encryptStr course.lAbrCourseNo}}" sectionNo="{{encryptStr course.sectionNo}}"  courseYear2="{{encryptStr course.courseYear}}" semester="{{encryptStr course.semester}}" roleName="{{../roleName}}" class ="clsAppAction" name="appAction" id="appRadio2" value="${appRecect}" data-toggle="modal" data-target="#modalApprovForm"> <spring:message code="prop.dps.role.reject.text"/> </label></div> 
+									{{/if}}
+								</td>		
+							</tr>
+						{{/each}}
+				</tbody>
+			</table>
+		
+</script>
+
 
 

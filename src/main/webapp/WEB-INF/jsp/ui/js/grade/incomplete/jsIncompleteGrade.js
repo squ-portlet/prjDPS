@@ -23,6 +23,7 @@
 	$(function(){
 		/* Datatable for students */
 		var tablStudentList;
+		var tablApprover;
 
 /* -- Instructor part ***/
 		<c:forEach items="${employee.myRoles}" var="myRole">
@@ -56,7 +57,7 @@
 						hbDataLoadAction(studentsJson, '#hbStudentsListForApprovers', '#divStudentsListForApprovers');
 						}
 						
-						var tablApprover = $('#tblApprover').DataTable({
+						tablApprover = $('#tblApprover').DataTable({
 							"order": [],
 							 select: true,
 							 "sDom":  '<f><t><"col-sm-5"i><"col-sm-12"p><"clearfix">',
@@ -64,6 +65,7 @@
 					                     { "data": "roleType" },
 					                     { "data": "studentNo" },
 			                             { "data": "stdStatCode"},
+			                             { "data": "stdId" },
 			                             { "data": "id" },
 			                             { "data": "studentName" },
 			                             { "data" : "cohort"},
@@ -84,7 +86,11 @@
 							               {
 							                   "targets": [ 2 ],
 							                   "visible": false
-							               }
+							               },
+							               {
+							                   "targets": [ 3 ],
+							                   "visible": false
+							               }							               
 							              ]
 						 });
 						
@@ -272,7 +278,7 @@
 		
 				});
 
-/*Approver - part*/				
+/* Approver - part */				
 				
 		/* Upon click of NotifyHistory by Instructor */		
 				$(document).on("click", ".clsNotifyHistory", function(event){
@@ -306,7 +312,42 @@
 		/* Upon clicking particular student number to get notification details*/
 				$(document).on("click", ".clsLinkStudentWithNotification", function(event){	
 					//TODO Get row data from the Data Table UI and related information for processing with ajax
+					var rowR  = $(this).parents('tr')[0];	
+					var rowData	=	tablApprover.row(rowR).data();
+					var incompleteGradeNotifyModel = {
+							studentNo 		:	rowData.studentNo,
+							stdStatCode		:	rowData.stdStatCode,
+							roleName		:	rowData.roleType,
+							salt			:	salt,
+							four			:	four
+					}
+					var roleType	=	rowData.roleType;
+					var studentId	=	rowData.stdId;
+					var studentName	=	rowData.studentName;
+					
+					$.ajax({
+								url 	:	'${varAjaxCourseListForNotify}',
+								type	:	'GET',
+								cache	:	false,
+								data	:	incompleteGradeNotifyModel,
+								success	:	function(data)
+								{
+									var notifyList =	JSON.parse(data);
+									var	notifyListJSON = {'notifyList':notifyList, 'roleName':roleType, 'studentId':studentId,'studentName':studentName};
+									hbDataLoadAction(notifyListJSON, '#hbStudentNotificationDetailsForApprove', '#divStudentNotificationDetailsForApprove');
+								},
+								error	:	function(xhr, status,  error)
+								{
+
+								}
+								
+								
+					
+						});
+					
+					
 				});
+				
 				
 
 		/* Filling data using handlebar template*/
