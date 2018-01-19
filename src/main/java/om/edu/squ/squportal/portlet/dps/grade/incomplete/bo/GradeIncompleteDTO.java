@@ -51,6 +51,9 @@ public class GradeIncompleteDTO
 	private		boolean			historyAvailable;
 	private		String			sequenceNum;
 	private		String			statusDesc;
+	private		boolean			approver;
+	private		String			RecordSequence;
+	
 	
 	private		HOD				hod;
 	private		DPSAsstDean		dpsAsstDean;
@@ -259,6 +262,50 @@ public class GradeIncompleteDTO
 	}
 
 	/**
+	 * Getter Method	: isApprover
+	 * @return the approver
+	 * 
+	 * Date				: Jan 18, 2018
+	 */
+	public boolean isApprover()
+	{
+		return this.approver;
+	}
+
+	/**
+	 * Setter method : setApprover
+	 * @param approver the approver to set
+	 * 
+	 * Date          : Jan 18, 2018 2:43:14 PM
+	 */
+	public void setApprover(boolean approver)
+	{
+		this.approver = approver;
+	}
+
+	/**
+	 * Getter Method	: getRecordSequence
+	 * @return the recordSequence
+	 * 
+	 * Date				: Jan 18, 2018
+	 */
+	public String getRecordSequence()
+	{
+		return this.RecordSequence;
+	}
+
+	/**
+	 * Setter method : setRecordSequence
+	 * @param recordSequence the recordSequence to set
+	 * 
+	 * Date          : Jan 18, 2018 2:35:20 PM
+	 */
+	public void setRecordSequence(String recordSequence)
+	{
+		this.RecordSequence = recordSequence;
+	}
+
+	/**
 	 * Getter Method	: getHod
 	 * @return the hod
 	 * 
@@ -335,8 +382,10 @@ public class GradeIncompleteDTO
 				+ this.comments + ", userName=" + this.userName
 				+ ", historyAvailable=" + this.historyAvailable
 				+ ", sequenceNum=" + this.sequenceNum + ", statusDesc="
-				+ this.statusDesc + ", hod=" + this.hod + ", dpsAsstDean="
-				+ this.dpsAsstDean + ", dpsDean=" + this.dpsDean + "]";
+				+ this.statusDesc + ", approver=" + this.approver
+				+ ", RecordSequence=" + this.RecordSequence + ", hod="
+				+ this.hod + ", dpsAsstDean=" + this.dpsAsstDean + ", dpsDean="
+				+ this.dpsDean + "]";
 	}
 	
 }

@@ -126,6 +126,24 @@ public interface IncompleteGradeService
 	
 	/**
 	 * 
+	 * method name  : getCourseListForNotify
+	 * @param studentNo
+	 * @param studentStatCode
+	 * @param roleType
+	 * @param employee
+	 * @param locale
+	 * @return
+	 * IncompleteGradeService
+	 * return type  : List<GradeIncompleteDTO>
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Jan 18, 2018 3:20:03 PM
+	 */
+	public List<GradeIncompleteDTO> getCourseListForNotify(String studentNo, String studentStatCode, String roleType,  Employee employee, Locale locale);
+	
+	/**
+	 * 
 	 * method name  : isRuleComplete
 	 * @return
 	 * IncompleteGradeService

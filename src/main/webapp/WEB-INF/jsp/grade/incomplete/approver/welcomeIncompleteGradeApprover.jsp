@@ -108,7 +108,7 @@
 	
 <div class="section container-fluid">
 	<div class="row" id="divStudentsListForApprovers"></div>
-<!-- 	<div class="row" id="divStudentGradesForApprove"></div> -->
+ 	<div class="row" id="divStudentNotificationDetailsForApprove"></div> 
 </div>
 
 
@@ -253,6 +253,9 @@
 <table id="tblApprover" class="table table-striped table-bordered dt-responsive nowrap collapsed">
 		<thead>
 		<tr>
+			<th>t1</th>
+			<th>t2</th>
+			<th>t3</th>
 			<th><spring:message code="prop.dps.student.student.id"/></th>
 			<th><spring:message code="prop.dps.student.student.name"/></th>
 			<th><spring:message code="prop.dps.student.student.cohort"/></th>
@@ -263,8 +266,11 @@
 		<tbody>
 		{{#each students}}
 			<tr>
+				<td>{{encryptStr ../roleType}}</td>
+				<td>{{encryptStr academicDetail.studentNo}}</td>
+				<td>{{encryptStr academicDetail.stdStatCode}}</td>
 				<td>
-					<a class="clsLinkStudentGrades" href="#" roleType="{{encryptStr ../roleType}}"  studentNo="{{encryptStr academicDetail.studentNo}}" stdStatCode="{{encryptStr academicDetail.stdStatCode}}" studentId="{{academicDetail.id}}" studentName="{{academicDetail.studentName}}">{{academicDetail.id}}</a>
+					<a class="clsLinkStudentWithNotification" href="#" >{{academicDetail.id}}</a>
 					&nbsp; 
 					{{#if academicDetail.recordApprove}}
 						<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>

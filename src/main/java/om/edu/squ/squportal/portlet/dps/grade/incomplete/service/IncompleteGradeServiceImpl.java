@@ -159,6 +159,21 @@ public class IncompleteGradeServiceImpl implements IncompleteGradeService
 		}
 		return incompleteGradeDBDao.getStudentDetailsForApprovers(roleType, employee, locale);
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.grade.incomplete.service.IncompleteGradeService#getCourseListForNotify(java.lang.String, java.lang.String, java.lang.String, om.edu.squ.squportal.portlet.dps.bo.Employee, java.util.Locale)
+	 */
+	@Override
+	public List<GradeIncompleteDTO> getCourseListForNotify(String studentNo, String studentStatCode, String roleType,  Employee employee, Locale locale)
+	{
+		if(employee.getEmpNumber().substring(0,1).equals("e"))
+		{
+			employee.setEmpNumber(employee.getEmpNumber().substring(1));
+		}
+		
+		return incompleteGradeDBDao.getCourseListForNotify(studentNo, studentStatCode, roleType, employee, locale);
+	}
 	
 	
 	/*

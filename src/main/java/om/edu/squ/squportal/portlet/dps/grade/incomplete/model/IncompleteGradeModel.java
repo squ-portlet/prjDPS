@@ -47,6 +47,7 @@ public class IncompleteGradeModel
 	private	String	courseNo;
 	private	String	sectionNo;
 	private	String	comment;
+	private	String	roleName;
 	
 	/* Security cipher */
 	private	String	salt;
@@ -276,6 +277,28 @@ public class IncompleteGradeModel
 		this.comment = comment;
 	}
 	/**
+	 * Getter Method	: getRoleName
+	 * @return the roleName
+	 * 
+	 * Date				: Jan 18, 2018
+	 */
+	public String getRoleName()
+	{
+		return this.roleName;
+	}
+
+	/**
+	 * Setter method : setRoleName
+	 * @param roleName the roleName to set
+	 * 
+	 * Date          : Jan 18, 2018 3:35:01 PM
+	 */
+	public void setRoleName(String roleName)
+	{
+		this.roleName = roleName;
+	}
+
+	/**
 	 * Getter Method	: getSalt
 	 * @return the salt
 	 * 
@@ -327,8 +350,8 @@ public class IncompleteGradeModel
 				+ this.semester + ", sectCode=" + this.sectCode
 				+ ", lAbrCourseNo=" + this.lAbrCourseNo + ", courseNo="
 				+ this.courseNo + ", sectionNo=" + this.sectionNo
-				+ ", comment=" + this.comment + ", salt=" + this.salt
-				+ ", four=" + this.four + "]";
+				+ ", comment=" + this.comment + ", roleName=" + this.roleName
+				+ ", salt=" + this.salt + ", four=" + this.four + "]";
 	}
 	
 	

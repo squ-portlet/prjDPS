@@ -44,6 +44,7 @@ import om.edu.squ.squportal.portlet.dps.bo.PersonalDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
+import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.GradeDTO;
 import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.Grade;
 import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.DPSAsstDean;
@@ -453,8 +454,125 @@ public class IncompleteGradeDBImpl implements IncompleteGradeDBDao
 		return nPJdbcTemplDpsIncompleteGrade.query(SQL_GRADE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE, namedParameterMap, rowMapper);
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.grade.incomplete.db.IncompleteGradeDBDao#getCourseListForNotify(java.lang.String, java.lang.String, java.lang.String, om.edu.squ.squportal.portlet.dps.bo.Employee, java.util.Locale)
+	 */
+	@Override
+	public List<GradeIncompleteDTO> getCourseListForNotify(String studentNo, String studentStatCode, String roleType,  Employee employee, Locale locale)
+	{
+			String	SQL_INCOMPLETE_GRADE_SELECT_NOTIFY	=	queryIncompleteGrade.getProperty(Constants.CONST_SQL_INCOMPLETE_GRADE_SELECT_NOTIFY);
+			RowMapper<GradeIncompleteDTO>	rowMapper	=	new RowMapper<GradeIncompleteDTO>()
+			{
+				
+				@Override
+				public GradeIncompleteDTO mapRow(ResultSet rs, int rowNum)
+						throws SQLException
+				{
+					GradeIncompleteDTO	gradeIncompleteDTO	=	new GradeIncompleteDTO();
+					Student				student				=	new Student();
+					AcademicDetail		academicDetail		=	new AcademicDetail();
+					Course				course				=	new Course();
+					HOD					hod					=	new HOD();
+					DPSAsstDean			dpsAsstDean			=	new DPSAsstDean();
+					DpsDean				dpsDean				=	new DpsDean();
+					
+					gradeIncompleteDTO.setRecordSequence(rs.getString(Constants.CONST_COLMN_SEQUENCE_NO));
+					academicDetail.setStudentNo(rs.getString(Constants.CONST_COLMN_STUDENT_NO));
+					academicDetail.setStdStatCode(rs.getString(Constants.CONST_COLMN_STDSTATCD));
+					course.setCourseYear(rs.getInt(Constants.COST_COL_DPS_COURSE_YEAR));
+					course.setSemester(rs.getInt(Constants.COST_COL_DPS_SEMESTER_CODE));
+					
+					course.setSectCode(rs.getString(Constants.CONST_COLMN_SECT_CODE));
+					course.setlAbrCourseNo(rs.getString(Constants.CONST_COLMN_L_ABR_CRSNO));
+					course.setCourseNo(rs.getString(Constants.CONST_COLMN_COURSE_NO));
+					
+					course.setSectionNo(rs.getString(Constants.CONST_COLMN_SECTION_NO));
+					gradeIncompleteDTO.setCourse(course);
 	
+					
+					gradeIncompleteDTO.setStatusDesc(rs.getString(Constants.CONST_COLMN_STATUS_DESC));
+					gradeIncompleteDTO.setComments(rs.getString(Constants.CONST_COLMN_COMMENT));
+					
+					
+					hod.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_HOD_STATUS));
+					hod.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_HOD_STATUS)));
+					hod.setComments(rs.getString(Constants.CONST_COLMN_ROLE_HOD_COMMENT));
 	
+					dpsAsstDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_DPS_ASST_DEAN_STATUS));
+					dpsAsstDean.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_DPS_ASST_DEAN_STATUS)));
+					dpsAsstDean.setComments(rs.getString(Constants.CONST_COLMN_ROLE_DPS_ASST_DEAN_COMMENT));
+					
+					dpsDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_DPS_DEAN_STATUS));
+					dpsDean.setRoleStausIkon(RoleTagGlyphicon.showIkon(rs.getString(Constants.CONST_COLMN_ROLE_DPS_DEAN_STATUS)));
+					dpsDean.setComments(rs.getString(Constants.CONST_COLMN_ROLE_DPS_DEAN_COMMENT));
+	
+					gradeIncompleteDTO.setHod(hod);
+					gradeIncompleteDTO.setDpsAsstDean(dpsAsstDean);
+					gradeIncompleteDTO.setDpsDean(dpsDean);
+					
+					if(rs.getString(Constants.CONST_COLMN_ROLE_IS_APPROVER).equals(Constants.CONST_YES))
+					{
+						gradeIncompleteDTO.setApprover(true);
+					}
+					else
+					{
+						gradeIncompleteDTO.setApprover(false);
+					}
+					
+					
+					student.setAcademicDetail(academicDetail);
+					gradeIncompleteDTO.setStudent(student);
+					
+					return gradeIncompleteDTO;
+				}
+			};
+			
+			
+			Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+			namedParameterMap.put("paramLocale", locale.getLanguage());
+	
+			namedParameterMap.put("paramStdNo",studentNo );
+			namedParameterMap.put("paramStdStatCode",studentStatCode );
+			
+			namedParameterMap.put("paramEmpNo", employee.getEmpNumber());
+			namedParameterMap.put("paramDeptCode", null );
+			namedParameterMap.put("paramColCode", null );
+			namedParameterMap.put("paramAdvisor",null );
+			namedParameterMap.put("paramSupervisor",null );
+	
+			switch (roleType)
+			{
+				case Constants.CONST_ROLE_NAME_ADVISOR:
+					namedParameterMap.put("paramAdvisor", employee.getEmpNumber());
+					break;
+				case Constants.CONST_ROLE_NAME_SUPERVISOR:
+					namedParameterMap.put("paramSupervisor", employee.getEmpNumber());
+					break;
+				case Constants.CONST_ROLE_NAME_HOD:
+					namedParameterMap.put("paramDeptCode", employee.getDepartment().getDeptCode());
+					break;
+				case Constants.CONST_ROLE_NAME_ASST_DEAN_P:
+					namedParameterMap.put("paramColCode", employee.getBranch().getBranchCode());
+					break;				
+				case Constants.CONST_ROLE_NAME_COL_DEAN:
+					namedParameterMap.put("paramColCode", employee.getBranch().getBranchCode());
+					break;	
+				default:
+					break;		
+			}
+	
+			
+			namedParameterMap.put("paramFormName", Constants.CONST_FORM_NAME_DPS_GRADE_CHANGE);
+			namedParameterMap.put("paramHodRoleName", Constants.CONST_ROLE_NAME_HOD);
+			namedParameterMap.put("paramADeanPRoleName", Constants.CONST_ROLE_NAME_ASST_DEAN_P );
+			namedParameterMap.put("paramDeanPRoleName", Constants.CONST_ROLE_NAME_DPS_DEAN);
+			
+			namedParameterMap.put("paramFormName",Constants.CONST_FORM_NAME_DPS_GRADE_CHANGE );
+			namedParameterMap.put("paramRoleName", roleType);
+			return nPJdbcTemplDpsIncompleteGrade.query(SQL_INCOMPLETE_GRADE_SELECT_NOTIFY, namedParameterMap, rowMapper);
+		}
+		
 	
 	}
 	

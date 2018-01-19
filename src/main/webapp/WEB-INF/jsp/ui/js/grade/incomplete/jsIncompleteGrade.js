@@ -8,6 +8,7 @@
 <portlet:resourceURL id="resourceAjaxNotify" var="varResourceAjaxNotify"/>
 <portlet:resourceURL id="resourceHistory" var="varResourceHistory"/>
 <portlet:resourceURL id="resoureAjaxStudentDataForApproversByRole" var="varAjaxStudentDataForApproversByRole"/>
+<portlet:resourceURL id="resourceAjaxCourseListForNotify" var="varAjaxCourseListForNotify"/>
 
 <script type="text/javascript">
 
@@ -22,7 +23,8 @@
 	$(function(){
 		/* Datatable for students */
 		var tablStudentList;
-		
+
+/* -- Instructor part ***/
 		<c:forEach items="${employee.myRoles}" var="myRole">
 		// Clicking on tabs to make it active (other than Home tab)
 			$("#role-${myRole.roleName}").click(function(){
@@ -57,7 +59,33 @@
 						var tablApprover = $('#tblApprover').DataTable({
 							"order": [],
 							 select: true,
-							 "sDom":  '<f><t><"col-sm-5"i><"col-sm-12"p><"clearfix">'
+							 "sDom":  '<f><t><"col-sm-5"i><"col-sm-12"p><"clearfix">',
+							 columns: [
+					                     { "data": "roleType" },
+					                     { "data": "studentNo" },
+			                             { "data": "stdStatCode"},
+			                             { "data": "id" },
+			                             { "data": "studentName" },
+			                             { "data" : "cohort"},
+			                             { "data" : "college"},
+			                             { "data" : "degree"}
+			                           ],
+                           columnDefs: [
+							               {
+							                   "targets": [ 0 ],
+							                   "visible": false
+							               },
+
+							               {
+							                   "targets": [ 1 ],
+							                   "visible": false
+							               },
+							               
+							               {
+							                   "targets": [ 2 ],
+							                   "visible": false
+							               }
+							              ]
 						 });
 						
 					},
@@ -243,7 +271,9 @@
 					
 		
 				});
-	
+
+/*Approver - part*/				
+				
 		/* Upon click of NotifyHistory by Instructor */		
 				$(document).on("click", ".clsNotifyHistory", function(event){
 					var row  = $(this).parents('tr')[0];	
@@ -273,7 +303,10 @@
 					
 				});
 		
-				
+		/* Upon clicking particular student number to get notification details*/
+				$(document).on("click", ".clsLinkStudentWithNotification", function(event){	
+					//TODO Get row data from the Data Table UI and related information for processing with ajax
+				});
 				
 
 		/* Filling data using handlebar template*/

@@ -332,4 +332,51 @@ public class IncompleteGradeController
 	
 	
 	
+	/**
+	 * 
+	 * method name  : getCourseListForNotify
+	 * @param incompleteGradeModel
+	 * @param request
+	 * @param response
+	 * @param locale
+	 * @throws IOException
+	 * IncompleteGradeController
+	 * return type  : void
+	 * 
+	 * purpose		: List of courses with notification for incomple grade request and their approval details
+	 *
+	 * Date    		:	Jan 18, 2018 3:38:50 PM
+	 */
+	@ResourceMapping("resourceAjaxCourseListForNotify")
+	public void  getCourseListForNotify(
+										@ModelAttribute("incompleteGradeNotifyModel") IncompleteGradeModel incompleteGradeModel
+										, 	ResourceRequest 	request
+										,	ResourceResponse	response
+										,	Locale				locale
+									) throws IOException
+	{
+		Gson		gson		= 	new Gson();
+		Employee	employee	=	null;
+		incompleteGradeModel.decrypt(crypto, incompleteGradeModel.getSalt(), incompleteGradeModel.getFour(), incompleteGradeModel);
+		try
+		{
+										employee		=	dpsServiceDao.getEmployee(request,locale);
+			List<GradeIncompleteDTO> 	dtos			=	incompleteGradeService.getCourseListForNotify( 
+																											incompleteGradeModel.getStudentNo()
+																										, 	incompleteGradeModel.getStdStatCode()
+																										, 	incompleteGradeModel.getRoleName()
+																										, 	employee
+																										, 	locale
+																										);
+			response.getWriter().print(gson.toJson(dtos));
+		}
+		catch(ExceptionEmptyResultset ex)
+		{
+			response.setProperty(ResourceResponse.HTTP_STATUS_CODE, Integer.toString(HttpServletResponse.SC_INTERNAL_SERVER_ERROR));
+			response.getWriter().print(gson.toJson(""));
+		}
+		
+	}
+	
+	
 }

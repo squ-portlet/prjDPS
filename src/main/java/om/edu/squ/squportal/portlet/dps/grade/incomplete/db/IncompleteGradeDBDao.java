@@ -125,4 +125,22 @@ public interface IncompleteGradeDBDao
 	 * Date    		:	Jan 17, 2018 11:11:03 AM
 	 */
 	public List<Student> getStudentDetailsForApprovers(String roleType,  Employee employee, Locale locale);
+	
+	/**
+	 * 
+	 * method name  : getCourseListForNotify
+	 * @param studentNo
+	 * @param studentStatCode
+	 * @param roleType
+	 * @param employee
+	 * @param locale
+	 * @return
+	 * IncompleteGradeDBDao
+	 * return type  : List<GradeIncompleteDTO>
+	 * 
+	 * purpose		: cours/s for for notification of particualr student
+	 *
+	 * Date    		:	Jan 18, 2018 3:02:01 PM
+	 */
+	public List<GradeIncompleteDTO> getCourseListForNotify(String studentNo, String studentStatCode, String roleType,  Employee employee, Locale locale);
 }
