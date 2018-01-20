@@ -138,6 +138,34 @@
         </div>
     </div>
 
+<!--  Modal dialogue for approve/reject -->
+	<div class="modal fade" id="modalApprovForm" role="dialog" aria-labelledby="myModalLabelForm" aria-hidden="true" >
+      <div class="modal-dialog">
+        <div class="modal-content">
+        	
+        	
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&nbsp;</button>
+            <h4 class="modal-title"><spring:message code="prop.dps.approver.modal.title.text"/> </h4>
+          </div>
+          <form id="formModalApprover" name="formModalApprover">
+          <div class="modal-body">
+          	<div id="idApprovalMsg"></div>
+            <div id="idComment">
+            	<div class="col-sm-2"><spring:message code="prop.dps.approver.modal.body.approve.comment.text"></spring:message></div>
+            	<div class="col-sm-8" id="idCommentTxtArea"></div>
+            </div>
+          </div>
+          </form>
+          <div class="modal-footer">
+            <button id="linkBtnReset" class="btn btn-default"  data-dismiss="modal"><spring:message code="prop.dps.role.submit.no.text"/></button>
+            <button id="linkSubmitApprove" name="linkSubmitApprove" type="button" class="btn "><spring:message code="prop.dps.role.submit.yes.text"/></button>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
 
 <script id="hbStudentList" type="text/x-handlebars-template">
 			<table id="tblStudentList" class="table table-condensed table-bordered dt-responsive">
@@ -300,6 +328,14 @@
 		<table id="tblStudentNotificationDetailsForApprove" class="table table-striped table-bordered dt-responsive  collapsed ">
 				<thead>
 				<tr>
+					<th>t0</th>
+					<th>t1</th>
+					<th>t2</th>
+					<th>t3</th>
+					<th>t4</th>
+					<th>t5</th>
+					<th>t6</th>
+					<th>t7</th>
 					<th><spring:message code="prop.dps.gradechange.seq.no"/></th>
 					<th><spring:message code="prop.dps.gradechange.course.code"/></th>
 					<th><spring:message code="prop.dps.gradechange.section"/></th>
@@ -313,6 +349,14 @@
 				<tbody>
 						{{#each notifyList}}
 							<tr>
+								<td>{{recordSequence}}</td>
+								<td>{{encryptStr student.academicDetail.studentNo}}</td>
+								<td>{{encryptStr student.academicDetail.stdStatCode}}</td>
+								<td>{{encryptStr course.sectCode}}</td>
+								<td>{{encryptStr course.courseNo}}</td>
+								<td>{{encryptStr course.courseYear}}</td>
+								<td>{{encryptStr course.semester}}</td>
+								<td>{{../roleName}}</td>
 								<td>
 									{{recordSequence}}
 									{{#if approver}}<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>{{/if}}

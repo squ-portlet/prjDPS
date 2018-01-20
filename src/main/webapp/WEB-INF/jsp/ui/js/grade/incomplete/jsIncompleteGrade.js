@@ -24,6 +24,7 @@
 		/* Datatable for students */
 		var tablStudentList;
 		var tablApprover;
+		var tablStudentNotificationDetailsForApprove;
 
 /* -- Instructor part ***/
 		<c:forEach items="${employee.myRoles}" var="myRole">
@@ -335,6 +336,67 @@
 									var notifyList =	JSON.parse(data);
 									var	notifyListJSON = {'notifyList':notifyList, 'roleName':roleType, 'studentId':studentId,'studentName':studentName};
 									hbDataLoadAction(notifyListJSON, '#hbStudentNotificationDetailsForApprove', '#divStudentNotificationDetailsForApprove');
+									tablStudentNotificationDetailsForApprove = $('#tblStudentNotificationDetailsForApprove').DataTable({
+														 select: true,
+														 "order": [],
+														 "sDom":  '',
+														 "columnDefs": [ 
+															               {
+															                   "targets": [ 0 ],
+															                   "visible": false
+															               },
+															               {
+															                   "targets": [ 1 ],
+															                   "visible": false
+															               },
+															               
+															               {
+															                   "targets": [ 2 ],
+															                   "visible": false
+															               },
+															               {
+															                   "targets": [ 3 ],
+															                   "visible": false
+															               },
+															               {
+															                   "targets": [ 4 ],
+															                   "visible": false
+															               },
+															               {
+															                   "targets": [ 5 ],
+															                   "visible": false
+															               },
+			
+															               {
+															                   "targets": [ 6 ],
+															                   "visible": false
+															               },							               
+															               {
+															                   "targets": [ 7 ],
+															                   "visible": false
+															               }
+															       ],
+														 columns: [
+															 			{ "data": "recno" },
+															 			{ "data": "studentNo" },
+															 			{ "data": "stdStatCode" },
+															 			{ "data": "sectCode" },
+															 			{ "data": "courseNo" },
+															 			{ "data": "courseYear" },
+															 			{ "data": "semester" },
+															 			{ "data": "roleName" },
+															 			
+															 			{ "data": "recno2"},
+															 			{ "data": "lAbrCourseNo"},
+															 			{ "data": "sectionNo"},
+															 			{ "data": "statusDesc"},
+															 			{ "data": "hod"},
+															 			{ "data": "asstDean"},
+															 			{ "data": "dpsDean"},
+															 			{ "data": "action"}
+															 		]
+														});
+
 								},
 								error	:	function(xhr, status,  error)
 								{
@@ -346,9 +408,34 @@
 						});
 					
 					
-				});
-				
-				
+					
+			});	
+
+	/* click event on approve/reject radio button */		
+			$(document).on("click", ".clsAppAction", function(event){	
+				event.preventDefault();
+				if($(this).val() == 'ACCPT')
+				{
+					
+					$('#idComment').hide();
+					$('#idCommentTxtArea').html('');
+					$('#idApprovalMsg').html("<spring:message code='prop.dps.gradechange.approver.approve.text'/>");
+					$('#linkSubmitApprove').addClass('btn-success').removeClass('btn-danger');
+				}
+				else
+				{
+					
+					$('#idComment').show();
+					$('#idCommentTxtArea').html('<textarea id="txtMessage" name="txtMessage" rows="" cols="" required></textarea>');
+					$('#idApprovalMsg').html("<spring:message code='prop.dps.gradechange.approver.reject.text'/>");
+					$('#linkSubmitApprove').addClass('btn-danger').removeClass('btn-success');
+				}
+			});
+			
+	/* Submit button of modal form to approve or reject */			
+			$(document).on("click", "#linkSubmitApprove", function(event){	
+
+			});
 
 		/* Filling data using handlebar template*/
 		function hbDataLoadAction(dataJson, hbTemplateId, divId)
