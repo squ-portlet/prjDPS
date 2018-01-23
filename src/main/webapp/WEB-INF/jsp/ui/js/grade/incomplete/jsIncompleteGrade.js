@@ -9,6 +9,7 @@
 <portlet:resourceURL id="resourceHistory" var="varResourceHistory"/>
 <portlet:resourceURL id="resoureAjaxStudentDataForApproversByRole" var="varAjaxStudentDataForApproversByRole"/>
 <portlet:resourceURL id="resourceAjaxCourseListForNotify" var="varAjaxCourseListForNotify"/>
+<portlet:resourceURL id="resourceIncompleteGradeNotificationApproval" var="varIncompleteGradeNotificationApproval"/>
 
 <script type="text/javascript">
 
@@ -374,6 +375,10 @@
 															               {
 															                   "targets": [ 7 ],
 															                   "visible": false
+															               },
+															               {
+															                   "targets": [ 16 ],
+															                   "visible": false
 															               }
 															       ],
 														 columns: [
@@ -393,7 +398,8 @@
 															 			{ "data": "hod"},
 															 			{ "data": "asstDean"},
 															 			{ "data": "dpsDean"},
-															 			{ "data": "action"}
+															 			{ "data": "action"},
+															 			{ "data": "actionResult"}
 															 		]
 														});
 
@@ -414,6 +420,15 @@
 	/* click event on approve/reject radio button */		
 			$(document).on("click", ".clsAppAction", function(event){	
 				event.preventDefault();
+				var row  = $(this).parents('tr')[0];	
+				var rowData	=	tablStudentNotificationDetailsForApprove.row(row).data();
+				rowData.actionResult=aesUtil.encrypt(salt, four, passphrase, $(this).val());
+
+				tablStudentNotificationDetailsForApprove
+													        .row( row)
+													        .data( rowData )
+													        .draw();
+															
 				if($(this).val() == 'ACCPT')
 				{
 					
@@ -431,10 +446,52 @@
 					$('#linkSubmitApprove').addClass('btn-danger').removeClass('btn-success');
 				}
 			});
-			
+				
+
 	/* Submit button of modal form to approve or reject */			
 			$(document).on("click", "#linkSubmitApprove", function(event){	
+				
+				var row  = $(this).parents('tr')[0];	
+				var rowData	=	tablStudentNotificationDetailsForApprove.row(row).data();
+				
+				var incompleteGradeNotifyModel = {
+						recordSequence	:	rowData.recno,
+						studentNo 		:	rowData.studentNo,
+						stdStatCode		:	rowData.stdStatCode,
+						courseYear		:	rowData.courseYear,
+						semester		:	rowData.semester,
+						sectCode		:	rowData.sectCode,
+						lAbrCourseNo	:	aesUtil.encrypt(salt, four, passphrase, rowData.lAbrCourseNo),
+						courseNo		:	rowData.courseNo,
+						sectionNo		:	aesUtil.encrypt(salt, four, passphrase, rowData.sectionNo),
+						roleName		:	rowData.roleName,
+						lAbrStatusCode	:	rowData.actionResult,
+						comment			:  $('#txtMessage').val(),
+						salt			:	salt,
+						four			:	four												
+				}
 
+				$.ajax({
+						url 	:	"${varIncompleteGradeNotificationApproval}",
+						type	:	'POST',
+						cache	:	false,
+						data	:	incompleteGradeNotifyModel,
+						success	:	function(data)
+						{
+								
+								var dto = JSON.parse(data);
+								
+						},
+						error	:	function(xhr, status,  error)
+						{
+							console.log('error');
+						}
+				
+						
+						
+				});
+				
+				
 			});
 
 		/* Filling data using handlebar template*/

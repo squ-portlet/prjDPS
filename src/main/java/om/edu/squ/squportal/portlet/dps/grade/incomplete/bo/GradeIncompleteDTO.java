@@ -50,10 +50,13 @@ public class GradeIncompleteDTO
 	private		String			userName;
 	private		boolean			historyAvailable;
 	private		String			sequenceNum;
+	
+	private		String			lAbrStatusCode;
 	private		String			statusDesc;
 	private		boolean			approver;
 	private		String			recordSequence;
 	
+	private		String			roleType;
 	
 	private		HOD				hod;
 	private		DPSAsstDean		dpsAsstDean;
@@ -80,9 +83,13 @@ public class GradeIncompleteDTO
 		course.setCourseNo(incompleteGradeModel.getCourseNo());
 		course.setSectionNo(incompleteGradeModel.getSectionNo());
 		
-		this.course 	=	course;
-		this.student	=	student;
-		this.comments	=	incompleteGradeModel.getComment();
+		this.course 		=	course;
+		this.student		=	student;
+		
+		this.recordSequence	=	incompleteGradeModel.getRecordSequence();
+		this.comments		=	incompleteGradeModel.getComment();
+		this.lAbrStatusCode	=	incompleteGradeModel.getlAbrStatusCode();
+		this.roleType		=	incompleteGradeModel.getRoleName();
 	}
 	
 	/**
@@ -240,6 +247,28 @@ public class GradeIncompleteDTO
 
 	
 	/**
+	 * Getter Method	: getlAbrStatusCode
+	 * @return the lAbrStatusCode
+	 * 
+	 * Date				: Jan 23, 2018
+	 */
+	public String getlAbrStatusCode()
+	{
+		return this.lAbrStatusCode;
+	}
+
+	/**
+	 * Setter method : setlAbrStatusCode
+	 * @param lAbrStatusCode the lAbrStatusCode to set
+	 * 
+	 * Date          : Jan 23, 2018 1:09:07 PM
+	 */
+	public void setlAbrStatusCode(String lAbrStatusCode)
+	{
+		this.lAbrStatusCode = lAbrStatusCode;
+	}
+
+	/**
 	 * Getter Method	: getStatusDesc
 	 * @return the statusDesc
 	 * 
@@ -303,6 +332,28 @@ public class GradeIncompleteDTO
 	public void setRecordSequence(String recordSequence)
 	{
 		this.recordSequence = recordSequence;
+	}
+
+	/**
+	 * Getter Method	: getRoleType
+	 * @return the roleType
+	 * 
+	 * Date				: Jan 23, 2018
+	 */
+	public String getRoleType()
+	{
+		return this.roleType;
+	}
+
+	/**
+	 * Setter method : setRoleType
+	 * @param roleType the roleType to set
+	 * 
+	 * Date          : Jan 23, 2018 1:39:57 PM
+	 */
+	public void setRoleType(String roleType)
+	{
+		this.roleType = roleType;
 	}
 
 	/**
@@ -381,11 +432,12 @@ public class GradeIncompleteDTO
 				+ this.student + ", grade=" + this.grade + ", comments="
 				+ this.comments + ", userName=" + this.userName
 				+ ", historyAvailable=" + this.historyAvailable
-				+ ", sequenceNum=" + this.sequenceNum + ", statusDesc="
-				+ this.statusDesc + ", approver=" + this.approver
-				+ ", RecordSequence=" + this.recordSequence + ", hod="
-				+ this.hod + ", dpsAsstDean=" + this.dpsAsstDean + ", dpsDean="
-				+ this.dpsDean + "]";
+				+ ", sequenceNum=" + this.sequenceNum + ", lAbrStatusCode="
+				+ this.lAbrStatusCode + ", statusDesc=" + this.statusDesc
+				+ ", approver=" + this.approver + ", recordSequence="
+				+ this.recordSequence + ", roleType=" + this.roleType
+				+ ", hod=" + this.hod + ", dpsAsstDean=" + this.dpsAsstDean
+				+ ", dpsDean=" + this.dpsDean + "]";
 	}
 	
 }

@@ -138,9 +138,23 @@ public interface IncompleteGradeDBDao
 	 * IncompleteGradeDBDao
 	 * return type  : List<GradeIncompleteDTO>
 	 * 
-	 * purpose		: cours/s for for notification of particualr student
+	 * purpose		: course/s for notification of particualr student
 	 *
 	 * Date    		:	Jan 18, 2018 3:02:01 PM
 	 */
 	public List<GradeIncompleteDTO> getCourseListForNotify(String studentNo, String studentStatCode, String roleType,  Employee employee, Locale locale);
+	
+	/**
+	 * 
+	 * method name  : setIncompleteGradeNotifyApproval
+	 * @param gradeIncompleteDTO
+	 * @return
+	 * IncompleteGradeDBDao
+	 * return type  : int
+	 * 
+	 * purpose		:  updation of status of approve/reject by approval 
+	 *
+	 * Date    		:	Jan 23, 2018 1:23:43 PM
+	 */
+	public int setIncompleteGradeNotifyApproval(GradeIncompleteDTO gradeIncompleteDTO);
 }

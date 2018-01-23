@@ -344,6 +344,7 @@
 					<th><spring:message code="prop.dps.gradechange.dean.asst"/></th>
 					<th><spring:message code="prop.dps.gradechange.dean.dps"/></th>
 					<th></th>
+					<th>t16</th>
 				</tr>
 				</thead>
 				<tbody>
@@ -399,7 +400,8 @@
 												<div class="col-xs-4"><label><input type="radio" studentNo="{{encryptStr student.academicDetail.studentNo}}" stdStatCode="{{encryptStr student.academicDetail.stdStatCode}}" recno="{{encryptStr recordSequence}}" sectCode="{{encryptStr course.sectCode}}" courseNo="{{encryptStr course.courseNo}}" lAbrCourseNo2="{{encryptStr course.lAbrCourseNo}}"  sectionNo="{{encryptStr course.sectionNo}}"  courseYear2="{{encryptStr course.courseYear}}" semester="{{encryptStr course.semester}}" roleName="{{../roleName}}" class ="clsAppAction" name="appAction" id="appRadio1" value="${appApprove}" data-toggle="modal" data-target="#modalApprovForm"><spring:message code="prop.dps.role.approve.text"/></label> </div> 
 												<div class="col-xs-2"><label><input type="radio" studentNo="{{encryptStr student.academicDetail.studentNo}}" stdStatCode="{{encryptStr student.academicDetail.stdStatCode}}" recno="{{encryptStr recordSequence}}" sectCode="{{encryptStr course.sectCode}}" courseNo="{{encryptStr course.courseNo}}" lAbrCourseNo2="{{encryptStr course.lAbrCourseNo}}" sectionNo="{{encryptStr course.sectionNo}}"  courseYear2="{{encryptStr course.courseYear}}" semester="{{encryptStr course.semester}}" roleName="{{../roleName}}" class ="clsAppAction" name="appAction" id="appRadio2" value="${appRecect}" data-toggle="modal" data-target="#modalApprovForm"> <spring:message code="prop.dps.role.reject.text"/> </label></div> 
 									{{/if}}
-								</td>		
+								</td>	
+								<td></td>	
 							</tr>
 						{{/each}}
 				</tbody>

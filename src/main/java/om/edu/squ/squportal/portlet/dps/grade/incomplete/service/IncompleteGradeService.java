@@ -32,11 +32,14 @@ package om.edu.squ.squportal.portlet.dps.grade.incomplete.service;
 import java.util.List;
 import java.util.Locale;
 
+import javax.portlet.PortletRequest;
+
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteDTO;
+import om.edu.squ.squportal.portlet.dps.grade.incomplete.model.IncompleteGradeModel;
 
 /**
  * @author Bhabesh
@@ -141,6 +144,23 @@ public interface IncompleteGradeService
 	 * Date    		:	Jan 18, 2018 3:20:03 PM
 	 */
 	public List<GradeIncompleteDTO> getCourseListForNotify(String studentNo, String studentStatCode, String roleType,  Employee employee, Locale locale);
+	
+	/**
+	 * 
+	 * method name  : setIncompleteGradeNotifyApproval
+	 * @param incompleteGradeModel
+	 * @param employee
+	 * @param request
+	 * @param locale
+	 * @return
+	 * IncompleteGradeService
+	 * return type  : List<GradeIncompleteDTO>
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Jan 23, 2018 3:02:09 PM
+	 */
+	public List<GradeIncompleteDTO> setIncompleteGradeNotifyApproval(IncompleteGradeModel incompleteGradeModel, Employee employee, PortletRequest request, Locale locale);
 	
 	/**
 	 * 

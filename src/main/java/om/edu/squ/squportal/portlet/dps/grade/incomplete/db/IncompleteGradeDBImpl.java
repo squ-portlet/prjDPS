@@ -44,7 +44,6 @@ import om.edu.squ.squportal.portlet.dps.bo.PersonalDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
-import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.GradeDTO;
 import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.Grade;
 import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.DPSAsstDean;
@@ -60,6 +59,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Bhabesh
@@ -572,7 +572,42 @@ public class IncompleteGradeDBImpl implements IncompleteGradeDBDao
 			namedParameterMap.put("paramRoleName", roleType);
 			return nPJdbcTemplDpsIncompleteGrade.query(SQL_INCOMPLETE_GRADE_SELECT_NOTIFY, namedParameterMap, rowMapper);
 		}
+	
+	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.grade.incomplete.db.IncompleteGradeDBDao#setIncompleteGradeNotifyApproval(om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteDTO)
+	 */
+	@Transactional
+	public int setIncompleteGradeNotifyApproval(GradeIncompleteDTO gradeIncompleteDTO)
+	{
 		
+		String SQL_INCOMPLETE_GRADE_CHANGE_UPDATE_APPROVAL_TEMP	=	queryIncompleteGrade.getProperty(Constants.CONST_SQL_INCOMPLETE_GRADE_CHANGE_UPDATE_APPROVAL_TEMP);
+		
+		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+		namedParameterMap.put("paramStatusCode", gradeIncompleteDTO.getlAbrStatusCode());
+		namedParameterMap.put("paramUserName", gradeIncompleteDTO.getUserName());
+		namedParameterMap.put("paramStdNo", gradeIncompleteDTO.getStudent().getAcademicDetail().getStudentNo());
+		namedParameterMap.put("paramStdStatCode", gradeIncompleteDTO.getStudent().getAcademicDetail().getStdStatCode());
+		namedParameterMap.put("paramSectCode", gradeIncompleteDTO.getCourse().getSectCode());
+		namedParameterMap.put("paramYear", String.valueOf(gradeIncompleteDTO.getCourse().getCourseYear()));
+		namedParameterMap.put("paramSem", String.valueOf(gradeIncompleteDTO.getCourse().getSemester()));
+		namedParameterMap.put("paramCourseLAbrCode", gradeIncompleteDTO.getCourse().getlAbrCourseNo());
+		namedParameterMap.put("paramSeqNo", gradeIncompleteDTO.getRecordSequence());
+		
+		try
+		{
+			return nPJdbcTemplDpsIncompleteGrade.update(SQL_INCOMPLETE_GRADE_CHANGE_UPDATE_APPROVAL_TEMP, namedParameterMap);
+		}
+		catch(UncategorizedSQLException exDB)
+		{
+			logger.error("Error in grade update. Details : "+exDB.getMessage());
+			return -1;
+		}
+
+	}
+	
+	
 	
 	}
 	

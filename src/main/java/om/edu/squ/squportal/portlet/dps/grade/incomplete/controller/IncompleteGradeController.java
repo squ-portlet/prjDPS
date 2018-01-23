@@ -45,6 +45,7 @@ import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
+import om.edu.squ.squportal.portlet.dps.grade.gradechange.bo.GradeDTO;
 import om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteDTO;
 import om.edu.squ.squportal.portlet.dps.grade.incomplete.model.IncompleteGradeModel;
 import om.edu.squ.squportal.portlet.dps.grade.incomplete.service.IncompleteGradeService;
@@ -378,5 +379,48 @@ public class IncompleteGradeController
 		
 	}
 	
+	/**
+	 * 
+	 * method name  : incompleteGradeNotificationApproval
+	 * @param incompleteGradeModel
+	 * @param request
+	 * @param response
+	 * @param locale
+	 * @throws IOException
+	 * IncompleteGradeController
+	 * return type  : void
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Jan 23, 2018 3:30:26 PM
+	 */
+	@ResourceMapping(value="resourceIncompleteGradeNotificationApproval")
+	public void incompleteGradeNotificationApproval(
+														@ModelAttribute("incompleteGradeNotifyModel") IncompleteGradeModel incompleteGradeModel
+														, 	ResourceRequest 	request
+														,	ResourceResponse	response
+														,	Locale				locale
+													) throws IOException
+	{
+		Gson		gson		= 	new Gson();
+		Employee	employee	=	null;
+		
+		incompleteGradeModel.decrypt(crypto, incompleteGradeModel.getSalt(), incompleteGradeModel.getFour(), incompleteGradeModel);
+
+		
+		try
+		{
+										employee			=	dpsServiceDao.getEmployee(request,locale);
+			List<GradeIncompleteDTO>	gradeIncompleteDTOs	=	incompleteGradeService.setIncompleteGradeNotifyApproval(incompleteGradeModel, employee, request, locale);
+			response.getWriter().print(gson.toJson(gradeIncompleteDTOs));
+		}
+		catch (ExceptionEmptyResultset ex)
+		{
+			response.setProperty(ResourceResponse.HTTP_STATUS_CODE, Integer.toString(HttpServletResponse.SC_INTERNAL_SERVER_ERROR));
+			response.getWriter().print(gson.toJson(""));
+		}
+		
+		
+	}
 	
 }

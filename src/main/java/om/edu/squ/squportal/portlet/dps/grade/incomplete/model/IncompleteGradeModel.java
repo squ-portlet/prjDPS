@@ -37,6 +37,7 @@ import om.edu.squ.squportal.portlet.dps.security.Crypto;
  */
 public class IncompleteGradeModel
 {
+	private	String	recordSequence;
 	private	String	id;
 	private	String	studentNo;
 	private	String	stdStatCode;
@@ -48,6 +49,7 @@ public class IncompleteGradeModel
 	private	String	sectionNo;
 	private	String	comment;
 	private	String	roleName;
+	private	String	lAbrStatusCode;
 	
 	/* Security cipher */
 	private	String	salt;
@@ -59,6 +61,7 @@ public class IncompleteGradeModel
 		IncompleteGradeModel	incompleteGradeModel	=	(IncompleteGradeModel) object;
 				if(null != salt && null != four)
 				{
+					this.recordSequence		=		incompleteGradeModel.getRecordSequence();
 					this.id					=		incompleteGradeModel.getId();
 					this.studentNo			=		(null==incompleteGradeModel.getStudentNo() ) 	?  null	:	crypto.decrypt(salt,four,incompleteGradeModel.getStudentNo());
 					this.stdStatCode		=		(null==incompleteGradeModel.getStdStatCode() ) 	?  null	:	crypto.decrypt(salt,four,incompleteGradeModel.getStdStatCode());
@@ -68,10 +71,34 @@ public class IncompleteGradeModel
 					this.lAbrCourseNo		=		(null==incompleteGradeModel.getlAbrCourseNo() ) ?  null	:	crypto.decrypt(salt,four,incompleteGradeModel.getlAbrCourseNo());
 					this.courseNo			=		(null==incompleteGradeModel.getCourseNo() ) 	?  null	:	crypto.decrypt(salt,four,incompleteGradeModel.getCourseNo());
 					this.sectionNo			=		(null==incompleteGradeModel.getSectionNo() ) 	?  null	:	crypto.decrypt(salt,four,incompleteGradeModel.getSectionNo());
+					this.lAbrStatusCode		=		(null==incompleteGradeModel.getlAbrStatusCode()) ?  null	:	crypto.decrypt(salt,four,incompleteGradeModel.getlAbrStatusCode());
 					this.comment			=		incompleteGradeModel.getComment();
+					this.roleName			=		incompleteGradeModel.getRoleName();
 				}
 	}
 	
+	/**
+	 * Getter Method	: getRecordSequence
+	 * @return the recordSequence
+	 * 
+	 * Date				: Jan 23, 2018
+	 */
+	public String getRecordSequence()
+	{
+		return this.recordSequence;
+	}
+
+	/**
+	 * Setter method : setRecordSequence
+	 * @param recordSequence the recordSequence to set
+	 * 
+	 * Date          : Jan 23, 2018 10:08:27 AM
+	 */
+	public void setRecordSequence(String recordSequence)
+	{
+		this.recordSequence = recordSequence;
+	}
+
 	/**
 	 * Getter Method	: getId
 	 * @return the id
@@ -338,20 +365,45 @@ public class IncompleteGradeModel
 	{
 		this.four = four;
 	}
+	
+	/**
+	 * Getter Method	: getlAbrStatusCode
+	 * @return the lAbrStatusCode
+	 * 
+	 * Date				: Jan 23, 2018
+	 */
+	public String getlAbrStatusCode()
+	{
+		return this.lAbrStatusCode;
+	}
+
+	/**
+	 * Setter method : setlAbrStatusCode
+	 * @param lAbrStatusCode the lAbrStatusCode to set
+	 * 
+	 * Date          : Jan 23, 2018 12:50:08 PM
+	 */
+	public void setlAbrStatusCode(String lAbrStatusCode)
+	{
+		this.lAbrStatusCode = lAbrStatusCode;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString()
 	{
-		return "IncompleteGradeModel [id=" + this.id + ", studentNo="
-				+ this.studentNo + ", stdStatCode=" + this.stdStatCode
-				+ ", courseYear=" + this.courseYear + ", semester="
-				+ this.semester + ", sectCode=" + this.sectCode
-				+ ", lAbrCourseNo=" + this.lAbrCourseNo + ", courseNo="
-				+ this.courseNo + ", sectionNo=" + this.sectionNo
-				+ ", comment=" + this.comment + ", roleName=" + this.roleName
-				+ ", salt=" + this.salt + ", four=" + this.four + "]";
+		return "IncompleteGradeModel [recordSequence=" + this.recordSequence
+				+ ", id=" + this.id + ", studentNo=" + this.studentNo
+				+ ", stdStatCode=" + this.stdStatCode + ", courseYear="
+				+ this.courseYear + ", semester=" + this.semester
+				+ ", sectCode=" + this.sectCode + ", lAbrCourseNo="
+				+ this.lAbrCourseNo + ", courseNo=" + this.courseNo
+				+ ", sectionNo=" + this.sectionNo + ", comment=" + this.comment
+				+ ", roleName=" + this.roleName + ", lAbrStatusCode="
+				+ this.lAbrStatusCode + ", salt=" + this.salt + ", four="
+				+ this.four + "]";
 	}
 	
 	
