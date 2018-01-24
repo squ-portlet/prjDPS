@@ -450,6 +450,7 @@
 
 	/* Submit button of modal form to approve or reject */			
 			$(document).on("click", "#linkSubmitApprove", function(event){	
+				$('#modalApprovForm').modal('toggle');
 				
 				var row  = $(this).parents('tr')[0];	
 				var rowData	=	tablStudentNotificationDetailsForApprove.row(row).data();
@@ -478,13 +479,23 @@
 						data	:	incompleteGradeNotifyModel,
 						success	:	function(data)
 						{
-								
 								var dto = JSON.parse(data);
+								rowData.recno2=dto[0].recordSequence;
+								rowData.statusDesc=dto[0].statusDesc;
+								rowData.hod=dto[0].hod.roleStausIkon;
+								rowData.asstDean=dto[0].dpsAsstDean.roleStausIkon;
+								rowData.dpsDean=dto[0].dpsDean.roleStausIkon;
+								rowData.action='';
+								
+								tablStudentNotificationDetailsForApprove
+																	        .row( row)
+																	        .data( rowData )
+																	        .draw();
 								
 						},
 						error	:	function(xhr, status,  error)
 						{
-							console.log('error');
+							
 						}
 				
 						
