@@ -26,6 +26,9 @@
 		var tablStudentList;
 		var tablApprover;
 		var tablStudentNotificationDetailsForApprove;
+		
+		var	rowRApprover;
+		var rowDataApprover;
 
 /* -- Instructor part ***/
 		<c:forEach items="${employee.myRoles}" var="myRole">
@@ -313,19 +316,19 @@
 		
 		/* Upon clicking particular student number to get notification details*/
 				$(document).on("click", ".clsLinkStudentWithNotification", function(event){	
-					//TODO Get row data from the Data Table UI and related information for processing with ajax
-					var rowR  = $(this).parents('tr')[0];	
-					var rowData	=	tablApprover.row(rowR).data();
+					rowRApprover  = $(this).parents('tr')[0];	
+					rowDataApprover	=	tablApprover.row(rowRApprover).data();
+					
 					var incompleteGradeNotifyModel = {
-							studentNo 		:	rowData.studentNo,
-							stdStatCode		:	rowData.stdStatCode,
-							roleName		:	rowData.roleType,
+							studentNo 		:	rowDataApprover.studentNo,
+							stdStatCode		:	rowDataApprover.stdStatCode,
+							roleName		:	rowDataApprover.roleType,
 							salt			:	salt,
 							four			:	four
 					}
-					var roleType	=	rowData.roleType;
-					var studentId	=	rowData.stdId;
-					var studentName	=	rowData.studentName;
+					var roleType	=	rowDataApprover.roleType;
+					var studentId	=	rowDataApprover.stdId;
+					var studentName	=	rowDataApprover.studentName;
 					
 					$.ajax({
 								url 	:	'${varAjaxCourseListForNotify}',
@@ -491,6 +494,9 @@
 																	        .row( row)
 																	        .data( rowData )
 																	        .draw();
+								
+								rowDataApprover.id=rowDataApprover.stdId;
+								tablApprover.row(rowRApprover).data(rowDataApprover).draw();
 								
 						},
 						error	:	function(xhr, status,  error)
