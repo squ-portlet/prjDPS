@@ -282,7 +282,7 @@ public class IncompleteGradeServiceImpl implements IncompleteGradeService
 					notifierPeople.setServiceUrl(UtilProperty.getMessage("prop.dps.url.incomplete.grade.notify.change", null));
 					
 					dpsNotification.sendNotification(
-														UtilProperty.getMessage("prop.dps.incomplete.grade.notify.notification.subject", null, locale)
+														UtilProperty.getMessage("prop.dps.incomplete.grade.notify.notification.subject", new String[]{notifierPeople.getStudent().getPersonalDetail().getId()}, locale)
 														, notifierPeople
 														, "null"
 														, Constants.CONST_TEST_ENVIRONMENT
@@ -295,7 +295,7 @@ public class IncompleteGradeServiceImpl implements IncompleteGradeService
 				}
 				catch(NotificationException exNotification)
 				{
-					logger.error("Error in  notification for approving at Grade Change of Service 1 : {}",exNotification.getMessage());
+					logger.error("Error in  notification for approving at Incomplete Grade Notification of Service 1 : {}",exNotification.getMessage());
 				}				
 			
 			

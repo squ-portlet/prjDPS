@@ -426,7 +426,7 @@ public class IncompleteGradeDBImpl implements IncompleteGradeDBDao
 		namedParameterMap.put("paramAdvisor", null);
 		namedParameterMap.put("paramDeptCode", null);
 		namedParameterMap.put("paramColCode", null);
-		namedParameterMap.put("paramFormName", Constants.CONST_FORM_NAME_DPS_GRADE_CHANGE);
+		namedParameterMap.put("paramFormName", Constants.CONST_FORM_NAME_DPS_INCOMPLETE_GRADE_NOTIFY);
 		namedParameterMap.put("paramRoleName", roleType);
 		namedParameterMap.put("paramEmpNo", employee.getEmpNumber());
 
