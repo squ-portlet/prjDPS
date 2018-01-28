@@ -318,6 +318,31 @@
 					
 				});
 		
+		/* Message from HOD */
+				$(document).on("click", ".classPopMsgHOD", function(event){
+					var comment = this.getAttribute("comments");
+					var alertText = {'alertTxt':comment};
+					hbDataLoadAction(alertText, '#hbAlert', '#divAlertNotify');
+				});
+				
+		/* Message from Assistant Dean PSR */
+				$(document).on("click", ".classPopMsgAsstDeanP", function(event){
+					var comment = this.getAttribute("comments");
+					var alertText = {'alertTxt':comment};
+					hbDataLoadAction(alertText, '#hbAlert', '#divAlertNotify');
+				});
+
+		/* Message from DPS Dean */
+				$(document).on("click", ".classPopMsgDeanP", function(event){
+					var comment = this.getAttribute("comments");
+					var alertText = {'alertTxt':comment};
+					hbDataLoadAction(alertText, '#hbAlert', '#divAlertNotify');
+				});				
+				
+				
+				
+				
+				
 		/* Upon clicking particular student number to get notification details*/
 				$(document).on("click", ".clsLinkStudentWithNotification", function(event){	
 					rowRApprover  = $(this).parents('tr')[0];	

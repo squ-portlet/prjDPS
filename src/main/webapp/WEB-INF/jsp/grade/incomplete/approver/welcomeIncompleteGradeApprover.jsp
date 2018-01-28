@@ -20,6 +20,8 @@
 			</c:forEach>
 		</c:if>
 	</ul>
+
+	<div id="divAlertNotify"></div>
 	
     <div class="section">
       	<div class="container-fluid">
@@ -94,9 +96,8 @@
 				</div>
 				
 				<div class="col-sm-3">
-					<div id="divIncompleteGradeNotifyHistory">
-				</div>
-		</div>
+					<div id="divIncompleteGradeNotifyHistory"></div>
+			</div>
 		
 		</div>
 	</div>
@@ -110,6 +111,7 @@
 	<div class="row" id="divStudentsListForApprovers"></div>
  	<div class="row" id="divStudentNotificationDetailsForApprove"></div> 
 </div>
+
 
 
 
@@ -169,6 +171,14 @@
       </div>
     </div>
 
+
+<script id="hbAlert" type="text/x-handlebars-template">
+	<div id="idAlert" class="alert alert-danger alert-dismissible fade in" role="alert"> 
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">×</span></button> <h4><spring:message code="prop.dps.alert.text"/></h4> 
+				<p id="idAlertText">{{alertTxt}}</p> 
+	</div> 
+</script>
 
 <script id="hbStudentList" type="text/x-handlebars-template">
 			<table id="tblStudentList" class="table table-condensed table-bordered dt-responsive">
