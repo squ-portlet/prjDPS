@@ -115,6 +115,7 @@
 		
 		$(document).on("click", ".clsLinkCourseNo", function(event){
 			event.preventDefault();
+			$('#divIncompleteGradeNotifyHistory').html('');
 			var courseModel	=	{
 					lAbrCourseNo	:	this.getAttribute("lAbrCourseNo"),
 					sectionNo		:	this.getAttribute("sectionNo"),
@@ -224,60 +225,63 @@
 		/* onClick notify link */
 		$(document).on('click', '.clsLinkStudentNo', function(){	
 			$('#txtComments').val('');
-			$('#alertModal').modal('toggle');
-
 		});
 		
 		
 		/* onClick the 'Yes'/Submit button of the modal form for notify */
 				$(document).on("click", "#btnSubmitNotification", function(event){	
 					
-					$('#alertModal').modal('toggle');
 					
-					var row  = $(this).parents('tr')[0];	
-					var rowData	=	tablStudentList.row($(this).parents('tr')[0]).data();
-					// var rowData = tablStudentList.row($(this).closest('tr')[0]).data();   // changing parents to closest also works
+					if ($('#formAlert').valid()) {	
+							$('#alertModal').modal('toggle');
+							
+							var row  = $(this).parents('tr')[0];	
+							var rowData	=	tablStudentList.row($(this).parents('tr')[0]).data();
+							// var rowData = tablStudentList.row($(this).closest('tr')[0]).data();   // changing parents to closest also works
+							
+							var incompleteGradeNotifyModel = {
+									studentNo 		:	rowData.studentNo,
+									stdStatCode		:	rowData.stdStatCode,
+									courseYear		:	rowData.courseYear,
+									semester		:	rowData.semester,
+									sectCode		:	rowData.sectCode,
+									lAbrCourseNo	:	rowData.lAbrCourseNo,
+									courseNo		:	rowData.courseNo,
+									sectionNo		:	rowData.sectionNo,
+									comment			:  $('#txtComments').val(),
+									salt			:	salt,
+									four			:	four
+							};
+							
+				
+							$.ajax({
+										url		: 	'${varResourceAjaxNotify}',
+										type	:	'POST',
+										cache	:	false,
+										data	:	incompleteGradeNotifyModel,
+										success	:	function(data)
+										{
+													var seqNo				=	JSON.parse(data);
+													var cellDataAction 		= 	'<span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>';
+														rowData.sequenceNum	=	seqNo;
+														rowData.id 			= 	'<a class="clsNotifyHistory" href="#">'+rowData.id+'</a>';
+														rowData.action		=	cellDataAction;
+				
+														tablStudentList
+																        .row( row)
+																        .data( rowData )
+																        .draw();
+												
+										},
+										error	:  function(xhr, status,  error)
+										{
+											
+										}
+											
+							});
 					
-					var incompleteGradeNotifyModel = {
-							studentNo 		:	rowData.studentNo,
-							stdStatCode		:	rowData.stdStatCode,
-							courseYear		:	rowData.courseYear,
-							semester		:	rowData.semester,
-							sectCode		:	rowData.sectCode,
-							lAbrCourseNo	:	rowData.lAbrCourseNo,
-							courseNo		:	rowData.courseNo,
-							sectionNo		:	rowData.sectionNo,
-							comment			:  $('#txtComments').val(),
-							salt			:	salt,
-							four			:	four
-					};
-					
-		
-					$.ajax({
-								url		: 	'${varResourceAjaxNotify}',
-								type	:	'POST',
-								cache	:	false,
-								data	:	incompleteGradeNotifyModel,
-								success	:	function(data)
-								{
-											var seqNo				=	JSON.parse(data);
-											var cellDataAction 		= 	'<span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>';
-												rowData.sequenceNum	=	seqNo;
-												rowData.id 			= 	'<a class="clsNotifyHistory" href="#">'+rowData.id+'</a>';
-												rowData.action		=	cellDataAction;
-		
-												tablStudentList
-														        .row( row)
-														        .data( rowData )
-														        .draw();
-										
-								},
-								error	:  function(xhr, status,  error)
-								{
-									
-								}
-									
-					});
+							
+					}
 					
 					
 		
@@ -453,60 +457,66 @@
 
 	/* Submit button of modal form to approve or reject */			
 			$(document).on("click", "#linkSubmitApprove", function(event){	
-				$('#modalApprovForm').modal('toggle');
 				
-				var row  = $(this).parents('tr')[0];	
-				var rowData	=	tablStudentNotificationDetailsForApprove.row(row).data();
-				
-				var incompleteGradeNotifyModel = {
-						recordSequence	:	rowData.recno,
-						studentNo 		:	rowData.studentNo,
-						stdStatCode		:	rowData.stdStatCode,
-						courseYear		:	rowData.courseYear,
-						semester		:	rowData.semester,
-						sectCode		:	rowData.sectCode,
-						lAbrCourseNo	:	aesUtil.encrypt(salt, four, passphrase, rowData.lAbrCourseNo),
-						courseNo		:	rowData.courseNo,
-						sectionNo		:	aesUtil.encrypt(salt, four, passphrase, rowData.sectionNo),
-						roleName		:	rowData.roleName,
-						lAbrStatusCode	:	rowData.actionResult,
-						comment			:  $('#txtMessage').val(),
-						salt			:	salt,
-						four			:	four												
-				}
-
-				$.ajax({
-						url 	:	"${varIncompleteGradeNotificationApproval}",
-						type	:	'POST',
-						cache	:	false,
-						data	:	incompleteGradeNotifyModel,
-						success	:	function(data)
-						{
-								var dto = JSON.parse(data);
-								rowData.recno2=dto[0].recordSequence;
-								rowData.statusDesc=dto[0].statusDesc;
-								rowData.hod=dto[0].hod.roleStausIkon;
-								rowData.asstDean=dto[0].dpsAsstDean.roleStausIkon;
-								rowData.dpsDean=dto[0].dpsDean.roleStausIkon;
-								rowData.action='';
-								
-								tablStudentNotificationDetailsForApprove
-																	        .row( row)
-																	        .data( rowData )
-																	        .draw();
-								
-								rowDataApprover.id=rowDataApprover.stdId;
-								tablApprover.row(rowRApprover).data(rowDataApprover).draw();
-								
-						},
-						error	:	function(xhr, status,  error)
-						{
-							
+				if ($('#formApprove').valid()) {
+					
+						$('#modalApprovForm').modal('toggle');
+			
+						var row  = $(this).parents('tr')[0];	
+						var rowData	=	tablStudentNotificationDetailsForApprove.row(row).data();
+						
+						var incompleteGradeNotifyModel = {
+								recordSequence	:	rowData.recno,
+								studentNo 		:	rowData.studentNo,
+								stdStatCode		:	rowData.stdStatCode,
+								courseYear		:	rowData.courseYear,
+								semester		:	rowData.semester,
+								sectCode		:	rowData.sectCode,
+								lAbrCourseNo	:	aesUtil.encrypt(salt, four, passphrase, rowData.lAbrCourseNo),
+								courseNo		:	rowData.courseNo,
+								sectionNo		:	aesUtil.encrypt(salt, four, passphrase, rowData.sectionNo),
+								roleName		:	rowData.roleName,
+								lAbrStatusCode	:	rowData.actionResult,
+								comment			:  $('#txtMessage').val(),
+								salt			:	salt,
+								four			:	four												
 						}
+		
+						$.ajax({
+								url 	:	"${varIncompleteGradeNotificationApproval}",
+								type	:	'POST',
+								cache	:	false,
+								data	:	incompleteGradeNotifyModel,
+								success	:	function(data)
+								{
+										var dto = JSON.parse(data);
+										rowData.recno2=dto[0].recordSequence;
+										rowData.statusDesc=dto[0].statusDesc;
+										rowData.hod=dto[0].hod.roleStausIkon;
+										rowData.asstDean=dto[0].dpsAsstDean.roleStausIkon;
+										rowData.dpsDean=dto[0].dpsDean.roleStausIkon;
+										rowData.action='';
+										
+										tablStudentNotificationDetailsForApprove
+																			        .row( row)
+																			        .data( rowData )
+																			        .draw();
+										
+										rowDataApprover.id=rowDataApprover.stdId;
+										tablApprover.row(rowRApprover).data(rowDataApprover).draw();
+										
+								},
+								error	:	function(xhr, status,  error)
+								{
+									
+								}
+						
+								
+								
+						});
 				
-						
-						
-				});
+				}
+				
 				
 				
 			});

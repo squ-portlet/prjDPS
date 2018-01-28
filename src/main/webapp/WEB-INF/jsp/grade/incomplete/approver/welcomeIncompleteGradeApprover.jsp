@@ -7,6 +7,7 @@
 
 <%@include file="../../../ui/cssWelcome.jsp" %>	
 <%@include file="../../../ui/js/grade/incomplete/jsIncompleteGrade.js" %>
+<%@include file="../../../ui/js/grade/incomplete/jsValidationIncompleteGrade.js" %>
 
 	<ul class="nav nav-tabs">
 		<c:if test="${(not empty employee) }">
@@ -116,6 +117,7 @@
     <div id="alertModal" class="modal" style="width: 20%;">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
+            <form id="formAlert" name="formAlert">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title"><font color="red"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></font> <spring:message code="prop.dps.alert.text"/></h4>
@@ -124,16 +126,17 @@
                     <p><spring:message code="prop.dps.incomplete.grade.notify.alert.warning"/></p>
                     <p>
                     <label for="txtComments"><spring:message code="prop.dps.approver.modal.body.approve.comment.text"/></label>
-                    <textarea  id="txtComments" rows="" cols="">
+                    <textarea  id="txtComments" name="txtComments" rows="" cols="" required>
                     
                     </textarea>
                     
                     </p>
                 </div>
                 <div class="modal-footer">
-                	<button type="button" class="btn btn-primary" id="btnSubmitNotification"><spring:message code="prop.dps.role.submit.yes.text"/></button>
+                	<button type="button" class="btn btn-primary" id="btnSubmitNotification" name="btnSubmitNotification"><spring:message code="prop.dps.role.submit.yes.text"/></button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal"><spring:message code="prop.dps.role.submit.no.text"/></button>
                 </div>
+               </form>
             </div>
         </div>
     </div>
@@ -142,25 +145,25 @@
 	<div class="modal fade" id="modalApprovForm" role="dialog" aria-labelledby="myModalLabelForm" aria-hidden="true" >
       <div class="modal-dialog">
         <div class="modal-content">
-        	
-        	
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&nbsp;</button>
-            <h4 class="modal-title"><spring:message code="prop.dps.approver.modal.title.text"/> </h4>
-          </div>
-          <form id="formModalApprover" name="formModalApprover">
-          <div class="modal-body">
-          	<div id="idApprovalMsg"></div>
-            <div id="idComment">
-            	<div class="col-sm-2"><spring:message code="prop.dps.approver.modal.body.approve.comment.text"></spring:message></div>
-            	<div class="col-sm-8" id="idCommentTxtArea"></div>
-            </div>
-          </div>
-          </form>
-          <div class="modal-footer">
-            <button id="linkBtnReset" class="btn btn-default"  data-dismiss="modal"><spring:message code="prop.dps.role.submit.no.text"/></button>
-            <button id="linkSubmitApprove" name="linkSubmitApprove" type="button" class="btn "><spring:message code="prop.dps.role.submit.yes.text"/></button>
-          </div>
+        	<form id="formApprove" name="formApprove">	
+	          <div class="modal-header">
+	            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&nbsp;</button>
+	            <h4 class="modal-title"><spring:message code="prop.dps.approver.modal.title.text"/> </h4>
+	          </div>
+	          <form id="formModalApprover" name="formModalApprover">
+	          <div class="modal-body">
+	          	<div id="idApprovalMsg"></div>
+	            <div id="idComment">
+	            	<div class="col-sm-2"><spring:message code="prop.dps.approver.modal.body.approve.comment.text"></spring:message></div>
+	            	<div class="col-sm-8" id="idCommentTxtArea"></div>
+	            </div>
+	          </div>
+	          </form>
+	          <div class="modal-footer">
+	            <button id="linkBtnReset" class="btn btn-default"  data-dismiss="modal"><spring:message code="prop.dps.role.submit.no.text"/></button>
+	            <button id="linkSubmitApprove" name="linkSubmitApprove" type="button" class="btn "><spring:message code="prop.dps.role.submit.yes.text"/></button>
+	          </div>
+			</form>
           
         </div>
       </div>
@@ -218,7 +221,7 @@
 									{{#if historyAvailable}}
 										<span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
 									{{else}}
-										<a class="clsLinkStudentNo"  href="#" >
+										<a class="clsLinkStudentNo"  href="#"  data-toggle="modal" data-target="#alertModal">
 											<spring:message code="prop.dps.incomplete.grade.notify.text.notify" /> 
 											<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 										</a>
