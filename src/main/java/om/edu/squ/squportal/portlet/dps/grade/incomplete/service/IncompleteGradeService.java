@@ -93,7 +93,7 @@ public interface IncompleteGradeService
 	 *
 	 * Date    		:	Jan 11, 2018 4:57:17 PM
 	 */
-	public String setInstructorNotifyForIncompleteGrade(GradeIncompleteDTO dto, Locale locale ) throws NotCorrectDBRecordException;
+	public GradeIncompleteDTO setInstructorNotifyForIncompleteGrade(GradeIncompleteDTO dto, Locale locale ) throws NotCorrectDBRecordException;
 
 	/**
 	 * 

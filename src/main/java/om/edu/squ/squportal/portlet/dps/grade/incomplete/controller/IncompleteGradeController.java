@@ -232,23 +232,23 @@ public class IncompleteGradeController
 												,	Locale				locale
 												) throws NotCorrectDBRecordException, IOException
 	{
-		Gson		gson		= 	new Gson();
+		Gson				gson		= 	new Gson();
+		GradeIncompleteDTO	dtoResult	=	null;
 		
 		incompleteGradeModel.decrypt(crypto, incompleteGradeModel.getSalt(), incompleteGradeModel.getFour(), incompleteGradeModel);
 		GradeIncompleteDTO	dto	= new GradeIncompleteDTO(incompleteGradeModel);
 		dto.setUserName(dpsServiceDao.getEmpNumber(request));
 
-		String resultSeqNo = incompleteGradeService.setInstructorNotifyForIncompleteGrade(dto, locale);
+		dtoResult = incompleteGradeService.setInstructorNotifyForIncompleteGrade(dto, locale);
 		
-		if(null==resultSeqNo)
+		if(null==dtoResult)
 		{
 			response.setProperty(ResourceResponse.HTTP_STATUS_CODE, Integer.toString(HttpServletResponse.SC_INTERNAL_SERVER_ERROR));
 			
 		}
 		else
 		{
-			response.getWriter().print(gson.toJson(resultSeqNo)); 
-			
+			response.getWriter().print(gson.toJson(dtoResult)); 
 		}
 
 	}

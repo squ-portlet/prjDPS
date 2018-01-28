@@ -261,9 +261,10 @@
 										data	:	incompleteGradeNotifyModel,
 										success	:	function(data)
 										{
-													var seqNo				=	JSON.parse(data);
-													var cellDataAction 		= 	'<span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>';
-														rowData.sequenceNum	=	seqNo;
+													var dto					=	JSON.parse(data);
+													
+													var cellDataAction 		= 	'<a href="#" class="classPopMsgInstructor" comments="'+dto.comments+'"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> </a>';
+														rowData.sequenceNum	=	dto.recordSequence;
 														rowData.id 			= 	'<a class="clsNotifyHistory" href="#">'+rowData.id+'</a>';
 														rowData.action		=	cellDataAction;
 				
@@ -317,7 +318,15 @@
 					
 					
 				});
-		
+				
+								
+		/* Message from Instructor */
+				$(document).on("click", ".classPopMsgInstructor", function(event){
+					var comment = this.getAttribute("comments");
+					var alertText = {'alertTxt':comment};
+					hbDataLoadAction(alertText, '#hbAlert', '#divAlertNotify');
+				});
+				
 		/* Message from HOD */
 				$(document).on("click", ".classPopMsgHOD", function(event){
 					var comment = this.getAttribute("comments");

@@ -96,6 +96,20 @@ public interface IncompleteGradeDBDao
 	
 	/**
 	 * 
+	 * method name  : getInstructorComments
+	 * @param sequenceNo
+	 * @return
+	 * IncompleteGradeDBDao
+	 * return type  : String
+	 * 
+	 * purpose		:	Get Instructor's comments
+	 *
+	 * Date    		:	Jan 28, 2018 4:12:40 PM
+	 */
+	public String getInstructorComments(double sequenceNo);
+	
+	/**
+	 * 
 	 * method name  : getIncompleteNotifyHistory
 	 * @param recordSequence TODO
 	 * @param locale

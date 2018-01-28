@@ -98,9 +98,12 @@ public class IncompleteGradeServiceImpl implements IncompleteGradeService
 	 * @see om.edu.squ.squportal.portlet.dps.grade.incomplete.service.IncompleteGradeService#setInstructorNotifyForIncompleteGrade(om.edu.squ.squportal.portlet.dps.grade.incomplete.bo.GradeIncompleteDTO, java.util.Locale)
 	 */
 	@Override
-	public String setInstructorNotifyForIncompleteGrade(GradeIncompleteDTO dto, Locale locale ) throws NotCorrectDBRecordException
+	public GradeIncompleteDTO setInstructorNotifyForIncompleteGrade(GradeIncompleteDTO dto, Locale locale ) throws NotCorrectDBRecordException
 	{
-		double	sequenceNumber =	dpsServiceDao.getSequenceNumber();
+		GradeIncompleteDTO	incompleteDTO		=	null;
+		String				commentsInstructor	=	null;
+		double				sequenceNumber 		=	dpsServiceDao.getSequenceNumber();
+		
 		int result	=	incompleteGradeDBDao.setInstructorNotifyForIncompleteGrade(sequenceNumber, dto);
 		/* -- Notification -- Start --*/ 
 		if(result > 0)
@@ -139,7 +142,19 @@ public class IncompleteGradeServiceImpl implements IncompleteGradeService
 			
 		}
 		 /* -- Notification -- end --*/
-		return (result>0)?String.format("%.0f",sequenceNumber):null;
+		
+		
+		
+		if(result>0)
+		{
+			commentsInstructor	=	incompleteGradeDBDao.getInstructorComments(sequenceNumber);
+			incompleteDTO	=	new GradeIncompleteDTO();
+			incompleteDTO.setRecordSequence(String.format("%.0f",sequenceNumber));
+			incompleteDTO.setComments(commentsInstructor);
+		}
+		
+	
+		return incompleteDTO;
 	}
 
 	/*

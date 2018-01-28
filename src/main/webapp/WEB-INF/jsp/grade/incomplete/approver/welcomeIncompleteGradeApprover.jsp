@@ -229,7 +229,7 @@
 						<td>
 								{{#unless  grade.gradeCode}}
 									{{#if historyAvailable}}
-										<span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
+										<a href="#" class="classPopMsgInstructor" comments={{comments}}><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
 									{{else}}
 										<a class="clsLinkStudentNo"  href="#"  data-toggle="modal" data-target="#alertModal">
 											<spring:message code="prop.dps.incomplete.grade.notify.text.notify" /> 

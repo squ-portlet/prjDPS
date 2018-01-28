@@ -247,6 +247,7 @@ public class IncompleteGradeDBImpl implements IncompleteGradeDBDao
 				}
 				
 				dto.setSequenceNum(rs.getString(Constants.CONST_COLMN_SEQUENCE_NO));
+				dto.setComments(rs.getString(Constants.CONST_COLMN_COMMENT));
 				
 				return dto;
 				
@@ -304,6 +305,21 @@ public class IncompleteGradeDBImpl implements IncompleteGradeDBDao
 		}
 		
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.grade.incomplete.db.IncompleteGradeDBDao#getInstructorComments(double)
+	 */
+	@Override
+	public String getInstructorComments(double sequenceNo)
+	{
+		String 	SQL_INCOMPLETE_GRADE_SELECT_INSTRUCTOR_COMMENTS	=	queryIncompleteGrade.getProperty(Constants.CONST_SQL_INCOMPLETE_GRADE_SELECT_INSTRUCTOR_COMMENTS);
+		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+		namedParameterMap.put("paramSeqenceNum",String.valueOf(sequenceNo));
+		
+		return nPJdbcTemplDpsIncompleteGrade.queryForObject(SQL_INCOMPLETE_GRADE_SELECT_INSTRUCTOR_COMMENTS, namedParameterMap, String.class);
+	}
+	
 	
 	/*
 	 * (non-Javadoc)
