@@ -165,6 +165,7 @@ public class IncompleteGradeController
 			model.addAttribute("appApprove", Constants.CONST_SQL_STATUS_CODE_ACCPT);
 			model.addAttribute("appRecect", Constants.CONST_SQL_STATUS_CODE_REJCT);
 			model.addAttribute("roleDpsStaff", Constants.CONST_SQL_ROLE_NAME_DPS_STAFF);
+			model.addAttribute("srvrValNo", Constants.CONST_NO);
 		}
 		return "/grade/incomplete/approver/welcomeIncompleteGradeApprover";
 	}

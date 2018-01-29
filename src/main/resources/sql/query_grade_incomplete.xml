@@ -422,7 +422,7 @@
 		        ,  T_NOTIFY.L_ABR_CRSNO											AS    	L_ABR_CRSNO
 		      	,   T_NOTIFY.SECTNO												AS		SECTION_NO
 
-			  	, T_NOTIFY.COMMENTS                                    					AS 		COMMENTS
+			  	, T_NOTIFY.COMMENTS                                    			AS 		COMMENTS
 			  	, (
 		        	SELECT
 		        		L_ABR_CODE
