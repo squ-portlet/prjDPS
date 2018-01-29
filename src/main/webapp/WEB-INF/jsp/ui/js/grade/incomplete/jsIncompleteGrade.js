@@ -524,12 +524,49 @@
 								data	:	incompleteGradeNotifyModel,
 								success	:	function(data)
 								{
+										var roleStatus;
+										var infoRejectComments ;
 										var dto = JSON.parse(data);
+										
+										
+										
+										
 										rowData.recno2=dto[0].recordSequence;
 										rowData.statusDesc=dto[0].statusDesc;
-										rowData.hod=dto[0].hod.roleStausIkon;
-										rowData.asstDean=dto[0].dpsAsstDean.roleStausIkon;
-										rowData.dpsDean=dto[0].dpsDean.roleStausIkon;
+									
+									/* Role Status of HOD*/	
+										if(dto[0].hod.roleStatus === '${srvrValNo}')
+											{
+												infoRejectComments = '<a href="#" class="classPopMsgHOD" comments="'+dto[0].hod.comments+'"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>';
+												rowData.hod=dto[0].hod.roleStausIkon + ' '+infoRejectComments;
+											}
+										else
+											{
+												rowData.hod=dto[0].hod.roleStausIkon;
+											}
+										
+									/* Role Status of Asst.Dean PSR */
+										if(dto[0].dpsAsstDean.roleStatus === '${srvrValNo}')
+											{
+												infoRejectComments = '<a href="#" class="classPopMsgAsstDeanP" comments="'+dto[0].dpsAsstDean.comments+'"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>';
+												rowData.asstDean=dto[0].dpsAsstDean.roleStausIkon + ' '+infoRejectComments;
+											}
+										else
+											{
+											rowData.asstDean=dto[0].dpsAsstDean.roleStausIkon;
+											}										
+
+									/* Role Status of Dean  */
+										if(dto[0].dpsDean.roleStatus === '${srvrValNo}')
+										{
+											infoRejectComments = '<a href="#" class="classPopMsgDeanP" comments="'+dto[0].dpsDean.comments+'"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>';
+											rowData.dpsDean=dto[0].dpsDean.roleStausIkon + ' '+infoRejectComments;
+										}
+										else
+										{
+											rowData.dpsDean=dto[0].dpsDean.roleStausIkon;
+										}										
+										
 										rowData.action='';
 										
 										tablStudentNotificationDetailsForApprove
