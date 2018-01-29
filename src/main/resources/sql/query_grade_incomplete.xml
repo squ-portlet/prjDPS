@@ -411,7 +411,7 @@
 	<entry key="dps.incomplete.grades.select.course.temp.for.notify">
 		SELECT
 		      	DISTINCT
-              	   T_NOTIFY.REC_SEQ_NO                              				AS    	SEQUENCE_NUMBER
+              	   T_NOTIFY.REC_SEQ_NO                              			AS    	SEQUENCE_NUMBER
             	,  PORTAL.STD_ID												AS		STUDENT_ID
 	            ,  T_NOTIFY.STDNO                            					AS   	STUDENT_NO
 	            ,  T_NOTIFY.STDSTATCD  											AS		STDSTATCD 

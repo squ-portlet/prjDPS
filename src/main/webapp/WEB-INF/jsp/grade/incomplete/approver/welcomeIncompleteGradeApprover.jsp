@@ -353,6 +353,7 @@
 					<th><spring:message code="prop.dps.gradechange.course.code"/></th>
 					<th><spring:message code="prop.dps.gradechange.section"/></th>
 					<th><spring:message code="prop.dps.gradechange.status"/></th>
+					<th><spring:message code="prop.dps.incomplete.grade.notify.instructor"/></th>
 					<th><spring:message code="prop.dps.gradechange.hod"/></th>
 					<th><spring:message code="prop.dps.gradechange.dean.asst"/></th>
 					<th><spring:message code="prop.dps.gradechange.dean.dps"/></th>
@@ -378,6 +379,13 @@
 								<td>{{course.lAbrCourseNo}}</td>
 								<td>{{course.sectionNo}}</td>
 								<td><center>{{statusDesc}}</center></td>
+								<td>
+									<center>
+										<a href="#" comments="{{comments}}" class="classPopMsgInstructor">
+												<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+										</a>
+									</center>
+								</td>
 								<td>
 									<center>
 										{{{hod.roleStausIkon}}} &nbsp;

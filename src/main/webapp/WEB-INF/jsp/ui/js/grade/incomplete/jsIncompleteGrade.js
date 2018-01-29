@@ -418,7 +418,7 @@
 															                   "visible": false
 															               },
 															               {
-															                   "targets": [ 16 ],
+															                   "targets": [ 17 ],
 															                   "visible": false
 															               }
 															       ],
@@ -436,6 +436,7 @@
 															 			{ "data": "lAbrCourseNo"},
 															 			{ "data": "sectionNo"},
 															 			{ "data": "statusDesc"},
+															 			{ "data": "instructor"},
 															 			{ "data": "hod"},
 															 			{ "data": "asstDean"},
 															 			{ "data": "dpsDean"},
