@@ -224,8 +224,10 @@ public interface Constants
 	public static final	String	CONST_FORM_NAME_DPS_DROP_W									=	"DPS7";
 	public static final	String	CONST_FORM_NAME_DPS_INCOMPLETE_GRADE_NOTIFY					=	"DPS8";
 	public static final	String	CONST_FORM_NAME_DPS_GRADE_CHANGE							=	"DPS9"; 
-	public static final	String	CONST_FORM_NAME_DPS_EXTENSION_STUDY							=	"DPS19";
+	public static final	String	CONST_FORM_NAME_DPS_UNIVERSITY_WITHDRAWAL					=	"DPS11";
 	public static final	String	CONST_FORM_NAME_DPS_POSTPONE_STUDY							=	"DPS13";
+	public static final	String	CONST_FORM_NAME_DPS_EXTENSION_STUDY							=	"DPS19";
+	
 	
 	
 	

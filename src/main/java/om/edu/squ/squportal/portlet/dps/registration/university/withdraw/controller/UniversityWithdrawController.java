@@ -33,8 +33,14 @@ import java.util.Locale;
 
 import javax.portlet.PortletRequest;
 
+import om.edu.squ.squportal.portlet.dps.bo.User;
+import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
+import om.edu.squ.squportal.portlet.dps.security.Crypto;
+import om.edu.squ.squportal.portlet.dps.utility.Constants;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,10 +55,34 @@ public class UniversityWithdrawController
 {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
+	@Autowired
+	DpsServiceDao	dpsServiceDao;
+	
 	@RequestMapping
 	private String welcome(PortletRequest request, Model model,Locale locale)
 	{
-		return studentWelcome(request,model,locale);
+		User	user	=	dpsServiceDao.getUser(request);
+		
+		/**** Security - data encryption keys *****/
+		model.addAttribute("cryptoIterationCount", Crypto.CRYPTO_ITERATION_COUNT);
+		model.addAttribute("cryptoKeySize", Crypto.CRYPTO_KEY_SIZE);
+		model.addAttribute("cryptoPassPhrase", Crypto.CRYPTO_PASSCODE);
+		/* ************************************* */
+		
+		model.addAttribute("statusProgress", Constants.CONST_SQL_STATUS_CODE_NAME_PROGRESS);
+		model.addAttribute("statusPending", Constants.CONST_SQL_STATUS_CODE_NAME_PENDING);
+		model.addAttribute("isUserTypeStudent", user.getUserType().equals(Constants.USER_TYPE_STUDENT));		
+		
+		if(user.getUserType().equals(Constants.USER_TYPE_STUDENT))
+		{
+			
+			return studentWelcome(request,model,locale);
+		}
+		else
+		{
+			return approverWelcome(request,model,locale);
+		} 
+
 	}
 	
 	
