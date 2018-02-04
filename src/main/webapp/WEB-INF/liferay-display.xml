@@ -34,5 +34,6 @@
 		<portlet id="dpsRegistrationPostpone" />
 		<portlet id="dpsGradeGradeChange" />
 		<portlet id="dpsIncompleteGrade" />
+		<portlet id="dpsRegistrationUniversityWithdraw" />
 	</category>
 </display>
