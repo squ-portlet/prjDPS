@@ -40,7 +40,7 @@
 			<property name="locations" value="classpath:sql/query_university_withdrawal.xml" />
 		</bean>	  
  <!-- DI to DPS University Withdraw DB Dao -->			
-		<bean id="incompleteGradeDBDao"	class="om.edu.squ.squportal.portlet.dps.registration.university.withdraw.db.UniversityWithdrawDBImpl">
+		<bean id="universityWithdrawDBDao"	class="om.edu.squ.squportal.portlet.dps.registration.university.withdraw.db.UniversityWithdrawDBImpl">
 	 		<property name="nPJdbcTemplDpsUniversityWithdraw" ref="namedParameterJdbcTemplateDps"/> 
 			<property name="queryProps" ref="queryProps" />
 			<property name="queryUniversityWithdraw" ref="queryUniversityWithdraw" />

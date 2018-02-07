@@ -6,6 +6,23 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 	<%@include file="../../../ui/cssWelcome.jsp" %>	
+	<%@include file="../../../ui/js/registration/universityWithdraw/jsUniversityWithdraw.hb.js" %>
+	<%@include file="../../../ui/js/registration/universityWithdraw/jsUniversityWithdraw.js" %>
 
-Welcome - student Screen	
+	<c:url value="/ui/ajax-loader.gif" var="imgAjaxLoader"/>		
+	<div class="row" id="divImgAjaxLoading" style="display: none;">
+		<div class="col-sm-5"></div>
+		<div class="col-sm-1">
+			<img alt="Loading ...." src="${imgAjaxLoader}">
+		</div>
+	</div>
+	
+ <div class="section">
+    <div class="container-fluid">
 
+	     <div class="row">
+			<div id="divStudentWelcome"></div>
+	     </div>
+      
+    </div>
+</div>

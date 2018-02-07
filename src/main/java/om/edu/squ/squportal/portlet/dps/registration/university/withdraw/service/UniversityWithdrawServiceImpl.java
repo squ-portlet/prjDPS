@@ -29,8 +29,18 @@
  */
 package om.edu.squ.squportal.portlet.dps.registration.university.withdraw.service;
 
+import java.util.List;
+import java.util.Locale;
+
+import om.edu.squ.squportal.portlet.dps.bo.CodeValue;
+import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
+import om.edu.squ.squportal.portlet.dps.notification.service.DPSNotification;
+import om.edu.squ.squportal.portlet.dps.registration.university.withdraw.db.UniversityWithdrawDBDao;
+import om.edu.squ.squportal.portlet.dps.rule.service.Rule;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Bhabesh
@@ -40,5 +50,25 @@ public class UniversityWithdrawServiceImpl implements UniversityWithdrawService
 {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
+	@Autowired
+	UniversityWithdrawDBDao universityWithdrawDBDao;
+	@Autowired
+	DpsServiceDao			dpsServiceDao;
+	@Autowired
+	DPSNotification			dpsNotification;
+	@Autowired
+	Rule					ruleService;
+
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.registration.university.withdraw.service.UniversityWithdrawService#getReasons(boolean, java.util.Locale)
+	 */
+	@Override
+	public List<CodeValue> getReasons(boolean isStudent, Locale locale)
+	{
+		
+		return universityWithdrawDBDao.getReasons(isStudent, locale);
+	}
+
 	
 }

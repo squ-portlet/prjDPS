@@ -109,6 +109,7 @@ public interface Constants
 	public static final	String	CONST_COLMN_GRADE_IS_INCOMPLETE_GRADE						=	"IS_INCOMPLETE_GRADE";
 
 	public static final	String	CONST_COLMN_SISCODECD										=	"SISCODECD";
+	public static final	String	CONST_COLMN_SISCODENAME										=	"SIS_CODE_NAME";
 	public static final	String	CONST_COLMN_STATUS_CODE										=	"STATUS_CODE";
 	public static final	String	CONST_COLMN_STATUS_CODE_NAME								=	"STATUS_CODE_NAME";
 	public static final	String	CONST_COLMN_STATUS_DESC										=	"STATUS_DESC";
@@ -304,6 +305,8 @@ public interface Constants
 	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_SELECT_NOTIFY				=	"dps.incomplete.grades.select.course.temp.for.notify";
 	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_CHANGE_UPDATE_APPROVAL_TEMP	=	"dps.incomplete.grades.update.approval.by.approver";
 	
+	/* ---  SQL - DPS - Withdraw from University property ------------------ */
+	public	static	final	String	CONST_SQL_UNIVERSITY_WITHDRAW_REASON_LIST_STUDENT		=	"dps.university.withdraw.select.reason.list.student";
 
 	/* ---  SQL - DPS - Drop With W -- Stored Procedure -- --------------------- */	
 	public	static	final	String	CONST_PROC_DROPW_WITHDRAW_COURSE						=	"PROC_WITHDRAW_COURSE";

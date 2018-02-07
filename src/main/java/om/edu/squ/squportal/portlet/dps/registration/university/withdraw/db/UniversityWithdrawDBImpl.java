@@ -29,10 +29,20 @@
  */
 package om.edu.squ.squportal.portlet.dps.registration.university.withdraw.db;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Properties;
+
+import om.edu.squ.squportal.portlet.dps.bo.CodeValue;
+import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 /**
@@ -77,7 +87,36 @@ public class UniversityWithdrawDBImpl implements UniversityWithdrawDBDao
 		this.nPJdbcTemplDpsUniversityWithdraw = nPJdbcTemplDpsUniversityWithdraw;
 	}
 	
-	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.registration.university.withdraw.db.UniversityWithdrawDBDao#getReasons(boolean, java.util.Locale)
+	 */
+	@Override
+	public List<CodeValue>  getReasons(boolean isStudent, Locale locale )
+	{
+		String	SQL_UNIVERSITY_WITHDRAW_REASON_LIST_STUDENT	=	queryUniversityWithdraw.getProperty(Constants.CONST_SQL_UNIVERSITY_WITHDRAW_REASON_LIST_STUDENT);
+		
+		RowMapper<CodeValue> rowMapper	=	new RowMapper<CodeValue>()
+		{
+			
+			@Override
+			public CodeValue mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				CodeValue	codeValue	=	 new CodeValue();
+				codeValue.setCode(rs.getString(Constants.CONST_COLMN_SISCODECD));
+				codeValue.setValue(rs.getString(Constants.CONST_COLMN_SISCODENAME));
+
+				return codeValue;
+			}
+		};
+		
+		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
+		namedParameterMap.put("paramLocale", locale.getLanguage());
+		
+		return nPJdbcTemplDpsUniversityWithdraw.query(SQL_UNIVERSITY_WITHDRAW_REASON_LIST_STUDENT, namedParameterMap, rowMapper);
+		
+		
+	}
 	
 	
 }

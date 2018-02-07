@@ -29,11 +29,29 @@
  */
 package om.edu.squ.squportal.portlet.dps.registration.university.withdraw.service;
 
+import java.util.List;
+import java.util.Locale;
+
+import om.edu.squ.squportal.portlet.dps.bo.CodeValue;
+
 /**
  * @author Bhabesh
  *
  */
 public interface UniversityWithdrawService 
 {
-	
+	/**
+	 * 
+	 * method name  : getReasons
+	 * @param isStudent
+	 * @param locale
+	 * @return
+	 * UniversityWithdrawService
+	 * return type  : List<CodeValue>
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Feb 5, 2018 11:57:26 AM
+	 */
+	public List<CodeValue>  getReasons(boolean isStudent, Locale locale );
 }

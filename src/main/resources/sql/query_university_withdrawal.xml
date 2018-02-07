@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-	<entry key=""></entry>
+	<entry key="dps.university.withdraw.select.reason.list.student">
+		SELECT 
+		            SISCODECD                     			AS    SISCODECD
+		        ,   DECODE(
+		                        :paramLocale
+		                    ,   'ar', A_CODENM
+		                    ,   Upper(SUBSTR(CODENM,1,1))||Lower(SUBSTR(CODENM,2))
+		        )                                 			AS    SIS_CODE_NAME
+		FROM
+		      SIS_CODES         CODES
+		    , SIS_CODE_TYPES    CODE_TYPE
+		WHERE
+		            CODES.SISCODETYPCD = CODE_TYPE.SISCODETYPCD
+		      AND   CODE_TYPE.SISCODETYPNM = 'WITHDRAWL_REASON'
+		      AND   CODES.SISCODECD NOT IN (577,4238,4947)
+		ORDER BY    SIS_CODE_NAME   	
+	</entry>
 </properties>
