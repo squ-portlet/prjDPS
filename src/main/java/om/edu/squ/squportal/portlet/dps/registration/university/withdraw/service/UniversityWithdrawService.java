@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Locale;
 
 import om.edu.squ.squportal.portlet.dps.bo.CodeValue;
+import om.edu.squ.squportal.portlet.dps.registration.university.withdraw.bo.UniversityWithdrawDTO;
 
 /**
  * @author Bhabesh
@@ -40,6 +41,20 @@ import om.edu.squ.squportal.portlet.dps.bo.CodeValue;
  */
 public interface UniversityWithdrawService 
 {
+	
+	/**
+	 * 
+	 * method name  : canStudentApply
+	 * @return
+	 * UniversityWithdrawService
+	 * return type  : boolean
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Mar 13, 2018 1:21:34 PM
+	 */
+	public boolean canStudentApply();
+	
 	/**
 	 * 
 	 * method name  : getReasons
@@ -54,4 +69,34 @@ public interface UniversityWithdrawService
 	 * Date    		:	Feb 5, 2018 11:57:26 AM
 	 */
 	public List<CodeValue>  getReasons(boolean isStudent, Locale locale );
+	
+	/**
+	 * 
+	 * method name  : setUniversityWithdrawByStudent
+	 * @param dto
+	 * @param locale
+	 * @return
+	 * UniversityWithdrawService
+	 * return type  : UniversityWithdrawDTO
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Feb 19, 2018 2:05:07 PM
+	 */
+	public List<UniversityWithdrawDTO> setUniversityWithdrawByStudent(UniversityWithdrawDTO dto, Locale locale );
+	
+	/**
+	 * 
+	 * method name  : getUniversityWithdrawDataForStudent
+	 * @param studentNo
+	 * @param locale
+	 * @return
+	 * UniversityWithdrawService
+	 * return type  : List<UniversityWithdrawDTO>
+	 * 
+	 * purpose		: Get records related with status of an individual student's withdrawal from University
+	 *
+	 * Date    		:	Mar 6, 2018 12:26:59 PM
+	 */
+	public List<UniversityWithdrawDTO> getUniversityWithdrawDataForStudent(String studentNo, Locale locale);
 }

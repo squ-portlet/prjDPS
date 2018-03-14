@@ -9,7 +9,8 @@
 	<%@include file="../../../ui/js/registration/universityWithdraw/jsUniversityWithdraw.hb.js" %>
 	<%@include file="../../../ui/js/registration/universityWithdraw/jsUniversityWithdraw.js" %>
 
-	<c:url value="/ui/ajax-loader.gif" var="imgAjaxLoader"/>		
+	<c:url value="/ui/ajax-loader.gif" var="imgAjaxLoader"/>	
+
 	<div class="row" id="divImgAjaxLoading" style="display: none;">
 		<div class="col-sm-5"></div>
 		<div class="col-sm-1">
@@ -23,6 +24,10 @@
 	     <div class="row">
 			<div id="divStudentWelcome"></div>
 	     </div>
+
+	      <div class="row">
+	      	<div id="divUnivWithDrawStdRecord"></div>
+	      </div>
       
     </div>
 </div>

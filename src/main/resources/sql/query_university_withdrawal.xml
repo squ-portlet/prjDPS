@@ -1,14 +1,46 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
+	<entry key="dps.university.withdraw.select.count.rec">
+		SELECT 
+				COUNT(REC_SEQ_NO)
+		FROM
+				T_STD_UNIV_WITHDRAW	
+	</entry>
+
+	<entry key="dps.university.withdraw.select.count.reject">
+		SELECT
+		    COUNT(REC_SEQ_NO)
+		FROM
+		(    
+		    SELECT 
+		          *
+		    FROM
+		          T_STD_UNIV_WITHDRAW
+		    ORDER BY CREATE_DATE DESC
+		 )
+		WHERE
+		    ROWNUM = 1 
+		    AND STATUSCD = (
+						SELECT
+							CODES.SISCODECD	
+						FROM
+								SIS_CODES       CODES
+							,   SIS_CODE_TYPES  TYPES
+						WHERE
+								CODES.SISCODETYPCD =  TYPES.SISCODETYPCD
+							AND TYPES.SISCODETYPNM = 'APPROVAL_STATUS'
+							AND CODES.L_ABR_CODE  = :paramRejectStatusCode
+					   )	
+	</entry>
 	<entry key="dps.university.withdraw.select.reason.list.student">
 		SELECT 
-		            SISCODECD                     			AS    SISCODECD
+		            SISCODECD                     												AS		SISCODECD
 		        ,   DECODE(
 		                        :paramLocale
 		                    ,   'ar', A_CODENM
 		                    ,   Upper(SUBSTR(CODENM,1,1))||Lower(SUBSTR(CODENM,2))
-		        )                                 			AS    SIS_CODE_NAME
+		        )                                 												AS		SIS_CODE_NAME
 		FROM
 		      SIS_CODES         CODES
 		    , SIS_CODE_TYPES    CODE_TYPE
@@ -18,4 +50,159 @@
 		      AND   CODES.SISCODECD NOT IN (577,4238,4947)
 		ORDER BY    SIS_CODE_NAME   	
 	</entry>
+	<entry key="dps.university.withdraw.insert.apply.by.student">
+		INSERT INTO T_STD_UNIV_WITHDRAW 
+		(
+			  REC_SEQ_NO
+			, STDSTATCD
+			, STDNO
+			, FIRSTSTATUSCD
+			, LASTSTATUSCD
+			, REGWITHCD_STUDENT
+			, REGWITHCD
+			, CCYRCD
+			, SEMCD
+			, STATUSCD 
+			, CREATE_DATE 
+			, CREATE_USERNAME
+		
+		)
+		VALUES
+		(
+			   :paramSeqenceNum
+			,  :paramStdStatCode
+			,  :paramStdNo
+			, (
+					SELECT 
+						LASTSTATUSCD
+					FROM
+						STD_STATUS
+					WHERE
+							STDSTATCD 	= :paramStdStatCode
+						AND	STDNO 		= :paramStdNo
+	  			)
+	  		, (
+					SELECT 
+						LASTSTATUSCD
+					FROM
+						STD_STATUS
+					WHERE
+							STDSTATCD 	= :paramStdStatCode
+						AND	STDNO 		= :paramStdNo
+	  			)
+	  		,  :paramReasonCode
+			,  :paramReasonCode
+			,  :paramYear
+			,  :paramSem
+			,  (
+			                   SELECT
+			                       CODES.SISCODECD	
+			                   FROM
+			                           SIS_CODES       CODES
+			                       ,   SIS_CODE_TYPES  TYPES
+			                   WHERE
+			                           CODES.SISCODETYPCD =  TYPES.SISCODETYPCD
+			                       AND TYPES.SISCODETYPNM = 'APPROVAL_STATUS'
+			                       AND CODES.L_ABR_CODE  = :paramStatusCode		    
+			     )
+			,  SYSDATE
+			,  :paramUserName
+			
+		)	
+	</entry>
+	<entry key="dps.university.withdraw.select.student.records">
+		SELECT 
+		          TO_CHAR(WITHDRAW.CREATE_DATE,'DD/MM/YYYY')									AS		CREATE_DATE
+		        , WITHDRAW.CCYRCD																AS		CCYRCD
+		        , WITHDRAW.SEMCD																AS		SEMCD
+		        , (
+		            SELECT 
+		                DECODE 
+		                (
+		                  :paramLocale,
+		                  'en', SEMNM, A_SEMNM
+		                )
+		              FROM SEM
+		              WHERE SEMCD = WITHDRAW.SEMCD
+		          ) 																			AS 		SEM_NAME
+              , (
+                  SELECT 
+                     DECODE (
+                                :paramLocale
+                                , 'ar', CODES.A_CODENM
+                                , Upper(SUBSTR(CODES.CODENM,1,1))||Lower(SUBSTR(CODES.CODENM,2))
+                            )
+                  FROM
+                      SIS_CODES         CODES
+                  WHERE
+                      CODES.SISCODECD = WITHDRAW.REGWITHCD
+              	)           																	AS 		REASON
+		        , WITHDRAW.STATUSCD																AS		STATUS_CODE
+		        , (
+		        	SELECT
+		        		L_ABR_CODE
+		        	FROM SIS_CODES
+		            WHERE 
+		            	SISCODECD= WITHDRAW.STATUSCD
+		        	)																			AS		STATUS_CODE_NAME
+		        , (
+		            SELECT 
+		              DECODE 
+		              (
+		                :paramLocale
+		                ,'en', CODENM, A_CODENM
+		                )
+		              FROM SIS_CODES
+		              WHERE SISCODECD = WITHDRAW.STATUSCD
+		            ) 																			AS 		STATUS_DESC
+		       , WITHDRAW.COMMENTS																AS		COMMENTS
+		          , FUNC_APPROVE_STATUS(
+	                            WITHDRAW.STDNO,
+	                            :paramAdvisorRoleName, 
+	                            :paramFormName,
+	                            WITHDRAW.REC_SEQ_NO
+	                            )                           									AS  	ADVISOR_STATUS            																		
+	          , FUNC_APPROVE_STATUS(
+	                            WITHDRAW.STDNO,
+	                            :paramSupervisorRoleName, 
+	                            :paramFormName,
+	                            WITHDRAW.REC_SEQ_NO
+	                            )                           									AS  	SUPERVISOR_STATUS
+	        , FUNC_APPROVE_STATUS(
+	                            WITHDRAW.STDNO,
+	                            :paramColDeanRoleName, 
+	                            :paramFormName,
+	                            WITHDRAW.REC_SEQ_NO
+	                            )                           									AS  	COLLEGE_DEAN_STATUS
+	        , FUNC_APPROVE_STATUS(
+	                            WITHDRAW.STDNO,
+	                            :paramDpsDeanRoleName, 
+	                            :paramFormName,
+	                            WITHDRAW.REC_SEQ_NO
+	                            )                           									AS  	DPS_DEAN_STATUS	 
+			, FUNC_GET_APPROVALCODE(
+								:paramFormName,
+								:paramAdvisorRoleName
+								)	                                                        	AS  	ADVISOR_APPROVAL_CODE
+			, FUNC_GET_APPROVALCODE(
+								:paramFormName,
+								:paramSupervisorRoleName
+								)																AS		SUPERVISOR_APPROVAL_CODE
+			, FUNC_GET_APPROVALCODE(
+								:paramFormName,
+								:paramColDeanRoleName
+								)																AS		COLLEGE_DEAN_APPROVAL_CODE
+			, FUNC_GET_APPROVALCODE(
+								:paramFormName,
+								:paramDpsDeanRoleName
+								)																AS		DPS_DEAN_APPROVAL_CODE
+ 			, FUNC_IS_SUPERVISOR_AVAILABLE(WITHDRAW.STDNO,WITHDRAW.STDSTATCD)  					AS 		HAS_THESIS 																						               
+		FROM 
+		  			T_STD_UNIV_WITHDRAW  	WITHDRAW
+		    	,	SIS_CODES     			SISCD
+		
+		WHERE
+		        WITHDRAW.REGWITHCD=SISCD.SISCODECD
+		    AND STDNO = :paramStdNo 	
+	</entry>	
 </properties>

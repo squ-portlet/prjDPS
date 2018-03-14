@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Locale;
 
 import om.edu.squ.squportal.portlet.dps.bo.CodeValue;
+import om.edu.squ.squportal.portlet.dps.registration.university.withdraw.bo.UniversityWithdrawDTO;
 
 /**
  * @author Bhabesh
@@ -40,6 +41,20 @@ import om.edu.squ.squportal.portlet.dps.bo.CodeValue;
  */
 public interface UniversityWithdrawDBDao
 {
+	
+	/**
+	 * 
+	 * method name  : canStudentApply
+	 * @return
+	 * UniversityWithdrawDBDao
+	 * return type  : boolean
+	 * 
+	 * purpose		: If some one rejects the application then student is eligible to apply again;
+	 *
+	 * Date    		:	Mar 8, 2018 2:57:25 PM
+	 */
+	public boolean canStudentApply();
+	
 	/**
 	 * 
 	 * method name  : getReasons
@@ -54,4 +69,36 @@ public interface UniversityWithdrawDBDao
 	 * Date    		:	Feb 5, 2018 11:55:47 AM
 	 */
 	public List<CodeValue>  getReasons(boolean isStudent, Locale locale );
+	
+
+	/**
+	 * 
+	 * method name  : setUniversityWithdrawByStudent
+	 * @param sequenceNumber TODO
+	 * @param dto
+	 * @return
+	 * UniversityWithdrawDBDao
+	 * return type  : int
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Feb 12, 2018 2:15:55 PM
+	 */
+	int setUniversityWithdrawByStudent(Double sequenceNumber, UniversityWithdrawDTO dto);
+	
+
+	/**
+	 * 
+	 * method name  : getUniversityWithdrawDataForStudent
+	 * @param studentNo
+	 * @param locale
+	 * @return
+	 * UniversityWithdrawDBDao
+	 * return type  : List<UniversityWithdrawDTO>
+	 * 
+	 * purpose		: Get records related with status of an individual student's withdrawal from University
+	 *
+	 * Date    		:	Mar 6, 2018 12:18:09 PM
+	 */
+	public List<UniversityWithdrawDTO> getUniversityWithdrawDataForStudent(String studentNo, Locale locale);
 }

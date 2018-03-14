@@ -117,6 +117,7 @@ public interface Constants
 	public static final	String	CONST_COLMN_STATUS_DESC_AR									=	"STATUS_DESC_AR";
 	public static final	String	CONST_COLMN_COHORT											=	"COHORT";
 	public static final	String	CONST_COLMN_COMMENT											=	"COMMENTS";
+	public static final	String	CONST_COLMN_REASON											=	"REASON";
 	
 	public static final	String	CONST_COLMN_EXTENSION_REASON_CODE							=	"EXTENSION_REASON_CODE";
 	public static final	String	CONST_COLMN_EXTENSION_REASON_NAME							=	"EXTENSION_REASON_NAME";
@@ -306,7 +307,11 @@ public interface Constants
 	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_CHANGE_UPDATE_APPROVAL_TEMP	=	"dps.incomplete.grades.update.approval.by.approver";
 	
 	/* ---  SQL - DPS - Withdraw from University property ------------------ */
+	public	static	final	String	CONST_SQL_UNIVERSITY_WITHDRAW_COUNT_REC					=	"dps.university.withdraw.select.count.rec";
+	public	static	final	String	CONST_SQL_UNIVERSITY_WITHDRAW_COUNT_REJECT				=	"dps.university.withdraw.select.count.reject";
 	public	static	final	String	CONST_SQL_UNIVERSITY_WITHDRAW_REASON_LIST_STUDENT		=	"dps.university.withdraw.select.reason.list.student";
+	public	static	final	String	CONST_SQL_UNIVERSITY_WITHDRAW_INSERT_APPLY_BY_STUDENT	=	"dps.university.withdraw.insert.apply.by.student";
+	public	static	final	String	CONST_SQL_UNIVERSITY_WITHDRAW_SELECT_RECORDS_BY_STUDENT	=	"dps.university.withdraw.select.student.records";
 
 	/* ---  SQL - DPS - Drop With W -- Stored Procedure -- --------------------- */	
 	public	static	final	String	CONST_PROC_DROPW_WITHDRAW_COURSE						=	"PROC_WITHDRAW_COURSE";

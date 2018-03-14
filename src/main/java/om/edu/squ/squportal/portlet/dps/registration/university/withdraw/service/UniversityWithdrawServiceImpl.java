@@ -33,10 +33,15 @@ import java.util.List;
 import java.util.Locale;
 
 import om.edu.squ.squportal.portlet.dps.bo.CodeValue;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
+import om.edu.squ.squportal.portlet.dps.notification.bo.NotifierPeople;
 import om.edu.squ.squportal.portlet.dps.notification.service.DPSNotification;
+import om.edu.squ.squportal.portlet.dps.registration.university.withdraw.bo.UniversityWithdrawDTO;
 import om.edu.squ.squportal.portlet.dps.registration.university.withdraw.db.UniversityWithdrawDBDao;
 import om.edu.squ.squportal.portlet.dps.rule.service.Rule;
+import om.edu.squ.squportal.portlet.dps.utility.Constants;
+import om.edu.squ.squportal.portlet.dps.utility.UtilProperty;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,6 +64,12 @@ public class UniversityWithdrawServiceImpl implements UniversityWithdrawService
 	@Autowired
 	Rule					ruleService;
 
+
+	public boolean canStudentApply()
+	{
+		return universityWithdrawDBDao.canStudentApply();
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see om.edu.squ.squportal.portlet.dps.registration.university.withdraw.service.UniversityWithdrawService#getReasons(boolean, java.util.Locale)
@@ -71,4 +82,80 @@ public class UniversityWithdrawServiceImpl implements UniversityWithdrawService
 	}
 
 	
+
+	
+	
+	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.registration.university.withdraw.service.UniversityWithdrawService#setUniversityWithdrawByStudent(om.edu.squ.squportal.portlet.dps.registration.university.withdraw.bo.UniversityWithdrawDTO, java.util.Locale)
+	 */
+	@Override
+	public List<UniversityWithdrawDTO> setUniversityWithdrawByStudent(UniversityWithdrawDTO dto, Locale locale )
+	{
+		String 					approverRole				=	null;
+		List<UniversityWithdrawDTO>	universityWithdrawDTOs	=	null;
+		
+		dto.setToCCYearCode(String.valueOf(dpsServiceDao.getCurrentYearSemester(locale).getYear()));
+		dto.setToSemCode(String.valueOf(dpsServiceDao.getCurrentYearSemester(locale).getSemesterCode()));
+		
+		double		sequenceNumber 		=	dpsServiceDao.getSequenceNumber();
+		int 		result				=	universityWithdrawDBDao.setUniversityWithdrawByStudent(sequenceNumber, dto);
+		
+		if(result > 0)
+		{
+			/* -- Notification -- Start --*/
+				try{
+					if(dpsServiceDao.isSupervisorAvailable(dto.getStudentNo(), dto.getStudentStatCode()))
+					{
+						approverRole	=	Constants.CONST_SQL_ROLE_NAME_SUPERVISOR;
+					}
+					else
+					{
+						approverRole	=	Constants.CONST_SQL_ROLE_NAME_ADVISOR;
+					}
+					
+					NotifierPeople	notifierPeople	=	dpsServiceDao.getNotifierPeople(
+																								dto.getStudentNo()
+																							, 	dto.getStudentStatCode()
+																							, 	Constants.CONST_FORM_NAME_DPS_UNIVERSITY_WITHDRAWAL
+																							, 	approverRole
+																							, 	false
+																							, 	locale
+																																								);
+					dpsNotification.sendNotification(
+															UtilProperty.getMessage("prop.dps.university.withdraw.notification.subject", new String[]{notifierPeople.getStudent().getPersonalDetail().getId()})
+														, 	notifierPeople
+														, 	null
+														, 	Constants.CONST_TEST_ENVIRONMENT
+													);
+					
+				}
+				catch(NotCorrectDBRecordException ex)
+				{
+					logger.error("Error in Notification : "+ex.getMessage());
+				}
+				catch(Exception ex)
+				{
+					logger.error("Error in  notification for student submit at Withdraw from University Service : {}",ex.getMessage());
+				}
+			/* -- Notification -- end --*/
+			
+		}
+		
+		universityWithdrawDTOs	=	universityWithdrawDBDao.getUniversityWithdrawDataForStudent(dto.getStudentNo(), locale);
+		
+		return universityWithdrawDTOs;
+	}
+
+	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.registration.university.withdraw.service.UniversityWithdrawService#getUniversityWithdrawDataForStudent(java.lang.String, java.util.Locale)
+	 */
+	@Override
+	public List<UniversityWithdrawDTO> getUniversityWithdrawDataForStudent(String studentNo, Locale locale)
+	{
+		return universityWithdrawDBDao.getUniversityWithdrawDataForStudent(studentNo, locale);
+	}
 }

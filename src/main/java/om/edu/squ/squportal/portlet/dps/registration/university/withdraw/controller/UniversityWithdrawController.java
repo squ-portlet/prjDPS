@@ -39,9 +39,13 @@ import javax.portlet.ResourceResponse;
 import javax.servlet.http.HttpServletResponse;
 
 import om.edu.squ.squportal.portlet.dps.bo.CodeValue;
+import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentModel;
+import om.edu.squ.squportal.portlet.dps.registration.university.withdraw.bo.UniversityWithdrawDTO;
+import om.edu.squ.squportal.portlet.dps.registration.university.withdraw.model.UniversityWithdrawModel;
 import om.edu.squ.squportal.portlet.dps.registration.university.withdraw.service.UniversityWithdrawService;
 import om.edu.squ.squportal.portlet.dps.security.Crypto;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
@@ -84,9 +88,10 @@ public class UniversityWithdrawController
 	 * purpose		:
 	 *
 	 * Date    		:	Feb 4, 2018 1:38:32 PM
+	 * @throws NotCorrectDBRecordException 
 	 */
 	@RequestMapping
-	private String welcome(PortletRequest request, Model model,Locale locale)
+	private String welcome(PortletRequest request, Model model,Locale locale) throws NotCorrectDBRecordException
 	{
 		User	user	=	dpsServiceDao.getUser(request);
 		
@@ -125,13 +130,12 @@ public class UniversityWithdrawController
 	 * purpose		:
 	 *
 	 * Date    		:	Feb 4, 2018 1:38:37 PM
+	 * @throws NotCorrectDBRecordException 
 	 */
-	private	String studentWelcome(PortletRequest request, Model model, Locale locale)
+	private	String studentWelcome(PortletRequest request, Model model, Locale locale) throws NotCorrectDBRecordException
 	{
-		
-		//model.addAttribute("lstReasonStudents", lstReasonStudents);
 		model.addAttribute("isStudent", true);
-		
+		model.addAttribute("canStudentApply", universityWithdrawService.canStudentApply());
 		return "/registration/universityWithdraw/student/welcomeUniversityWithdrawStudent";
 	}
 
@@ -163,6 +167,90 @@ public class UniversityWithdrawController
 			}
 		catch(Exception ex)
 		{
+			response.setProperty(response.HTTP_STATUS_CODE, Integer.toString(HttpServletResponse.SC_INTERNAL_SERVER_ERROR));
+		}
+	}
+
+	/**
+	 * 
+	 * method name  : resourceGetUniversityWithdrawDataForStudent
+	 * @param request
+	 * @param response
+	 * @param locale
+	 * UniversityWithdrawController
+	 * return type  : void
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Mar 14, 2018 9:13:30 AM
+	 */
+	@ResourceMapping(value="resourceStudentApplications")
+	private void resourceGetUniversityWithdrawDataForStudent
+															(
+																		ResourceRequest		request
+																	,	ResourceResponse	response
+																	,	Locale				locale	
+															)
+	{
+		Gson								gson			=	new Gson();
+		try
+		{
+			User							user			=	dpsServiceDao.getUser(request);
+			Student 						student			= 	dpsServiceDao.getStudent(user.getUserId(), null, new Locale("en"));
+			List<UniversityWithdrawDTO>		dtos			=	universityWithdrawService.getUniversityWithdrawDataForStudent(student.getAcademicDetail().getStudentNo(), locale);
+			response.getWriter().print(gson.toJson(dtos));
+		}
+		catch (Exception ex)
+		{
+			logger.error("error : "+ex.getMessage());
+			response.setProperty(response.HTTP_STATUS_CODE, Integer.toString(HttpServletResponse.SC_INTERNAL_SERVER_ERROR));
+		}
+	}
+	
+	  
+	
+	
+	
+	/**
+	 * 
+	 * method name  : resourceSetUniversityWithdrawByStudent
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @param locale
+	 * @throws IOException
+	 * UniversityWithdrawController
+	 * return type  : void
+	 * 
+	 * purpose		: Request submitted by student for withdrawal from university
+	 *
+	 * Date    		:	Feb 18, 2018 1:37:32 PM
+	 */
+	@ResourceMapping(value="resourceStudentSubmit")
+	private	void resourceSetUniversityWithdrawByStudent
+														(		@ModelAttribute ("universityWithdrawModel") UniversityWithdrawModel model
+																,	ResourceRequest		request
+																,	ResourceResponse	response
+																,	Locale				locale		
+														) throws IOException
+	{
+		Gson			gson					=	new Gson();
+		try
+		{
+			List<UniversityWithdrawDTO>	dtoResult	=	null;
+			User					user			=	dpsServiceDao.getUser(request);
+			Student 				student			= 	dpsServiceDao.getStudent(user.getUserId(), null, new Locale("en"));
+			UniversityWithdrawDTO 	dto				=	new UniversityWithdrawDTO();
+			dto.setReasonCode(model.getReasonCode());
+			dto.setStudentNo(student.getAcademicDetail().getStudentNo());
+			dto.setStudentStatCode(student.getAcademicDetail().getStdStatCode());
+			dto.setUserName(request.getRemoteUser());
+			dtoResult	=	universityWithdrawService.setUniversityWithdrawByStudent(dto, locale);
+			response.getWriter().print(gson.toJson(dtoResult));
+		}
+		catch(Exception ex)
+		{
+			logger.error("error : "+ex.getMessage());
 			response.setProperty(response.HTTP_STATUS_CODE, Integer.toString(HttpServletResponse.SC_INTERNAL_SERVER_ERROR));
 		}
 	}

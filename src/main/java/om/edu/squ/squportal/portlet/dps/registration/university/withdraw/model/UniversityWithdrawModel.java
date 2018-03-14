@@ -35,6 +35,7 @@ package om.edu.squ.squportal.portlet.dps.registration.university.withdraw.model;
  */
 public class UniversityWithdrawModel
 {
+	private	String	reasonCode;
 	private	String	reason;
 
 	/**
@@ -59,13 +60,36 @@ public class UniversityWithdrawModel
 		this.reason = reason;
 	}
 
+	/**
+	 * Getter Method	: getReasonCode
+	 * @return the reasonCode
+	 * 
+	 * Date				: Feb 18, 2018
+	 */
+	public String getReasonCode()
+	{
+		return this.reasonCode;
+	}
+
+	/**
+	 * Setter method : setReasonCode
+	 * @param reasonCode the reasonCode to set
+	 * 
+	 * Date          : Feb 18, 2018 12:23:58 PM
+	 */
+	public void setReasonCode(String reasonCode)
+	{
+		this.reasonCode = reasonCode;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString()
 	{
-		return "UniversityWithdrawModel [reason=" + this.reason + "]";
+		return "UniversityWithdrawModel [reasonCode=" + this.reasonCode
+				+ ", reason=" + this.reason + "]";
 	}
 	
 	
