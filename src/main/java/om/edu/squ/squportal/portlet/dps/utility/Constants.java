@@ -130,6 +130,9 @@ public interface Constants
 	public static final	String	CONST_COLMN_POSTPONE_REASON_NAME							=	"POSTPONE_REASON_NAME";
 	public static final	String	CONST_COLMN_POSTPONE_OTHER_REASON							=	"POSTPONE_OTHER_REASON";
 	
+	public static final	String	CONST_COLMN_UNIVERSITY_WITHDRAW_STD_REASON_CODE				=	"UNIVERSITY_STD_REASON_CODE";
+	public static final	String	CONST_COLMN_UNIVERSITY_WITHDRAW_STD_REASON_NAME				=	"UNIVERSITY_STD_REASON_NAME";
+	
 	public static final	String	CONST_COLMN_POSTPONE_GRADE_IS_UPDATABLE						=	"IS_UPDATABLE";
 	public static final	String	CONST_COLMN_IS_CHANGE_ALLOWED								=	"CHANGE_ALLOWED";
 	public static final	String	CONST_COLMN_RECORD_AVAILABLE								=	"RECORD_AVAILABLE";
@@ -312,6 +315,7 @@ public interface Constants
 	public	static	final	String	CONST_SQL_UNIVERSITY_WITHDRAW_REASON_LIST_STUDENT		=	"dps.university.withdraw.select.reason.list.student";
 	public	static	final	String	CONST_SQL_UNIVERSITY_WITHDRAW_INSERT_APPLY_BY_STUDENT	=	"dps.university.withdraw.insert.apply.by.student";
 	public	static	final	String	CONST_SQL_UNIVERSITY_WITHDRAW_SELECT_RECORDS_BY_STUDENT	=	"dps.university.withdraw.select.student.records";
+	public	static	final	String	CONST_SQL_UNIVERSITY_WITHDRAW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	"dps.university.withdraw.select.student.records.by.employee";
 
 	/* ---  SQL - DPS - Drop With W -- Stored Procedure -- --------------------- */	
 	public	static	final	String	CONST_PROC_DROPW_WITHDRAW_COURSE						=	"PROC_WITHDRAW_COURSE";

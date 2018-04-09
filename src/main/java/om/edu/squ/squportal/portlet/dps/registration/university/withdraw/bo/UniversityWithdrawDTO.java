@@ -40,16 +40,23 @@ import om.edu.squ.squportal.portlet.dps.role.bo.Supervisor;
  */
 public class UniversityWithdrawDTO
 {
-	private	String		recordSequenec;
+	private	String		recordSequence;
+	private	String		studentId;
 	private	String		studentNo;
 	private	String		studentStatCode;
+	private	String		studentName;
+	private	String		cohort;
 	private	String		firstStatusCode;
 	private	String		toCCYearCode;
 	private	String		toSemCode;
 	private	String		toSemName;
+	private	String		collegeName;
+	private	String		degreeName;
 	private	String		statusCode;
 	private	String		statusCodeName;
 	private	String		statusDescription;
+	private	String		reasonCodeStd;
+	private	String		reasonStd;
 	private	String		reason;
 	private	String		reasonCode;
 	private	String		userName;
@@ -61,27 +68,49 @@ public class UniversityWithdrawDTO
 	private	DpsDean		dpsDean;
 	private	String		comments;
 	private	boolean		statusReject;
+	private	boolean		approver;
+	private	boolean		approverApplicable;
 	
 	
 	/**
 	 * Getter Method	: getRecordSequenec
-	 * @return the recordSequenec
+	 * @return the recordSequence
 	 * 
 	 * Date				: Feb 14, 2018
 	 */
-	public String getRecordSequenec()
+	public String getRecordSequence()
 	{
-		return this.recordSequenec;
+		return this.recordSequence;
 	}
 	/**
 	 * Setter method : setRecordSequenec
-	 * @param recordSequenec the recordSequenec to set
+	 * @param recordSequence the recordSequence to set
 	 * 
 	 * Date          : Feb 14, 2018 10:02:25 AM
 	 */
-	public void setRecordSequenec(String recordSequenec)
+	public void setRecordSequence(String recordSequenec)
 	{
-		this.recordSequenec = recordSequenec;
+		this.recordSequence = recordSequenec;
+	}
+	/**
+	 * Getter Method	: getStudentId
+	 * @return the studentId
+	 * 
+	 * Date				: Mar 26, 2018
+	 */
+	public String getStudentId()
+	{
+		return this.studentId;
+	}
+	/**
+	 * Setter method : setStudentId
+	 * @param studentId the studentId to set
+	 * 
+	 * Date          : Mar 26, 2018 12:33:18 PM
+	 */
+	public void setStudentId(String studentId)
+	{
+		this.studentId = studentId;
 	}
 	/**
 	 * Getter Method	: getStudentNo
@@ -122,6 +151,46 @@ public class UniversityWithdrawDTO
 	public void setStudentStatCode(String studentStatCode)
 	{
 		this.studentStatCode = studentStatCode;
+	}
+	/**
+	 * Getter Method	: getStudentName
+	 * @return the studentName
+	 * 
+	 * Date				: Mar 26, 2018
+	 */
+	public String getStudentName()
+	{
+		return this.studentName;
+	}
+	/**
+	 * Setter method : setStudentName
+	 * @param studentName the studentName to set
+	 * 
+	 * Date          : Mar 26, 2018 12:35:32 PM
+	 */
+	public void setStudentName(String studentName)
+	{
+		this.studentName = studentName;
+	}
+	/**
+	 * Getter Method	: getCohort
+	 * @return the cohort
+	 * 
+	 * Date				: Mar 27, 2018
+	 */
+	public String getCohort()
+	{
+		return this.cohort;
+	}
+	/**
+	 * Setter method : setCohort
+	 * @param cohort the cohort to set
+	 * 
+	 * Date          : Mar 27, 2018 8:39:32 AM
+	 */
+	public void setCohort(String cohort)
+	{
+		this.cohort = cohort;
 	}
 	/**
 	 * Getter Method	: getFirstStatusCode
@@ -205,6 +274,46 @@ public class UniversityWithdrawDTO
 		this.toSemName = toSemName;
 	}
 	/**
+	 * Getter Method	: getCollegeName
+	 * @return the collegeName
+	 * 
+	 * Date				: Mar 26, 2018
+	 */
+	public String getCollegeName()
+	{
+		return this.collegeName;
+	}
+	/**
+	 * Setter method : setCollegeName
+	 * @param collegeName the collegeName to set
+	 * 
+	 * Date          : Mar 26, 2018 12:39:21 PM
+	 */
+	public void setCollegeName(String collegeName)
+	{
+		this.collegeName = collegeName;
+	}
+	/**
+	 * Getter Method	: getDegreeName
+	 * @return the degreeName
+	 * 
+	 * Date				: Mar 26, 2018
+	 */
+	public String getDegreeName()
+	{
+		return this.degreeName;
+	}
+	/**
+	 * Setter method : setDegreeName
+	 * @param degreeName the degreeName to set
+	 * 
+	 * Date          : Mar 26, 2018 12:39:21 PM
+	 */
+	public void setDegreeName(String degreeName)
+	{
+		this.degreeName = degreeName;
+	}
+	/**
 	 * Getter Method	: getStatusCode
 	 * @return the statusCode
 	 * 
@@ -264,6 +373,46 @@ public class UniversityWithdrawDTO
 	public void setStatusDescription(String statusDescription)
 	{
 		this.statusDescription = statusDescription;
+	}
+	/**
+	 * Getter Method	: getReasonCodeStd
+	 * @return the reasonCodeStd
+	 * 
+	 * Date				: Mar 26, 2018
+	 */
+	public String getReasonCodeStd()
+	{
+		return this.reasonCodeStd;
+	}
+	/**
+	 * Setter method : setReasonCodeStd
+	 * @param reasonCodeStd the reasonCodeStd to set
+	 * 
+	 * Date          : Mar 26, 2018 12:44:51 PM
+	 */
+	public void setReasonCodeStd(String reasonCodeStd)
+	{
+		this.reasonCodeStd = reasonCodeStd;
+	}
+	/**
+	 * Getter Method	: getReasonStd
+	 * @return the reasonStd
+	 * 
+	 * Date				: Mar 26, 2018
+	 */
+	public String getReasonStd()
+	{
+		return this.reasonStd;
+	}
+	/**
+	 * Setter method : setReasonStd
+	 * @param reasonStd the reasonStd to set
+	 * 
+	 * Date          : Mar 26, 2018 12:44:51 PM
+	 */
+	public void setReasonStd(String reasonStd)
+	{
+		this.reasonStd = reasonStd;
 	}
 	/**
 	 * Getter Method	: getReason
@@ -485,27 +634,73 @@ public class UniversityWithdrawDTO
 	{
 		this.statusReject = statusReject;
 	}
+	/**
+	 * Getter Method	: isApprover
+	 * @return the approver
+	 * 
+	 * Date				: Mar 26, 2018
+	 */
+	public boolean isApprover()
+	{
+		return this.approver;
+	}
+	/**
+	 * Setter method : setApprover
+	 * @param approver the approver to set
+	 * 
+	 * Date          : Mar 26, 2018 12:58:00 PM
+	 */
+	public void setApprover(boolean approver)
+	{
+		this.approver = approver;
+	}
+	/**
+	 * Getter Method	: isApproverApplicable
+	 * @return the approverApplicable
+	 * 
+	 * Date				: Mar 26, 2018
+	 */
+	public boolean isApproverApplicable()
+	{
+		return this.approverApplicable;
+	}
+	/**
+	 * Setter method : setApproverApplicable
+	 * @param approverApplicable the approverApplicable to set
+	 * 
+	 * Date          : Mar 26, 2018 12:56:13 PM
+	 */
+	public void setApproverApplicable(boolean approverApplicable)
+	{
+		this.approverApplicable = approverApplicable;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString()
 	{
-		return "UniversityWithdrawDTO [recordSequenec=" + this.recordSequenec
-				+ ", studentNo=" + this.studentNo + ", studentStatCode="
-				+ this.studentStatCode + ", firstStatusCode="
-				+ this.firstStatusCode + ", toCCYearCode=" + this.toCCYearCode
-				+ ", toSemCode=" + this.toSemCode + ", toSemName="
-				+ this.toSemName + ", statusCode=" + this.statusCode
+		return "UniversityWithdrawDTO [recordSequence=" + this.recordSequence
+				+ ", studentId=" + this.studentId + ", studentNo="
+				+ this.studentNo + ", studentStatCode=" + this.studentStatCode
+				+ ", studentName=" + this.studentName + ", cohort="
+				+ this.cohort + ", firstStatusCode=" + this.firstStatusCode
+				+ ", toCCYearCode=" + this.toCCYearCode + ", toSemCode="
+				+ this.toSemCode + ", toSemName=" + this.toSemName
+				+ ", collegeName=" + this.collegeName + ", degreeName="
+				+ this.degreeName + ", statusCode=" + this.statusCode
 				+ ", statusCodeName=" + this.statusCodeName
-				+ ", statusDescription=" + this.statusDescription + ", reason="
-				+ this.reason + ", reasonCode=" + this.reasonCode
-				+ ", userName=" + this.userName + ", applyDate="
-				+ this.applyDate + ", activityDate=" + this.activityDate
-				+ ", advisor=" + this.advisor + ", supervisor="
-				+ this.supervisor + ", collegeDean=" + this.collegeDean
-				+ ", dpsDean=" + this.dpsDean + ", comments=" + this.comments
-				+ ", statusReject=" + this.statusReject + "]";
+				+ ", statusDescription=" + this.statusDescription
+				+ ", reasonCodeStd=" + this.reasonCodeStd + ", reasonStd="
+				+ this.reasonStd + ", reason=" + this.reason + ", reasonCode="
+				+ this.reasonCode + ", userName=" + this.userName
+				+ ", applyDate=" + this.applyDate + ", activityDate="
+				+ this.activityDate + ", advisor=" + this.advisor
+				+ ", supervisor=" + this.supervisor + ", collegeDean="
+				+ this.collegeDean + ", dpsDean=" + this.dpsDean
+				+ ", comments=" + this.comments + ", statusReject="
+				+ this.statusReject + ", approver=" + this.approver
+				+ ", approverApplicable=" + this.approverApplicable + "]";
 	}
 
 	

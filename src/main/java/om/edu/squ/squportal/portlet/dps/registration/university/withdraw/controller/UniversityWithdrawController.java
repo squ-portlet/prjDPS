@@ -39,14 +39,17 @@ import javax.portlet.ResourceResponse;
 import javax.servlet.http.HttpServletResponse;
 
 import om.edu.squ.squportal.portlet.dps.bo.CodeValue;
+import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
+import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentModel;
 import om.edu.squ.squportal.portlet.dps.registration.university.withdraw.bo.UniversityWithdrawDTO;
 import om.edu.squ.squportal.portlet.dps.registration.university.withdraw.model.UniversityWithdrawModel;
 import om.edu.squ.squportal.portlet.dps.registration.university.withdraw.service.UniversityWithdrawService;
+import om.edu.squ.squportal.portlet.dps.role.bo.RoleNameValue;
 import om.edu.squ.squportal.portlet.dps.security.Crypto;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
@@ -273,6 +276,60 @@ public class UniversityWithdrawController
 	 */
 	private	String approverWelcome(PortletRequest request, Model model, Locale locale)
 	{
+		Employee employee	=	null;
+		try
+		{
+			employee = dpsServiceDao.getEmployee(request,locale);
+			
+		}
+		catch (ExceptionEmptyResultset ex)
+		{
+			logger.error("No records available. Probably user doesnot logged in ");
+		}
+		
+		model.addAttribute("employee", employee);
+		model.addAttribute("appApprove", Constants.CONST_SQL_STATUS_CODE_ACCPT);
+		model.addAttribute("appRecect", Constants.CONST_SQL_STATUS_CODE_REJCT);
+		
 		return "/registration/universityWithdraw/approver/welcomeUniversityWithdrawApprover";
 	}
+	
+	
+	/**
+	 * 
+	 * method name  : getResourceDataforUnivWithdraw
+	 * @param roleNameValue
+	 * @param request
+	 * @param response
+	 * @param locale
+	 * @throws IOException
+	 * UniversityWithdrawController
+	 * return type  : void
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Mar 26, 2018 2:19:46 PM
+	 */
+	@ResourceMapping(value="resourceUniversityWithdrawByRole")
+	private void getResourceDataforUnivWithdraw(
+													@ModelAttribute("roleNameValue") RoleNameValue roleNameValue,
+													ResourceRequest request, ResourceResponse response, Locale locale
+												) throws IOException
+	{
+		Gson		gson		=	new Gson();
+		Employee 	employee	=	null;
+		
+		
+		try{
+			employee	=	dpsServiceDao.getEmployee(request,locale);
+			List<UniversityWithdrawDTO>		dtos	=	universityWithdrawService.getUniversityWithdrawRecordsForApprover(roleNameValue.getRoleValue(), employee, locale);
+			response.getWriter().print(gson.toJson(dtos));
+		}
+		catch(ExceptionEmptyResultset ex)
+		{
+			response.getWriter().print(gson.toJson(""));
+		}
+		
+	}
+	
 }

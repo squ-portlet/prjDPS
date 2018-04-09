@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Locale;
 
 import om.edu.squ.squportal.portlet.dps.bo.CodeValue;
+import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.registration.university.withdraw.bo.UniversityWithdrawDTO;
 
 /**
@@ -99,4 +100,20 @@ public interface UniversityWithdrawService
 	 * Date    		:	Mar 6, 2018 12:26:59 PM
 	 */
 	public List<UniversityWithdrawDTO> getUniversityWithdrawDataForStudent(String studentNo, Locale locale);
+	
+	/**
+	 * 
+	 * method name  : getUniversityWithdrawRecordsForApprover
+	 * @param roleType
+	 * @param employee
+	 * @param locale
+	 * @return
+	 * UniversityWithdrawService
+	 * return type  : List<UniversityWithdrawDTO>
+	 * 
+	 * purpose		: List of university withdrew details using employee role
+	 *
+	 * Date    		:	Mar 26, 2018 2:00:32 PM
+	 */
+	public List<UniversityWithdrawDTO> getUniversityWithdrawRecordsForApprover(final String roleType, Employee employee, Locale locale);
 }

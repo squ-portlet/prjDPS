@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Locale;
 
 import om.edu.squ.squportal.portlet.dps.bo.CodeValue;
+import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.notification.bo.NotifierPeople;
@@ -158,4 +159,48 @@ public class UniversityWithdrawServiceImpl implements UniversityWithdrawService
 	{
 		return universityWithdrawDBDao.getUniversityWithdrawDataForStudent(studentNo, locale);
 	}
+
+	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.registration.university.withdraw.service.UniversityWithdrawService#getUniversityWithdrawRecordsForApprover(java.lang.String, om.edu.squ.squportal.portlet.dps.bo.Employee, java.util.Locale)
+	 */
+	public List<UniversityWithdrawDTO> getUniversityWithdrawRecordsForApprover(final String roleType, Employee employee, Locale locale)
+	{
+		if(employee.getEmpNumber().substring(0,1).equals("e"))
+		{
+			employee.setEmpNumber(employee.getEmpNumber().substring(1));
+		}
+		
+		return universityWithdrawDBDao.getUniversityWithdrawRecordsForApprover(roleType, employee, null, locale);
+		
+	}
+	
+	/**
+	 * 
+	 * method name  : getUniversityWithdrawRecordsForApprover
+	 * @param roleType
+	 * @param employee
+	 * @param studentNo
+	 * @param locale
+	 * @return
+	 * UniversityWithdrawServiceImpl
+	 * return type  : UniversityWithdrawDTO
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Mar 26, 2018 1:58:20 PM
+	 */
+	private UniversityWithdrawDTO getUniversityWithdrawRecordsForApprover(final String roleType, Employee employee,  String studentNo, Locale locale)
+	{
+		if(employee.getEmpNumber().substring(0,1).equals("e"))
+		{
+			employee.setEmpNumber(employee.getEmpNumber().substring(1));
+		}
+		
+		return universityWithdrawDBDao.getUniversityWithdrawRecordsForApprover(roleType, employee, studentNo, locale).get(0);
+		
+	}
+	
+	
 }

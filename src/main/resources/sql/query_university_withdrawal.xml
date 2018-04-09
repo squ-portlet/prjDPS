@@ -204,5 +204,165 @@
 		WHERE
 		        WITHDRAW.REGWITHCD=SISCD.SISCODECD
 		    AND STDNO = :paramStdNo 	
+	</entry>
+	<entry key="dps.university.withdraw.select.student.records.by.employee">
+			SELECT * 
+					  FROM
+					(  
+					    SELECT DISTINCT
+					    	    UNIV_WD.REC_SEQ_NO												AS		SEQUENCE_NUMBER
+					          , UNIV_WD.STDNO                                     				AS  	STUDENT_NO
+					          , PORTAL.STD_ID												AS		STUDENT_ID  
+					          , DECODE
+					                  (
+					                      :paramLocal
+					                      ,'en',PORTAL.STD_NAME
+					                      , PORTAL.A_STD_NAME
+					                  )                                       				AS  	STUDENT_NAME        
+					          , UNIV_WD.STDSTATCD                                 				AS  	STDSTATCD
+					          , PORTAL.COHORT                                 				AS  	COHORT
+					          , UNIV_WD.CCYRCD                                  				AS  	CCYRCD                              
+					          , UNIV_WD.SEMCD                                   				AS  	SEMCD
+			              ,DECODE
+					           (
+					                  :paramLocal
+					                  ,'en', SISCD.CODENM, SISCD.A_CODENM
+					            )                                           				AS 		UNIVERSITY_STD_REASON_NAME
+					          , COL.COLCENCD
+					          , DECODE
+					                (
+					                    :paramLocal
+					                    ,'en', PORTAL.DEGREE_NAME
+					                    ,PORTAL.A_DEGREE_NAME
+					                )                                         				AS  	DEGREE_NAME
+					          , DECODE 
+					                (
+					                      :paramLocal
+					                      ,'en', PORTAL.COLLEGENM
+					                      , PORTAL.A_COLLEGENM
+					                )                                         				AS  	COLLEGE_NAME
+					          , UNIV_WD.STATUSCD                          				    AS  	STATUS_CODE
+					        , (
+					        	SELECT
+					        		L_ABR_CODE
+					        	FROM SIS_CODES
+					            WHERE 
+					            	SISCODECD= UNIV_WD.STATUSCD
+					        	)															                          AS		STATUS_CODE_NAME					          
+					          , (
+					              SELECT 
+					                  DECODE
+					                  (
+					                      :paramLocal
+					                      ,'en', CODENM , A_CODENM
+					                  )
+					                  FROM
+					                    SIS_CODES
+					                  WHERE 
+					                    SISCODECD = UNIV_WD.STATUSCD
+					            )                                             				AS  	STATUS_DESC
+							  , UNIV_WD.COMMENTS													AS		COMMENTS
+	                          , FUNC_APPROVE_STATUS(
+	                                              UNIV_WD.STDNO,
+	                                              :paramAdvisorRoleName, 
+	                                              :paramFormName,
+	                                              UNIV_WD.REC_SEQ_NO
+	                                              )                           				AS  	ADVISOR_STATUS 
+
+                      
+	                          , FUNC_APPROVE_STATUS(
+	                                              UNIV_WD.STDNO,
+	                                              :paramSupervisorRoleName, 
+	                                              :paramFormName,
+	                                              UNIV_WD.REC_SEQ_NO
+	                                              )                           				AS  	SUPERVISOR_STATUS
+	                          , FUNC_APPROVE_STATUS(
+	                                              UNIV_WD.STDNO,
+	                                              :paramColDeanRoleName, 
+	                                              :paramFormName,
+	                                              UNIV_WD.REC_SEQ_NO
+	                                              )                           				AS  	COLLEGE_DEAN_STATUS
+	                          , FUNC_APPROVE_STATUS(
+	                                              UNIV_WD.STDNO,
+	                                              :paramDpsDeanRoleName, 
+	                                              :paramFormName,
+	                                              UNIV_WD.REC_SEQ_NO
+	                                              )                           				AS  	DPS_DEAN_STATUS
+	                          ,	NVL(FUNC_IS_APPROVER(
+												 		  UNIV_WD.STDNO
+												 		, UNIV_WD.STDSTATCD
+												 		, :paramFormName
+												 		, :paramRoleName
+												 		, :paramEmpNo
+												 		, (
+															SELECT 
+																  MAX(REC_SEQ_NO)
+															FROM 
+																  T_STD_UNIV_WITHDRAW
+															WHERE
+																	  STDNO 	= 	UNIV_WD.STDNO
+																  AND STDSTATCD =	UNIV_WD.STDSTATCD
+															) 
+	                         						),'N')						 			AS		IS_APPROVER
+                              ,	FUNC_IS_SUPERVISOR_AVAILABLE(UNIV_WD.STDNO,UNIV_WD.STDSTATCD)  	AS 		HAS_THESIS   
+  							  , 	(
+							              			SELECT 
+							                      		DECODE (
+							                                	MAX (UPDATE_DATE)
+							                                , 	NULL, MAX (CREATE_DATE)
+							                                , 	MAX (UPDATE_DATE)
+							                             )
+							                                
+										              FROM 
+										                    T_STD_UNIV_WITHDRAW
+										              WHERE
+										                   STDNO = UNIV_WD.STDNO
+								     )                                     					AS 		DATE_WATCH                                		                                          
+                                        
+					    FROM     
+					          	T_STD_UNIV_WITHDRAW   	UNIV_WD
+					          ,	V_STDINFO_PORTAL   	PORTAL
+					          ,	COL_CEN            	COL
+					          , STD_THESIS        	THESIS
+					          , V_DEPT_MAJOR      	DEPT_MAJ
+					          , COL_DEPT          	DEPT
+					          , SIS_CODES     		SISCD
+					    WHERE
+					              DEPT.COLCENCD     = COL.COLCENCD
+					          AND UNIV_WD.REGWITHCD_STUDENT	=	SISCD.SISCODECD
+					          AND DEPT_MAJ.DEPTNO   = DEPT.DEPTNO (+)
+					          AND UNIV_WD.STDNO         = PORTAL.STDNO
+					          AND THESIS.STDNO(+)      = UNIV_WD.STDNO 															 
+					          --AND THESIS.STDNO    = PORTAL.STDNO
+					          AND PORTAL.ACTIVE     = 'Y'
+					          AND PORTAL.COLLEGE_CODE = COL.L_ABR_CC 
+					          AND UNIV_WD.STATUSCD IS NOT NULL
+					          AND 
+					              ( 
+					                      :paramColCode = COL.COLCENCD		 		--  College DEAN/ ASST DEAN
+					                  OR  :paramColCode IS NULL               		-- 	DPS DEAN / DPS STAFF
+					              )
+					          AND
+					            (
+					                      :paramAdvisor = PORTAL.ADVISOR			--	ADVISOR
+					                  OR  :paramAdvisor IS NULL
+					            )
+					          AND
+					            (
+					                      :paramSupervisor =  THESIS.SUPVISREMPNO	--	SUPERVISOR
+					                  OR  :paramSupervisor  IS NULL
+					            )
+					          AND
+					            (
+					                      :paramDeptCode  = DEPT.DEPTNO				--	HOD
+					                  OR  :paramDeptCode  IS NULL
+					            )
+					         AND
+								(
+								          :paramStdNo = UNIV_WD.STDNO
+								      OR  :paramStdNo IS NULL
+								)
+					)
+					ORDER BY IS_APPROVER DESC, DATE_WATCH DESC	
 	</entry>	
 </properties>
