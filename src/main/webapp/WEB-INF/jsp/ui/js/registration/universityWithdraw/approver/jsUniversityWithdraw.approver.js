@@ -6,6 +6,7 @@
 
 
 <portlet:resourceURL id="resourceUniversityWithdrawByRole" var="varResourceUniversityWithdrawByRole"></portlet:resourceURL>
+<portlet:resourceURL id="resourceUniversityWithdrawDataApprove" var="varResourceUniversityWithdrawDataApprove"></portlet:resourceURL>
 
 <script type="text/javascript">
 
@@ -19,6 +20,8 @@ $(document).ajaxStop(function(){
 $(function(){
 	var varRoleName;
 	var tblUnivWithdrawList;
+	var	tblRowIndexApprover;
+	var	tblRowDataApprover;
 	
  	<c:forEach items="${employee.myRoles}" var="myRole">
 	// Clicking on tabs to make it active (other than Home tab)
@@ -84,6 +87,82 @@ $(function(){
 	});
 	
 	</c:forEach>
+	
+	
+	/* click event on approve/reject radio button */		
+	$(document).on("click", ".clsAppAction", function(event){
+		event.preventDefault();
+		$(this).prop("checked", true);
+		$('#txtModalAppFormStatus').val($(this).val());
+		$('#recordSequence').val(this.getAttribute("recordSequence"));
+		$('#studentno').val(this.getAttribute("studentno"));
+		$('#studentstatCode').val(this.getAttribute("studentstatCode"));
+		if($(this).val() == '${appApprove}')
+		{
+			
+			$('#idComment').hide();
+			$('#idCommentTxtArea').html('');
+			$('#idApprovalMsg').html("<spring:message code='prop.dps.university.withdraw.approver.approve.text'/>");
+			$('#linkSubmitApprove').addClass('btn-success').removeClass('btn-danger');
+		}
+		else
+		{
+			$('#idComment').show();
+			$('#idCommentTxtArea').html('<textarea id="txtMessage" name="txtMessage" rows="" cols="" required></textarea>');
+			$('#idApprovalMsg').html("<spring:message code='prop.dps.university.withdraw.approver.reject.text'/>");
+			$('#linkSubmitApprove').addClass('btn-danger').removeClass('btn-success');
+		}
+		tblRowDataApprover 	= 	tblPostponeApprover.table(0).row( this ).data();
+		tblRowIndexApprover	=	tblPostponeApprover.row(this).index();
+		
+		
+	});
+
+	
+	$('#linkSubmitApprove').click(function(event) {
+		
+		//if ($('#formModalApprover').valid()) {
+	    	var universityWithdrawDTO	= {
+	    			recordSequence	: $('#recordSequence').val(),
+	    			studentNo 		: $('#studentno').val(),
+					studentStatCode		: $('#studentstatCode').val(),
+					statusCodeName	: $('#txtModalAppFormStatus').val(),
+					roleName		: varRoleName,
+					comments		: $('#txtMessage').val()
+					
+				};
+	    	$('#modalApprovForm').modal('toggle');
+	    	
+	    	$.ajax({
+	    			url 		:	"${varResourceUniversityWithdrawDataApprove}",
+	    			type		:	'POST',
+	    			data		:	universityWithdrawDTO,
+	    			success		:	function(data)
+	    			{
+	    				/*
+	    				var postpone = JSON.parse(data);
+	    				tblRowDataApprover.recordSequence=postpone.recordSequence;
+	    				tblRowDataApprover.studentId=postpone.studentId;
+	    				tblRowDataApprover.advisor.roleStausIkon=postpone.advisor.roleStausIkon;
+	    				tblRowDataApprover.supervisor.roleStausIkon=postpone.supervisor.roleStausIkon;
+	    				tblRowDataApprover.collegeDean.roleStausIkon=postpone.collegeDean.roleStausIkon;
+	    				tblRowDataApprover.dpsDean.roleStausIkon=postpone.dpsDean.roleStausIkon;
+	    				tblRowDataApprover.approver=postpone.statusDesc;
+	    				tblPostponeApprover.row( tblRowIndexApprover ).data(tblRowDataApprover).draw();
+	    				*/
+	    				
+	    			},
+	    			error	:	function(xhr, status, error)
+	    			{
+	    				
+	    			}
+	    	});
+	    	
+		//}
+		
+	});
+	 	
+	
 	
 	
 	/* Data load to handlebars template */

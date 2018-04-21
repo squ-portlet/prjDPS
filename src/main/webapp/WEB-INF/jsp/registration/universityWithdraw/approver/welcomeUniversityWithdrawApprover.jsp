@@ -18,6 +18,8 @@
 		</div>
 	</div>
 	
+
+
 	
 <!-- Role based tabs -->	
 		<ul class="nav nav-tabs">
@@ -31,3 +33,36 @@
 
 	
 		<div id="divUnivWithdrawList"></div>		
+
+
+<!--  Modal approver form -->			
+    <div class="modal fade" id="modalApprovForm" role="dialog" aria-labelledby="myModalLabelPostponeForm" aria-hidden="true" >
+     
+      <div class="modal-dialog">
+        <div class="modal-content">
+        	<input type="hidden" id="txtModalAppFormStatus" >
+        	<input type="hidden" id="recordSequence">
+        	<input type="hidden" id="studentno">
+        	<input type="hidden" id="studentstatCode">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&nbsp;</button>
+            <h4 class="modal-title"><spring:message code="prop.dps.postpone.approver.modal.title.text"/> </h4>
+          </div>
+          <form id="formModalApprover" name="formModalApprover">
+          <div class="modal-body">
+          		<div id="idApprovalMsg"></div>
+				<div id="idComment">
+		            	<div col="col-sm-2"><spring:message code="prop.dps.postpone.approver.modal.body.approve.comment.text"></spring:message></div>
+		            	<div class="col-sm-8" id="idCommentTxtArea"></div>
+            	</div>
+          </div>
+          </form>
+          <div class="modal-footer">
+            <a class="btn btn-default"  data-dismiss="modal"><spring:message code="prop.dps.role.submit.no.text"/></a>
+            <button id="linkSubmitApprove" name="linkSubmitApprove" type="button" class="btn"><spring:message code="prop.dps.role.submit.yes.text"/></button>
+          </div>
+          
+        </div>
+      </div>
+    </div>		
+		

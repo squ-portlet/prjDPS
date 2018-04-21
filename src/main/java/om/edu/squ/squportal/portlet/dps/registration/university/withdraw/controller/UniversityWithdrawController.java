@@ -332,4 +332,29 @@ public class UniversityWithdrawController
 		
 	}
 	
+	/**
+	 * 
+	 * method name  : universityWithdrawDataApprove
+	 * @param universityWithdrawDTO
+	 * @param request
+	 * @param response
+	 * @param locale
+	 * UniversityWithdrawController
+	 * return type  : void
+	 * 
+	 * purpose		: 
+	 *
+	 * Date    		:	Apr 18, 2018 9:23:20 PM
+	 */
+	@ResourceMapping(value="resourceUniversityWithdrawDataApprove")
+	private void universityWithdrawDataApprove	(
+														@ModelAttribute("universityWithdrawDTO") UniversityWithdrawDTO universityWithdrawDTO
+													, 	ResourceRequest		request
+													,	ResourceResponse	response
+													,	Locale				locale
+												)
+	{
+		logger.info("universityWithdrawDTO : "+universityWithdrawDTO);
+	}
+	
 }
