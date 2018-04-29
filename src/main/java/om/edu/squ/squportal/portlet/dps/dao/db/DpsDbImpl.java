@@ -123,7 +123,9 @@ public class DpsDbImpl implements DpsDbDao
 	 */
 	public Employee getEmployee(String empNumber) throws ExceptionEmptyResultset
 	{
-		String	SQL_DPS_EMPLOYEE_DETAIL	=	queryProps.getProperty(Constants.COST_SQL_DPS_EMPLOYEE_DETAIL);
+		String		delegateeEmpNumber		=	null;
+		Employee	employee				=	null;
+		String		SQL_DPS_EMPLOYEE_DETAIL	=	queryProps.getProperty(Constants.COST_SQL_DPS_EMPLOYEE_DETAIL);
 		
 		RowMapper<Employee> 	mapper	= new RowMapper<Employee>()
 		{
@@ -145,12 +147,32 @@ public class DpsDbImpl implements DpsDbDao
 			}
 		};
 		
-		Map<String, String> mapParamsDPS	=	new HashMap<String, String>();
-		mapParamsDPS.put("paramEmpNumber", empNumber);
+		Map<String, String> mapParamsDPS		=	new HashMap<String, String>();
+							delegateeEmpNumber	=	getDelegatee(empNumber);
+							if(delegateeEmpNumber.equals(Constants.CONST_NOT_AVAILABLE))
+							{
+								mapParamsDPS.put("paramEmpNumber", empNumber);						//	No delegation
+							}
+							else
+							{
+								mapParamsDPS.put("paramEmpNumber", delegateeEmpNumber); 
+							}
 		
 		try
 			{
-				return nPJdbcTemplDps.queryForObject(SQL_DPS_EMPLOYEE_DETAIL, mapParamsDPS, mapper);
+				employee = nPJdbcTemplDps.queryForObject(SQL_DPS_EMPLOYEE_DETAIL, mapParamsDPS, mapper);
+				
+				if(delegateeEmpNumber.equals(Constants.CONST_NOT_AVAILABLE))
+				{
+					
+				}
+				else
+				{
+					employee.setEmpNumberDelegated(empNumber);
+					employee.setEmpNumberDelegatee(delegateeEmpNumber);
+				}
+				
+				return	employee;
 			}
 		catch(EmptyResultDataAccessException ex)
 		{
@@ -556,6 +578,33 @@ public class DpsDbImpl implements DpsDbDao
 		
 		return nPJdbcTemplDps.queryForInt(SQL_SEQUENCE_NUM, namedParameterMap);
 	}
+	
+	
+	/*
+	 * Delegation
+	 */
+	/**
+	 * 
+	 * method name  : getDelegatee
+	 * @param empNumber
+	 * @return
+	 * DpsDbImpl
+	 * return type  : String
+	 * 
+	 * purpose		: Get delegatee (person who delegates) user 
+	 *
+	 * Date    		:	Apr 16, 2018 2:41:04 PM
+	 */
+	private String getDelegatee( String empNumber)
+	{
+		String	SQL_DELEGATE_SELECT_DELEGATEE		=	queryProps.getProperty(Constants.CONST_SQL_DELEGATE_SELECT_DELEGATEE);
+		Map<String,String> namedParameterMap		=	new HashMap<String,String>();
+		namedParameterMap.put("paramDelegatedUserName", empNumber);
+		
+		
+		return nPJdbcTemplDps.queryForObject(SQL_DELEGATE_SELECT_DELEGATEE, namedParameterMap, String.class);
+	}
+	
 	
 }
 
