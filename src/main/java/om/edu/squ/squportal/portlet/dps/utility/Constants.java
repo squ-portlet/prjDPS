@@ -167,6 +167,8 @@ public interface Constants
 	
 	public static final	String	CONST_COLMN_SEQUENCE_NO										=	"SEQUENCE_NUMBER";
 	
+	public static final	String	CONST_COLMN_DELEGATE_USER_DELEGATEE							=	"DELEGATEE";
+	
 	public static final String	CONST_PARAM_NAME_STUDENT_NO									=	"paramStudentNo";
 	public static final String	CONST_PARAM_NAME_FORM_NAME									=	"paramFormName";
 	public static final String	CONST_PARAM_NAME_ROLE_NAME									=	"paramRoleName";
@@ -183,6 +185,7 @@ public interface Constants
 	public static final String	CONST_NO													=	"N";
 	
 	public static final String	CONST_NOT_USED												=	"NU";
+	public static final String	CONST_NOT_AVAILABLE											=	"NA";
 	
 	public static final String	CONST_FULL_TIME												=	"FULL";
 	public static final String	CONST_PART_TIME												=	"PART";
@@ -316,6 +319,9 @@ public interface Constants
 	public	static	final	String	CONST_SQL_UNIVERSITY_WITHDRAW_INSERT_APPLY_BY_STUDENT	=	"dps.university.withdraw.insert.apply.by.student";
 	public	static	final	String	CONST_SQL_UNIVERSITY_WITHDRAW_SELECT_RECORDS_BY_STUDENT	=	"dps.university.withdraw.select.student.records";
 	public	static	final	String	CONST_SQL_UNIVERSITY_WITHDRAW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	"dps.university.withdraw.select.student.records.by.employee";
+	
+	/* --- SQL - DPS - Delegation ---------------------------------------------- */
+	public	static	final	String	CONST_SQL_DELEGATE_SELECT_DELEGATEE						=	"dps.delegate.select.delegatee";
 
 	/* ---  SQL - DPS - Drop With W -- Stored Procedure -- --------------------- */	
 	public	static	final	String	CONST_PROC_DROPW_WITHDRAW_COURSE						=	"PROC_WITHDRAW_COURSE";
