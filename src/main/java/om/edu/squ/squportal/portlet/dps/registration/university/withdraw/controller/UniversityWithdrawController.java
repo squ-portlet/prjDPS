@@ -279,7 +279,7 @@ public class UniversityWithdrawController
 		Employee employee	=	null;
 		try
 		{
-			employee = dpsServiceDao.getEmployee(request,locale);
+			employee = dpsServiceDao.getEmployee(request,locale, false);
 			
 		}
 		catch (ExceptionEmptyResultset ex)
@@ -321,7 +321,7 @@ public class UniversityWithdrawController
 		
 		
 		try{
-			employee	=	dpsServiceDao.getEmployee(request,locale);
+			employee	=	dpsServiceDao.getEmployee(request,locale, false);
 			List<UniversityWithdrawDTO>		dtos	=	universityWithdrawService.getUniversityWithdrawRecordsForApprover(roleNameValue.getRoleValue(), employee, locale);
 			response.getWriter().print(gson.toJson(dtos));
 		}

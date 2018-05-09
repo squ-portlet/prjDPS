@@ -39,6 +39,7 @@ import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
+import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
 import om.edu.squ.squportal.portlet.dps.notification.bo.NotifierPeople;
 import om.edu.squ.squportal.portlet.dps.notification.service.DPSNotification;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
@@ -200,14 +201,39 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 	 * purpose		: Get list of students for approvers
 	 *
 	 * Date    		:	Feb 15, 2017 10:09:55 PM
+	 * Date (Modification) : 10-May-2018 - Delegation applied
+	 * @throws ExceptionEmptyResultset 
 	 */
-	public List<ExtensionDTO> getExtensionsForApprovers(String roleType, Employee employee, Locale locale)
+	public List<ExtensionDTO> getExtensionsForApprovers(String roleType, Employee employee, Locale locale) throws ExceptionEmptyResultset
 	{
+		List<ExtensionDTO>	resultList	=	null;
 		if(employee.getEmpNumber().substring(0,1).equals("e"))
 		{
 			employee.setEmpNumber(employee.getEmpNumber().substring(1));
 		}
-		return extensionDbDao.getExtensionsForApprovers(roleType, employee, locale, null);
+		
+		resultList	=	extensionDbDao.getExtensionsForApprovers(roleType, employee, locale, null);
+
+		/* Delegation considered*/
+		if(null == employee.getEmpNumberDelegated())
+		{
+			return resultList;
+		}
+		else
+		{
+			List<ExtensionDTO>	listResultForDelegated	=	null;
+			Employee			delegatedEmployee 		= 	dpsServiceDao.getEmployee(employee.getEmpNumberDelegated(), locale, false);
+								if(delegatedEmployee.getEmpNumber().substring(0,1).equals("e"))
+								{
+									delegatedEmployee.setEmpNumber(delegatedEmployee.getEmpNumber().substring(1));
+								}
+								listResultForDelegated	=	extensionDbDao.getExtensionsForApprovers(roleType, delegatedEmployee, locale, null);
+			
+								listResultForDelegated.addAll(resultList);
+			return listResultForDelegated;
+			
+		}
+		
 	}
 
 	/**
@@ -224,14 +250,32 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 	 * purpose		:
 	 *
 	 * Date    		:	Mar 4, 2017 1:00:05 AM
+	 * @throws ExceptionEmptyResultset 
 	 */
-	private ExtensionDTO getExtensionsForApprovers(String roleType, Employee employee, String studentNo,Locale locale)
+	private ExtensionDTO getExtensionsForApprovers(String roleType, Employee employee, String studentNo,Locale locale) throws ExceptionEmptyResultset
 	{
+		ExtensionDTO	resultBo	=	null;
+		
 		if(employee.getEmpNumber().substring(0,1).equals("e"))
 		{
 			employee.setEmpNumber(employee.getEmpNumber().substring(1));
 		}
-		return extensionDbDao.getExtensionsForApprovers(roleType, employee, locale, studentNo).get(0);
+		
+		resultBo	=	extensionDbDao.getExtensionsForApprovers(roleType, employee, locale, studentNo).get(0);
+		
+		if(null == employee.getEmpNumberDelegated())
+		{
+			return resultBo;
+		}
+		else
+		{
+			ExtensionDTO		resultForDelegated	=	null;
+			Employee			delegatedEmployee 	= 	dpsServiceDao.getEmployee(employee.getEmpNumberDelegated(), locale, false);
+								resultForDelegated	=	extensionDbDao.getExtensionsForApprovers(roleType, delegatedEmployee, locale, studentNo).get(0);
+			return resultForDelegated;
+			
+		}
+
 	}
 	
 	/**
@@ -247,9 +291,10 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 	 * Note			: This function relates with two different transactional statements
 	 *
 	 * Date    		:	Feb 28, 2017 11:32:46 AM
+	 * @throws ExceptionEmptyResultset 
 	 * @throws Exception 
 	 */
-	public ExtensionDTO setRoleTransaction(ExtensionDTO extensionDTOTr, Employee employee, Locale locale) 
+	public ExtensionDTO setRoleTransaction(ExtensionDTO extensionDTOTr, Employee employee, Locale locale) throws ExceptionEmptyResultset 
 	{
 		int 					resultTr			=	0;		
 		ExtensionDTO			extensionDTOStudent	=	new ExtensionDTO();

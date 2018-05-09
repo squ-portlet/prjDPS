@@ -238,7 +238,7 @@ public class ExtensionStudiesController
 		Employee employee	=	null;
 		try
 		{
-			employee = dpsServiceDao.getEmployee(request,locale);
+			employee = dpsServiceDao.getEmployee(request,locale, false);
 			
 		}
 		catch (ExceptionEmptyResultset ex)
@@ -309,7 +309,7 @@ public class ExtensionStudiesController
 		Employee employee;
 		try
 		{
-			employee = dpsServiceDao.getEmployee(request,locale);
+			employee = dpsServiceDao.getEmployee(request,locale, true);
 			List<ExtensionDTO> dtos	=	extensionServiceDao.getExtensionsForApprovers(roleNameValue.getRoleValue(), employee, locale);
 			response.getWriter().print(gson.toJson(dtos));
 		}
@@ -341,7 +341,7 @@ public class ExtensionStudiesController
 			ExtensionDTO	extensionDTOResult		=	null;	
 			try
 			{
-				employee = dpsServiceDao.getEmployee(request,locale);
+				employee = dpsServiceDao.getEmployee(request,locale, true);
 				employee.setUserName(request.getRemoteUser());
 				
 				extensionDTOResult = extensionServiceDao.setRoleTransaction(extensionDTO, employee, locale);

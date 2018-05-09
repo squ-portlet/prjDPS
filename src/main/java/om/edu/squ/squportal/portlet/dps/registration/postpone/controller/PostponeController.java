@@ -179,7 +179,7 @@ public class PostponeController
 		Employee employee	=	null;
 		try
 		{
-			employee = dpsServiceDao.getEmployee(request,locale);
+			employee = dpsServiceDao.getEmployee(request,locale, false);
 			
 		}
 		catch (ExceptionEmptyResultset ex)
@@ -315,7 +315,7 @@ public class PostponeController
 		Employee employee;
 		try
 		{
-			employee = dpsServiceDao.getEmployee(request,locale);
+			employee = dpsServiceDao.getEmployee(request,locale, false);
 			List<PostponeDTO> dtos	=	postponeService.getPostponeForAprovers(roleNameValue.getRoleValue(), employee, locale);
 			response.getWriter().print(gson.toJson(dtos));
 
@@ -355,7 +355,7 @@ public class PostponeController
 				PostponeDTO	dtoResult	=	null;
 				try
 				{
-					employee		=	dpsServiceDao.getEmployee(request,locale);		
+					employee		=	dpsServiceDao.getEmployee(request,locale, false);		
 					employee.setUserName(request.getRemoteUser());
 					postponeDTO.setUserName(request.getRemoteUser());
 					

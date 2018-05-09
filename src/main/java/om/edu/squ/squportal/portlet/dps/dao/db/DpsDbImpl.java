@@ -121,7 +121,7 @@ public class DpsDbImpl implements DpsDbDao
 	 * Date    		:	Jan 8, 2017 3:42:44 PM
 	 * @throws ExceptionEmptyResultset 
 	 */
-	public Employee getEmployee(String empNumber) throws ExceptionEmptyResultset
+	public Employee getEmployee(String empNumber, boolean applyDelegation) throws ExceptionEmptyResultset
 	{
 		String		delegateeEmpNumber		=	null;
 		Employee	employee				=	null;
@@ -148,30 +148,38 @@ public class DpsDbImpl implements DpsDbDao
 		};
 		
 		Map<String, String> mapParamsDPS		=	new HashMap<String, String>();
-							delegateeEmpNumber	=	getDelegatee(empNumber);
-							if(delegateeEmpNumber.equals(Constants.CONST_NOT_AVAILABLE))
+							if(applyDelegation)
 							{
-								mapParamsDPS.put("paramEmpNumber", empNumber);						//	No delegation
+								delegateeEmpNumber	=	getDelegatee(empNumber);
+								if(delegateeEmpNumber.equals(Constants.CONST_NOT_AVAILABLE))
+								{
+									mapParamsDPS.put("paramEmpNumber", empNumber);						//	No delegation
+								}
+								else
+								{
+									mapParamsDPS.put("paramEmpNumber", delegateeEmpNumber); 
+								}
 							}
 							else
 							{
-								mapParamsDPS.put("paramEmpNumber", delegateeEmpNumber); 
+									mapParamsDPS.put("paramEmpNumber", empNumber);
 							}
 		
 		try
 			{
 				employee = nPJdbcTemplDps.queryForObject(SQL_DPS_EMPLOYEE_DETAIL, mapParamsDPS, mapper);
-				
-				if(delegateeEmpNumber.equals(Constants.CONST_NOT_AVAILABLE))
+				if(applyDelegation)
 				{
-					
+					if(delegateeEmpNumber.equals(Constants.CONST_NOT_AVAILABLE))
+					{
+						
+					}
+					else
+					{
+						employee.setEmpNumberDelegated(empNumber);
+						employee.setEmpNumberDelegatee(delegateeEmpNumber);
+					}
 				}
-				else
-				{
-					employee.setEmpNumberDelegated(empNumber);
-					employee.setEmpNumberDelegatee(delegateeEmpNumber);
-				}
-				
 				return	employee;
 			}
 		catch(EmptyResultDataAccessException ex)

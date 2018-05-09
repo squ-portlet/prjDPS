@@ -415,8 +415,6 @@ public class ExtensionDbImpl implements ExtensionDbDao
 		{
 			namedParameterMap.put("paramStdNo", studentNo);
 		}
-		
-		
 		return nPJdbcTemplDpsExtension.query(SQL_EXTENSION_SELECT_STUDENT_RECORDS_BY_EMPLOYEE, namedParameterMap, mapper);
 	}
 	

@@ -253,10 +253,10 @@ public class DpsServiceImpl implements DpsServiceDao
 	 * Date    		:	Feb 13, 2017 9:50:17 PM
 	 * @throws ExceptionEmptyResultset 
 	 */
-	private Employee	getEmployee(String empNumber, Locale locale) throws ExceptionEmptyResultset
+	public Employee	getEmployee(String empNumber, Locale locale, boolean applyDelegation) throws ExceptionEmptyResultset
 	{
 		List<RoleNameValue> 	roleNameValues	=	new ArrayList<RoleNameValue>();
-		Employee				employee		=	dpsDbDao.getEmployee(empNumber);
+		Employee				employee		=	dpsDbDao.getEmployee(empNumber, applyDelegation);
 		Employee				roleOfEmployee	=	roleService.getEmployeeRole(empNumber);
 		employee.setEmployeeRole(roleOfEmployee);
 		
@@ -308,10 +308,10 @@ public class DpsServiceImpl implements DpsServiceDao
 	 *
 	 * Date    		:	Mar 27, 2017 4:24:34 PM
 	 */
-	public Employee getEmployee(PortletRequest request, Locale locale) throws ExceptionEmptyResultset
+	public Employee getEmployee(PortletRequest request, Locale locale, boolean applyDelegation) throws ExceptionEmptyResultset
 	{
 		String 		empNumber	=	getEmpNumber(request);	
-		return 		getEmployee(empNumber, locale);
+		return 		getEmployee(empNumber, locale, applyDelegation);
 	}
 	
 
@@ -566,7 +566,7 @@ public class DpsServiceImpl implements DpsServiceDao
 			}
 			catch(Exception ex)
 			{
-				logger.info("******* exception while getting emp no: " + ex.getMessage());
+				logger.error("******* exception while getting emp no: " + ex.getMessage());
 			}
 			if(strEmpNumber==null || strEmpNumber=="")
 			{
