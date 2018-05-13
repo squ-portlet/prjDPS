@@ -311,7 +311,7 @@ public class ExtensionDbImpl implements ExtensionDbDao
 	 *
 	 * Date    		:	Feb 15, 2017 10:09:55 PM
 	 */
-	public List<ExtensionDTO> getExtensionsForApprovers(String roleType, Employee employee, Locale locale, String studentNo)
+	public List<ExtensionDTO> getExtensionsForApprovers(String roleType, Employee employee, Locale locale, String studentNo, final boolean applyDelegation)
 	{
 		String SQL_EXTENSION_SELECT_STUDENT_RECORDS_BY_EMPLOYEE		=	queryExtensionProps.getProperty(Constants.CONST_SQL_EXTENSION_SELECT_STUDENT_RECORDS_BY_EMPLOYEE);	
 		RowMapper<ExtensionDTO> 	mapper		=	new RowMapper<ExtensionDTO>()
@@ -367,7 +367,7 @@ public class ExtensionDbImpl implements ExtensionDbDao
 				extensionDTO.setSupervisor(supervisor);
 				extensionDTO.setCollegeDean(collegeDean);
 				extensionDTO.setDpsDean(dpsDean);
-				
+				extensionDTO.setApplyDelegation(applyDelegation);
 				return extensionDTO;
 			}
 		};

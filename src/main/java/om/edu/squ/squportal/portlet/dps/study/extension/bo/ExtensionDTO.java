@@ -74,6 +74,7 @@ public class ExtensionDTO
 	private	boolean		approver;
 	private	String		roleName;
 	private	String		approvalCode;
+	private	boolean 	applyDelegation;
 	
 	
 	
@@ -736,6 +737,27 @@ public class ExtensionDTO
 	{
 		this.dpsDean = dpsDean;
 	}
+	
+	/**
+	 * Getter Method	: isApplyDelegation
+	 * @return the applyDelegation
+	 * 
+	 * Date				: May 10, 2018
+	 */
+	public boolean isApplyDelegation()
+	{
+		return this.applyDelegation;
+	}
+	/**
+	 * Setter method : setApplyDelegation
+	 * @param applyDelegation the applyDelegation to set
+	 * 
+	 * Date          : May 10, 2018 2:32:44 PM
+	 */
+	public void setApplyDelegation(boolean applyDelegation)
+	{
+		this.applyDelegation = applyDelegation;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -761,7 +783,8 @@ public class ExtensionDTO
 				+ this.advisor + ", supervisor=" + this.supervisor
 				+ ", collegeDean=" + this.collegeDean + ", dpsDean="
 				+ this.dpsDean + ", approver=" + this.approver + ", roleName="
-				+ this.roleName + ", approvalCode=" + this.approvalCode + "]";
+				+ this.roleName + ", approvalCode=" + this.approvalCode
+				+ ", applyDelegation=" + this.applyDelegation + "]";
 	}
 	
 	

@@ -109,6 +109,7 @@ public interface ExtensionDbDao
 	 * @param employee
 	 * @param locale
 	 * @param studentNo TODO
+	 * @param applyDelegation TODO
 	 * @return
 	 * ExtensionDbImpl
 	 * return type  : List<ExtensionDTO>
@@ -117,5 +118,5 @@ public interface ExtensionDbDao
 	 *
 	 * Date    		:	Feb 15, 2017 10:09:55 PM
 	 */
-	public List<ExtensionDTO> getExtensionsForApprovers(String roleType, Employee employee, Locale locale, String studentNo);
+	public List<ExtensionDTO> getExtensionsForApprovers(String roleType, Employee employee, Locale locale, String studentNo, boolean applyDelegation);
 }

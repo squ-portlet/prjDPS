@@ -9,7 +9,7 @@
 <script type="text/javascript">
 	$(function(){
 
-		extensionStudentDataModel
+		//extensionStudentDataModel
 		
 
 		/*********
