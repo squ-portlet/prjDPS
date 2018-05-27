@@ -45,6 +45,8 @@ public class Employee
 	private String				userName;					/* -- Might be delegated - Check empNumberDelegatee to find who delegates --*/
 	private	String				empNumberDelegated;			/* -- empNumber of person who is delegated, In case of delegation, empNumber == empNumberDelegated -- */
 	private	String				empNumberDelegatee;			/* -- empNumber of person who delegates other -- */
+	private	String				userNameDelegated;			/* -- userName of person who is delegated, In case of delegation -- */
+	private	String				userNameDelegatee;			/* -- userName of person who delegates other -- */
 	private	Date				delegatedFromDate;
 	private	Date				delegatedToDate;
 	private Branch				branch;
@@ -164,6 +166,50 @@ public class Employee
 	public void setEmpNumberDelegatee(String empNumberDelegatee)
 	{
 		this.empNumberDelegatee = empNumberDelegatee;
+	}
+
+	/**
+	 * Getter Method	: getUserNameDelegated
+	 * @return the userNameDelegated
+	 * 
+	 * Date				: May 15, 2018
+	 */
+	public String getUserNameDelegated()
+	{
+		return this.userNameDelegated;
+	}
+
+	/**
+	 * Setter method : setUserNameDelegated
+	 * @param userNameDelegated the userNameDelegated to set
+	 * 
+	 * Date          : May 15, 2018 1:47:45 PM
+	 */
+	public void setUserNameDelegated(String userNameDelegated)
+	{
+		this.userNameDelegated = userNameDelegated;
+	}
+
+	/**
+	 * Getter Method	: getUserNameDelegatee
+	 * @return the userNameDelegatee
+	 * 
+	 * Date				: May 15, 2018
+	 */
+	public String getUserNameDelegatee()
+	{
+		return this.userNameDelegatee;
+	}
+
+	/**
+	 * Setter method : setUserNameDelegatee
+	 * @param userNameDelegatee the userNameDelegatee to set
+	 * 
+	 * Date          : May 15, 2018 1:47:45 PM
+	 */
+	public void setUserNameDelegatee(String userNameDelegatee)
+	{
+		this.userNameDelegatee = userNameDelegatee;
 	}
 
 	/**
@@ -467,7 +513,9 @@ public class Employee
 		return "Employee [empNumber=" + this.empNumber + ", userName="
 				+ this.userName + ", empNumberDelegated="
 				+ this.empNumberDelegated + ", empNumberDelegatee="
-				+ this.empNumberDelegatee + ", delegatedFromDate="
+				+ this.empNumberDelegatee + ", userNameDelegated="
+				+ this.userNameDelegated + ", userNameDelegatee="
+				+ this.userNameDelegatee + ", delegatedFromDate="
 				+ this.delegatedFromDate + ", delegatedToDate="
 				+ this.delegatedToDate + ", branch=" + this.branch
 				+ ", department=" + this.department + ", email=" + this.email

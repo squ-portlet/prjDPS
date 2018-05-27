@@ -51,6 +51,7 @@ public interface DpsDbDao
 	 * 
 	 * method name  : getEmployee
 	 * @param empNumber
+	 * @param empUserName TODO
 	 * @param applyDelegation TODO
 	 * @return
 	 * DpsDbImpl
@@ -61,7 +62,7 @@ public interface DpsDbDao
 	 * Date    		:	Jan 8, 2017 3:42:44 PM
 	 * @throws ExceptionEmptyResultset 
 	 */
-	public Employee getEmployee(String empNumber, boolean applyDelegation) throws ExceptionEmptyResultset;
+	public Employee getEmployee(String empNumber, String empUserName, boolean applyDelegation) throws ExceptionEmptyResultset;
 	
 	/**
 	 * 

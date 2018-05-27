@@ -212,24 +212,38 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 			employee.setEmpNumber(employee.getEmpNumber().substring(1));
 		}
 		
-		resultList	=	extensionDbDao.getExtensionsForApprovers(roleType, employee, locale, null, false);
+		
 
 		/* Delegation considered*/
 		if(null == employee.getEmpNumberDelegated())
 		{
+			resultList	=	extensionDbDao.getExtensionsForApprovers(roleType, employee, locale, null, false);
 			return resultList;
 		}
 		else
 		{
 			List<ExtensionDTO>	listResultForDelegated	=	null;
-			Employee			delegatedEmployee 		= 	dpsServiceDao.getEmployee(employee.getEmpNumberDelegated(), locale, false);
+			List<ExtensionDTO>	listResultForDelegatee	=	null;
+			
+			
+			Employee			delegatedEmployee 		= 	dpsServiceDao.getEmployee(employee.getEmpNumberDelegated(), employee.getUserNameDelegated(), locale, false);
+			
 								if(delegatedEmployee.getEmpNumber().substring(0,1).equals("e"))
 								{
 									delegatedEmployee.setEmpNumber(delegatedEmployee.getEmpNumber().substring(1));
 								}
-								listResultForDelegated	=	extensionDbDao.getExtensionsForApprovers(roleType, delegatedEmployee, locale, null, true);
+								listResultForDelegated	=	extensionDbDao.getExtensionsForApprovers(roleType, delegatedEmployee, locale, null, false);
 			
-								listResultForDelegated.addAll(resultList);
+								
+			Employee			delegateeEmployee		=	dpsServiceDao.getEmployee(employee.getEmpNumberDelegatee(), employee.getUserNameDelegatee(), locale, false);
+			
+								if(delegateeEmployee.getEmpNumber().substring(0,1).equals("e"))
+								{
+									delegateeEmployee.setEmpNumber(delegateeEmployee.getEmpNumber().substring(1));
+								}
+								listResultForDelegatee	= extensionDbDao.getExtensionsForApprovers(roleType, delegateeEmployee, locale, null, true);
+								
+								listResultForDelegated.addAll(listResultForDelegatee);
 			return listResultForDelegated;
 			
 		}
@@ -270,7 +284,7 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		else
 		{
 			ExtensionDTO		resultForDelegated	=	null;
-			Employee			delegatedEmployee 	= 	dpsServiceDao.getEmployee(employee.getEmpNumberDelegated(), locale, false);
+			Employee			delegatedEmployee 	= 	dpsServiceDao.getEmployee(employee.getEmpNumberDelegated(), employee.getUserName(), locale, false);
 								resultForDelegated	=	extensionDbDao.getExtensionsForApprovers(roleType, delegatedEmployee, locale, studentNo, false).get(0);
 			return resultForDelegated;
 			

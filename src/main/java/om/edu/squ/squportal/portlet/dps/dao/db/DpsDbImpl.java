@@ -49,9 +49,11 @@ import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
+import om.edu.squ.squportal.portlet.dps.utility.UserIdUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -67,6 +69,10 @@ import org.springframework.jdbc.core.simple.SimpleJdbcCall;
  */
 public class DpsDbImpl implements DpsDbDao
 {
+
+	@Autowired
+	UserIdUtil	userIdUtil;
+	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 //	private	NamedParameterJdbcTemplate	nPJdbcTemplHrms;
@@ -108,22 +114,14 @@ public class DpsDbImpl implements DpsDbDao
 	}
 	
 	
-	/**
-	 * 
-	 * method name  : getEmployee
-	 * @param empNumber
-	 * @return
-	 * DpsDbImpl
-	 * return type  : Employee
-	 * 
-	 * purpose		:
-	 *
-	 * Date    		:	Jan 8, 2017 3:42:44 PM
-	 * @throws ExceptionEmptyResultset 
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.dao.db.DpsDbDao#getEmployee(java.lang.String, java.lang.String, boolean)
 	 */
-	public Employee getEmployee(String empNumber, boolean applyDelegation) throws ExceptionEmptyResultset
+	public Employee getEmployee(String empNumber, String empUserName, boolean applyDelegation) throws ExceptionEmptyResultset
 	{
 		String		delegateeEmpNumber		=	null;
+		String		delegateeEmpUserName	=	null;
 		Employee	employee				=	null;
 		String		SQL_DPS_EMPLOYEE_DETAIL	=	queryProps.getProperty(Constants.COST_SQL_DPS_EMPLOYEE_DETAIL);
 		
@@ -150,7 +148,8 @@ public class DpsDbImpl implements DpsDbDao
 		Map<String, String> mapParamsDPS		=	new HashMap<String, String>();
 							if(applyDelegation)
 							{
-								delegateeEmpNumber	=	getDelegatee(empNumber);
+								delegateeEmpUserName	=	getDelegatee(empUserName);
+								delegateeEmpNumber		=	String.valueOf(userIdUtil.getEmpNumber(delegateeEmpUserName));
 								if(delegateeEmpNumber.equals(Constants.CONST_NOT_AVAILABLE))
 								{
 									mapParamsDPS.put("paramEmpNumber", empNumber);						//	No delegation
@@ -177,7 +176,9 @@ public class DpsDbImpl implements DpsDbDao
 					else
 					{
 						employee.setEmpNumberDelegated(empNumber);
+						employee.setUserNameDelegated(empUserName);
 						employee.setEmpNumberDelegatee(delegateeEmpNumber);
+						employee.setUserNameDelegatee(delegateeEmpUserName);
 					}
 				}
 				return	employee;
@@ -594,7 +595,7 @@ public class DpsDbImpl implements DpsDbDao
 	/**
 	 * 
 	 * method name  : getDelegatee
-	 * @param empNumber
+	 * @param empUserName
 	 * @return
 	 * DpsDbImpl
 	 * return type  : String
@@ -603,11 +604,11 @@ public class DpsDbImpl implements DpsDbDao
 	 *
 	 * Date    		:	Apr 16, 2018 2:41:04 PM
 	 */
-	private String getDelegatee( String empNumber)
+	private String getDelegatee( String empUserName)
 	{
 		String	SQL_DELEGATE_SELECT_DELEGATEE		=	queryProps.getProperty(Constants.CONST_SQL_DELEGATE_SELECT_DELEGATEE);
 		Map<String,String> namedParameterMap		=	new HashMap<String,String>();
-		namedParameterMap.put("paramDelegatedUserName", empNumber);
+		namedParameterMap.put("paramDelegatedUserName", empUserName);
 		
 		
 		return nPJdbcTemplDps.queryForObject(SQL_DELEGATE_SELECT_DELEGATEE, namedParameterMap, String.class);
