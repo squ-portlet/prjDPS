@@ -348,7 +348,7 @@ public class ExtensionStudiesController
 			ExtensionDTO	extensionDTOResult		=	null;	
 			try
 			{
-				employee = dpsServiceDao.getEmployee(request,locale, true);
+				employee = dpsServiceDao.getEmployee(request,locale, Constants.CONST_IS_DELEGATION);
 				employee.setUserName(request.getRemoteUser());
 				
 				extensionDTOResult = extensionServiceDao.setRoleTransaction(extensionDTO, employee, locale);

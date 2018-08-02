@@ -56,6 +56,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.gson.Gson;
+
 /**
  * @author Bhabesh
  *
@@ -217,34 +219,97 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		/* Delegation considered*/
 		if(null == employee.getEmpNumberDelegated())
 		{
-			resultList	=	extensionDbDao.getExtensionsForApprovers(roleType, employee, locale, null, false);
+									resultList				=	extensionDbDao.getExtensionsForApprovers
+																											(
+																													roleType
+																												, 	employee
+																												, 	locale
+																												, 	null
+																												, 	false
+																												, 	false
+																												, 	false
+																												, 	false
+																											);
 			return resultList;
 		}
 		else
 		{
 			List<ExtensionDTO>	listResultForDelegated	=	null;
 			List<ExtensionDTO>	listResultForDelegatee	=	null;
-			
+			Gson				gson					=	new Gson();
 			
 			Employee			delegatedEmployee 		= 	dpsServiceDao.getEmployee(employee.getEmpNumberDelegated(), employee.getUserNameDelegated(), locale, false);
 			
 								if(delegatedEmployee.getEmpNumber().substring(0,1).equals("e"))
 								{
 									delegatedEmployee.setEmpNumber(delegatedEmployee.getEmpNumber().substring(1));
+									
+									delegatedEmployee.setUserNameDelegated(employee.getUserNameDelegated());
+									delegatedEmployee.setEmpNumberDelegated(employee.getEmpNumberDelegated());
+									delegatedEmployee.setUserNameDelegatee(employee.getUserNameDelegatee());
+									delegatedEmployee.setEmpNumberDelegatee(employee.getEmpNumberDelegatee());
+
+									
 								}
-								listResultForDelegated	=	extensionDbDao.getExtensionsForApprovers(roleType, delegatedEmployee, locale, null, false);
-			
+								
+								
 								
 			Employee			delegateeEmployee		=	dpsServiceDao.getEmployee(employee.getEmpNumberDelegatee(), employee.getUserNameDelegatee(), locale, false);
 			
 								if(delegateeEmployee.getEmpNumber().substring(0,1).equals("e"))
 								{
 									delegateeEmployee.setEmpNumber(delegateeEmployee.getEmpNumber().substring(1));
+									
+									delegateeEmployee.setUserNameDelegated(employee.getUserNameDelegated());
+									delegateeEmployee.setEmpNumberDelegated(employee.getEmpNumberDelegated());									
+									delegateeEmployee.setUserNameDelegatee(employee.getUserNameDelegatee());
+									delegateeEmployee.setEmpNumberDelegatee(employee.getEmpNumberDelegatee());
 								}
-								listResultForDelegatee	= extensionDbDao.getExtensionsForApprovers(roleType, delegateeEmployee, locale, null, true);
 								
-								listResultForDelegated.addAll(listResultForDelegatee);
-			return listResultForDelegated;
+
+								/* Delegatee employee not required to view records of delegated */
+								if(employee.getUserName().equals(employee.getUserNameDelegatee()))
+								{
+									listResultForDelegatee	= 	extensionDbDao.getExtensionsForApprovers
+																											(
+																													roleType
+																												, 	delegateeEmployee
+																												, 	locale
+																												, 	null
+																												, 	Constants.CONST_IS_DELEGATION
+																												, 	true
+																												, 	Constants.CONST_DELEGATED_APPROVER_DEFAULT_ELIGIBLE
+																												, 	Constants.CONST_DELEGATION_APPROVE_NOT_ELIGIBLE
+																											);
+									return listResultForDelegatee;
+								}
+								else
+								{
+									listResultForDelegatee	= 	extensionDbDao.getExtensionsForApprovers
+																											(
+																													roleType
+																												, 	delegateeEmployee
+																												, 	locale
+																												, 	null
+																												, 	Constants.CONST_IS_DELEGATION
+																												, 	true
+																												, 	Constants.CONST_DELEGATED_APPROVER_DEFAULT_ELIGIBLE
+																												, 	Constants.CONST_DELEGATION_APPROVE_ELIGIBLE
+																											);
+									listResultForDelegated	=	extensionDbDao.getExtensionsForApprovers
+																											(
+																													roleType
+																												, 	delegatedEmployee
+																												, 	locale
+																												, 	null
+																												, 	Constants.CONST_IS_DELEGATION
+																												, 	false
+																												, 	Constants.CONST_DELEGATED_APPROVER_DEFAULT_ELIGIBLE
+																												, 	Constants.CONST_DELEGATION_APPROVE_ELIGIBLE
+																											);
+									listResultForDelegated.addAll(listResultForDelegatee);
+							return 	listResultForDelegated;
+								}
 			
 		}
 		
@@ -275,17 +340,44 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 			employee.setEmpNumber(employee.getEmpNumber().substring(1));
 		}
 		
-		resultBo	=	extensionDbDao.getExtensionsForApprovers(roleType, employee, locale, studentNo, false).get(0);
+		
 		
 		if(null == employee.getEmpNumberDelegated())
 		{
+									resultBo				=	extensionDbDao.getExtensionsForApprovers
+																											(
+																													roleType
+																												, 	employee
+																												, 	locale
+																												, 	studentNo
+																												, 	Constants.CONST_IS_DELEGATION
+																												, 	false
+																												, 	false
+																												, 	false
+																											).get(0);
 			return resultBo;
 		}
 		else
 		{
-			ExtensionDTO		resultForDelegated	=	null;
-			Employee			delegatedEmployee 	= 	dpsServiceDao.getEmployee(employee.getEmpNumberDelegated(), employee.getUserName(), locale, false);
-								resultForDelegated	=	extensionDbDao.getExtensionsForApprovers(roleType, delegatedEmployee, locale, studentNo, false).get(0);
+			ExtensionDTO		resultForDelegated			=	null;
+			Employee			delegatedEmployee 			= 	dpsServiceDao.getEmployee
+																											(
+																													employee.getEmpNumberDelegated()
+																												, 	employee.getUserName()
+																												, 	locale
+																												, 	true
+																											);
+								resultForDelegated			=	extensionDbDao.getExtensionsForApprovers
+																											(
+																													roleType
+																												, 	delegatedEmployee
+																												, 	locale
+																												, 	studentNo
+																												, 	Constants.CONST_IS_DELEGATION
+																												, 	false
+																												, 	false
+																												, 	false
+																											).get(0);
 			return resultForDelegated;
 			
 		}
@@ -319,16 +411,21 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		transactionDTO.setStdStatCode(extensionDTOTr.getStdStatCode());
 		transactionDTO.setAppEmpNo(employee.getEmpNumber());
 		transactionDTO.setAppEmpName(employee.getUserName());
+		transactionDTO.setAppDelegatedEmpNo(employee.getEmpNumberDelegated());
+		transactionDTO.setAppDelegatedEmpUserName(employee.getUserNameDelegated());
+		transactionDTO.setAppDelegateeEmpNo(employee.getEmpNumberDelegatee());
+		transactionDTO.setAppDelegateeEmpUserName(employee.getUserNameDelegatee());
 		transactionDTO.setComments(extensionDTOTr.getCommentEng());
 		transactionDTO.setRequestCode(Constants.CONST_REQUEST_CODE_DEFAULT);
 		
 		
-		ApprovalDTO	approvalDTO				= 	dpsServiceDao.setRoleTransaction(
-																						transactionDTO
-																					, 	Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY
-																					, 	extensionDTOTr.getRoleName()
-																					, 	extensionDTOTr.getStatusCodeName()
-																				);
+		ApprovalDTO				approvalDTO					= 	dpsServiceDao.setRoleTransaction
+																											(
+																													transactionDTO
+																												, 	Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY
+																												, 	extensionDTOTr.getRoleName()
+																												, 	extensionDTOTr.getStatusCodeName()
+																											);
 
 		if(extensionDTOTr.getStatusCodeName().equals(Constants.CONST_SQL_STATUS_CODE_REJCT))
 		{
@@ -351,7 +448,7 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		extensionDTOStudent.setUserName(employee.getUserName());
 		extensionDTOStudent.setCommentEng(extensionDTOTr.getCommentEng());
 		
-		resultTr			=	extensionDbDao.setExtensionStatusOfStudent(extensionDTOStudent);
+								resultTr					=	extensionDbDao.setExtensionStatusOfStudent(extensionDTOStudent);
 		try
 		{
 			if(resultTr>0)
@@ -435,7 +532,7 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		
 		
 		/*Rule 3*/
-		isWeekSpecifiedAvailable	=	ruleService.isCurrentDateInSpecificWeek(Constants.CONST_WEEK_10);
+		isWeekSpecifiedAvailable				=	ruleService.isCurrentDateInSpecificWeek(Constants.CONST_WEEK_10);
 		
 		/*Rule 4  */
 		isAlreadyExtensionApproved				=	ruleService.isExtensionRecordAlreadyExist(studentNo, stdStatCode);
