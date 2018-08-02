@@ -41,6 +41,10 @@ public class ApprovalTransactionDTO
 	private	String	statusCode;
 	private	String	appEmpNo;
 	private	String	appEmpName;
+	private	String  appDelegatedEmpNo;
+	private	String	appDelegatedEmpUserName;
+	private	String	appDelegateeEmpNo;
+	private	String	appDelegateeEmpUserName;
 	private	String	requestCode;
 	private	String	comments;
 	
@@ -166,6 +170,86 @@ public class ApprovalTransactionDTO
 	}
 	
 	/**
+	 * Getter Method	: getAppDelegatedEmpNo
+	 * @return the appDelegatedEmpNo
+	 * 
+	 * Date				: May 28, 2018
+	 */
+	public String getAppDelegatedEmpNo()
+	{
+		return this.appDelegatedEmpNo;
+	}
+	/**
+	 * Setter method : setAppDelegatedEmpNo
+	 * @param appDelegatedEmpNo the appDelegatedEmpNo to set
+	 * 
+	 * Date          : May 28, 2018 10:31:05 AM
+	 */
+	public void setAppDelegatedEmpNo(String appDelegatedEmpNo)
+	{
+		this.appDelegatedEmpNo = appDelegatedEmpNo;
+	}
+	/**
+	 * Getter Method	: getAppDelegatedEmpUserName
+	 * @return the appDelegatedEmpUserName
+	 * 
+	 * Date				: May 28, 2018
+	 */
+	public String getAppDelegatedEmpUserName()
+	{
+		return this.appDelegatedEmpUserName;
+	}
+	/**
+	 * Setter method : setAppDelegatedEmpUserName
+	 * @param appDelegatedEmpUserName the appDelegatedEmpUserName to set
+	 * 
+	 * Date          : May 28, 2018 10:31:05 AM
+	 */
+	public void setAppDelegatedEmpUserName(String appDelegatedEmpUserName)
+	{
+		this.appDelegatedEmpUserName = appDelegatedEmpUserName;
+	}
+	/**
+	 * Getter Method	: getAppDelegateeEmpNo
+	 * @return the appDelegateeEmpNo
+	 * 
+	 * Date				: May 28, 2018
+	 */
+	public String getAppDelegateeEmpNo()
+	{
+		return this.appDelegateeEmpNo;
+	}
+	/**
+	 * Setter method : setAppDelegateeEmpNo
+	 * @param appDelegateeEmpNo the appDelegateeEmpNo to set
+	 * 
+	 * Date          : May 28, 2018 10:31:05 AM
+	 */
+	public void setAppDelegateeEmpNo(String appDelegateeEmpNo)
+	{
+		this.appDelegateeEmpNo = appDelegateeEmpNo;
+	}
+	/**
+	 * Getter Method	: getAppDelegateeEmpUserName
+	 * @return the appDelegateeEmpUserName
+	 * 
+	 * Date				: May 28, 2018
+	 */
+	public String getAppDelegateeEmpUserName()
+	{
+		return this.appDelegateeEmpUserName;
+	}
+	/**
+	 * Setter method : setAppDelegateeEmpUserName
+	 * @param appDelegateeEmpUserName the appDelegateeEmpUserName to set
+	 * 
+	 * Date          : May 28, 2018 10:31:05 AM
+	 */
+	public void setAppDelegateeEmpUserName(String appDelegateeEmpUserName)
+	{
+		this.appDelegateeEmpUserName = appDelegateeEmpUserName;
+	}
+	/**
 	 * Getter Method	: getComments
 	 * @return the comments
 	 * 
@@ -215,8 +299,12 @@ public class ApprovalTransactionDTO
 				+ ", stdStatCode=" + this.stdStatCode + ", approvalCode="
 				+ this.approvalCode + ", statusCode=" + this.statusCode
 				+ ", appEmpNo=" + this.appEmpNo + ", appEmpName="
-				+ this.appEmpName + ", requestCode=" + this.requestCode
-				+ ", comments=" + this.comments + "]";
+				+ this.appEmpName + ", appDelegatedEmpNo="
+				+ this.appDelegatedEmpNo + ", appDelegatedEmpUserName="
+				+ this.appDelegatedEmpUserName + ", appDelegateeEmpNo="
+				+ this.appDelegateeEmpNo + ", appDelegateeEmpUserName="
+				+ this.appDelegateeEmpUserName + ", requestCode="
+				+ this.requestCode + ", comments=" + this.comments + "]";
 	}
 	
 	

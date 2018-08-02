@@ -167,7 +167,15 @@ public interface Constants
 	
 	public static final	String	CONST_COLMN_SEQUENCE_NO										=	"SEQUENCE_NUMBER";
 	
+	public static final	String	CONST_COLMN_DELEGATE_USER_DELEGATED							=	"DELEGATED";
 	public static final	String	CONST_COLMN_DELEGATE_USER_DELEGATEE							=	"DELEGATEE";
+	public static final	String	CONST_COLMN_DELEGATED_FROM									=	"DELEGATED_FROM";
+	public static final	String	CONST_COLMN_DELEGATED_TO									=	"DELEGATED_TO";
+	
+	public static final boolean	CONST_IS_DELEGATION											=	true;	
+	public static final boolean	CONST_DELEGATED_APPROVER_DEFAULT_ELIGIBLE					=	false;							//	Flag for default approving for delegatee
+	public static final boolean	CONST_DELEGATION_APPROVE_ELIGIBLE							=	true;
+	public static final boolean	CONST_DELEGATION_APPROVE_NOT_ELIGIBLE						=	false;
 	
 	public static final String	CONST_PARAM_NAME_STUDENT_NO									=	"paramStudentNo";
 	public static final String	CONST_PARAM_NAME_FORM_NAME									=	"paramFormName";
@@ -321,6 +329,7 @@ public interface Constants
 	public	static	final	String	CONST_SQL_UNIVERSITY_WITHDRAW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	"dps.university.withdraw.select.student.records.by.employee";
 	
 	/* --- SQL - DPS - Delegation ---------------------------------------------- */
+	public	static	final	String	CONST_SQL_DELEGATE_SELECT_DELEGATED						=	"dps.delegate.select.delegated";
 	public	static	final	String	CONST_SQL_DELEGATE_SELECT_DELEGATEE						=	"dps.delegate.select.delegatee";
 
 	/* ---  SQL - DPS - Drop With W -- Stored Procedure -- --------------------- */	
