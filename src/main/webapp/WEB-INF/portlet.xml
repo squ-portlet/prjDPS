@@ -91,6 +91,27 @@
 								<title>Postponement of Studies</title>
 							</portlet-info>
 						</portlet>
+	<!-- University withdraw -->
+						<portlet>
+							<portlet-name>dpsRegistrationUniversityWithdraw</portlet-name>
+							<portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+							
+							<init-param>
+					         <name>contextConfigLocation</name>
+					         <value>/WEB-INF/context/universityWithdraw-portlet.xml</value>
+					      	</init-param>
+					      	<expiration-cache>0</expiration-cache>
+							<supports>
+								<mime-type>text/html</mime-type>
+					         	<portlet-mode>view</portlet-mode>
+							</supports>
+							<supported-locale>en</supported-locale>
+					        <supported-locale>ar</supported-locale>		
+							<resource-bundle>messages/registration/universityWithdraw/universitywithdraw</resource-bundle>
+							<portlet-info>
+								<title>University Withdrawal</title>
+							</portlet-info>
+						</portlet>						
 <!-- Grade -->
 	<!--  Grade Change -->
 						<portlet>

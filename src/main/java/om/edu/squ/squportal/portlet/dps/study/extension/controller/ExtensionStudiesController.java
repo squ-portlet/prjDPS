@@ -60,6 +60,7 @@ import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
 import om.edu.squ.squportal.portlet.dps.role.bo.RoleExtension;
 import om.edu.squ.squportal.portlet.dps.role.bo.RoleNameValue;
 import om.edu.squ.squportal.portlet.dps.role.service.Role;
+import om.edu.squ.squportal.portlet.dps.security.Crypto;
 import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO;
 import om.edu.squ.squportal.portlet.dps.study.extension.model.ExtensionStudentDataModel;
 import om.edu.squ.squportal.portlet.dps.study.extension.service.ExtensionServiceDao;
@@ -124,6 +125,12 @@ public class ExtensionStudiesController
 		ActivitiDbImpl	activitiDbImpl	=	new ActivitiDbImpl();
 		activitiDbImpl.getProcessInstance("test");
 		*/
+		
+		/**** Security - data encryption keys *****/
+		model.addAttribute("cryptoIterationCount", Crypto.CRYPTO_ITERATION_COUNT);
+		model.addAttribute("cryptoKeySize", Crypto.CRYPTO_KEY_SIZE);
+		model.addAttribute("cryptoPassPhrase", Crypto.CRYPTO_PASSCODE);
+		/* ************************************* */
 		
 		User	user	=	dpsServiceDao.getUser(request);
 
@@ -238,7 +245,7 @@ public class ExtensionStudiesController
 		Employee employee	=	null;
 		try
 		{
-			employee = dpsServiceDao.getEmployee(request,locale);
+			employee = dpsServiceDao.getEmployee(request,locale, false);
 			
 		}
 		catch (ExceptionEmptyResultset ex)
@@ -309,7 +316,7 @@ public class ExtensionStudiesController
 		Employee employee;
 		try
 		{
-			employee = dpsServiceDao.getEmployee(request,locale);
+			employee = dpsServiceDao.getEmployee(request,locale, true);
 			List<ExtensionDTO> dtos	=	extensionServiceDao.getExtensionsForApprovers(roleNameValue.getRoleValue(), employee, locale);
 			response.getWriter().print(gson.toJson(dtos));
 		}
@@ -341,7 +348,7 @@ public class ExtensionStudiesController
 			ExtensionDTO	extensionDTOResult		=	null;	
 			try
 			{
-				employee = dpsServiceDao.getEmployee(request,locale);
+				employee = dpsServiceDao.getEmployee(request,locale, Constants.CONST_IS_DELEGATION);
 				employee.setUserName(request.getRemoteUser());
 				
 				extensionDTOResult = extensionServiceDao.setRoleTransaction(extensionDTO, employee, locale);

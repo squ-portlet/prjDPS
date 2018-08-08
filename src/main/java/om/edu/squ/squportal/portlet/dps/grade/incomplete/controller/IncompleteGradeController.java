@@ -139,7 +139,7 @@ public class IncompleteGradeController
 		
 		try
 		{
-			employee = dpsServiceDao.getEmployee(request,locale);
+			employee = dpsServiceDao.getEmployee(request,locale,true);
 			
 		}
 		catch (ExceptionEmptyResultset ex)
@@ -193,7 +193,7 @@ public class IncompleteGradeController
 		Gson		gson			=	new Gson();
 		try
 		{
-			employee = dpsServiceDao.getEmployee(request,locale);
+			employee = dpsServiceDao.getEmployee(request,locale,true);
 			
 		}
 		catch (ExceptionEmptyResultset ex)
@@ -320,7 +320,7 @@ public class IncompleteGradeController
 		
 		try
 		{
-			employee					=	dpsServiceDao.getEmployee(request,locale);
+			employee					=	dpsServiceDao.getEmployee(request,locale,true);
 			List<Student> 	students	=	incompleteGradeService.getStudentDetailsForApprovers(roleNameValue.getRoleValue(), employee, locale);
 			response.getWriter().print(gson.toJson(students));
 		}
@@ -362,7 +362,7 @@ public class IncompleteGradeController
 		incompleteGradeModel.decrypt(crypto, incompleteGradeModel.getSalt(), incompleteGradeModel.getFour(), incompleteGradeModel);
 		try
 		{
-										employee		=	dpsServiceDao.getEmployee(request,locale);
+										employee		=	dpsServiceDao.getEmployee(request,locale,true);
 			List<GradeIncompleteDTO> 	dtos			=	incompleteGradeService.getCourseListForNotify( 
 																											incompleteGradeModel.getStudentNo()
 																										, 	incompleteGradeModel.getStdStatCode()
@@ -411,7 +411,7 @@ public class IncompleteGradeController
 		
 		try
 		{
-										employee			=	dpsServiceDao.getEmployee(request,locale);
+										employee			=	dpsServiceDao.getEmployee(request,locale,true);
 			List<GradeIncompleteDTO>	gradeIncompleteDTOs	=	incompleteGradeService.setIncompleteGradeNotifyApproval(incompleteGradeModel, employee, request, locale);
 			response.getWriter().print(gson.toJson(gradeIncompleteDTOs));
 		}

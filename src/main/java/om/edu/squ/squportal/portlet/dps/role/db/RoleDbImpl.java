@@ -496,10 +496,21 @@ public class RoleDbImpl implements RoleDbDao
 		mapParamsTransaction.put("paramStdStatCode", transactionDTO.getStdStatCode() );
 		mapParamsTransaction.put("paramApprovalCode", transactionDTO.getApprovalCode());
 		mapParamsTransaction.put("paramStatusCode", transactionDTO.getStatusCode());
-		mapParamsTransaction.put("paramEmpNo", transactionDTO.getAppEmpNo().substring(1));
-		mapParamsTransaction.put("paramUserName",transactionDTO.getAppEmpName() );
+		if(null ==transactionDTO.getAppDelegatedEmpUserName() || transactionDTO.getAppDelegatedEmpUserName().trim().equals(""))
+		{
+			mapParamsTransaction.put("paramEmpNo", transactionDTO.getAppEmpNo().substring(1));
+			mapParamsTransaction.put("paramUserName",transactionDTO.getAppEmpName() );
+		}
+		else
+		{
+			mapParamsTransaction.put("paramEmpNo", transactionDTO.getAppDelegatedEmpNo());
+			mapParamsTransaction.put("paramUserName",transactionDTO.getAppDelegatedEmpUserName() );
+		}
+		
+		
 		mapParamsTransaction.put("paramRequestCode",transactionDTO.getRequestCode());
 		mapParamsTransaction.put("paramComments",transactionDTO.getComments() );
+		mapParamsTransaction.put("paramDelegateeEmpNo",transactionDTO.getAppDelegateeEmpNo() );
 		
 		return nPJdbcTemplDps.update(PROP_SQL_ROLE_APPROVAL_TRANSACTION, mapParamsTransaction);
 	}

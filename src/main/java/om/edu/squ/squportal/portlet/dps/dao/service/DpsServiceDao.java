@@ -130,6 +130,24 @@ public interface DpsServiceDao
 	
 	/**
 	 * 
+	 * method name  : getEmployee
+	 * @param empNumber
+	 * @param empUserName TODO
+	 * @param locale
+	 * @param applyDelegation TODO
+	 * @return
+	 * @throws ExceptionEmptyResultset
+	 * DpsServiceDao
+	 * return type  : Employee
+	 * 
+	 * purpose		:	get employee by employee number
+	 *
+	 * Date    		:	May 9, 2018 10:24:03 PM
+	 */
+	public Employee	getEmployee(String empNumber, String empUserName, Locale locale, boolean applyDelegation) throws ExceptionEmptyResultset;
+	
+	/**
+	 * 
 	 * method name  : getStudent
 	 * @param studentId
 	 * @param studentNo TODO
@@ -165,6 +183,7 @@ public interface DpsServiceDao
 	 * method name  : getEmployee
 	 * @param request
 	 * @param locale
+	 * @param applyDelegation TODO
 	 * @return
 	 * @throws ExceptionEmptyResultset
 	 * DpsServiceImpl
@@ -174,7 +193,7 @@ public interface DpsServiceDao
 	 *
 	 * Date    		:	Mar 27, 2017 4:24:34 PM
 	 */
-	public Employee getEmployee(PortletRequest request, Locale locale) throws ExceptionEmptyResultset;
+	public Employee getEmployee(PortletRequest request, Locale locale, boolean applyDelegation) throws ExceptionEmptyResultset;
 	
 	/**
 	 * 
@@ -253,7 +272,8 @@ public interface DpsServiceDao
 	 * Date    		:	Mar 27, 2017 4:20:42 PM
 	 */
     public  String getEmpNumber(PortletRequest request);
-	
+
+
 	
 	/**
 	 * 

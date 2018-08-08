@@ -239,26 +239,17 @@ public class DpsServiceImpl implements DpsServiceDao
 		return student;
 	}
 	
-	/**
-	 * 
-	 * method name  : getEmployee
-	 * @param empNumber
-	 * @param locale
-	 * @return
-	 * DpsServiceImpl
-	 * return type  : Employee
-	 * 
-	 * purpose		: Get Employee Details with Roles
-	 *
-	 * Date    		:	Feb 13, 2017 9:50:17 PM
-	 * @throws ExceptionEmptyResultset 
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao#getEmployee(java.lang.String, java.lang.String, java.util.Locale, boolean)
 	 */
-	private Employee	getEmployee(String empNumber, Locale locale) throws ExceptionEmptyResultset
+	public Employee	getEmployee(String empNumber, String empUserName, Locale locale, boolean applyDelegation) throws ExceptionEmptyResultset
 	{
 		List<RoleNameValue> 	roleNameValues	=	new ArrayList<RoleNameValue>();
-		Employee				employee		=	dpsDbDao.getEmployee(empNumber);
+		Employee				employee		=	dpsDbDao.getEmployee(empNumber, empUserName, applyDelegation);
 		Employee				roleOfEmployee	=	roleService.getEmployeeRole(empNumber);
 		employee.setEmployeeRole(roleOfEmployee);
+		employee.setUserName(empUserName);
 		
 		if (employee.isAdvisor()) 
 		{
@@ -308,10 +299,10 @@ public class DpsServiceImpl implements DpsServiceDao
 	 *
 	 * Date    		:	Mar 27, 2017 4:24:34 PM
 	 */
-	public Employee getEmployee(PortletRequest request, Locale locale) throws ExceptionEmptyResultset
+	public Employee getEmployee(PortletRequest request, Locale locale, boolean applyDelegation) throws ExceptionEmptyResultset
 	{
 		String 		empNumber	=	getEmpNumber(request);	
-		return 		getEmployee(empNumber, locale);
+		return 		getEmployee(empNumber, request.getRemoteUser(), locale, applyDelegation);
 	}
 	
 
@@ -559,15 +550,8 @@ public class DpsServiceImpl implements DpsServiceDao
 	    else 
 	    {
 			String strEmpNumber=null;
-			try
-			{
-				EmpCommon	empCommon	=	new EmpCommon();
-						strEmpNumber 	= 	empCommon.getEmployeeNumber(request.getRemoteUser());
-			}
-			catch(Exception ex)
-			{
-				logger.info("******* exception while getting emp no: " + ex.getMessage());
-			}
+
+			strEmpNumber	=	String.valueOf(userIdUtil.getEmpNumber(request.getRemoteUser()));
 			if(strEmpNumber==null || strEmpNumber=="")
 			{
 				return null;	
@@ -577,7 +561,8 @@ public class DpsServiceImpl implements DpsServiceDao
 	    }
 	    
 	}
-    
+  
+  
 
 	/**
 	 * 

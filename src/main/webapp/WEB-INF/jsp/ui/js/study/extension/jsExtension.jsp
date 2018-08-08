@@ -105,7 +105,19 @@
 							rowId: 'studentId',
 							"aoColumns" : 
 								[
-									{ "mData": "studentId" },
+									{ "mData": "studentId" ,
+										"render" : function(data, type, full, meta)	
+										{
+											if (full.applyDelegation)
+												{
+													return data +' <span class="glyphicon glyphicon-record" aria-hidden="true"></span>';
+												}
+											else
+												{
+													return data;
+												}
+										}
+									},
 									{ "mData": "studentName" },
 									{ "mData": "cohort" },
 									{ "mData": "collegeName" },

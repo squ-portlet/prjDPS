@@ -29,6 +29,7 @@
  */
 package om.edu.squ.squportal.portlet.dps.bo;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,8 +41,14 @@ import om.edu.squ.squportal.portlet.dps.role.bo.RoleNameValue;
  */
 public class Employee
 {
-	private String				empNumber;
-	private String				userName;
+	private String				empNumber;					/* -- Might be delegated - Check empNumberDelegatee to find who delegates --*/
+	private String				userName;					/* -- Might be delegated - Check empNumberDelegatee to find who delegates --*/
+	private	String				empNumberDelegated;			/* -- empNumber of person who is delegated, In case of delegation, empNumber == empNumberDelegated -- */
+	private	String				empNumberDelegatee;			/* -- empNumber of person who delegates other -- */
+	private	String				userNameDelegated;			/* -- userName of person who is delegated, In case of delegation -- */
+	private	String				userNameDelegatee;			/* -- userName of person who delegates other -- */
+	private	Date				delegatedFromDate;
+	private	Date				delegatedToDate;
 	private Branch				branch;
 	private Department			department;
 	private String				email;
@@ -117,6 +124,138 @@ public class Employee
 		this.userName = userName;
 	}
 	
+	/**
+	 * Getter Method	: getEmpNumberDelegated
+	 * @return the empNumberDelegated
+	 * 
+	 * Date				: Apr 9, 2018
+	 */
+	public String getEmpNumberDelegated()
+	{
+		return this.empNumberDelegated;
+	}
+
+	/**
+	 * Setter method : setEmpNumberDelegated
+	 * @param empNumberDelegated the empNumberDelegated to set
+	 * 
+	 * Date          : Apr 9, 2018 7:35:16 PM
+	 */
+	public void setEmpNumberDelegated(String empNumberDelegated)
+	{
+		this.empNumberDelegated = empNumberDelegated;
+	}
+
+	/**
+	 * Getter Method	: getEmpNumberDelegatee
+	 * @return the empNumberDelegatee
+	 * 
+	 * Date				: Apr 9, 2018
+	 */
+	public String getEmpNumberDelegatee()
+	{
+		return this.empNumberDelegatee;
+	}
+
+	/**
+	 * Setter method : setEmpNumberDelegatee
+	 * @param empNumberDelegatee the empNumberDelegatee to set
+	 * 
+	 * Date          : Apr 9, 2018 7:35:16 PM
+	 */
+	public void setEmpNumberDelegatee(String empNumberDelegatee)
+	{
+		this.empNumberDelegatee = empNumberDelegatee;
+	}
+
+	/**
+	 * Getter Method	: getUserNameDelegated
+	 * @return the userNameDelegated
+	 * 
+	 * Date				: May 15, 2018
+	 */
+	public String getUserNameDelegated()
+	{
+		return this.userNameDelegated;
+	}
+
+	/**
+	 * Setter method : setUserNameDelegated
+	 * @param userNameDelegated the userNameDelegated to set
+	 * 
+	 * Date          : May 15, 2018 1:47:45 PM
+	 */
+	public void setUserNameDelegated(String userNameDelegated)
+	{
+		this.userNameDelegated = userNameDelegated;
+	}
+
+	/**
+	 * Getter Method	: getUserNameDelegatee
+	 * @return the userNameDelegatee
+	 * 
+	 * Date				: May 15, 2018
+	 */
+	public String getUserNameDelegatee()
+	{
+		return this.userNameDelegatee;
+	}
+
+	/**
+	 * Setter method : setUserNameDelegatee
+	 * @param userNameDelegatee the userNameDelegatee to set
+	 * 
+	 * Date          : May 15, 2018 1:47:45 PM
+	 */
+	public void setUserNameDelegatee(String userNameDelegatee)
+	{
+		this.userNameDelegatee = userNameDelegatee;
+	}
+
+	/**
+	 * Getter Method	: getDelegatedFromDate
+	 * @return the delegatedFromDate
+	 * 
+	 * Date				: Apr 9, 2018
+	 */
+	public Date getDelegatedFromDate()
+	{
+		return this.delegatedFromDate;
+	}
+
+	/**
+	 * Setter method : setDelegatedFromDate
+	 * @param delegatedFromDate the delegatedFromDate to set
+	 * 
+	 * Date          : Apr 9, 2018 7:35:16 PM
+	 */
+	public void setDelegatedFromDate(Date delegatedFromDate)
+	{
+		this.delegatedFromDate = delegatedFromDate;
+	}
+
+	/**
+	 * Getter Method	: getDelegatedToDate
+	 * @return the delegatedToDate
+	 * 
+	 * Date				: Apr 9, 2018
+	 */
+	public Date getDelegatedToDate()
+	{
+		return this.delegatedToDate;
+	}
+
+	/**
+	 * Setter method : setDelegatedToDate
+	 * @param delegatedToDate the delegatedToDate to set
+	 * 
+	 * Date          : Apr 9, 2018 7:35:16 PM
+	 */
+	public void setDelegatedToDate(Date delegatedToDate)
+	{
+		this.delegatedToDate = delegatedToDate;
+	}
+
 	/**
 	 * Getter Method : getBranch
 	 * 
@@ -372,10 +511,17 @@ public class Employee
 	public String toString()
 	{
 		return "Employee [empNumber=" + this.empNumber + ", userName="
-				+ this.userName + ", branch=" + this.branch + ", department="
-				+ this.department + ", email=" + this.email + ", advisor="
-				+ this.advisor + ", supervisor=" + this.supervisor + ", hod="
-				+ this.hod + ", collegeAsstDeanP=" + this.collegeAsstDeanP
+				+ this.userName + ", empNumberDelegated="
+				+ this.empNumberDelegated + ", empNumberDelegatee="
+				+ this.empNumberDelegatee + ", userNameDelegated="
+				+ this.userNameDelegated + ", userNameDelegatee="
+				+ this.userNameDelegatee + ", delegatedFromDate="
+				+ this.delegatedFromDate + ", delegatedToDate="
+				+ this.delegatedToDate + ", branch=" + this.branch
+				+ ", department=" + this.department + ", email=" + this.email
+				+ ", myRoles=" + this.myRoles + ", advisor=" + this.advisor
+				+ ", supervisor=" + this.supervisor + ", hod=" + this.hod
+				+ ", collegeAsstDeanP=" + this.collegeAsstDeanP
 				+ ", collegeDean=" + this.collegeDean + ", dpsDean="
 				+ this.dpsDean + ", dpsStaff=" + this.dpsStaff + "]";
 	}

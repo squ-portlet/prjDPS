@@ -41,6 +41,7 @@ import java.util.Properties;
 import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Approver;
 import om.edu.squ.squportal.portlet.dps.bo.Branch;
+import om.edu.squ.squportal.portlet.dps.bo.DelegateEmployee;
 import om.edu.squ.squportal.portlet.dps.bo.Department;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.PersonalDetail;
@@ -49,9 +50,11 @@ import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
+import om.edu.squ.squportal.portlet.dps.utility.UserIdUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -67,6 +70,10 @@ import org.springframework.jdbc.core.simple.SimpleJdbcCall;
  */
 public class DpsDbImpl implements DpsDbDao
 {
+
+	@Autowired
+	UserIdUtil	userIdUtil;
+	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 //	private	NamedParameterJdbcTemplate	nPJdbcTemplHrms;
@@ -108,23 +115,19 @@ public class DpsDbImpl implements DpsDbDao
 	}
 	
 	
-	/**
-	 * 
-	 * method name  : getEmployee
-	 * @param empNumber
-	 * @return
-	 * DpsDbImpl
-	 * return type  : Employee
-	 * 
-	 * purpose		:
-	 *
-	 * Date    		:	Jan 8, 2017 3:42:44 PM
-	 * @throws ExceptionEmptyResultset 
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.dao.db.DpsDbDao#getEmployee(java.lang.String, java.lang.String, boolean)
 	 */
-	public Employee getEmployee(String empNumber) throws ExceptionEmptyResultset
+	public Employee getEmployee(String empNumber, String empUserName, boolean applyDelegation) throws ExceptionEmptyResultset
 	{
-		String	SQL_DPS_EMPLOYEE_DETAIL	=	queryProps.getProperty(Constants.COST_SQL_DPS_EMPLOYEE_DETAIL);
 		
+		
+		String		delegateeEmpNumber		=	null;
+		String		delegateeEmpUserName	=	null;
+		String		delegatedEmpUserName	=	null;
+		Employee	employee				=	null;
+		String		SQL_DPS_EMPLOYEE_DETAIL	=	queryProps.getProperty(Constants.COST_SQL_DPS_EMPLOYEE_DETAIL);
 		RowMapper<Employee> 	mapper	= new RowMapper<Employee>()
 		{
 			
@@ -145,12 +148,47 @@ public class DpsDbImpl implements DpsDbDao
 			}
 		};
 		
-		Map<String, String> mapParamsDPS	=	new HashMap<String, String>();
-		mapParamsDPS.put("paramEmpNumber", empNumber);
+		Map<String, String> mapParamsDPS		=	new HashMap<String, String>();
+
+							if(applyDelegation)
+							{
+								delegateeEmpUserName	=	getDelegatedEmployee(empUserName).getUserNameDelegatee();
+								delegateeEmpNumber		=	String.valueOf(userIdUtil.getEmpNumber(delegateeEmpUserName));
+								if(null == delegateeEmpUserName || delegateeEmpUserName.equals(Constants.CONST_NOT_AVAILABLE))
+								{
+									mapParamsDPS.put("paramEmpNumber", empNumber);						//	No delegation
+								}
+								else
+								{
+									mapParamsDPS.put("paramEmpNumber", delegateeEmpNumber); 
+								}
+							}
+							else
+							{
+									mapParamsDPS.put("paramEmpNumber", empNumber);
+							}
+							
 		
 		try
 			{
-				return nPJdbcTemplDps.queryForObject(SQL_DPS_EMPLOYEE_DETAIL, mapParamsDPS, mapper);
+				employee = nPJdbcTemplDps.queryForObject(SQL_DPS_EMPLOYEE_DETAIL, mapParamsDPS, mapper);
+				if(applyDelegation)
+				{
+					if(null == delegateeEmpUserName || delegateeEmpUserName.equals(Constants.CONST_NOT_AVAILABLE))
+					{
+	
+					}
+					else
+					{
+						delegatedEmpUserName	=	getDelegatedEmployee(empUserName).getUserNameDelegated();
+						
+						employee.setEmpNumberDelegated(String.valueOf(userIdUtil.getEmpNumber(delegatedEmpUserName)));
+						employee.setUserNameDelegated(delegatedEmpUserName);
+						employee.setEmpNumberDelegatee(delegateeEmpNumber);
+						employee.setUserNameDelegatee(delegateeEmpUserName);
+					}
+				}
+				return	employee;
 			}
 		catch(EmptyResultDataAccessException ex)
 		{
@@ -557,5 +595,155 @@ public class DpsDbImpl implements DpsDbDao
 		return nPJdbcTemplDps.queryForInt(SQL_SEQUENCE_NUM, namedParameterMap);
 	}
 	
+	
+	/*
+	 * Delegation
+	 */
+
+	/**
+	 * 
+	 * method name  : getDelegatedEmployee
+	 * @param empUserName
+	 * @return
+	 * DpsDbImpl
+	 * return type  : DelegateEmployee
+	 * 
+	 * purpose		: Get delegatee (person who delegates) user with username, from and to date
+	 *
+	 * Date    		:	Jul 19, 2018 1:29:27 PM
+	 */
+	private	DelegateEmployee getDelegatedEmployee(String empUserName)
+	{
+				DelegateEmployee	delegatee			=	null;
+				DelegateEmployee	delegated			=	null;
+				
+				DelegateEmployee	delegateEmployee	=	new DelegateEmployee();
+				
+				try
+				{
+					delegatee = getDelegatee(empUserName);
+				}
+				catch(Exception ex)
+				{
+					logger.error("Error in fatching delegatee records. Error : "+ex.getMessage());
+				}
+				
+				try
+				{
+					delegated = getDelegated(empUserName);
+				}
+				catch(Exception ex)
+				{
+					logger.error("Error in fatching delegated records. Error : "+ex.getMessage());
+				}
+				
+				if(delegatee != null && !delegatee.getUserNameDelegatee().equals(Constants.CONST_NOT_AVAILABLE))
+				{
+					delegateEmployee.setUserNameDelegatee(delegatee.getUserNameDelegatee());
+					delegateEmployee.setEmpNumberDelegatee(String.valueOf(userIdUtil.getEmpNumber(delegatee.getUserNameDelegatee())));
+					delegateEmployee.setDelegatedFromDate(delegatee.getDelegatedFromDate());
+					delegateEmployee.setDelegatedToDate(delegatee.getDelegatedToDate());
+					if(delegatee == null || delegated.getUserNameDelegated().equals(Constants.CONST_NOT_AVAILABLE))
+					{
+						delegateEmployee.setUserNameDelegated(empUserName);
+						delegateEmployee.setEmpNumberDelegated(String.valueOf(userIdUtil.getEmpNumber(empUserName)));
+					}
+					
+					
+				}
+				if(delegated != null && !delegated.getUserNameDelegated().equals(Constants.CONST_NOT_AVAILABLE))
+				{
+					delegateEmployee.setUserNameDelegated(delegated.getUserNameDelegated());
+					delegateEmployee.setEmpNumberDelegated(String.valueOf(userIdUtil.getEmpNumber(delegated.getUserNameDelegated())));
+					delegateEmployee.setDelegatedFromDate(delegated.getDelegatedFromDate());
+					delegateEmployee.setDelegatedToDate(delegated.getDelegatedToDate());
+					
+					if(delegatee == null || delegatee.getUserNameDelegatee().equals(Constants.CONST_NOT_AVAILABLE))
+					{
+						delegateEmployee.setUserNameDelegatee(empUserName);
+						delegateEmployee.setEmpNumberDelegatee(String.valueOf(userIdUtil.getEmpNumber(empUserName)));
+					}
+				}
+				
+				return delegateEmployee;
+				
+				
+	}
+	
+	
+	/**
+	 * 
+	 * method name  : getDelegatee
+	 * @param empUserName
+	 * @return
+	 * DpsDbImpl
+	 * return type  : DelegateEmployee
+	 * 
+	 * purpose		: Get delegatee (person who delegates) user 
+	 *
+	 * Date    		:	Jul 22, 2018 5:21:57 PM
+	 */
+	 private	DelegateEmployee getDelegatee(String empUserName)
+	 {
+			String	SQL_DELEGATE_SELECT_DELEGATEE		=	queryProps.getProperty(Constants.CONST_SQL_DELEGATE_SELECT_DELEGATEE);
+			RowMapper<DelegateEmployee>	mapper			=	new RowMapper<DelegateEmployee>()
+					{
+						
+						@Override
+						public DelegateEmployee mapRow(ResultSet rs, int rowNum)
+								throws SQLException
+						{
+							DelegateEmployee	delegateEmployee	=	new DelegateEmployee();
+							delegateEmployee.setUserNameDelegatee(rs.getString(Constants.CONST_COLMN_DELEGATE_USER_DELEGATEE));
+							delegateEmployee.setDelegatedFromDate(rs.getString(Constants.CONST_COLMN_DELEGATED_FROM));
+							delegateEmployee.setDelegatedToDate(rs.getString(Constants.CONST_COLMN_DELEGATED_TO));
+							return delegateEmployee;
+						}
+					};
+					
+					Map<String,String> namedParameterMap		=	new HashMap<String,String>();
+					namedParameterMap.put("paramDelegatedUserName", empUserName);
+					
+					return  nPJdbcTemplDps.queryForObject(SQL_DELEGATE_SELECT_DELEGATEE, namedParameterMap, mapper);
+	 }
+	
+
+	 /**
+		 * 
+		 * method name  : getDelegated
+		 * @param empUserName
+		 * @return
+		 * DpsDbImpl
+		 * return type  : DelegateEmployee
+		 * 
+		 * purpose		: Get delegated (person who is being delegated) user 
+		 *
+		 * Date    		:	Jul 22, 2018 
+		 */
+		 private	DelegateEmployee getDelegated(String empUserName)
+		 {
+				String	SQL_DELEGATE_SELECT_DELEGATED		=	queryProps.getProperty(Constants.CONST_SQL_DELEGATE_SELECT_DELEGATED);
+				RowMapper<DelegateEmployee>	mapper			=	new RowMapper<DelegateEmployee>()
+						{
+							
+							@Override
+							public DelegateEmployee mapRow(ResultSet rs, int rowNum)
+									throws SQLException
+							{
+								DelegateEmployee	delegateEmployee	=	new DelegateEmployee();
+								delegateEmployee.setUserNameDelegated(rs.getString(Constants.CONST_COLMN_DELEGATE_USER_DELEGATED));
+								delegateEmployee.setDelegatedFromDate(rs.getString(Constants.CONST_COLMN_DELEGATED_FROM));
+								delegateEmployee.setDelegatedToDate(rs.getString(Constants.CONST_COLMN_DELEGATED_TO));
+								return delegateEmployee;
+							}
+						};
+						
+						Map<String,String> namedParameterMap		=	new HashMap<String,String>();
+						namedParameterMap.put("paramDelegatedUserName", empUserName);
+						
+						return  nPJdbcTemplDps.queryForObject(SQL_DELEGATE_SELECT_DELEGATED, namedParameterMap, mapper);
+		 }
+		
+	 
 }
 

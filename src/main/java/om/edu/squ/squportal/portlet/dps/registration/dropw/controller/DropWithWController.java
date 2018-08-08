@@ -174,7 +174,7 @@ public class DropWithWController
 		Employee employee	=	null;
 		try
 		{
-			employee = dpsServiceDao.getEmployee(request,locale);
+			employee = dpsServiceDao.getEmployee(request,locale, false);
 			
 		}
 		catch (ExceptionEmptyResultset ex)
@@ -269,7 +269,7 @@ public class DropWithWController
 			Employee	employee	=	null;
 			try
 			{
-				employee					=	dpsServiceDao.getEmployee(request,locale);
+				employee					=	dpsServiceDao.getEmployee(request,locale, false);
 				List<DropWDTO>	dropWDTOs	=	dropWService.getDropWForApprovers(roleNameValue.getRoleValue(), employee, locale);
 				response.getWriter().print(gson.toJson(dropWDTOs));
 			}

@@ -182,4 +182,32 @@ public class UserIdUtil
 		}
 
 		
+		/**
+		 * 
+		 * method name  : getEmpNumber
+		 * @param userName
+		 * @return
+		 * UserIdUtil
+		 * return type  : int
+		 * 
+		 * purpose		:
+		 *
+		 * Date    		:	May 27, 2018 11:01:18 AM
+		 */
+	    public int getEmpNumber(String userName)
+	    {
+	    	int empNumber=0;
+			try
+			{
+				EmpCommon	empCommon	=	new EmpCommon();
+							empNumber 	= 	Integer.parseInt(empCommon.getEmployeeNumber(userName));
+			}
+			catch(Exception ex)
+			{
+				logger.error("******* exception while getting emp no: " + ex.getMessage());
+			}
+			
+			return empNumber;
+	    }	
+		
 }
