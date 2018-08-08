@@ -142,7 +142,9 @@ public class DpsDbImpl implements DpsDbDao
 				branch.setBranchCode(rs.getString(Constants.COST_COL_DPS_BRANCH_CODE));
 				employee.setDepartment(department);
 				employee.setBranch(branch);
-				employee.setEmail(Constants.COST_COL_DPS_EMP_EMAIL);
+				employee.setEmail(rs.getString(Constants.COST_COL_DPS_EMP_EMAIL));
+				employee.setEmpNameEn(rs.getString(Constants.COST_COL_DPS_EMP_NAME_EN));
+				employee.setEmpNameAr(rs.getString(Constants.COST_COL_DPS_EMP_NAME_AR));
 
 				return employee;
 			}
@@ -608,7 +610,7 @@ public class DpsDbImpl implements DpsDbDao
 	 * DpsDbImpl
 	 * return type  : DelegateEmployee
 	 * 
-	 * purpose		: Get delegatee (person who delegates) user with username, from and to date
+	 * purpose		: Get delegatee (person who delegates) and delegated user with username, from and to date
 	 *
 	 * Date    		:	Jul 19, 2018 1:29:27 PM
 	 */

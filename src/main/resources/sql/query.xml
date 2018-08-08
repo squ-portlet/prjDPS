@@ -82,15 +82,19 @@
     <entry key="dps.select.employee.detail">
     	<![CDATA[
     		SELECT
-	    		USERNAME 																   	AS	 	EMPNO
-			   	,COLCENCD             												       	AS		BRANCH_CODE
-			  	,DEPTNO             												        AS		DEPT_CODE
-          		,EMAIL                                      								AS    	EMP_EMAIL
+	    		USR.USERNAME 																AS	 	EMPNO
+				, (FAC.EMPFIRNM || ' ' || FAC.EMPTRIBLNM)									AS		EMP_NAME_EN
+				, (FAC.A_EMPFIRNM || ' ' || FAC.A_EMPTRIBLNM)								AS		EMP_NAME_AR
+			   	,USR.COLCENCD             												    AS		BRANCH_CODE
+			  	,USR.DEPTNO             												    AS		DEPT_CODE
+          		,USR.EMAIL                                      							AS    	EMP_EMAIL
 			FROM
-			  SIS_USERS
+			  SIS_USERS	USR
+			  ,FAC_SURNM  FAC
 			WHERE
-			        LTRIM(USERNAME,'e') =   :paramEmpNumber
-			  AND   STATUSACTIVE          =   'Y'
+			        LTRIM(USR.USERNAME,'e') =   :paramEmpNumber
+			  AND	LTRIM(USR.USERNAME,'e')	=	TO_CHAR(FAC.EMPNO)		
+			  AND   USR.STATUSACTIVE          =   'Y'	
     	]]>
     </entry>
     <entry key="personal.details.of.student">
