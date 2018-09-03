@@ -34,6 +34,7 @@ import java.util.Locale;
 import javax.portlet.PortletRequest;
 
 import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
+import om.edu.squ.squportal.portlet.dps.bo.DelegateEmployee;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.PersonalDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
@@ -145,6 +146,23 @@ public interface DpsServiceDao
 	 * Date    		:	May 9, 2018 10:24:03 PM
 	 */
 	public Employee	getEmployee(String empNumber, String empUserName, Locale locale, boolean applyDelegation) throws ExceptionEmptyResultset;
+	
+	/**
+	 * 
+	 * method name  : getEmployee
+	 * @param empNumber
+	 * @param empUserName
+	 * @param applyDelegation
+	 * @return
+	 * @throws ExceptionEmptyResultset
+	 * DpsServiceDao
+	 * return type  : Employee
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Aug 28, 2018 2:16:43 PM
+	 */
+	public Employee getEmployee(String empNumber, String empUserName, boolean applyDelegation) throws ExceptionEmptyResultset;
 	
 	/**
 	 * 
@@ -348,4 +366,21 @@ public interface DpsServiceDao
 	 * Date    		:	Jan 14, 2018 12:40:56 PM
 	 */
 	public double getSequenceNumber();
+	
+	/*
+	 * Delegation
+	 */
+	/**
+	 * 
+	 * method name  : getDelegatedEmployee
+	 * @param empUserName
+	 * @return
+	 * DpsServiceDao
+	 * return type  : DelegateEmployee
+	 * 
+	 * purpose		: Get delegatee (person who delegates) and delegated user with username, from and to date
+	 *
+	 * Date    		:	Aug 26, 2018 2:42:55 PM
+	 */
+	public	DelegateEmployee getDelegatedEmployee(String empUserName);
 }

@@ -602,19 +602,11 @@ public class DpsDbImpl implements DpsDbDao
 	 * Delegation
 	 */
 
-	/**
-	 * 
-	 * method name  : getDelegatedEmployee
-	 * @param empUserName
-	 * @return
-	 * DpsDbImpl
-	 * return type  : DelegateEmployee
-	 * 
-	 * purpose		: Get delegatee (person who delegates) and delegated user with username, from and to date
-	 *
-	 * Date    		:	Jul 19, 2018 1:29:27 PM
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.dao.db.DpsDbDao#getDelegatedEmployee(java.lang.String)
 	 */
-	private	DelegateEmployee getDelegatedEmployee(String empUserName)
+	public	DelegateEmployee getDelegatedEmployee(String empUserName)
 	{
 				DelegateEmployee	delegatee			=	null;
 				DelegateEmployee	delegated			=	null;

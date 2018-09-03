@@ -11,7 +11,9 @@
 <table style="width: 100%">
 	<tr>
 		<td  colspan="3">	Dear 
-		$data.approverHigher.roleNameEng$ [$data.approverHigher.nameEng$], <br />
+		$data.approverHigher.roleNameEng$ [$data.approverHigher.nameEng$], 
+		$if(data.delegateeNameEn)$ <br><font color='red'>(Delegated by $data.delegateeNameEn$)</font> $endif$ 
+		<br />
 		Detail Status of &nbsp; application is mentioned below :</td>
 	</tr>
 	<tr>
