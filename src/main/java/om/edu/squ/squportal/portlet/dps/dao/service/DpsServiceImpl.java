@@ -40,6 +40,7 @@ import javax.portlet.PortletRequest;
 import om.edu.squ.portal.common.EmpCommon;
 import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Approver;
+import om.edu.squ.squportal.portlet.dps.bo.DelegateEmployee;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.PersonalDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
@@ -305,7 +306,15 @@ public class DpsServiceImpl implements DpsServiceDao
 		return 		getEmployee(empNumber, request.getRemoteUser(), locale, applyDelegation);
 	}
 	
-
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao#getEmployee(java.lang.String, java.lang.String, boolean)
+	 */
+	public Employee getEmployee(String empNumber, String empUserName, boolean applyDelegation) throws ExceptionEmptyResultset
+	{
+		return dpsDbDao.getEmployee(empNumber, empUserName, applyDelegation);
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao#setRoleTransaction(om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO, om.edu.squ.squportal.portlet.dps.bo.Employee)
@@ -654,4 +663,18 @@ public class DpsServiceImpl implements DpsServiceDao
 	{
 		return dpsDbDao.getSequenceNumber();
 	}
+	
+
+	/*
+	 * Delegation
+	 */
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao#getDelegatedEmployee(java.lang.String)
+	 */
+	public	DelegateEmployee getDelegatedEmployee(String empUserName)
+	{
+		return dpsDbDao.getDelegatedEmployee(empUserName);
+	}
+	
 }
