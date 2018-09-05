@@ -257,21 +257,13 @@ public class DPSNotificationServiceImpl implements DPSNotification
 		toSenderEmail = (isTest)? new String[]{Constants.CONST_DUMMY_USER_EMAIL_TO}:new String[]{notifierPeople.getApprover().getEmail()};
 		notificationService.sendEMail(Constants.CONST_EMAIL_FROM, toSenderEmail, null, emailSubject, emailBodyApprover, null);
 		
-		/* Mail sending to Higher Approver */		
-		if(!(notifierPeople.isReject()) && ( null !=notifierPeople.getApproverHigher() && !(notifierPeople.isAccept())))
-		{
-		toSenderEmail = (isTest)? new String[]{Constants.CONST_DUMMY_USER_EMAIL_TO}:new String[]{notifierPeople.getApproverHigher().getEmail()};
-		notificationService.sendEMail(Constants.CONST_EMAIL_FROM, toSenderEmail, null, emailSubject, emailBodyHigherApprover, null);
-		/* Mail sending to Approver */
-		toSenderEmail = (isTest)? new String[]{Constants.CONST_DUMMY_USER_EMAIL_TO}:new String[]{notifierPeople.getApprover().getEmail()};
-		notificationService.sendEMail(Constants.CONST_EMAIL_FROM, toSenderEmail, null, emailSubject, emailBodyApprover, null);
+		
 		
 		/* Mail sending to Higher Approver */		
 		if(!(notifierPeople.isReject()) && ( null !=notifierPeople.getApproverHigher() && !(notifierPeople.isAccept())))
 		{
 		toSenderEmail = (isTest)? new String[]{Constants.CONST_DUMMY_USER_EMAIL_TO}:new String[]{notifierPeople.getApproverHigher().getEmail()};
 		notificationService.sendEMail(Constants.CONST_EMAIL_FROM, toSenderEmail, null, emailSubject, emailBodyHigherApprover, null);
-
 
 		}
 		
