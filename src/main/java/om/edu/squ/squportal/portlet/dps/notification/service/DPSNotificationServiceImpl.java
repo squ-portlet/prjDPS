@@ -146,6 +146,8 @@ public class DPSNotificationServiceImpl implements DPSNotification
 		StringTemplate		stringEmailTemplateHigherApprover	=	stringTemplateGroup.getInstanceOf(emailTemplateMap.get(Constants.TEMPLATE_NOTIFICATION_HIGHER_APPROVER_EMAIL));
 		
 		
+		
+		
 							/* Student Template */
 							stringSMSTemplateStudent.setAttribute("data", notifierPeople);					
 							stringEmailTemplateStudent.setAttribute("data", notifierPeople);
@@ -251,6 +253,15 @@ public class DPSNotificationServiceImpl implements DPSNotification
 				emailBodyHigherApprover		=	stringEmailTemplateHigherApprover.toString();
 				
 		
+		/* Mail sending to Approver */
+		toSenderEmail = (isTest)? new String[]{Constants.CONST_DUMMY_USER_EMAIL_TO}:new String[]{notifierPeople.getApprover().getEmail()};
+		notificationService.sendEMail(Constants.CONST_EMAIL_FROM, toSenderEmail, null, emailSubject, emailBodyApprover, null);
+		
+		/* Mail sending to Higher Approver */		
+		if(!(notifierPeople.isReject()) && ( null !=notifierPeople.getApproverHigher() && !(notifierPeople.isAccept())))
+		{
+		toSenderEmail = (isTest)? new String[]{Constants.CONST_DUMMY_USER_EMAIL_TO}:new String[]{notifierPeople.getApproverHigher().getEmail()};
+		notificationService.sendEMail(Constants.CONST_EMAIL_FROM, toSenderEmail, null, emailSubject, emailBodyHigherApprover, null);
 		/* Mail sending to Approver */
 		toSenderEmail = (isTest)? new String[]{Constants.CONST_DUMMY_USER_EMAIL_TO}:new String[]{notifierPeople.getApprover().getEmail()};
 		notificationService.sendEMail(Constants.CONST_EMAIL_FROM, toSenderEmail, null, emailSubject, emailBodyApprover, null);
