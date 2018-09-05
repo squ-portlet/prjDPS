@@ -312,7 +312,6 @@ public class ExtensionStudiesController
 										) throws IOException
 	{
 		Gson	gson	=	new Gson();
-		
 		Employee employee;
 		try
 		{
