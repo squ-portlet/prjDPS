@@ -49,6 +49,8 @@ public class Employee
 	private	String				userNameDelegatee;			/* -- userName of person who delegates other -- */
 	private	Date				delegatedFromDate;
 	private	Date				delegatedToDate;
+	private	String				empNameEn;					/* -- Employee name in english */
+	private	String				empNameAr;					/* -- Employee name in arabic */	
 	private Branch				branch;
 	private Department			department;
 	private String				email;
@@ -254,6 +256,50 @@ public class Employee
 	public void setDelegatedToDate(Date delegatedToDate)
 	{
 		this.delegatedToDate = delegatedToDate;
+	}
+	
+	/**
+	 * Getter Method	: getEmpNameEn
+	 * @return the empNameEn
+	 * 
+	 * Date				: Aug 8, 2018
+	 */
+	public String getEmpNameEn()
+	{
+		return this.empNameEn;
+	}
+
+	/**
+	 * Setter method : setEmpNameEn
+	 * @param empNameEn the empNameEn to set
+	 * 
+	 * Date          : Aug 8, 2018 11:13:41 AM
+	 */
+	public void setEmpNameEn(String empNameEn)
+	{
+		this.empNameEn = empNameEn;
+	}
+
+	/**
+	 * Getter Method	: getEmpNameAr
+	 * @return the empNameAr
+	 * 
+	 * Date				: Aug 8, 2018
+	 */
+	public String getEmpNameAr()
+	{
+		return this.empNameAr;
+	}
+
+	/**
+	 * Setter method : setEmpNameAr
+	 * @param empNameAr the empNameAr to set
+	 * 
+	 * Date          : Aug 8, 2018 11:13:41 AM
+	 */
+	public void setEmpNameAr(String empNameAr)
+	{
+		this.empNameAr = empNameAr;
 	}
 
 	/**
@@ -517,7 +563,8 @@ public class Employee
 				+ this.userNameDelegated + ", userNameDelegatee="
 				+ this.userNameDelegatee + ", delegatedFromDate="
 				+ this.delegatedFromDate + ", delegatedToDate="
-				+ this.delegatedToDate + ", branch=" + this.branch
+				+ this.delegatedToDate + ", empNameEn=" + this.empNameEn
+				+ ", empNameAr=" + this.empNameAr + ", branch=" + this.branch
 				+ ", department=" + this.department + ", email=" + this.email
 				+ ", myRoles=" + this.myRoles + ", advisor=" + this.advisor
 				+ ", supervisor=" + this.supervisor + ", hod=" + this.hod

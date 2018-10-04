@@ -33,6 +33,7 @@ import java.util.Locale;
 
 import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Approver;
+import om.edu.squ.squportal.portlet.dps.bo.DelegateEmployee;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.PersonalDetail;
 import om.edu.squ.squportal.portlet.dps.bo.YearSemester;
@@ -222,4 +223,21 @@ public interface DpsDbDao
 	 * Date    		:	Jan 14, 2018 12:40:56 PM
 	 */
 	public double getSequenceNumber();
+	
+	/*
+	 * Delegation
+	 */
+	/**
+	 * 
+	 * method name  : getDelegatedEmployee
+	 * @param empUserName
+	 * @return
+	 * DpsDbImpl
+	 * return type  : DelegateEmployee
+	 * 
+	 * purpose		: Get delegatee (person who delegates) and delegated user with username, from and to date
+	 *
+	 * Date    		:	Jul 19, 2018 1:29:27 PM
+	 */
+	public	DelegateEmployee getDelegatedEmployee(String empUserName);
 }

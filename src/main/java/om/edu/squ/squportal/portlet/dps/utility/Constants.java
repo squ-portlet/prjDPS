@@ -54,6 +54,8 @@ public interface Constants
 	public static final	String	COST_COL_DPS_BRANCH_CODE									=	"BRANCH_CODE";
 	public static final	String	COST_COL_DPS_DEPT_CODE										=	"DEPT_CODE";
 	public static final	String	COST_COL_DPS_EMP_EMAIL										=	"EMP_EMAIL";
+	public static final	String	COST_COL_DPS_EMP_NAME_EN									=	"EMP_NAME_EN";
+	public static final	String	COST_COL_DPS_EMP_NAME_AR									=	"EMP_NAME_AR";
 	
 	public static final	String	COST_COL_DPS_COURSE_YEAR									=	"CCYRCD";
 	public static final	String	COST_COL_DPS_SEMESTER_CODE									=	"SEMCD";
