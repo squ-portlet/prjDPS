@@ -105,11 +105,20 @@
     	<property name="locations" value="classpath:sql/rules/sql_rule.xml" />
 	</bean>
 
+
+<!-- Data Source from DPS - Production -->	
+		<bean id="dataSourceDps" class="org.springframework.jndi.JndiObjectFactoryBean"> 
+    		<property name="jndiName" value="java:comp/env/jdbc/dpsProd"/> 
+ 		</bean> 
+
  		
-<!-- Data Source from DPS -->	
+<!-- Data Source from DPS - Test -->	
+<!-- 
 		<bean id="dataSourceDps" class="org.springframework.jndi.JndiObjectFactoryBean"> 
     		<property name="jndiName" value="java:comp/env/jdbc/dpsTest"/> 
  		</bean> 
+
+ --> 		
 		<bean id="namedParameterJdbcTemplateDps" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">  
 			<constructor-arg ref="dataSourceDps"></constructor-arg>  
 		</bean>
