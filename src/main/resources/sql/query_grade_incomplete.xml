@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>DPS Incomplete Grades Queries</comment>
+	
+	<entry key="dps.incomplete.grade.select.course.list">
+		<![CDATA[
+				SELECT
+				    DISTINCT
+				       SECT.L_ABR_CRSNO												AS    	L_ABR_CRSNO
+				    ,  SECT.CRSNO													AS		COURSE_NO
+				    ,  DECODE (
+					            :paramLocale
+					            , 'ar', COURSE.A_CRSLNM
+					            , COURSE.CRSLNM
+					          )  													AS 		COURSE_NAME
+				    , SECT.SECTNO													AS      SECTION_NO
+				    , SECT.SECTCD                       							AS  	SECT_CODE
+				    , SECT.CCYRCD                       							AS  	CCYRCD
+            		, SECT.SEMCD                        							AS  	SEMCD
+		FROM 
+              		SECT          SECT
+		        , 	SCHED_WEEKLY  SCHW
+		        , 	FAC_SURNM     FACULTY
+		        , 	CRS_BASIC     COURSE
+		      
+		WHERE
+		              SECT.CCYRCD = :paramYear
+		        AND   SECT.SEMCD = :paramSemester
+        
+		        AND   SCHW.SECTCD = SECT.SECTCD
+		        
+		        AND   SCHW.CRSNO  = SECT.CRSNO
+		        AND   SCHW.SECTNO = SECT.SECTNO
+		        
+		        AND   SCHW.FACSURNMCD=FACULTY.FAC_SURNMCD
+		        AND   FACULTY.EMPNO =:paramEmpNo
+		        AND   COURSE.CRSNO  = SECT.CRSNO
+		        AND   COURSE.CRSNO  = SCHW.CRSNO 
+		        
+		        ORDER BY L_ABR_CRSNO
+		   ]]>	
+	</entry>
+	<entry key="dps.incomplete.grades.select.rule.test.current.year.sem">
+			SELECT 
+			        CCYRCD      													AS    CCYRCD
+			      , SEMCD       													AS    SEMCD
+			FROM
+			      CURRENT_YR_SEM	
+		</entry>
+		<!-- TODO -->
+		<entry key="dps.incomplete.grades.select.rule.grade.change.year.sem">
+			SELECT 
+			          NVL(CCYRCD, 0) 												AS 		CCYRCD
+			        , NVL(SEMCD, 0) 												AS 		SEMCD
+			FROM
+			(
+			    SELECT 
+			            NULL AS CCYRCD
+			          , NULL AS SEMCD
+			    FROM
+			          DUAL
+			          
+			    UNION
+			    
+			    SELECT 
+			            CCYRCD
+			          , SEMCD
+			    FROM
+			          YR_SEM
+			    WHERE
+			          SYSDATE BETWEEN SEMENDDTE AND SEMENDDTE+30
+			)	
+			WHERE  ROWNUM = 1
+	    	ORDER BY CCYRCD DESC, SEMCD DESC
+		</entry>
+	<entry key="dps.incomplete.grades.select.students">
+			SELECT  DISTINCT 
+				 	ST.STD_ID                          								AS  	STUDENT_ID
+	            ,	SI.STDNO                          								AS  	STUDENT_NO
+	            ,	SI.STDSTATCD													AS		STDSTATCD
+	            , 	DECODE
+	                     (
+	                       :paramLocale
+	                        , 'en' ,SI.STD_NAME
+	                        , A_STD_NAME
+	                       )                       									AS  	STUDENT_NAME
+	            ,	SI.GENDER                   									AS  	STUDENT_GENDER
+	            ,	GRADES.GRADECD													AS		GRADE_CODE
+	            ,	( 
+		                 SELECT  
+		                       L_ABR_GVAL 
+		                 FROM 
+		                       GRADE_VAL 
+		                 WHERE
+		                       GRADECD = GRADES.GRADECD
+		              )                         									AS 		GRADE_VAL
+	            ,	GRADES.GRADUSRACCTCD
+                ,	(
+			          SELECT 
+			                 DECODE(
+                                		COUNT(TN.STDNO)
+                                		,0,'N','Y'
+                            	)
+			          FROM
+			                T_STD_INCOMPLETE_GRADE_NOTIFY TN
+			          WHERE
+			                    
+			                    TN.STDSTATCD 	= 	SI.STDSTATCD
+			                AND TN.CCYRCD   	=  :paramYear
+			                AND TN.SEMCD    	=  :paramSem
+				      )  
+				                                                         		AS 		RECORD_AVAILABLE   
+				 ,(
+		                SELECT 
+		                      MAX(REC_SEQ_NO)
+		                FROM
+		                      T_STD_INCOMPLETE_GRADE_NOTIFY TN
+		                WHERE
+		                          
+		                          TN.STDSTATCD = SI.STDSTATCD
+		                      AND TN.CCYRCD   =  :paramYear
+		                      AND TN.SEMCD    =  :paramSem
+		            )                                                     		AS 		SEQUENCE_NUMBER   	
+				 ,(
+		                SELECT 
+		                      COMMENTS
+		                FROM
+		                      T_STD_INCOMPLETE_GRADE_NOTIFY TN
+		                WHERE
+		                          
+		                          TN.STDSTATCD = SI.STDSTATCD
+		                      AND TN.CCYRCD   =  :paramYear
+		                      AND TN.SEMCD    =  :paramSem
+		                      AND REC_SEQ_NO  =  (
+	                                                SELECT 
+	                                                      MAX(REC_SEQ_NO)
+	                                                FROM 
+	                                                      T_STD_INCOMPLETE_GRADE_NOTIFY TN_02
+	                                                WHERE
+	                                                        TN_02.STDSTATCD = SI.STDSTATCD
+	                                                    AND TN_02.CCYRCD   =  :paramYear
+	                                                    AND TN_02.SEMCD    =  :paramSem
+                                                
+                                              	)
+		            )                                                     		AS 		COMMENTS  		            			                                                         		
+			FROM  
+					V_STDTIMETABLE_PORTAL 	ST
+			    ,	V_STDINFO_PORTAL 		SI 
+			    ,	STD_GRADES      		GRADES
+			WHERE 
+					 		ST.COURSE_CODE		= 	:paramLAbrCourseNo 
+					 AND	ST.SECTNO			=	:paramSectionNo 
+					 AND	ST.STD_ID			= 	SI.STD_ID 
+					 AND	ST.EMPNO			=	:paramEmpNo	
+	                 AND	ST.STDNO			=	GRADES.STDNO(+)
+	                 AND	ST.COURSE_CODE		=	GRADES.L_ABR_CRSNO (+)
+	                 AND	ST.SECTNO			=	GRADES.SECTNO (+)
+	                 AND	GRADES.CCYRCD (+) 	= 	:paramYear
+		             AND	GRADES.SEMCD (+) 	= 	:paramSem
+		             AND 	SI.ACTIVE 			= 	'Y' 
+			                  
+					 ORDER BY GRADUSRACCTCD DESC, ST.STD_ID	
+	</entry>
+	<entry key="dps.incomplete.grades.insert.notify.by.instructor">
+	INSERT INTO 
+	T_STD_INCOMPLETE_GRADE_NOTIFY 
+			(
+			    REC_SEQ_NO
+			  , STDNO
+			  , STDSTATCD
+			  , CCYRCD
+			  , SEMCD
+			  , SECTCD
+			  , L_ABR_CRSNO
+			  , CRSNO
+			  , SECTNO
+			  , STATUSCD
+			
+			  , CREATE_DATE
+			  , CREATE_USERNAME
+			  , COMMENTS
+			) 
+	VALUES (
+	          	:paramSeqenceNum 
+	          , :paramStdNo
+	          , :paramStdStatCode
+	          , :paramYear
+	          , :paramSem
+	          , :paramSectCode
+	          , :paramCourseLAbrCode
+	          , :paramCourseNo
+	          , :paramSectNo
+	          , (
+	                   SELECT
+	                       CODES.SISCODECD	
+	                   FROM
+	                           SIS_CODES       CODES
+	                       ,   SIS_CODE_TYPES  TYPES
+	                   WHERE
+	                           CODES.SISCODETYPCD =  TYPES.SISCODETYPCD
+	                       AND TYPES.SISCODETYPNM = 'APPROVAL_STATUS'
+	                       AND CODES.L_ABR_CODE  = :paramStatusCode		    
+	            )
+	          , SYSDATE 
+	          , :paramUserName
+	          , :paramComment
+	        )
+	
+	</entry>
+	<entry key="dps.incomplete.grades.select.instructor.comments">
+			SELECT
+			      COMMENTS                      								AS 		COMMENTS
+			FROM
+			     T_STD_INCOMPLETE_GRADE_NOTIFY 
+			WHERE
+			      REC_SEQ_NO = :paramSeqenceNum	
+	</entry>
+	<entry key="dps.incomplete.grades.select.notify.history">
+			SELECT 
+              		VSP.STD_ID													AS		STUDENT_ID
+		        ,  T_NOTIFY.L_ABR_CRSNO											AS    	L_ABR_CRSNO
+		      	,   T_NOTIFY.SECTNO												AS		SECTION_NO
+
+			  	, T_NOTIFY.COMMENTS                                    			AS 		COMMENTS
+			  	, (
+		        	SELECT
+		        		L_ABR_CODE
+		        	FROM SIS_CODES
+		            WHERE 
+		            	SISCODECD= T_NOTIFY.STATUSCD
+		        	)															AS		STATUS_CODE_NAME
+	        	, (
+		            SELECT 
+		              DECODE 
+		              (
+		                :paramLocale
+		                ,'en', CODENM, A_CODENM
+		                )
+		              FROM SIS_CODES
+		              WHERE SISCODECD= T_NOTIFY.STATUSCD
+	            ) 																AS 		STATUS_DESC
+              
+		      , FUNC_APPROVE_STATUS(
+		                           T_NOTIFY.STDNO,
+		                           :paramHodRoleName, 
+		                           :paramFormName,
+		                           T_NOTIFY.REC_SEQ_NO
+		                           )                        					AS  	HOD_STATUS
+		     , FUNC_APPROVE_STATUS(
+		                     T_NOTIFY.STDNO,
+		                     :paramADeanPRoleName, 
+		                     :paramFormName,
+		                     T_NOTIFY.REC_SEQ_NO
+		                     )                              					AS  	DPS_ASST_DEAN_STATUS 
+		     , FUNC_APPROVE_STATUS(
+		                     T_NOTIFY.STDNO,
+		                     :paramDeanPRoleName, 
+		                     :paramFormName,
+		                     T_NOTIFY.REC_SEQ_NO
+		                     )                              					AS  	DPS_DEAN_STATUS  
+		                      
+              , FUNC_APPROVER_COMMENT(
+		                     T_NOTIFY.STDNO,
+		                     :paramHodRoleName, 
+		                     :paramFormName,
+		                     T_NOTIFY.REC_SEQ_NO
+		                     )                              					AS  	HOD_COMMENT  
+		      , FUNC_APPROVER_COMMENT(
+		                     T_NOTIFY.STDNO,
+		                     :paramADeanPRoleName, 
+		                     :paramFormName,
+		                     T_NOTIFY.REC_SEQ_NO
+		                     )                              					AS  	DPS_ASST_DEAN_COMMENT  
+		      , FUNC_APPROVER_COMMENT(
+		                     T_NOTIFY.STDNO,
+		                     :paramDeanPRoleName, 
+		                     :paramFormName,
+		                     T_NOTIFY.REC_SEQ_NO
+		                     )                              					AS  	DPS_DEAN_COMMENT         
+		FROM
+             	 T_STD_INCOMPLETE_GRADE_NOTIFY  		  	T_NOTIFY
+		      ,   V_STDINFO_PORTAL    						VSP
+
+          
+		WHERE
+				T_NOTIFY.REC_SEQ_NO	= :paramSequenceNo	      	
+		      	AND T_NOTIFY.STDNO 	= VSP.STDNO
+          		AND VSP.ACTIVE    	= 'Y'
+       
+          
+		ORDER BY T_NOTIFY.UPDATE_DATE DESC	
+	</entry>
+
+	<entry key="dps.incomplete.grades.select.student.records.by.employee">
+		SELECT
+		      	DISTINCT
+				 	T_NOTIFY.STDNO							              		AS		STUDENT_NO
+
+				, 	PORTAL.STD_ID												AS		STUDENT_ID
+			  	,	T_NOTIFY.STDSTATCD											AS  	STDSTATCD
+		    	,	DECODE
+						    (
+								        :paramLocale
+								      , 'en', PORTAL.STD_NAME
+								            , PORTAL.A_STD_NAME
+						    )                                       			AS  	STUDENT_NAME
+				, 	PORTAL.COHORT                                 				AS  	COHORT						    
+			    , 	PORTAL.GENDER                                				AS  	GENDER
+			    , 	PORTAL.STD_EMAIL                             				AS  	EMAIL
+	          	, 	DECODE
+			                (
+			                    :paramLocale
+			                    ,'en', PORTAL.DEGREE_NAME
+			                    ,PORTAL.A_DEGREE_NAME
+			                )                                         			AS  	DEGREE_NAME
+	          	, 	DECODE 
+			                (
+			                      :paramLocale
+			                      ,'en', PORTAL.COLLEGENM
+			                      , PORTAL.A_COLLEGENM
+			                )                                         			AS  	COLLEGE_NAME			    
+			    , 	DECODE
+						    (
+								        :paramLocale
+								      , 'en', MAJORNAME
+								            , A_MAJORNAME
+						    )                                       			AS  	MAJOR
+
+			   , 	(
+              			SELECT 
+                      		DECODE (
+                                	MAX (UPDATE_DATE)
+                                , 	NULL, MAX (CREATE_DATE)
+                                , 	MAX (UPDATE_DATE)
+                             )
+                                
+			              FROM 
+			                    T_STD_INCOMPLETE_GRADE_NOTIFY
+			              WHERE
+			                   STDNO = T_NOTIFY.STDNO
+			            )                                     					AS 		DATE_WATCH
+                  
+                 
+	          ,		NVL(FUNC_IS_APPROVER(
+								                  T_NOTIFY.STDNO
+								                , T_NOTIFY.STDSTATCD
+								                , :paramFormName
+								                , :paramRoleName
+								                , :paramEmpNo
+								                , (
+				                                    SELECT 
+				                                          MAX(REC_SEQ_NO)
+				                                    FROM 
+				                                          T_STD_INCOMPLETE_GRADE_NOTIFY
+				                                    WHERE
+				                                              STDNO 	= 	T_NOTIFY.STDNO
+				                                          AND SECTCD 	=	T_NOTIFY.SECTCD
+				                                	) 
+	                              
+	                            	),'N')										AS 		IS_APPROVER			            
+                                
+		FROM
+				  T_STD_INCOMPLETE_GRADE_NOTIFY 	T_NOTIFY
+				, V_STDINFO_PORTAL                PORTAL
+				, COL_CEN                         COL
+				, STD_THESIS                      THESIS
+				, SECT				                    SECT
+				, COL_DEPT                        DEPT
+		WHERE 
+			          T_NOTIFY.STDNO     	=	PORTAL.STDNO
+			      AND T_NOTIFY.STDSTATCD 	=	PORTAL.STDSTATCD
+			      AND DEPT.COLCENCD     	=	COL.COLCENCD
+			  	  AND SECT.SECTCD 			=	T_NOTIFY.SECTCD
+			  	  AND SECT.CCYRCD 			=	T_NOTIFY.CCYRCD
+			  	  AND SECT.SEMCD 			=	T_NOTIFY.SEMCD
+				  AND SECT.L_ABR_CRSNO 		=	T_NOTIFY.L_ABR_CRSNO
+				  AND SECT.DEPTNO			=	DEPT.DEPTNO
+
+			      AND THESIS.STDNO (+)  	=	PORTAL.STDNO 
+			      AND PORTAL.COLLEGE_CODE 	=	COL.L_ABR_CC
+            AND PORTAL.ACTIVE = 'Y'
+		
+		          AND 
+		              ( 
+		                      :paramColCode = SECT.COLCENCD		 		--  College DEAN/ ASST DEAN
+		                  OR  :paramColCode IS NULL               		-- 	DPS DEAN / DPS STAFF
+		              )
+                       
+		          AND
+		            (
+		                      :paramAdvisor = PORTAL.ADVISOR			--	ADVISOR
+		                  OR  :paramAdvisor IS NULL
+		            )
+
+		          AND
+		            (
+		                      :paramSupervisor =  THESIS.SUPVISREMPNO	--	SUPERVISOR
+		                  OR  :paramSupervisor  IS NULL
+		            )
+                     
+		          AND
+		            (
+		                      :paramDeptCode  = DEPT.DEPTNO				--	HOD
+		                  OR  :paramDeptCode  IS NULL
+		            )
+
+
+			ORDER BY IS_APPROVER DESC, PORTAL.COHORT DESC, DATE_WATCH DESC, STUDENT_NAME		
+	</entry>
+	<entry key="dps.incomplete.grades.select.course.temp.for.notify">
+		SELECT
+		      	DISTINCT
+              	   T_NOTIFY.REC_SEQ_NO                              			AS    	SEQUENCE_NUMBER
+            	,  PORTAL.STD_ID												AS		STUDENT_ID
+	            ,  T_NOTIFY.STDNO                            					AS   	STUDENT_NO
+	            ,  T_NOTIFY.STDSTATCD  											AS		STDSTATCD 
+	            ,  T_NOTIFY.CCYRCD                           					AS    	CCYRCD
+	            ,  T_NOTIFY.SEMCD                            					AS    	SEMCD 
+	            , 	SECT.SECTCD                        							AS    	SECT_CODE   
+	            ,  T_NOTIFY.CRSNO												AS		COURSE_NO         		
+		        ,  T_NOTIFY.L_ABR_CRSNO											AS    	L_ABR_CRSNO
+		      	,   T_NOTIFY.SECTNO												AS		SECTION_NO
+
+			  	, T_NOTIFY.COMMENTS                                    			AS 		COMMENTS
+			  	, (
+		        	SELECT
+		        		L_ABR_CODE
+		        	FROM SIS_CODES
+		            WHERE 
+		            	SISCODECD= T_NOTIFY.STATUSCD
+		        	)															AS		STATUS_CODE_NAME
+	        	, (
+		            SELECT 
+		              DECODE 
+		              (
+		                :paramLocale
+		                ,'en', CODENM, A_CODENM
+		                )
+		              FROM SIS_CODES
+		              WHERE SISCODECD= T_NOTIFY.STATUSCD
+	            ) 																AS 		STATUS_DESC		
+			   , 	(
+              			SELECT 
+                      		DECODE (
+                                	MAX (UPDATE_DATE)
+                                , 	NULL, MAX (CREATE_DATE)
+                                , 	MAX (UPDATE_DATE)
+                             )
+                                
+			              FROM 
+			                  T_STD_INCOMPLETE_GRADE_NOTIFY  
+			              WHERE
+			                   STDNO = T_NOTIFY.STDNO
+			            )                                     					AS 		DATE_WATCH
+			  , T_NOTIFY.CREATE_USERNAME                                 		AS    	INSTUCTOR
+		      , FUNC_APPROVE_STATUS(
+		                           T_NOTIFY.STDNO,
+		                           :paramHodRoleName, 
+		                           :paramFormName,
+		                           T_NOTIFY.REC_SEQ_NO
+		                           )                        					AS  	HOD_STATUS
+		     , FUNC_APPROVE_STATUS(
+		                     T_NOTIFY.STDNO,
+		                     :paramADeanPRoleName, 
+		                     :paramFormName,
+		                     T_NOTIFY.REC_SEQ_NO
+		                     )                              					AS  	DPS_ASST_DEAN_STATUS 
+		     , FUNC_APPROVE_STATUS(
+		                     T_NOTIFY.STDNO,
+		                     :paramDeanPRoleName, 
+		                     :paramFormName,
+		                     T_NOTIFY.REC_SEQ_NO
+		                     )                              					AS  	DPS_DEAN_STATUS 
+              , FUNC_APPROVER_COMMENT(
+		                     T_NOTIFY.STDNO,
+		                     :paramHodRoleName, 
+		                     :paramFormName,
+		                     T_NOTIFY.REC_SEQ_NO
+		                     )                              					AS  	HOD_COMMENT  
+		      , FUNC_APPROVER_COMMENT(
+		                     T_NOTIFY.STDNO,
+		                     :paramADeanPRoleName, 
+		                     :paramFormName,
+		                     T_NOTIFY.REC_SEQ_NO
+		                     )                              					AS  	DPS_ASST_DEAN_COMMENT  
+		      , FUNC_APPROVER_COMMENT(
+		                     T_NOTIFY.STDNO,
+		                     :paramDeanPRoleName, 
+		                     :paramFormName,
+		                     T_NOTIFY.REC_SEQ_NO
+		                     )                              					AS  	DPS_DEAN_COMMENT  		                     
+			   , NVL(FUNC_IS_APPROVER(
+							                  T_NOTIFY.STDNO
+							                , T_NOTIFY.STDSTATCD
+							                , :paramFormName
+							                , :paramRoleName
+							                , :paramEmpNo
+							                , T_NOTIFY.REC_SEQ_NO
+			                          ),'N')				 					AS		IS_APPROVER	           
+		FROM
+				 T_STD_INCOMPLETE_GRADE_NOTIFY T_NOTIFY
+				, V_STDINFO_PORTAL  PORTAL
+				 ,COL_CEN            COL
+				, STD_THESIS        THESIS
+				, SECT				SECT
+				, COL_DEPT          DEPT
+		WHERE 
+			          T_NOTIFY.STDNO     	=	PORTAL.STDNO
+			      AND T_NOTIFY.STDSTATCD 	=	PORTAL.STDSTATCD
+			      AND DEPT.COLCENCD     	=	COL.COLCENCD
+			      AND SECT.SECTCD 			=	T_NOTIFY.SECTCD
+			  	  AND SECT.CCYRCD 			=	T_NOTIFY.CCYRCD
+			  	  AND SECT.SEMCD 			=	T_NOTIFY.SEMCD
+				  AND SECT.L_ABR_CRSNO 		=	T_NOTIFY.L_ABR_CRSNO
+				  AND SECT.DEPTNO			=	DEPT.DEPTNO
+			--      AND THESIS.STDNO    	=	T_GRADE.STDNO (+)
+			      AND THESIS.STDNO (+)  	=	PORTAL.STDNO 
+			      AND PORTAL.COLLEGE_CODE 	=	COL.L_ABR_CC
+		
+		          AND 
+		              ( 
+		                      :paramColCode = SECT.COLCENCD		 		--  College DEAN/ ASST DEAN
+		                  OR  :paramColCode IS NULL               		-- 	DPS DEAN / DPS STAFF
+		              )
+                       
+		          AND
+		            (
+		                      :paramAdvisor = PORTAL.ADVISOR			--	ADVISOR
+		                  OR  :paramAdvisor IS NULL
+		            )
+
+		          AND
+		            (
+		                      :paramSupervisor =  THESIS.SUPVISREMPNO	--	SUPERVISOR
+		                  OR  :paramSupervisor  IS NULL
+		            )
+                     
+		          AND
+		            (
+		                      :paramDeptCode  = DEPT.DEPTNO				--	HOD
+		                  OR  :paramDeptCode  IS NULL
+		            )
+            AND
+                ( 
+                        T_NOTIFY.STDNO     = :paramStdNo
+                    AND T_NOTIFY.STDSTATCD = :paramStdStatCode
+                )
+
+			ORDER BY DATE_WATCH DESC
+	
+	</entry>
+	<entry key="dps.incomplete.grades.update.approval.by.approver">
+			UPDATE
+			    T_STD_INCOMPLETE_GRADE_NOTIFY
+			    SET 
+			        STATUSCD = (
+			                       SELECT
+			                           CODES.SISCODECD	
+			                       FROM
+			                               SIS_CODES       CODES
+			                           ,   SIS_CODE_TYPES  TYPES
+			                       WHERE
+			                               CODES.SISCODETYPCD 	=  TYPES.SISCODETYPCD
+			                           AND TYPES.SISCODETYPNM 	= 'APPROVAL_STATUS'
+			                           AND CODES.L_ABR_CODE  	= :paramStatusCode		    
+			                  ) 
+			      , UPDATE_DATE 	= SYSDATE
+			      , UPDATE_USERNAME = :paramUserName
+			
+			  WHERE
+			        STDNO = :paramStdNo 
+			      AND STDSTATCD = :paramStdStatCode
+			      AND SECTCD	= :paramSectCode
+			      AND CCYRCD    = :paramYear
+			      AND SEMCD     = :paramSem
+			      AND L_ABR_CRSNO = :paramCourseLAbrCode
+			      AND REC_SEQ_NO = :paramSeqNo	
+	</entry>
+</properties>

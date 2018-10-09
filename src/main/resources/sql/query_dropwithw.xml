@@ -126,7 +126,10 @@
 		            )										AS  COURSE_NAME
 		      , T_DROP.SECTNO								AS  SECTION_NO
 		      ,	T_DROP.SECTCD								AS	SECT_CODE
-		      , CRS.CRSCRED 								AS  CREDITS
+		      , DECODE(
+              		MOD(T_DROP.SECTNO,10)
+              		, 0, CRS.CRSCRED, 0
+            		)                          				AS  CREDITS
 		      ,(
 	                SELECT 
 	                  DECODE 

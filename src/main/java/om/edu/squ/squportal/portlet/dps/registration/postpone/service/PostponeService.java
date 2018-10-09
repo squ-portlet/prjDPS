@@ -35,6 +35,7 @@ import java.util.Locale;
 import om.edu.squ.squportal.portlet.dps.bo.Course;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
+import om.edu.squ.squportal.portlet.dps.exception.ExceptionDropDownPeriod;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeReason;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentModel;
@@ -88,8 +89,9 @@ public interface PostponeService
 	 * purpose		: Insert to postpone as student
 	 *
 	 * Date    		:	Aug 7, 2017 5:00:53 PM
+	 * @throws ExceptionDropDownPeriod 
 	 */
-	public List<PostponeDTO> setPostponeByStudent(Student student, PostponeStudentModel studentModel, String userName, Locale locale);
+	public List<PostponeDTO> setPostponeByStudent(Student student, PostponeStudentModel studentModel, String userName, Locale locale) throws ExceptionDropDownPeriod;
 	
 	
 	/**

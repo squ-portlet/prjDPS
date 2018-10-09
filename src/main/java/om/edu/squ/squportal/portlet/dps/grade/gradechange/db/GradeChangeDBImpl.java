@@ -149,6 +149,15 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 				grade.setGradeCode(rs.getInt(Constants.CONST_COLMN_GRADE_CODE));
 				grade.setGradeVal(rs.getString(Constants.CONST_COLMN_GRADE_VAL));
 				
+				if(rs.getString(Constants.CONST_COLMN_GRADE_IS_INCOMPLETE_GRADE).equals(Constants.CONST_YES))
+				{
+					gradeDTO.setIncompleteGrade(true);
+				}
+				else
+				{
+					gradeDTO.setIncompleteGrade(false);
+				}
+				
 				gradeDTO.setStudentId(rs.getString(Constants.CONST_COLMN_STUDENT_ID));
 				gradeDTO.setStudentName(rs.getString(Constants.CONST_COLMN_STUDENT_NAME));
 				gradeDTO.setStudentNo(rs.getString(Constants.CONST_COLMN_STUDENT_NO));
@@ -177,6 +186,8 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 				return gradeDTO;
 			}
 		};
+		
+		
 		
 		yearSemester	= (isRuleGradeChangeTimingFollowed) ? getRuleYearSem() : getCurrentYearSem();
 		

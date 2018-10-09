@@ -69,6 +69,8 @@ public class GradeDTO
 	
 	private		boolean			approver;
 	
+	private		boolean			incompleteGrade;
+	
 	
 	
 	
@@ -542,6 +544,27 @@ public class GradeDTO
 	{
 		this.approver = approver;
 	}
+	
+	/**
+	 * Getter Method	: isIncompleteGrade
+	 * @return the incompleteGrade
+	 * 
+	 * Date				: Dec 31, 2017
+	 */
+	public boolean isIncompleteGrade()
+	{
+		return this.incompleteGrade;
+	}
+	/**
+	 * Setter method : setIncompleteGrade
+	 * @param incompleteGrade the incompleteGrade to set
+	 * 
+	 * Date          : Dec 31, 2017 9:50:58 PM
+	 */
+	public void setIncompleteGrade(boolean incompleteGrade)
+	{
+		this.incompleteGrade = incompleteGrade;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -561,7 +584,8 @@ public class GradeDTO
 				+ ", statusDesc=" + this.statusDesc + ", userName="
 				+ this.userName + ", roleType=" + this.roleType + ", hod="
 				+ this.hod + ", dpsAsstDean=" + this.dpsAsstDean + ", dpsDean="
-				+ this.dpsDean + ", approver=" + this.approver + "]";
+				+ this.dpsDean + ", approver=" + this.approver
+				+ ", incompleteGrade=" + this.incompleteGrade + "]";
 	}
 	
 	

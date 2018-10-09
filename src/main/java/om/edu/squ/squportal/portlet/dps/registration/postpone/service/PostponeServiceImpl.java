@@ -42,6 +42,7 @@ import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
+import om.edu.squ.squportal.portlet.dps.exception.ExceptionDropDownPeriod;
 import om.edu.squ.squportal.portlet.dps.notification.bo.NotifierPeople;
 import om.edu.squ.squportal.portlet.dps.notification.service.DPSNotification;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
@@ -68,11 +69,13 @@ public class PostponeServiceImpl implements PostponeService
 	PostponeDBDao	postponeDBDao;
 	@Autowired
 	DPSNotification	dpsNotification;
+	@Autowired
+	Rule					ruleService;
 
 	
 	private	boolean		rulePostponeCountWithinLimit	=	false;
 	
-	
+	private	boolean		dropWTimeApplied				=	false;
 
 
 	/**
@@ -125,11 +128,18 @@ public class PostponeServiceImpl implements PostponeService
 	 *
 	 * Date    		:	Aug 7, 2017 5:00:53 PM
 	 */
-	public List<PostponeDTO> setPostponeByStudent(Student student, PostponeStudentModel studentModel, String userName, Locale locale)
+	public List<PostponeDTO> setPostponeByStudent(Student student, PostponeStudentModel studentModel, String userName, Locale locale) throws ExceptionDropDownPeriod
 	{
 		int 				result			=	0;
 		List<PostponeDTO>	postponeDTOs	=	null;
-		String 				approverRole	=	null;	
+		String 				approverRole	=	null;
+		
+		if(!dropWTimeApplied)
+		{
+			logger.error("Attempt of postpone beyond drop with w period");
+			throw new ExceptionDropDownPeriod("Drop with W period not covered.");
+		}
+		
 		if(!studentModel.getYearSem().equals(""))
 		{
 			PostponeDTO			dto				=	new PostponeDTO(student,studentModel,userName);
@@ -357,15 +367,29 @@ public class PostponeServiceImpl implements PostponeService
 		 * */
 		rulePostponeCountWithinLimit	=	dpsServiceDao.isPostponeCountWithinLimit(studentNo, stdStatCode);
 		
-		if(Constants.CONST_TEST_ENVIRONMENT)
+		
+		/*
+		 * Rule 2 : Drop with W period
+		 */
+		
+		if(ruleService.isDropWPeriod(studentNo, stdStatCode))
 		{
-			
+			this.dropWTimeApplied	=	true;
 		}
 		else
 		{
-			
+			this.dropWTimeApplied	=	false;
 		}
 		
+		
+		if(Constants.CONST_TEST_ENVIRONMENT)
+		{
+			this.dropWTimeApplied	=	true;
+		}
+		
+		
+		
+
 		
 		//Please don't change the return value
 		return true;

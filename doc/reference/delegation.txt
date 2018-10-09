@@ -1,0 +1,14 @@
+Existing situation 
+=============================
+Show the approver tab
+--------------------------------
+1. sql_role.xml (e.g. sql.role.is.advisor)
+2. RoleDbImpl.java
+3. public boolean isAdvisor(String empNumber) 
+   .... same for other approver
+4. 
+
+=================================
+DB Level
+------------------------------
+Function FUNC_IS_APPROVER

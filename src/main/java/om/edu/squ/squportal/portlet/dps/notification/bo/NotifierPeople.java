@@ -45,7 +45,7 @@ import om.edu.squ.squportal.portlet.dps.utility.Constants;
  * @author Bhabesh
  *
  */
-public class NotifierPeople
+public class NotifierPeople implements Cloneable
 {
 	private	Student					student;
 	private Approver				approver;
@@ -60,9 +60,8 @@ public class NotifierPeople
 	private	boolean					progress;
 	private	boolean					reject;
 	private	boolean					accept;
-
-	
-	
+	private	String					delegateeNameEn;
+	private	String					delegateeNameAr;
 	
 	
 	/**
@@ -334,6 +333,51 @@ public class NotifierPeople
 	{
 		this.accept = accept;
 	}
+	/**
+	 * Getter Method	: getDelegateeNameEn
+	 * @return the delegateeNameEn
+	 * 
+	 * Date				: Sep 4, 2018
+	 */
+	public String getDelegateeNameEn()
+	{
+		return this.delegateeNameEn;
+	}
+	/**
+	 * Setter method : setDelegateeNameEn
+	 * @param delegateeNameEn the delegateeNameEn to set
+	 * 
+	 * Date          : Sep 4, 2018 2:44:14 PM
+	 */
+	public void setDelegateeNameEn(String delegateeNameEn)
+	{
+		this.delegateeNameEn = delegateeNameEn;
+	}
+	/**
+	 * Getter Method	: getDelegateeNameAr
+	 * @return the delegateeNameAr
+	 * 
+	 * Date				: Sep 4, 2018
+	 */
+	public String getDelegateeNameAr()
+	{
+		return this.delegateeNameAr;
+	}
+	/**
+	 * Setter method : setDelegateeNameAr
+	 * @param delegateeNameAr the delegateeNameAr to set
+	 * 
+	 * Date          : Sep 4, 2018 2:44:15 PM
+	 */
+	public void setDelegateeNameAr(String delegateeNameAr)
+	{
+		this.delegateeNameAr = delegateeNameAr;
+	}
+	@Override
+	 public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	 }
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -347,7 +391,9 @@ public class NotifierPeople
 				+ ", formNameEng=" + this.formNameEng + ", formNameAr="
 				+ this.formNameAr + ", serviceUrl=" + this.serviceUrl
 				+ ", pending=" + this.pending + ", progress=" + this.progress
-				+ ", reject=" + this.reject + ", accept=" + this.accept + "]";
+				+ ", reject=" + this.reject + ", accept=" + this.accept
+				+ ", delegateeNameEn=" + this.delegateeNameEn
+				+ ", delegateeNameAr=" + this.delegateeNameAr + "]";
 	}
 	
 	

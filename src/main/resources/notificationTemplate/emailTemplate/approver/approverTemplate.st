@@ -9,6 +9,7 @@
 <table style="width: 100%">
 	<tr>
 		<td>Dear $data.approver.roleNameEng$ [$data.approver.nameEng$], 
+		$if(data.delegateeNameEn)$ <br><font color='red'>(Delegated by $data.delegateeNameEn$)</font> $endif$ 
 			<br />Detail Status of&nbsp; application is mentioned below :  
 </td>
 

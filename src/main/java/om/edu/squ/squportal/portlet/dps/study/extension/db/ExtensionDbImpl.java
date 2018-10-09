@@ -293,26 +293,25 @@ public class ExtensionDbImpl implements ExtensionDbDao
 		namedParameterMap.put("paramDpsDeanRoleName", Constants.CONST_SQL_ROLE_NAME_DPS_DEAN);
 				
 		namedParameterMap.put("paramFormName", Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY);
-		
 		return nPJdbcTemplDpsExtension.query(SQL_EXTENSION_SELECT_STUDENT_RECORDS, namedParameterMap, mapper);
 	}
 
-	/**
-	 * 
-	 * method name  : getExtensionsForApprovers
-	 * @param roleType
-	 * @param employee
-	 * @param locale
-	 * @return
-	 * ExtensionDbImpl
-	 * return type  : List<ExtensionDTO>
-	 * 
-	 * purpose		:
-	 *
-	 * Date    		:	Feb 15, 2017 10:09:55 PM
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.study.extension.db.ExtensionDbDao#getExtensionsForApprovers(java.lang.String, om.edu.squ.squportal.portlet.dps.bo.Employee, java.util.Locale, java.lang.String, boolean, boolean, boolean, boolean)
 	 */
-	public List<ExtensionDTO> getExtensionsForApprovers(String roleType, Employee employee, Locale locale, String studentNo)
+	public List<ExtensionDTO> getExtensionsForApprovers(
+															final 	String 		roleType, 
+																	Employee 	employee, 
+																	Locale 		locale, 
+																	String 		studentNo, 
+															final	boolean 	isDelegation, 
+															final 	boolean 	applyDelegation, 
+															final	boolean 	delegationDefaultApprove, 
+															final	boolean 	delegationApprove
+														)
 	{
+
 		String SQL_EXTENSION_SELECT_STUDENT_RECORDS_BY_EMPLOYEE		=	queryExtensionProps.getProperty(Constants.CONST_SQL_EXTENSION_SELECT_STUDENT_RECORDS_BY_EMPLOYEE);	
 		RowMapper<ExtensionDTO> 	mapper		=	new RowMapper<ExtensionDTO>()
 		{
@@ -344,10 +343,12 @@ public class ExtensionDbImpl implements ExtensionDbDao
 				if(rs.getString(Constants.CONST_COLMN_ROLE_IS_APPROVER).equals(Constants.CONST_YES))
 				{
 					extensionDTO.setApprover(true);
+					extensionDTO.setApproverApplicable(true);
 				}
 				else
 				{
 					extensionDTO.setApprover(false);
+					extensionDTO.setApproverApplicable(false);
 				}
 				
 				if(rs.getString(Constants.CONST_COLMN_STUDENT_HAS_THESIS).equals(Constants.CONST_YES))
@@ -355,7 +356,11 @@ public class ExtensionDbImpl implements ExtensionDbDao
 					
 					supervisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_SUPERVISOR_STATUS));
 					advisor.setRoleStatus(Constants.CONST_NOT_USED);
-					
+					if(roleType.equals(Constants.CONST_SQL_ROLE_NAME_ADVISOR))
+					{
+						extensionDTO.setApprover(false);
+						extensionDTO.setApproverApplicable(false);
+					}
 				}
 				else
 				{
@@ -363,14 +368,46 @@ public class ExtensionDbImpl implements ExtensionDbDao
 					supervisor.setRoleStatus(Constants.CONST_NOT_USED);
 					
 				}
+
 				extensionDTO.setAdvisor(advisor);
 				extensionDTO.setSupervisor(supervisor);
 				extensionDTO.setCollegeDean(collegeDean);
 				extensionDTO.setDpsDean(dpsDean);
 				
+				/* Delegation */				
+				if(isDelegation)
+				{
+					if(delegationDefaultApprove)
+					{
+						
+					}
+					else
+					{
+						if(!delegationApprove)
+						{
+							extensionDTO.setApprover(false);
+							extensionDTO.setApproverApplicable(false);
+						}
+					}
+					
+					if(delegationApprove)
+					{
+						/* Glyphicon for delegation */
+						extensionDTO.setApplyDelegation(applyDelegation);					}
+				}
+				
 				return extensionDTO;
 			}
 		};
+		
+	
+		
+		if(employee.getEmpNumber().substring(0, 1).equals("e"))
+		{
+			employee.setEmpNumber(employee.getEmpNumber().substring(1));
+		}
+		
+
 		
 		Map<String,String> namedParameterMap	=	new HashMap<String,String>();
 		namedParameterMap.put("paramLocal", locale.getLanguage());
@@ -393,6 +430,7 @@ public class ExtensionDbImpl implements ExtensionDbDao
 		switch (roleType)
 		{
 			case Constants.CONST_ROLE_NAME_ADVISOR:
+				
 				namedParameterMap.put("paramAdvisor", employee.getEmpNumber());
 				break;
 			case Constants.CONST_ROLE_NAME_SUPERVISOR:
@@ -415,8 +453,6 @@ public class ExtensionDbImpl implements ExtensionDbDao
 		{
 			namedParameterMap.put("paramStdNo", studentNo);
 		}
-		
-		
 		return nPJdbcTemplDpsExtension.query(SQL_EXTENSION_SELECT_STUDENT_RECORDS_BY_EMPLOYEE, namedParameterMap, mapper);
 	}
 	

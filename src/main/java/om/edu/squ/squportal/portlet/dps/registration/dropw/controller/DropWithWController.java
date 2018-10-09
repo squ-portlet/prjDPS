@@ -146,7 +146,7 @@ public class DropWithWController
 		model.addAttribute("isRuleStudentComplete", dropWService.isRuleStudentComplete(
 																							student.getAcademicDetail().getStudentNo(), 
 																							student.getAcademicDetail().getStdStatCode(), 
-																							null
+																							null, null
 																						)
 							);
 		model.addAttribute("courseList", dropWService.getCourseList(student, locale));
@@ -174,7 +174,7 @@ public class DropWithWController
 		Employee employee	=	null;
 		try
 		{
-			employee = dpsServiceDao.getEmployee(request,locale);
+			employee = dpsServiceDao.getEmployee(request,locale, false);
 			
 		}
 		catch (ExceptionEmptyResultset ex)
@@ -217,7 +217,7 @@ public class DropWithWController
 		
 		try
 		{
-			if(dropWService.isRuleStudentComplete(student.getAcademicDetail().getStudentNo(), student.getAcademicDetail().getStdStatCode(), dropCourseModel.getCourseNo()))
+			if(dropWService.isRuleStudentComplete(student.getAcademicDetail().getStudentNo(), student.getAcademicDetail().getStdStatCode(), dropCourseModel.getCourseNo(), dropCourseModel.getSectNo()))
 			{
 				if(dropWService.isRuleModeCreditApplied())
 				{
@@ -269,7 +269,7 @@ public class DropWithWController
 			Employee	employee	=	null;
 			try
 			{
-				employee					=	dpsServiceDao.getEmployee(request,locale);
+				employee					=	dpsServiceDao.getEmployee(request,locale, false);
 				List<DropWDTO>	dropWDTOs	=	dropWService.getDropWForApprovers(roleNameValue.getRoleValue(), employee, locale);
 				response.getWriter().print(gson.toJson(dropWDTOs));
 			}

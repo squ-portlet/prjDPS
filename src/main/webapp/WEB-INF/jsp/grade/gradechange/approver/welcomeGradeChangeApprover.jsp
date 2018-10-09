@@ -244,7 +244,12 @@
 							
 							
 								<div class="row container-fluid">
-									<a class="linkGradeChange" href="#" stdno="{{encryptStr studentNo}}" stdstatcode="{{encryptStr stdStatCode}}" courseyear="{{encryptStr courseYear}}" semester="{{encryptStr semester}}" sectCode="{{encryptStr sectCode}}" courseno="{{encryptStr course.courseNo}}" labrcourseno="{{encryptStr course.lAbrCourseNo}}" sectionno="{{encryptStr sectionNo}}"  gradecodeold="{{{encryptStr grade.gradeCode}}}" ><spring:message code="prop.dps.gradechange.link.update"/></a>
+									<div class="col-sm-3"><a class="linkGradeChange" href="#" stdno="{{encryptStr studentNo}}" stdstatcode="{{encryptStr stdStatCode}}" courseyear="{{encryptStr courseYear}}" semester="{{encryptStr semester}}" sectCode="{{encryptStr sectCode}}" courseno="{{encryptStr course.courseNo}}" labrcourseno="{{encryptStr course.lAbrCourseNo}}" sectionno="{{encryptStr sectionNo}}"  gradecodeold="{{{encryptStr grade.gradeCode}}}" ><spring:message code="prop.dps.gradechange.link.update"/></a></div>
+									{{#if incompleteGrade}}
+										<div class="col-sm-3">
+											<a class="linkNotifyIncomplete" href="#"><spring:message code="prop.dps.incomplete.grade.notification.notify.text"/></a>
+										</div>
+									{{/if}}
 								</div>
 						{{/if}}
 						</form>

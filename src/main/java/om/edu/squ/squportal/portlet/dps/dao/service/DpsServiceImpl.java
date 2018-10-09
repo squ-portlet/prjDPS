@@ -40,6 +40,7 @@ import javax.portlet.PortletRequest;
 import om.edu.squ.portal.common.EmpCommon;
 import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Approver;
+import om.edu.squ.squportal.portlet.dps.bo.DelegateEmployee;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.PersonalDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
@@ -239,26 +240,17 @@ public class DpsServiceImpl implements DpsServiceDao
 		return student;
 	}
 	
-	/**
-	 * 
-	 * method name  : getEmployee
-	 * @param empNumber
-	 * @param locale
-	 * @return
-	 * DpsServiceImpl
-	 * return type  : Employee
-	 * 
-	 * purpose		: Get Employee Details with Roles
-	 *
-	 * Date    		:	Feb 13, 2017 9:50:17 PM
-	 * @throws ExceptionEmptyResultset 
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao#getEmployee(java.lang.String, java.lang.String, java.util.Locale, boolean)
 	 */
-	private Employee	getEmployee(String empNumber, Locale locale) throws ExceptionEmptyResultset
+	public Employee	getEmployee(String empNumber, String empUserName, Locale locale, boolean applyDelegation) throws ExceptionEmptyResultset
 	{
 		List<RoleNameValue> 	roleNameValues	=	new ArrayList<RoleNameValue>();
-		Employee				employee		=	dpsDbDao.getEmployee(empNumber);
+		Employee				employee		=	dpsDbDao.getEmployee(empNumber, empUserName, applyDelegation);
 		Employee				roleOfEmployee	=	roleService.getEmployeeRole(empNumber);
 		employee.setEmployeeRole(roleOfEmployee);
+		employee.setUserName(empUserName);
 		
 		if (employee.isAdvisor()) 
 		{
@@ -308,13 +300,21 @@ public class DpsServiceImpl implements DpsServiceDao
 	 *
 	 * Date    		:	Mar 27, 2017 4:24:34 PM
 	 */
-	public Employee getEmployee(PortletRequest request, Locale locale) throws ExceptionEmptyResultset
+	public Employee getEmployee(PortletRequest request, Locale locale, boolean applyDelegation) throws ExceptionEmptyResultset
 	{
 		String 		empNumber	=	getEmpNumber(request);	
-		return 		getEmployee(empNumber, locale);
+		return 		getEmployee(empNumber, request.getRemoteUser(), locale, applyDelegation);
 	}
 	
-
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao#getEmployee(java.lang.String, java.lang.String, boolean)
+	 */
+	public Employee getEmployee(String empNumber, String empUserName, boolean applyDelegation) throws ExceptionEmptyResultset
+	{
+		return dpsDbDao.getEmployee(empNumber, empUserName, applyDelegation);
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao#setRoleTransaction(om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO, om.edu.squ.squportal.portlet.dps.bo.Employee)
@@ -385,9 +385,9 @@ public class DpsServiceImpl implements DpsServiceDao
 	 *
 	 * Date    		:	Aug 17, 2017 5:05:04 PM
 	 */
-	public int getSelectedRegisteredCourseCredit(String studentNo, String stdStatCode, String courseNo)
+	public int getSelectedRegisteredCourseCredit(String studentNo, String stdStatCode, String courseNo, String sectNo)
 	{
-		return dpsDbDao.getSelectedRegisteredCourseCredit(studentNo, stdStatCode, courseNo);
+		return dpsDbDao.getSelectedRegisteredCourseCredit(studentNo, stdStatCode, courseNo, sectNo);
 	}
 	
 	
@@ -559,15 +559,8 @@ public class DpsServiceImpl implements DpsServiceDao
 	    else 
 	    {
 			String strEmpNumber=null;
-			try
-			{
-				EmpCommon	empCommon	=	new EmpCommon();
-						strEmpNumber 	= 	empCommon.getEmployeeNumber(request.getRemoteUser());
-			}
-			catch(Exception ex)
-			{
-				logger.info("******* exception while getting emp no: " + ex.getMessage());
-			}
+
+			strEmpNumber	=	String.valueOf(userIdUtil.getEmpNumber(request.getRemoteUser()));
 			if(strEmpNumber==null || strEmpNumber=="")
 			{
 				return null;	
@@ -577,7 +570,8 @@ public class DpsServiceImpl implements DpsServiceDao
 	    }
 	    
 	}
-    
+  
+  
 
 	/**
 	 * 
@@ -659,4 +653,28 @@ public class DpsServiceImpl implements DpsServiceDao
 		
 		return result;
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao#getSequenceNumber()
+	 */
+	@Override
+	public double getSequenceNumber()
+	{
+		return dpsDbDao.getSequenceNumber();
+	}
+	
+
+	/*
+	 * Delegation
+	 */
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao#getDelegatedEmployee(java.lang.String)
+	 */
+	public	DelegateEmployee getDelegatedEmployee(String empUserName)
+	{
+		return dpsDbDao.getDelegatedEmployee(empUserName);
+	}
+	
 }

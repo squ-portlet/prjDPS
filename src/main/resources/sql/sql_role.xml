@@ -328,6 +328,8 @@
 								              , CREATE_USERNAME
 								              , REQUESTCD
 								              ,	COMMENTS
+											  , DELEGATEE_EMPNO
+											  
 								            )
 				      VALUES
 								            (
@@ -342,6 +344,7 @@
 								              , :paramUserName
 								              ,	:paramRequestCode
 								              , :paramComments
+											  , :paramDelegateeEmpNo
 								            )
 		</entry>
 		
