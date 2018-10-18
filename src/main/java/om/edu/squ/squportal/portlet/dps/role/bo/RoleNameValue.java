@@ -37,6 +37,8 @@ public class RoleNameValue
 {
 	private		String	roleName;
 	private		String	roleValue;
+	private		String	roleValueEng;
+	private		String	roleValueAr;
 	private		int		sequenceNo;
 	
 	public RoleNameValue()	{}
@@ -46,11 +48,13 @@ public class RoleNameValue
 		this.roleName	=	roleName;
 		this.roleValue	=	roleVale;
 	}
-	public RoleNameValue(int sequenceNo, String roleName, String roleVale)
+	public RoleNameValue(int sequenceNo, String roleName, String roleVale, String roleValueEng, String roleValueAr)
 	{
-		this.sequenceNo	=	sequenceNo;
-		this.roleName	=	roleName;
-		this.roleValue	=	roleVale;
+		this.sequenceNo		=	sequenceNo;
+		this.roleName		=	roleName;
+		this.roleValue		=	roleVale;
+		this.roleValueEng	=	roleValueEng;
+		this.roleValueAr	=	roleValueAr;
 	}	
 	/**
 	 * Getter Method	: getRoleName
@@ -94,6 +98,50 @@ public class RoleNameValue
 	}
 	
 	/**
+	 * Getter Method	: getRoleValueEng
+	 * @return the roleValueEng
+	 * 
+	 * Date				: Oct 17, 2018
+	 */
+	public String getRoleValueEng()
+	{
+		return this.roleValueEng;
+	}
+
+	/**
+	 * Setter method : setRoleValueEng
+	 * @param roleValueEng the roleValueEng to set
+	 * 
+	 * Date          : Oct 17, 2018 9:16:23 AM
+	 */
+	public void setRoleValueEng(String roleValueEng)
+	{
+		this.roleValueEng = roleValueEng;
+	}
+
+	/**
+	 * Getter Method	: getRoleValueAr
+	 * @return the roleValueAr
+	 * 
+	 * Date				: Oct 17, 2018
+	 */
+	public String getRoleValueAr()
+	{
+		return this.roleValueAr;
+	}
+
+	/**
+	 * Setter method : setRoleValueAr
+	 * @param roleValueAr the roleValueAr to set
+	 * 
+	 * Date          : Oct 17, 2018 9:16:23 AM
+	 */
+	public void setRoleValueAr(String roleValueAr)
+	{
+		this.roleValueAr = roleValueAr;
+	}
+
+	/**
 	 * Getter Method	: getSequenceNo
 	 * @return the sequenceNo
 	 * 
@@ -122,7 +170,9 @@ public class RoleNameValue
 	public String toString()
 	{
 		return "RoleNameValue [roleName=" + this.roleName + ", roleValue="
-				+ this.roleValue + ", sequenceNo=" + this.sequenceNo + "]";
+				+ this.roleValue + ", roleValueEng=" + this.roleValueEng
+				+ ", roleValueAr=" + this.roleValueAr + ", sequenceNo="
+				+ this.sequenceNo + "]";
 	}
 	
 	

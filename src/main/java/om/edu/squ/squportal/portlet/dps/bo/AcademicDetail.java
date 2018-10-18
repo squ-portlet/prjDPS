@@ -40,10 +40,16 @@ public class AcademicDetail
 	private	String	studentName;
 	private	String	studentUserName;
 	private	String	college;
+	private	String	collegeEng;
+	private	String	collegeAr;
 	private	String	major;
+	private	String	majorEng;
+	private	String	majorAr;
 	private	String	supervisorId;
 	private	String	advisorId;
 	private	String	degree;
+	private	String	degreeEng;
+	private	String	degreeAr;
 	private	String	stdStatCode;
 	private	String	status;
 	private	int		estimatedSemesters;
@@ -156,6 +162,46 @@ public class AcademicDetail
 		this.college = college;
 	}
 	/**
+	 * Getter Method	: getCollegeEng
+	 * @return the collegeEng
+	 * 
+	 * Date				: Oct 17, 2018
+	 */
+	public String getCollegeEng()
+	{
+		return this.collegeEng;
+	}
+	/**
+	 * Setter method : setCollegeEng
+	 * @param collegeEng the collegeEng to set
+	 * 
+	 * Date          : Oct 17, 2018 9:44:00 AM
+	 */
+	public void setCollegeEng(String collegeEng)
+	{
+		this.collegeEng = collegeEng;
+	}
+	/**
+	 * Getter Method	: getCollegeAr
+	 * @return the collegeAr
+	 * 
+	 * Date				: Oct 17, 2018
+	 */
+	public String getCollegeAr()
+	{
+		return this.collegeAr;
+	}
+	/**
+	 * Setter method : setCollegeAr
+	 * @param collegeAr the collegeAr to set
+	 * 
+	 * Date          : Oct 17, 2018 9:44:00 AM
+	 */
+	public void setCollegeAr(String collegeAr)
+	{
+		this.collegeAr = collegeAr;
+	}
+	/**
 	 * Getter Method	: getMajor
 	 * @return the major
 	 * 
@@ -176,6 +222,46 @@ public class AcademicDetail
 		this.major = major;
 	}
 
+	/**
+	 * Getter Method	: getMajorEng
+	 * @return the majorEng
+	 * 
+	 * Date				: Oct 17, 2018
+	 */
+	public String getMajorEng()
+	{
+		return this.majorEng;
+	}
+	/**
+	 * Setter method : setMajorEng
+	 * @param majorEng the majorEng to set
+	 * 
+	 * Date          : Oct 17, 2018 9:33:31 AM
+	 */
+	public void setMajorEng(String majorEng)
+	{
+		this.majorEng = majorEng;
+	}
+	/**
+	 * Getter Method	: getMajorAr
+	 * @return the majorAr
+	 * 
+	 * Date				: Oct 17, 2018
+	 */
+	public String getMajorAr()
+	{
+		return this.majorAr;
+	}
+	/**
+	 * Setter method : setMajorAr
+	 * @param majorAr the majorAr to set
+	 * 
+	 * Date          : Oct 17, 2018 9:33:31 AM
+	 */
+	public void setMajorAr(String majorAr)
+	{
+		this.majorAr = majorAr;
+	}
 	/**
 	 * Getter Method	: getSupervisorId
 	 * @return the supervisorId
@@ -235,6 +321,46 @@ public class AcademicDetail
 	public void setDegree(String degree)
 	{
 		this.degree = degree;
+	}
+	/**
+	 * Getter Method	: getDegreeEng
+	 * @return the degreeEng
+	 * 
+	 * Date				: Oct 17, 2018
+	 */
+	public String getDegreeEng()
+	{
+		return this.degreeEng;
+	}
+	/**
+	 * Setter method : setDegreeEng
+	 * @param degreeEng the degreeEng to set
+	 * 
+	 * Date          : Oct 17, 2018 8:30:28 AM
+	 */
+	public void setDegreeEng(String degreeEng)
+	{
+		this.degreeEng = degreeEng;
+	}
+	/**
+	 * Getter Method	: getDegreeAr
+	 * @return the degreeAr
+	 * 
+	 * Date				: Oct 17, 2018
+	 */
+	public String getDegreeAr()
+	{
+		return this.degreeAr;
+	}
+	/**
+	 * Setter method : setDegreeAr
+	 * @param degreeAr the degreeAr to set
+	 * 
+	 * Date          : Oct 17, 2018 8:30:28 AM
+	 */
+	public void setDegreeAr(String degreeAr)
+	{
+		this.degreeAr = degreeAr;
 	}
 	/**
 	 * Getter Method	: getStdStatCode
@@ -388,14 +514,18 @@ public class AcademicDetail
 		return "AcademicDetail [id=" + this.id + ", studentNo="
 				+ this.studentNo + ", studentName=" + this.studentName
 				+ ", studentUserName=" + this.studentUserName + ", college="
-				+ this.college + ", major=" + this.major + ", supervisorId="
-				+ this.supervisorId + ", advisorId=" + this.advisorId
-				+ ", degree=" + this.degree + ", stdStatCode="
-				+ this.stdStatCode + ", status=" + this.status
-				+ ", estimatedSemesters=" + this.estimatedSemesters
-				+ ", fromCCYrCode=" + this.fromCCYrCode + ", fromSemCode="
-				+ this.fromSemCode + ", cohort=" + this.cohort
-				+ ", recordApprove=" + this.recordApprove + "]";
+				+ this.college + ", collegeEng=" + this.collegeEng
+				+ ", collegeAr=" + this.collegeAr + ", major=" + this.major
+				+ ", majorEng=" + this.majorEng + ", majorAr=" + this.majorAr
+				+ ", supervisorId=" + this.supervisorId + ", advisorId="
+				+ this.advisorId + ", degree=" + this.degree + ", degreeEng="
+				+ this.degreeEng + ", degreeAr=" + this.degreeAr
+				+ ", stdStatCode=" + this.stdStatCode + ", status="
+				+ this.status + ", estimatedSemesters="
+				+ this.estimatedSemesters + ", fromCCYrCode="
+				+ this.fromCCYrCode + ", fromSemCode=" + this.fromSemCode
+				+ ", cohort=" + this.cohort + ", recordApprove="
+				+ this.recordApprove + "]";
 	}
 
 	

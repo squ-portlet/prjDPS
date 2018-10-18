@@ -2,18 +2,42 @@
 
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<style type="text/css">
+.auto-style1 {
+	color: #FF0000;
+}
+</style>
 </head>
 
 <body>
 
 <table style="width: 100%">
 	<tr>
-		<td>Dear $data.approver.roleNameEng$ [$data.approver.nameEng$], 
-		$if(data.delegateeNameEn)$ <br><font color='red'>(Delegated by $data.delegateeNameEn$)</font> $endif$ 
+		<td>Dear 
+					$if(data.delegateeNameEn)$
+						<font color="red">(Delegated) </font>
+					$else$
+						$data.approver.roleNameEng$
+					$endif$
+						[$data.approver.nameEng$], 
+		$if(data.delegateeNameEn)$ 
+			<br><font color='red'>(Delegated by $data.delegateeNameEn$)</font> 
+		$endif$ 
 			<br />Detail Status of&nbsp; application is mentioned below :  
 </td>
 
-		<td dir="rtl">الفاضل $data.approver.roleNameEng$ [$data.approver.nameEng$], 
+		<td dir="rtl"> الفاضل 
+							$if(data.delegateeNameEn)$
+								<font color="red">(المخول)</font>
+							$else$
+								$data.approver.roleNameAr$ 
+							$endif$
+							[$data.approver.nameAr$], 
+							
+		$if(data.delegateeNameEn)$ 
+			<br><font color='red'>(خول بواسطة $data.delegateeNameAr$)</font> 
+		$endif$							
+							
 			<br />أدناه حالة الطلب :  
 </td>
 	</tr>
@@ -43,7 +67,7 @@
 				<tr>
 					<td><li>Student Name</li></td>
 					<td>:</td>
-					<td><strong>$data.student.personalDetail.name$</strong></td>
+					<td><strong>$data.student.personalDetail.nameEng$</strong></td>
 				</tr>
 				<tr>
 					<td><li>Student Id</li></td>
@@ -58,22 +82,22 @@
 				<tr>
 					<td><li>Student College</li></td>
 					<td>:</td>
-					<td><strong>$data.student.academicDetail.college$</strong></td>
+					<td><strong>$data.student.academicDetail.collegeEng$</strong></td>
 				</tr>
 				<tr>
 					<td><li>Student Degree</li></td>
 					<td>:</td>
-					<td><strong>$data.student.academicDetail.degree$</strong></td>
+					<td><strong>$data.student.academicDetail.degreeEng$</strong></td>
 				</tr>
 				<tr>
 					<td><li>Student Major</li></td>
 					<td>:</td>
-					<td><strong>$data.student.academicDetail.major$</strong></td>
+					<td><strong>$data.student.academicDetail.majorEng$</strong></td>
 				</tr>
 				<tr>
 					<td><li>List of Approvers</li></td>
 					<td>:</td>
-					<td><strong>$data.roles : {x | $x.sequenceNo$.$x.roleValue$ &nbsp;} $
+					<td><strong>$data.roles : {x | $x.sequenceNo$.$x.roleValueEng$ &nbsp;} $
 					</strong></td>
 				</tr>
 				<tr>
@@ -113,12 +137,12 @@
 				<tr>
 					<td><li>الاستمارة</li> </td>
 					<td>:</td>
-					<td>&nbsp;<strong>$data.formNameEng$</strong> </td>
+					<td>&nbsp;<strong>$data.formNameAr$</b> </td>
 				</tr>
 				<tr>
 					<td><li>اسم الطالب/ة</li></td>
 					<td>:</td>
-					<td><strong>$data.student.personalDetail.name$</strong></td>
+					<td><strong>$data.student.personalDetail.nameAr$</strong></td>
 				</tr>
 				<tr>
 					<td><li>الرقم الجامعي</li></td>
@@ -133,33 +157,33 @@
 				<tr>
 					<td><li>الكلية</li></td>
 					<td>:</td>
-					<td><strong>$data.student.academicDetail.college$</strong></td>
+					<td><strong>$data.student.academicDetail.collegeAr$</strong></td>
 				</tr>
 				<tr>
 					<td><li>البرنامج</li></td>
 					<td>:</td>
-					<td><strong>$data.student.academicDetail.degree$</strong></td>
+					<td><strong>$data.student.academicDetail.degreeAr$</strong></td>
 				</tr>
 				<tr>
 					<td><li>التخصص</li></td>
 					<td>:</td>
-					<td><strong>$data.student.academicDetail.major$</strong></td>
+					<td><strong>$data.student.academicDetail.majorAr$</strong></td>
 				</tr>
 				<tr>
 					<td><li>قائمة الموافقات المطلوبة</li></td>
 					<td>:</td>
-					<td><strong>$data.roles : {x | $x.sequenceNo$.$x.roleValue$ &nbsp;} $
+					<td><strong>$data.roles : {x | $x.sequenceNo$.$x.roleValueAr$ &nbsp;} $
 					</strong></td>
 				</tr>
 				<tr>
 					<td><li>الموافقة الحالية</li></td>
 					<td>:</td>
-					<td><strong>$data.approver.roleNameEng$</strong> </td>
+					<td><strong>$data.approver.roleNameAr$</strong> </td>
 				</tr>
 				<tr>
 					<td><li>الحالة</li></td>
 					<td>:</td>
-					<td><strong>$data.statusDescEng$</strong> </td>
+					<td><strong>$data.statusDescAr$</strong> </td>
 				</tr>
 				<tr>
 					<td>&nbsp;</td>
@@ -178,7 +202,7 @@ $else$
 $endif$</td>
 		<td dir="rtl">$if(data.pending)$ (<strong>الرجاء اتخاذ ما يلزم حول الطلب 
 		أعلاه&nbsp; 
-'$data.approver.roleNameEng$'</strong>)
+'$data.approver.roleNameAr$'</strong>)
 $else$
 	(Note : هذه الرسالة للعلم فقط<em>. .</em>)
 $endif$</td>

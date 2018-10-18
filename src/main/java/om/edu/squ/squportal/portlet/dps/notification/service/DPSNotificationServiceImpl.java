@@ -146,6 +146,7 @@ public class DPSNotificationServiceImpl implements DPSNotification
 		StringTemplate		stringEmailTemplateHigherApprover	=	stringTemplateGroup.getInstanceOf(emailTemplateMap.get(Constants.TEMPLATE_NOTIFICATION_HIGHER_APPROVER_EMAIL));
 		
 		
+
 							/* Student Template */
 							stringSMSTemplateStudent.setAttribute("data", notifierPeople);					
 							stringEmailTemplateStudent.setAttribute("data", notifierPeople);
@@ -183,6 +184,7 @@ public class DPSNotificationServiceImpl implements DPSNotification
 										null 	==	 	resultNotifierPeople
 							  )
 							{
+
 								sendNotificationToApprovers(
 																	emailSubject
 																,	notifierPeople
@@ -192,11 +194,46 @@ public class DPSNotificationServiceImpl implements DPSNotification
 							}
 							else
 							{
+
+								/* Set the Role name of delegated approver same as actual approver */
+								try
+								{
+									resultNotifierPeople.getApprover().setRoleNameEng(notifierPeople.getApprover().getRoleNameEng());
+									resultNotifierPeople.getApprover().setRoleNameAr(notifierPeople.getApprover().getRoleNameAr());
+								}
+								catch(Exception ex)
+								{
+									logger.error("Transfering role to delegation for notification is an issue for approver : {}, Form Name : {}, Details : {}"
+											, notifierPeople.getApprover().getEmail()
+											, notifierPeople.getFormNameEng()
+											,ex.getMessage());
+								}
+
+								try
+								{
+									if(null == resultNotifierPeople.getApproverHigher())
+									{}
+									else
+									{	
+										resultNotifierPeople.getApproverHigher().setRoleNameEng(notifierPeople.getApproverHigher().getRoleNameEng());
+										resultNotifierPeople.getApproverHigher().setRoleNameAr(notifierPeople.getApproverHigher().getRoleNameAr());
+									}
+								}
+								catch(Exception ex)
+								{
+									logger.error("Transfering role to delegation for notification is an issue for Higher approver : {}, Form Name : {}, Details : {}"
+											, notifierPeople.getApproverHigher().getEmail()
+											, notifierPeople.getFormNameEng()
+											,ex.getMessage());
+								}								
+								
+
 								sendNotificationToApprovers(
 																	emailSubject
 																,	notifierPeople
 																,	isTest
 															);
+								
 								sendNotificationToApprovers(
 																	emailSubject
 																,	resultNotifierPeople
@@ -241,6 +278,7 @@ public class DPSNotificationServiceImpl implements DPSNotification
 		
 				emailBodyApprover			=	stringEmailTemplateApprover.toString();
 				emailBodyHigherApprover		=	stringEmailTemplateHigherApprover.toString();
+
 				
 		/* Mail sending to Approver */
 		toSenderEmail = (isTest)? new String[]{Constants.CONST_DUMMY_USER_EMAIL_TO}:new String[]{notifierPeople.getApprover().getEmail()};
@@ -327,6 +365,7 @@ public class DPSNotificationServiceImpl implements DPSNotification
 			{
 				logger.error("Error fetching delegated data for approver for notification ");
 			}
+
 			Approver	approver	=	new Approver();
 						approver.setNameEng(employee.getEmpNameEn());
 						approver.setNameAr(employee.getEmpNameAr());
@@ -336,9 +375,10 @@ public class DPSNotificationServiceImpl implements DPSNotification
 						notifierPeople.setDelegateeNameEn(delNotifierPeople.getApprover().getNameEng());
 						notifierPeople.setDelegateeNameAr(delNotifierPeople.getApprover().getNameAr());
 		}
-		
+
 		if(null == empHigherApprover.getUserNameDelegated() || empHigherApprover.getUserNameDelegated().equals(Constants.CONST_NOT_AVAILABLE) )
 		{
+
 			notifierPeople.setApproverHigher(null);
 		}
 		else
@@ -352,6 +392,7 @@ public class DPSNotificationServiceImpl implements DPSNotification
 			{
 				logger.error("Error fetching delegated data for higher approver for notification ");
 			}
+
 			Approver	approverHigher	=	new Approver();
 						approverHigher.setNameEng(employee.getEmpNameEn());
 						approverHigher.setNameAr(employee.getEmpNameAr());
@@ -362,15 +403,17 @@ public class DPSNotificationServiceImpl implements DPSNotification
 						notifierPeople.setDelegateeNameAr(delNotifierPeople.getApproverHigher().getNameAr());
 		}
 		
-		
+
 		if(
 			( null == empApprover.getUserNameDelegated() || empApprover.getUserNameDelegated().equals(Constants.CONST_NOT_AVAILABLE) )
 			&&
 			( null == empHigherApprover.getUserNameDelegated() || empHigherApprover.getUserNameDelegated().equals(Constants.CONST_NOT_AVAILABLE) )
 			)
 			{
+
 				notifierPeople = null;
 			}
+
 		return notifierPeople;
 	}
 	

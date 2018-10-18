@@ -102,6 +102,8 @@
    	        SELECT     SI.STD_ID 															AS 		STUDENT_ID, 
    	                   SI.STDNO                                                          	AS	    STUDENT_NO,  
                        NVL(DECODE(:paramLocale,'en',SI.STD_NAME,SI.A_STD_NAME),'-') 		AS 		STUDENT_NAME,
+                       NVL(SI.STD_NAME,'-')											 		AS 		STUDENT_NAME_ENG,
+                       NVL(SI.A_STD_NAME,'-') 												AS 		STUDENT_NAME_AR,
                        NVL(DECODE(:paramLocale,'en',SI.HOME_REGION,SI.AHOME_REGION),'-') 	AS 		STUDENT_HOME_REGION,
                        NVL(DECODE(:paramLocale,'en',SI.HOME_WILLAYAT,SI.AHOME_WILAYAT),'-') AS 		STUDENT_HOME_WILAYAT,
                        NVL(DECODE(:paramLocale,'en',SI.TOWN_VILLAGE,SI.AHOME_TOWN),'-') 	AS 		STUDENT_TOWN_VILLAGE,
@@ -124,7 +126,11 @@
                        	SI.STDNO                                                          	AS	    STUDENT_NO,
                        	SI.STDSTATCD														AS		STDSTATCD,
                        	DECODE(:paramLocale,'en',SI.COLLEGENM, SI.A_COLLEGENM) 			  	AS 		COLLEGE_NAME,
-                       	NVL(DECODE(:paramLocale,'en',SI.MAJORNAME, SI.A_MAJORNAME ),'') 	AS 		MAJOR_NAME,     
+                       	SI.COLLEGENM										 			  	AS 		COLLEGE_NAME_ENG,
+                       	SI.A_COLLEGENM										 			  	AS 		COLLEGE_NAME_AR,
+                       	NVL(DECODE(:paramLocale,'en',SI.MAJORNAME, SI.A_MAJORNAME ),'') 	AS 		MAJOR_NAME, 
+                       	NVL(SI.MAJORNAME,'-')												AS		MAJOR_NAME_ENG,
+                       	NVL(SI.A_MAJORNAME,'-')												AS		MAJOR_NAME_AR,    
                        	SI.ADVISOR														  	AS		ADVISOR_ID,
                        	(
                           SELECT 
@@ -135,7 +141,9 @@
                                   STD_ID = SI.STD_ID
                               AND ACTIVE = 'Y' 
                        	)                                                                  	AS 		ADVISOR_NAME,
-                       	DECODE(:paramLocale,'en',SI.DEGREE_NAME, SI.A_DEGREE_NAME)			AS 		DEGREE_NAME,          
+                       	DECODE(:paramLocale,'en',SI.DEGREE_NAME, SI.A_DEGREE_NAME)			AS 		DEGREE_NAME, 
+                       	SI.DEGREE_NAME														AS 		DEGREE_NAME_ENG,
+                       	SI.A_DEGREE_NAME													AS 		DEGREE_NAME_AR,
                        	DECODE(:paramLocale,'en',SI.STATUS_NAME, SI.A_STATUS_NAME) 			AS 		STATUS_NAME,         
                        	NVL(DECODE(:paramLocale,'en',SI.MINORNAME, SI.A_MINORNAME ),'')  	AS 		MINOR_NAME ,      
                        	NVL(DECODE(:paramLocale,'en',SI.SPECNAME, SI.A_SPECNAME ),'')   	AS 		SPEC_NAME,

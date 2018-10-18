@@ -75,6 +75,8 @@ public interface Constants
 	public static final	String	CONST_COLMN_STUDENT_NO										=	"STUDENT_NO";
 	public static final	String	CONST_COLMN_STDSTATCD										=	"STDSTATCD";
 	public static final	String	CONST_COLMN_STUDENT_NAME									=	"STUDENT_NAME";
+	public static final	String	CONST_COLMN_STUDENT_NAME_ENG								=	"STUDENT_NAME_ENG";
+	public static final	String	CONST_COLMN_STUDENT_NAME_AR									=	"STUDENT_NAME_AR";
 	public static final	String	CONST_COLMN_STUDENT_GENDER									=	"STUDENT_GENDER";
 	public static final	String	CONST_COLMN_STUDENT_HOME_REGION								=	"STUDENT_HOME_REGION";
 	public static final	String	CONST_COLMN_STUDENT_HOME_WILAYAT							=	"STUDENT_HOME_WILAYAT";
@@ -86,12 +88,18 @@ public interface Constants
 	public static final	String	CONST_COLMN_STUDENT_HAS_THESIS								=	"HAS_THESIS";
 	public static final	String	CONST_COLMN_DGR_GRAD_ESTIMATE_SEM_COUNT						=	"DGR_GRAD_ESTIMATE_SEM_COUNT";
 
-	public static final	String	CONST_COLMN_COLLEGE_NAME									=	"COLLEGE_NAME";             
+	public static final	String	CONST_COLMN_COLLEGE_NAME									=	"COLLEGE_NAME";
+	public static final	String	CONST_COLMN_COLLEGE_NAME_ENG								=	"COLLEGE_NAME_ENG";  
+	public static final	String	CONST_COLMN_COLLEGE_NAME_AR									=	"COLLEGE_NAME_AR";  
 	public static final	String	CONST_COLMN_MAJOR_NAME										=	"MAJOR_NAME";  
+	public static final	String	CONST_COLMN_MAJOR_NAME_ENG									=	"MAJOR_NAME_ENG";
+	public static final	String	CONST_COLMN_MAJOR_NAME_AR									=	"MAJOR_NAME_AR";
 	public static final	String	CONST_COLMN_ADVISOR_ID										=	"ADVISOR_ID";
 	public static final	String	CONST_COLMN_ADVISOR_NAME									=	"ADVISOR_NAME";
 	public static final	String	CONST_COLMN_SUPERVISOR_ID									=	"SUPERVISOR_ID";
-	public static final	String	CONST_COLMN_DEGREE_NAME										=	"DEGREE_NAME";          
+	public static final	String	CONST_COLMN_DEGREE_NAME										=	"DEGREE_NAME";
+	public static final	String	CONST_COLMN_DEGREE_NAME_ENG									=	"DEGREE_NAME_ENG";
+	public static final	String	CONST_COLMN_DEGREE_NAME_AR									=	"DEGREE_NAME_AR";
 	public static final	String	CONST_COLMN_STATUS_NAME										=	"STATUS_NAME";  
 	public static final	String	CONST_COLMN_MINOR_NAME										=	"MINOR_NAME";
 	public static final	String	CONST_COLMN_SPEC_NAME										=	"SPEC_NAME";
@@ -142,6 +150,8 @@ public interface Constants
 	public static final	String	CONST_COLMN_APPROVAL_CODE									=	"APPROVAL_CODE";
 	public static final	String	CONST_COLMN_APPROVER_ROLE_CODE								=	"APPROVER_ROLE_CODE";
 	public static final	String	CONST_COLMN_APPROVER_ROLE_NAME								=	"APPROVER_ROLE_NAME";
+	public static final	String	CONST_COLMN_APPROVER_ROLE_NAME_ENG							=	"APPROVER_ROLE_NAME_ENG";
+	public static final	String	CONST_COLMN_APPROVER_ROLE_NAME_AR							=	"APPROVER_ROLE_NAME_AR";
 	public static final	String	CONST_COLMN_APPROVAL_SEQUENCE								=	"APPROVAL_SEQUENCE";
 	public static final	String	CONST_COLMN_APPROVAL_MAX_SEQUENCE							=	"APPROVAL_MAX_SEQUENCE";
 	public static final	String	CONST_COLMN_APPROVAL_CODE_ADVISOR 							=	"ADVISOR_APPROVAL_CODE";
