@@ -222,7 +222,7 @@
 					DUAL
 	</entry>
 	<entry key="dps.delegate.select.delegated">
-		SELECT 
+		SELECT DISTINCT
 		      NVL(D1.DAR_TO_USERNAME,'NA')          										AS  DELEGATED
 		    , TO_CHAR(D1.DAR_FROM_DATE,'DD/MM/YYYY')  										AS  DELEGATED_FROM
 		    , TO_CHAR(D1.DAR_TO_DATE,'DD/MM/YYYY')    										AS  DELEGATED_TO
@@ -237,7 +237,7 @@
 		    AND D1.DAR_ACTIVE(+)='Y'	
 	</entry>
 	<entry key="dps.delegate.select.delegatee">
-		SELECT 
+		SELECT DISTINCT
 		      NVL(D1.DAR_FROM_USERNAME,'NA')          										AS  DELEGATEE
 		    , TO_CHAR(D1.DAR_FROM_DATE,'DD/MM/YYYY')  										AS  DELEGATED_FROM
 		    , TO_CHAR(D1.DAR_TO_DATE,'DD/MM/YYYY')    										AS  DELEGATED_TO
