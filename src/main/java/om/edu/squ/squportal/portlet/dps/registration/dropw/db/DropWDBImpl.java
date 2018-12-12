@@ -249,24 +249,25 @@ public class DropWDBImpl implements DropWDBDao
 	}
 	
 	
-	/**
-	 * 
-	 * method name  : getDropWForApprovers
-	 * @param roleType
-	 * @param employee
-	 * @param locale
-	 * @param studentNo
-	 * @return
-	 * DropWDBImpl
-	 * return type  : List<DropWDTO>
-	 * 
-	 * purpose		: Get List of student records for courses to be dropped 
-	 *
-	 * Date    		:	Apr 17, 2017 8:24:28 PM
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.registration.dropw.db.DropWDBDao#getDropWForApprovers(java.lang.String, om.edu.squ.squportal.portlet.dps.bo.Employee, java.util.Locale, java.lang.String, boolean, boolean, boolean, boolean)
 	 */
-	public List<DropWDTO> getDropWForApprovers(String roleType, Employee employee, Locale locale, String studentNo) throws NoDBRecordException
+	public List<DropWDTO> getDropWForApprovers(
+															String 		roleType, 
+															Employee 	employee, 
+															Locale 		locale, 
+															String 		studentNo, 
+													final 	boolean 	isDelegation, 
+													final 	boolean 	applyDelegation, 
+													final 	boolean 	delegationDefaultApprove, 
+													final 	boolean 	delegationApprove
+												) throws NoDBRecordException
 	{
-		String	SQL_DROPW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	queryDropWProps.getProperty(Constants.CONST_SQL_DROPW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE);
+		String	SQL_DROPW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	queryDropWProps.getProperty
+																					(
+																							Constants.CONST_SQL_DROPW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE
+																					);
 		
 		RowMapper<DropWDTO> 	mapper		=	new RowMapper<DropWDTO>()
 		{
@@ -301,6 +302,31 @@ public class DropWDBImpl implements DropWDBDao
 				student.setAcademicDetail(academicDetail);
 				dropWDTO.setStudent(student);
 				dropWDTO.setAdvisor(advisor);
+				
+				/* Delegation */
+				if(isDelegation)
+				{
+					if(delegationDefaultApprove)
+					{
+						
+					}
+					else
+					{
+						if(!delegationApprove)
+						{
+							dropWDTO.setApprover(false);
+							dropWDTO.setApproverApplicable(false);
+						
+						}
+					}
+					if(delegationApprove)
+					{
+						/* Glyphicon for delegation */
+						dropWDTO.setApplyDelegation(applyDelegation);			
+					}
+					
+				}
+				
 				
 				return dropWDTO;
 			}

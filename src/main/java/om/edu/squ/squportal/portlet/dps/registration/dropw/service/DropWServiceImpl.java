@@ -36,6 +36,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.gson.Gson;
+
 import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
@@ -43,6 +45,7 @@ import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotSuccessFulDBUpdate;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
+import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
 import om.edu.squ.squportal.portlet.dps.notification.bo.NotifierPeople;
 import om.edu.squ.squportal.portlet.dps.notification.service.DPSNotification;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO;
@@ -51,6 +54,7 @@ import om.edu.squ.squportal.portlet.dps.registration.dropw.model.DropCourseModel
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
 import om.edu.squ.squportal.portlet.dps.rule.service.Rule;
+import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 import om.edu.squ.squportal.portlet.dps.utility.UtilProperty;
 
@@ -230,32 +234,121 @@ public class DropWServiceImpl implements DropWService
 	 * purpose		: Get List of student records for courses to be dropped 
 	 *
 	 * Date    		:	Apr 17, 2017 8:24:28 PM
+	 * @throws ExceptionEmptyResultset 
 	 */
-	public List<DropWDTO> getDropWForApprovers(String roleType, Employee employee, Locale locale) throws NoDBRecordException
+	public List<DropWDTO> getDropWForApprovers(String roleType, Employee employee, Locale locale) throws NoDBRecordException, ExceptionEmptyResultset
 	{
+		List<DropWDTO> 	resultList	=	null;
+		
 		if(employee.getEmpNumber().substring(0,1).equals("e"))
 		{
 			employee.setEmpNumber(employee.getEmpNumber().substring(1));
 		}
 		
-		return dropWDBDao.getDropWForApprovers(roleType, employee, locale, null);
+		
+		if(null == employee.getEmpNumberDelegated())
+		{
+			resultList	=	dropWDBDao.getDropWForApprovers(
+																	roleType
+																, 	employee
+																, 	locale
+																, 	null
+																, 	false
+																, 	false
+																, 	false
+																, 	false
+															);
+			return resultList;
+		}
+		else
+		{
+			List<DropWDTO>	listResultForDelegated	=	null;
+			List<DropWDTO>	listResultForDelegatee	=	null;
+			
+			Gson				gson					=	new Gson();
+			Employee			delegatedEmployee 		= 	dpsServiceDao.getEmployee(employee.getEmpNumberDelegated(), employee.getUserNameDelegated(), locale, false);
+
+			if(delegatedEmployee.getEmpNumber().substring(0,1).equals("e"))
+			{
+				delegatedEmployee.setEmpNumber(delegatedEmployee.getEmpNumber().substring(1));
+				
+				delegatedEmployee.setUserNameDelegated(employee.getUserNameDelegated());
+				delegatedEmployee.setEmpNumberDelegated(employee.getEmpNumberDelegated());
+				delegatedEmployee.setUserNameDelegatee(employee.getUserNameDelegatee());
+				delegatedEmployee.setEmpNumberDelegatee(employee.getEmpNumberDelegatee());
+			}
+			Employee			delegateeEmployee		=	dpsServiceDao.getEmployee(employee.getEmpNumberDelegatee(), employee.getUserNameDelegatee(), locale, false);
+			if(delegateeEmployee.getEmpNumber().substring(0,1).equals("e"))
+			{
+				delegateeEmployee.setEmpNumber(delegateeEmployee.getEmpNumber().substring(1));
+				
+				delegateeEmployee.setUserNameDelegated(employee.getUserNameDelegated());
+				delegateeEmployee.setEmpNumberDelegated(employee.getEmpNumberDelegated());									
+				delegateeEmployee.setUserNameDelegatee(employee.getUserNameDelegatee());
+				delegateeEmployee.setEmpNumberDelegatee(employee.getEmpNumberDelegatee());
+			}
+			
+			/* Delegatee employee not required to view records of delegated */
+			if(employee.getUserName().equals(employee.getUserNameDelegatee()))
+			{
+				listResultForDelegatee	= dropWDBDao.getDropWForApprovers 
+						(
+								roleType
+							, 	delegateeEmployee
+							, 	locale
+							, 	null
+							, 	Constants.CONST_IS_DELEGATION
+							, 	true
+							, 	Constants.CONST_DELEGATED_APPROVER_DEFAULT_ELIGIBLE
+							, 	Constants.CONST_DELEGATION_APPROVE_NOT_ELIGIBLE
+						);
+				return listResultForDelegatee;						
+			}
+			else
+			{
+				listResultForDelegatee	= dropWDBDao.getDropWForApprovers 
+											(
+													roleType
+												, 	delegateeEmployee
+												, 	locale
+												, 	null
+												, 	Constants.CONST_IS_DELEGATION
+												, 	true
+												, 	Constants.CONST_DELEGATED_APPROVER_DEFAULT_ELIGIBLE
+												, 	Constants.CONST_DELEGATION_APPROVE_ELIGIBLE
+											);
+				
+				listResultForDelegated	= dropWDBDao.getDropWForApprovers 
+											(
+													roleType
+												, 	delegatedEmployee
+												, 	locale
+												, 	null
+												, 	Constants.CONST_IS_DELEGATION
+												, 	false
+												, 	Constants.CONST_DELEGATED_APPROVER_DEFAULT_ELIGIBLE
+												, 	Constants.CONST_DELEGATION_APPROVE_ELIGIBLE
+											);
+				
+				
+				listResultForDelegated.addAll(listResultForDelegatee);
+				return 	listResultForDelegated;
+			}
+			
+			
+			
+		}
+		
+		
+		
 	}
 	
 	
-	/**
-	 * 
-	 * method name  : setDropWCourseUpdate
-	 * @param dropWDTO
-	 * @return
-	 * DropWDBImpl
-	 * return type  : int
-	 * 
-	 * purpose		: update approver's action in drop w
-	 *
-	 * Date    		:	May 2, 2017 10:59:22 AM
-	 * @throws NotSuccessFulDBUpdate 
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.registration.dropw.service.DropWService#setDropWCourseUpdate(om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO, om.edu.squ.squportal.portlet.dps.bo.Employee, java.util.Locale)
 	 */
-	public List<DropWDTO> setDropWCourseUpdate(DropWDTO dropWDTO, Locale locale) throws NotSuccessFulDBUpdate
+	public List<DropWDTO> setDropWCourseUpdate(DropWDTO dropWDTO, Employee employee, Locale locale) throws NotSuccessFulDBUpdate
 	{
 		int						resultUpdate		=	0;
 		AcademicDetail			academicDetail		=	new AcademicDetail();
@@ -283,7 +376,7 @@ public class DropWServiceImpl implements DropWService
 	
 		if(resultUpdate >  0)
 		{
-			approvalDTO		=	setRoleTransaction(dropWDTOTransaction, locale);
+			approvalDTO		=	setRoleTransaction(dropWDTOTransaction, employee, locale);
 			return getDropWCourses(student,locale);
 		}
 		else
@@ -292,19 +385,11 @@ public class DropWServiceImpl implements DropWService
 		}
 	}
 
-	/**
-	 * 
-	 * method name  : setRoleTransaction
-	 * @param dropWDTO
-	 * @return
-	 * DropWServiceImpl
-	 * return type  : ApprovalDTO
-	 * 
-	 * purpose		: Add records to approval transaction table
-	 *
-	 * Date    		:	Aug 1, 2017 5:40:55 PM
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.registration.dropw.service.DropWService#setRoleTransaction(om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO, om.edu.squ.squportal.portlet.dps.bo.Employee, java.util.Locale)
 	 */
-	public ApprovalDTO setRoleTransaction(DropWDTO dropWDTO, Locale locale)
+	public ApprovalDTO setRoleTransaction(DropWDTO dropWDTO, Employee employee, Locale locale)
 	{
 		ApprovalTransactionDTO	transactionDTO		=	new ApprovalTransactionDTO();
 		
@@ -312,6 +397,10 @@ public class DropWServiceImpl implements DropWService
 		transactionDTO.setStdStatCode(dropWDTO.getStudentStatCode());
 		transactionDTO.setAppEmpNo(dropWDTO.getEmpNumber());
 		transactionDTO.setAppEmpName(dropWDTO.getUserName());
+		transactionDTO.setAppDelegatedEmpNo(employee.getEmpNumberDelegated());
+		transactionDTO.setAppDelegatedEmpUserName(employee.getUserNameDelegated());
+		transactionDTO.setAppDelegateeEmpNo(employee.getEmpNumberDelegatee());
+		transactionDTO.setAppDelegateeEmpUserName(employee.getUserNameDelegatee());
 		transactionDTO.setComments(dropWDTO.getRemarks());
 		transactionDTO.setRequestCode(Constants.CONST_REQUEST_CODE_DEFAULT);
 		
@@ -331,7 +420,7 @@ public class DropWServiceImpl implements DropWService
 
 				NotifierPeople notifierPeople = dpsServiceDao.getNotifierPeople(
 																					dropWDTO.getStudentNo(), 
-																					null, 
+																					dropWDTO.getStudentStatCode(), 
 																					Constants.CONST_FORM_NAME_DPS_DROP_W, 
 																					Constants.CONST_SQL_ROLE_NAME_ADVISOR, 
 																					true, locale
