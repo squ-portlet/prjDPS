@@ -11,6 +11,17 @@
 			<portlet:resourceURL id="ajaxExtensionDataApprove" var="urlAjaxExtensionDataApprove"></portlet:resourceURL>
 			
 
+
+      <div class="row">
+      		<div class="col-sm-9"></div>
+      		<div class="col-sm-1">
+      				<a href='<spring:message code="prop.dps.extension.link.help.user.manual"/>'>
+      					 <spring:message code="prop.dps.link.help.text"/> <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+      				</a>
+      		</div>
+      </div>
+
+
 	<ul class="nav nav-tabs">
 		<li role="presentation" id="idExtNav-home" class="clsExtNavRole active"><a href="#"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
 		<c:if test="${(not empty employee) }">
