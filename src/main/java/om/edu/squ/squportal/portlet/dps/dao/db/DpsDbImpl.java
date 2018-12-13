@@ -698,7 +698,14 @@ public class DpsDbImpl implements DpsDbDao
 							DelegateEmployee	delegateEmployee	=	new DelegateEmployee();
 							delegateEmployee.setUserNameDelegatee(rs.getString(Constants.CONST_COLMN_DELEGATE_USER_DELEGATEE));
 							delegateEmployee.setDelegatedFromDate(rs.getString(Constants.CONST_COLMN_DELEGATED_FROM));
-							delegateEmployee.setDelegatedToDate(rs.getString(Constants.CONST_COLMN_DELEGATED_TO));
+							if(rs.getString(Constants.CONST_COLMN_DELEGATED_TO).equals(Constants.CONST_COLMN_DUMMY_DATE_01))
+							{
+								delegateEmployee.setDelegatedToDate(null);
+							}
+							else
+								{
+									delegateEmployee.setDelegatedToDate(rs.getString(Constants.CONST_COLMN_DELEGATED_TO));
+								}
 							return delegateEmployee;
 						}
 					};
@@ -735,7 +742,14 @@ public class DpsDbImpl implements DpsDbDao
 								DelegateEmployee	delegateEmployee	=	new DelegateEmployee();
 								delegateEmployee.setUserNameDelegated(rs.getString(Constants.CONST_COLMN_DELEGATE_USER_DELEGATED));
 								delegateEmployee.setDelegatedFromDate(rs.getString(Constants.CONST_COLMN_DELEGATED_FROM));
-								delegateEmployee.setDelegatedToDate(rs.getString(Constants.CONST_COLMN_DELEGATED_TO));
+								if(rs.getString(Constants.CONST_COLMN_DELEGATED_TO).equals(Constants.CONST_COLMN_DUMMY_DATE_01))
+								{
+									delegateEmployee.setDelegatedToDate(null);
+								}
+								else
+								{
+									delegateEmployee.setDelegatedToDate(rs.getString(Constants.CONST_COLMN_DELEGATED_TO));
+								}
 								return delegateEmployee;
 							}
 						};

@@ -184,6 +184,8 @@ public interface Constants
 	public static final	String	CONST_COLMN_DELEGATED_FROM									=	"DELEGATED_FROM";
 	public static final	String	CONST_COLMN_DELEGATED_TO									=	"DELEGATED_TO";
 	
+	public static final	String	CONST_COLMN_DUMMY_DATE_01									=	"01/01/0000";
+	
 	public static final boolean	CONST_IS_DELEGATION											=	true;	
 	public static final boolean	CONST_DELEGATED_APPROVER_DEFAULT_ELIGIBLE					=	false;							//	Flag for default approving for delegatee
 	public static final boolean	CONST_DELEGATION_APPROVE_ELIGIBLE							=	true;
@@ -417,8 +419,8 @@ public interface Constants
 	
 	
 	
-	public	static	final	boolean	CONST_TEST_ENVIRONMENT									=	true;
-	public	static	final	String	CONST_EMAIL_FROM										=	"portal_feedback@squ.edu.om";
+	public	static	final	boolean	CONST_TEST_ENVIRONMENT									=	false;
+	public	static	final	String	CONST_EMAIL_FROM										=	"dps_eservices@squ.edu.om";
 	public	static	final	String	CONST_DUMMY_USER_EMAIL_TO								=	"bhabesh@squ.edu.om";
 
 	public	static	final	String	CONST_DUMMY_USER_SMS_TO									=	"----"; //TODO Change to phone number only in development environment 
