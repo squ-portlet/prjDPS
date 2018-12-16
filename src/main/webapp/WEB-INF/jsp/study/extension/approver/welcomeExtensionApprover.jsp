@@ -14,7 +14,7 @@
 
       <div class="row">
       		<div class="col-sm-9"></div>
-      		<div class="col-sm-1">
+      		<div class="col-sm-2">
       				<a href='<spring:message code="prop.dps.extension.link.help.user.manual"/>'>
       					 <spring:message code="prop.dps.link.help.text"/> <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
       				</a>
