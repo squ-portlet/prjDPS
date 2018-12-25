@@ -70,6 +70,7 @@ public class RuleServiceImpl implements Rule
 		int		fromStartSem	=	completionAndJoinTime.getFromSemCode();
 		int		currYear		=	yearSemester.getYear();
 		int		currSemester	=	yearSemester.getSemester();
+		boolean	isLangCourse	=	ruleDbDao.isLanguageCourseTaken(studentNo, currYear, fromStartYear, fromStartSem);
 		
 		int 	countSem		=	0;
 		int		countTotal		=	0;
@@ -111,6 +112,12 @@ public class RuleServiceImpl implements Rule
 		}
 		
 		countTotal	=	countSem - countPostpone;
+		
+		/* Exclusion of the semester counting for considering language course (e.g. English) */
+		if(isLangCourse)
+		{
+			countTotal = countTotal - 1;
+		}
 
 		return (totalSem==countTotal)?true:false;
 	}
