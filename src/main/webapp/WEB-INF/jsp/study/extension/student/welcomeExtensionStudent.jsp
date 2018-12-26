@@ -152,9 +152,11 @@
 						                  <label for="inputEmail3" class="control-label"><spring:message code="prop.dps.extension.student.applications.form.semester.tobe.extended"/></label>
 						                </div>
 						                <div class="col-sm-8">
+										<c:if test="${currYearSem.semesterCode != 4}" > <!-- If current semester is fall then extension will be next semester and not for current semester -->
 						                  <label class="radio-inline">
 						                   	<form:radiobutton path="yearSem" value="${currYearSem.year}-${currYearSem.semesterCode}"/>${currYearSem.year},${currYearSem.semesterName}
 						                  </label>
+						                </c:if>
 										<c:if test="${not empty nextYearSemester}" >
 						                  <br>
 						                  <label class="radio-inline">
