@@ -59,7 +59,7 @@
 			                                  		CCYRCD = CYS.CCYRCD
 			                                  	AND SEMCD  = CYS.SEMCD
 			                              	)
-			          ORDER BY YS.SEMSTDTE 
+			          ORDER BY YS.SEMSTDTE DESC
 			    )
 			    WHERE ROWNUM < 2
     	]]>
