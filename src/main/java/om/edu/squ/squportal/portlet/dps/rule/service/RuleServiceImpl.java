@@ -29,6 +29,7 @@
  */
 package om.edu.squ.squportal.portlet.dps.rule.service;
 
+import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.rule.bo.StudentCompletionAndJoinTime;
 import om.edu.squ.squportal.portlet.dps.rule.bo.YearSemester;
 import om.edu.squ.squportal.portlet.dps.rule.db.RuleDbDao;
@@ -48,6 +49,9 @@ public class RuleServiceImpl implements Rule
 	@Autowired
 	RuleDbDao	ruleDbDao;
 	
+	@Autowired
+	DpsServiceDao	dpsServiceDao;
+	
 	/**
 	 * 
 	 * method name  : lastSemester
@@ -65,7 +69,16 @@ public class RuleServiceImpl implements Rule
 	{
 		StudentCompletionAndJoinTime	completionAndJoinTime	=	ruleDbDao.getJoinAndCloseTime(studentNo, stdStatCode);
 		YearSemester					yearSemester			=	getCurrentYearSemester();
-		int 	totalSem		=	completionAndJoinTime.getEstimatedSemesters();
+		int 							totalSem				=	0;
+		String							studentMode				=	dpsServiceDao.getStudentMode(studentNo, stdStatCode);
+		if(studentMode.equals(Constants.CONST_FULL_TIME))
+			{
+				totalSem		=	completionAndJoinTime.getEstimatedSemesters();		//For Full Time Students
+			}
+		else
+			{
+				totalSem		=	completionAndJoinTime.getMaximumSemesters();		// For Part Time Students
+			}
 		int		fromStartYear	=	completionAndJoinTime.getFromCCYrCode();
 		int		fromStartSem	=	completionAndJoinTime.getFromSemCode();
 		int		currYear		=	yearSemester.getYear();
