@@ -87,6 +87,7 @@ public interface Constants
 	public static final	String	CONST_COLMN_STUDENT_EMAIL									=	"STUDENT_EMAIL";
 	public static final	String	CONST_COLMN_STUDENT_HAS_THESIS								=	"HAS_THESIS";
 	public static final	String	CONST_COLMN_DGR_GRAD_ESTIMATE_SEM_COUNT						=	"DGR_GRAD_ESTIMATE_SEM_COUNT";
+	public static final	String	CONST_COLMN_DGR_GRAD_MAXIMUM_SEM_COUNT						=	"DGR_GRAD_MAXIMUM_SEM_COUNT";
 
 	public static final	String	CONST_COLMN_COLLEGE_NAME									=	"COLLEGE_NAME";
 	public static final	String	CONST_COLMN_COLLEGE_NAME_ENG								=	"COLLEGE_NAME_ENG";  
