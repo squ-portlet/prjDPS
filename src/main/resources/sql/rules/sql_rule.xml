@@ -9,40 +9,42 @@
 				, SS.STDNO									AS		STUDENT_NO
 				, D.DEGRESTSEMGRD							AS		DGR_GRAD_ESTIMATE_SEM_COUNT
 				, D.DEGRMAXSEMGRD							AS		DGR_GRAD_MAXIMUM_SEM_COUNT
-				, SS.CCYRCD									AS		FROMCCYRCD
-				, SS.SEMCD 									AS		FROMSEMCD
+				, SS.CCYRCD								AS		FROMCCYRCD
+				, SS.SEMCD 								AS		FROMSEMCD
 				, TO_NUMBER(TO_CHAR(SYSDATE,'YYYY'))     	AS    	CURRENT_YEAR
-        		, D.DEGRCD 
-			FROM 
-				  STD_DEGREE 		SD 
-					, DEGREE 		D
-					, (       
-					    SELECT 
-					    		* 
-					    FROM 
-						    (
-							    SELECT 
-							            STDSTATCD
-							          , STDNO
-							          , SEMCD
-							          , CCYRCD
-							    FROM
-							          STD_STATUS_HISTORY
-							    WHERE
-							          STDSTATCD = :paramStdStatCode
-							          AND STATUSCD = 310
-							    ORDER BY CCYRCD ASC, SEMCD ASC
-							 ) 
-						    WHERE 
-						    	ROWNUM =1
-					)      				SS  
-              
-        
-			WHERE 
-						SD.DEGRCD		=	D.DEGRCD 
-				AND 	SS.STDSTATCD	=	SD.STDSTATCD 
-				AND 	SS.STDNO		=	:paramStdNo
-				AND   	SS.STDSTATCD  	= 	:paramStdStatCode
+		        , D.DEGRCD 
+					FROM 
+						  STD_DEGREE 	SD 
+						, DEGREE 		D
+		
+		       , (       
+			          SELECT * 
+			          FROM 
+				          (
+				          SELECT 
+				                  SH.STDSTATCD		AS	STDSTATCD
+				                , SH.STDNO			AS	STDNO
+				                , SH.SEMCD			AS	SEMCD
+				                , SH.CCYRCD			AS	CCYRCD
+				          FROM
+				                  STD_STATUS_HISTORY SH
+				                , SIS_CODES 		CODES
+				          WHERE
+				                SH.STDSTATCD = :paramStdStatCode
+				                AND SH.STATUSCD = CODES.SISCODECD
+				                AND CODES.L_ABR_CODE = 'REG'
+				          ORDER BY SH.CCYRCD ASC, SH.SEMCD ASC
+				          ) 
+			          WHERE 
+			          	ROWNUM =1
+		      )      SS  
+		              
+		        
+					WHERE 
+								SD.DEGRCD		=	D.DEGRCD 
+						AND 	SS.STDSTATCD	=	SD.STDSTATCD 
+						AND 	SS.STDNO		=	:paramStdNo
+						AND   	SS.STDSTATCD  	= 	:paramStdStatCode
     	]]>
     </entry>
     <entry key="sql.rule.student.language.course.from.course.start">
