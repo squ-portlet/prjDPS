@@ -9,14 +9,35 @@
 				, SS.STDNO									AS		STUDENT_NO
 				, D.DEGRESTSEMGRD							AS		DGR_GRAD_ESTIMATE_SEM_COUNT
 				, D.DEGRMAXSEMGRD							AS		DGR_GRAD_MAXIMUM_SEM_COUNT
-				, SS.FROMCCYRCD								AS		FROMCCYRCD
-				, SS.FROMSEMCD 								AS		FROMSEMCD
+				, SS.CCYRCD									AS		FROMCCYRCD
+				, SS.SEMCD 									AS		FROMSEMCD
 				, TO_NUMBER(TO_CHAR(SYSDATE,'YYYY'))     	AS    	CURRENT_YEAR
-        , D.DEGRCD 
+        		, D.DEGRCD 
 			FROM 
-				  STD_DEGREE 	SD 
-				, DEGREE 		D
-				, STD_STATUS 	SS 
+				  STD_DEGREE 		SD 
+					, DEGREE 		D
+					, (       
+					    SELECT 
+					    		* 
+					    FROM 
+						    (
+							    SELECT 
+							            STDSTATCD
+							          , STDNO
+							          , SEMCD
+							          , CCYRCD
+							    FROM
+							          STD_STATUS_HISTORY
+							    WHERE
+							          STDSTATCD = :paramStdStatCode
+							          AND STATUSCD = 310
+							    ORDER BY CCYRCD ASC, SEMCD ASC
+							 ) 
+						    WHERE 
+						    	ROWNUM =1
+					)      				SS  
+              
+        
 			WHERE 
 						SD.DEGRCD		=	D.DEGRCD 
 				AND 	SS.STDSTATCD	=	SD.STDSTATCD 
