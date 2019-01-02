@@ -161,23 +161,47 @@
     	 ]]>
     </entry>
     <entry key="dps.select.student.mode">
-			SELECT
-			      		CODES.L_ABR_CODE													AS		STD_MODE												
-			FROM
-			      		SIS_CODES CODES
-			    	,   STD_SPNSR SPNSR
-			WHERE
-			        	SPNSR.RELEASETYPECD = CODES.SISCODECD
-			    	AND SPNSR.STDNO = :paramStdNo
-			    	AND SPNSR.STDSTATCD = :paramStdStatCode
-			   		AND SPNSR.FROMDTE = (
-				                            SELECT 
-				                              MAX(FROMDTE) 
-				                            FROM
-				                              STD_SPNSR
-				                            WHERE STDNO = :paramStdNo
-				                            AND   STDSTATCD = :paramStdStatCode
-			                        	)    
+		    <![CDATA[
+							SELECT 
+							        DECODE(
+							                  STD_MODE
+							                , 'DEFAULT', 'FULL', STD_MODE
+							              )
+							FROM
+							(
+							    SELECT 
+							          STD_MODE
+							    FROM
+							    (
+							          SELECT
+							                    CODES.L_ABR_CODE													AS		STD_MODE												
+							          FROM
+							                    SIS_CODES CODES
+							                ,   STD_SPNSR SPNSR
+							          WHERE
+							                    SPNSR.RELEASETYPECD = CODES.SISCODECD
+							                AND SPNSR.STDNO = :paramStdNo
+							                AND SPNSR.STDSTATCD = :paramStdStatCode
+							                AND SPNSR.FROMDTE = (
+							                                        SELECT 
+							                                          MAX(FROMDTE) 
+							                                        FROM
+							                                          STD_SPNSR
+							                                        WHERE STDNO = :paramStdNo
+							                                        AND   STDSTATCD = :paramStdStatCode
+							                                    )  
+							    
+							          UNION
+							          
+							          SELECT 'DEFAULT'
+							          FROM DUAL
+
+							    )  
+							    
+							    ORDER BY STD_MODE DESC
+							)
+							WHERE ROWNUM < 2
+			]]>    
     </entry>
     
     <entry key="dps.stored.procedure.sp.approver.next">
