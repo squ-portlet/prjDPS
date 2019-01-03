@@ -137,18 +137,28 @@ public class DropWithWController
 		User				user			=	dpsServiceDao.getUser(request);
 		Student				student			=	dpsServiceDao.getStudent(user.getUserId(), null, locale);
 		
+		logger.info("userid : "+user.getUserId());
+		logger.info("student : "+student);
+		
 		if(!model.containsAttribute("dropCourseModel"))
 		{
 				dropCourseModel	= new DropCourseModel();
 		}
 		
 		model.addAttribute("dropCourseModel", dropCourseModel);
+		
+		/* Rule applied*/
+		/*
 		model.addAttribute("isRuleStudentComplete", dropWService.isRuleStudentComplete(
 																							student.getAcademicDetail().getStudentNo(), 
 																							student.getAcademicDetail().getStdStatCode(), 
 																							null, null
 																						)
 							);
+		*/
+		/* TODO Below one for test only */
+		model.addAttribute("isRuleStudentComplete",  true);
+
 		model.addAttribute("courseList", dropWService.getCourseList(student, locale));
 		model.addAttribute("dropWDTOs", gson.toJson(dropWService.getDropWCourses(student, locale)));
 		return "/registration/dropWithW/student/welcomeDropWithWStudent";
