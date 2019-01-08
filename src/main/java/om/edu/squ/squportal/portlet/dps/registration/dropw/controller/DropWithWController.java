@@ -279,7 +279,7 @@ public class DropWithWController
 			Employee	employee	=	null;
 			try
 			{
-				employee					=	dpsServiceDao.getEmployee(request,locale, false);
+				employee					=	dpsServiceDao.getEmployee(request,locale, true);
 				List<DropWDTO>	dropWDTOs	=	dropWService.getDropWForApprovers(roleNameValue.getRoleValue(), employee, locale);
 				response.getWriter().print(gson.toJson(dropWDTOs));
 			}

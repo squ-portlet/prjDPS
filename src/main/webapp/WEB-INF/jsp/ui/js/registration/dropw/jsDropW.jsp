@@ -189,10 +189,10 @@
 								courses.studentId=studentId;
 								courses.studentName=studentName;
 								data.approverMain=approver;
+							var coursesJSON={'courses':courses,'approverMain':approver, 'studentId':studentId, 'studentName':studentName };
 							if($.trim(courses))
 							{
-								
-								dropDataLoadAction(courses, '#hbDropCoursesAction', '#dropwCoursesAction');
+								dropDataLoadAction(coursesJSON, '#hbDropCoursesAction', '#dropwCoursesAction');
 							}
 							else
 							{
@@ -200,7 +200,7 @@
 								$('#modalAlertErrMsg').html("<spring:message code='prop.dps.dropw.warn.approver.no.courses.found'/>");
 								$('#alertModal').modal('toggle');
 								
-								dropDataLoadAction(courses, '#hbDropCoursesAction', '#dropwCoursesAction');
+								dropDataLoadAction(coursesJSON, '#hbDropCoursesAction', '#dropwCoursesAction');
 							}
 						},
 						error	:	function(xhr, status)

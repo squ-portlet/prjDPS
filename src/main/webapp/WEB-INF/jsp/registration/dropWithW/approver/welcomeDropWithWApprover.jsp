@@ -132,7 +132,13 @@
 		
 		{{#each .}}
 			<tr>
-				<td><a class="clsStudentCourse" href="#" approver={{approver}} studentNo={{student.academicDetail.studentNo}} stdStatCode={{student.academicDetail.stdStatCode}} studentId={{student.academicDetail.id}} studentName="{{student.academicDetail.studentName}}">{{student.academicDetail.id}}</a></td>
+				<td>
+					<a class="clsStudentCourse" href="#" approver={{approver}} studentNo={{student.academicDetail.studentNo}} stdStatCode={{student.academicDetail.stdStatCode}} studentId={{student.academicDetail.id}} studentName="{{student.academicDetail.studentName}}">{{student.academicDetail.id}}</a>
+					&nbsp;
+					{{#if applyDelegation}}	
+						<span class="glyphicon glyphicon-record" aria-hidden="true"></span>
+					{{/if}}
+				</td>
 				<td>{{student.academicDetail.studentName}}</td>
 				<td>{{student.academicDetail.cohort}}</td>
 				<td>{{student.academicDetail.college}}</td>
@@ -159,7 +165,7 @@
 					<th><spring:message code="prop.dps.course.action"/></th>									
 				</tr>
 
-				{{#each .}}
+				{{#each courses}}
 					<tr>
 	    				<td>{{lAbrCourseNo}}</td>
 	    				<td>{{courseName}}</td>
@@ -167,8 +173,10 @@
 	    				<td>{{credits}}</td>
 	    				<td>
 							{{#if statusPending}}
-								  	<div class="col-xs-4"><label><input type="radio" courseNo={{courseNo}} lAbrCourseNo={{lAbrCourseNo}} sectionNo={{sectionNo}} sectCode={{sectCode}} class ="clsAppAction" name="appAction" id="appRadio1" value="${appApprove}" data-toggle="modal" data-target="#modalApprovForm"><spring:message code="prop.dps.role.approve.text"/></label> </div> 
-									<div class="col-xs-2"><label><input type="radio" courseNo={{courseNo}} lAbrCourseNo={{lAbrCourseNo}} sectionNo={{sectionNo}} sectCode={{sectCode}} class ="clsAppAction" name="appAction" id="appRadio2" value="${appRecect}" data-toggle="modal" data-target="#modalApprovForm"> <spring:message code="prop.dps.role.reject.text"/> </label></div> 
+									{{#if ../approverMain}}
+									  	<div class="col-xs-4"><label><input type="radio" courseNo={{courseNo}} lAbrCourseNo={{lAbrCourseNo}} sectionNo={{sectionNo}} sectCode={{sectCode}} class ="clsAppAction" name="appAction" id="appRadio1" value="${appApprove}" data-toggle="modal" data-target="#modalApprovForm"><spring:message code="prop.dps.role.approve.text"/></label> </div> 
+										<div class="col-xs-2"><label><input type="radio" courseNo={{courseNo}} lAbrCourseNo={{lAbrCourseNo}} sectionNo={{sectionNo}} sectCode={{sectCode}} class ="clsAppAction" name="appAction" id="appRadio2" value="${appRecect}" data-toggle="modal" data-target="#modalApprovForm"> <spring:message code="prop.dps.role.reject.text"/> </label></div>
+									{{/if}} 
 							{{else}}
 								{{statusDesc}}
 							{{/if}}
@@ -176,7 +184,7 @@
 					</tr>
 			{{/each}} 
 			{{else}}
-					{{#each .}}
+					{{#each courses}}
 						<tr>
 	    					<td>{{lAbrCourseNo}}</td>
 	    					<td>{{courseName}}</td>

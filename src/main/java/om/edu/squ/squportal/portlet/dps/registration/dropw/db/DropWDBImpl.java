@@ -290,13 +290,15 @@ public class DropWDBImpl implements DropWDBDao
 				
 				advisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS));
 				
-				if(rs.getString(Constants.CONST_COLMN_ROLE_IS_APPROVER).equals("Y"))
+				if(rs.getString(Constants.CONST_COLMN_ROLE_IS_APPROVER).equals(Constants.CONST_YES))
 				{
 					dropWDTO.setApprover(true);
+					dropWDTO.setApproverApplicable(true);
 				}
 				else
 				{
 					dropWDTO.setApprover(false);
+					dropWDTO.setApproverApplicable(false);
 				}
 				
 				student.setAcademicDetail(academicDetail);
