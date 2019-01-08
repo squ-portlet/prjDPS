@@ -511,7 +511,7 @@ public class DropWDBImpl implements DropWDBDao
 		}
 		catch(BadSqlGrammarException badGrException)
 		{
-			logger.error("Might be a grammatical issue in stored procedure");
+			logger.error("Might be a grammatical issue in stored procedure. Error : {}",badGrException.getMessage());
 			throw new NotSuccessFulDBUpdate(badGrException.getMessage());
 		}
 		catch(UncategorizedSQLException exception)

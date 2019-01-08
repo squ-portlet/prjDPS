@@ -362,9 +362,10 @@ public class DropWithWController
 			}
 		catch(NotSuccessFulDBUpdate ex)
 		{
-			logger.error("Droping is not successful");
 			/*We catch the error but not throwing technical error to user screen*/
 			errMsg	=	ex.getMessage();
+			logger.error("Droping is not successful : {}");
+			
 		}
 		catch(ExceptionEmptyResultset ex)
 		{
