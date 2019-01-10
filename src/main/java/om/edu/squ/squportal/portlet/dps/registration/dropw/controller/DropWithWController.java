@@ -141,16 +141,21 @@ public class DropWithWController
 		
 		model.addAttribute("dropCourseModel", dropCourseModel);
 		
-		/* Rule applied*/
-		model.addAttribute("isRuleStudentComplete", dropWService.isRuleStudentComplete(
-																							student.getAcademicDetail().getStudentNo(), 
-																							student.getAcademicDetail().getStdStatCode(), 
-																							null, null
-																						)
-							);
-		
-		/* TODO Below one for test only */
-		//model.addAttribute("isRuleStudentComplete",  true);
+		if(Constants.CONST_TEST_ENVIRONMENT)
+		{
+			/* TODO Below one for test only */
+			model.addAttribute("isRuleStudentComplete",  true);
+		}
+		else
+		{
+			/* Rule applied*/
+			model.addAttribute("isRuleStudentComplete", dropWService.isRuleStudentComplete(
+																								student.getAcademicDetail().getStudentNo(), 
+																								student.getAcademicDetail().getStdStatCode(), 
+																								null, null
+																							)
+								);
+		}
 
 		model.addAttribute("courseList", dropWService.getCourseList(student, locale));
 		model.addAttribute("dropWDTOs", gson.toJson(dropWService.getDropWCourses(student, locale)));
