@@ -33,8 +33,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-import javax.portlet.EventRequest;
-import javax.portlet.EventResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -63,7 +61,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.portlet.bind.annotation.EventMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import com.google.gson.Gson;
@@ -136,19 +133,25 @@ public class DropWithWController
 		
 		User				user			=	dpsServiceDao.getUser(request);
 		Student				student			=	dpsServiceDao.getStudent(user.getUserId(), null, locale);
-		
+
 		if(!model.containsAttribute("dropCourseModel"))
 		{
 				dropCourseModel	= new DropCourseModel();
 		}
 		
 		model.addAttribute("dropCourseModel", dropCourseModel);
+		
+		/* Rule applied*/
 		model.addAttribute("isRuleStudentComplete", dropWService.isRuleStudentComplete(
 																							student.getAcademicDetail().getStudentNo(), 
 																							student.getAcademicDetail().getStdStatCode(), 
 																							null, null
 																						)
 							);
+		
+		/* TODO Below one for test only */
+		//model.addAttribute("isRuleStudentComplete",  true);
+
 		model.addAttribute("courseList", dropWService.getCourseList(student, locale));
 		model.addAttribute("dropWDTOs", gson.toJson(dropWService.getDropWCourses(student, locale)));
 		return "/registration/dropWithW/student/welcomeDropWithWStudent";
@@ -269,7 +272,7 @@ public class DropWithWController
 			Employee	employee	=	null;
 			try
 			{
-				employee					=	dpsServiceDao.getEmployee(request,locale, false);
+				employee					=	dpsServiceDao.getEmployee(request,locale, true);
 				List<DropWDTO>	dropWDTOs	=	dropWService.getDropWForApprovers(roleNameValue.getRoleValue(), employee, locale);
 				response.getWriter().print(gson.toJson(dropWDTOs));
 			}
@@ -352,9 +355,10 @@ public class DropWithWController
 			}
 		catch(NotSuccessFulDBUpdate ex)
 		{
-			logger.error("Droping is not successful");
 			/*We catch the error but not throwing technical error to user screen*/
 			errMsg	=	ex.getMessage();
+			logger.error("Droping is not successful : {}");
+			
 		}
 		catch(ExceptionEmptyResultset ex)
 		{

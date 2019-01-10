@@ -348,7 +348,7 @@ public interface Constants
 	public	static	final	String	CONST_SQL_DELEGATE_SELECT_DELEGATEE						=	"dps.delegate.select.delegatee";
 
 	/* ---  SQL - DPS - Drop With W -- Stored Procedure -- --------------------- */	
-	public	static	final	String	CONST_PROC_DROPW_WITHDRAW_COURSE						=	"PROC_WITHDRAW_COURSE";
+	public	static	final	String	CONST_PROC_DROPW_WITHDRAW_COURSE						=	"WEB_PKG.WITHDRAW_COURSE_DPS";
 	
 	public	static	final	String	CONST_PROC_COL_NAME_P_STDNO								=	"p_stdno";
 	public	static	final	String	CONST_PROC_COL_NAME_P_SECTCD							=	"p_sectcd";

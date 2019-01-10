@@ -246,8 +246,8 @@
 					DUAL
 	</entry>
 	<entry key="dps.delegate.select.delegated">
-		SELECT * 
-		  FROM
+		<![CDATA[
+				SELECT * FROM
 				(
 				SELECT DISTINCT
 				      NVL(D1.DAR_TO_USERNAME,'NA')          										AS  DELEGATED
@@ -262,31 +262,38 @@
 				    AND D1.DAR_FROM_USERNAME(+) = :paramDelegatedUserName
 				    AND SYSDATE BETWEEN D1.DAR_FROM_DATE(+) AND D1.DAR_TO_DATE(+)
 				    AND D1.DAR_ACTIVE(+)='Y'
-		        ORDER BY DELEGATED_TO  DESC
-		        )
-		WHERE
-		    ROWNUM = 1  
+					ORDER BY 
+			          CASE 
+			            WHEN DELEGATED='NA' THEN 100
+			            ELSE 1
+			          END
+					)
+			 	WHERE ROWNUM < 2  
+	 	]]>        
 	</entry>
 	<entry key="dps.delegate.select.delegatee">
-		SELECT * 
-		  FROM
-				(
-		    SELECT DISTINCT
-				      NVL(D1.DAR_FROM_USERNAME,'NA')          										AS  DELEGATEE
-				    , TO_CHAR(D1.DAR_FROM_DATE,'DD/MM/YYYY')  										AS  DELEGATED_FROM
+		<![CDATA[
+			SELECT * FROM
+			(
+			SELECT DISTINCT
+			      NVL(D1.DAR_FROM_USERNAME,'NA')          										AS  DELEGATEE
+			    , TO_CHAR(D1.DAR_FROM_DATE,'DD/MM/YYYY')  										AS  DELEGATED_FROM
 				    , NVL(TO_CHAR(D1.DAR_TO_DATE,'DD/MM/YYYY'),'01/01/0000')   						AS  DELEGATED_TO
-				FROM
-				DPS_ADDITIONAL_ROLES D1, 
-				DPS_ADDITIONAL_ROLES D2
-				
-				WHERE 
-				        D1.DARM_SRL_NO (+) = D2.DARM_SRL_NO
-				    AND D1.DAR_TO_USERNAME(+) = :paramDelegatedUserName
-				    AND SYSDATE BETWEEN D1.DAR_FROM_DATE(+) AND D1.DAR_TO_DATE(+)
-				    AND D1.DAR_ACTIVE(+)='Y'
-		        ORDER BY DELEGATED_TO  DESC
-		        )
-		WHERE
-		    ROWNUM = 1
+			FROM
+			DPS_ADDITIONAL_ROLES D1, 
+			DPS_ADDITIONAL_ROLES D2
+			
+			WHERE 
+			        D1.DARM_SRL_NO (+) = D2.DARM_SRL_NO
+			    AND D1.DAR_TO_USERNAME(+) = :paramDelegatedUserName
+			    AND SYSDATE BETWEEN D1.DAR_FROM_DATE(+) AND D1.DAR_TO_DATE(+)
+			    AND D1.DAR_ACTIVE(+)='Y'
+			ORDER BY 
+	          CASE 
+	            WHEN DELEGATEE='NA' THEN 100
+	            ELSE 1
+	          END
+			  )WHERE ROWNUM < 2  
+	 	]]> 		  
 	</entry>
 </properties>
