@@ -136,10 +136,7 @@ public class DropWithWController
 		
 		User				user			=	dpsServiceDao.getUser(request);
 		Student				student			=	dpsServiceDao.getStudent(user.getUserId(), null, locale);
-		
-		logger.info("userid : "+user.getUserId());
-		logger.info("student : "+student);
-		
+
 		if(!model.containsAttribute("dropCourseModel"))
 		{
 				dropCourseModel	= new DropCourseModel();

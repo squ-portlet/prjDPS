@@ -119,6 +119,8 @@
 	$(function() {
 		var varStudentNo;
 		var	varStdStatCode;
+		var	varStudentId;
+		var	varStudentName;
 		var	approver;
 		var idRadioBttn;
 		
@@ -169,6 +171,8 @@
 				};
 				varStudentNo	=	this.getAttribute("studentNo");
 				varStdStatCode	=	this.getAttribute("stdStatCode");
+				varStudentId	=	this.getAttribute("studentId");
+				varStudentName	=	this.getAttribute("studentName");
 				var studentId	=	this.getAttribute("studentId");
 				var	studentName	=	this.getAttribute("studentName");
 				
@@ -199,7 +203,6 @@
 								courses.approverMain=false;
 								$('#modalAlertErrMsg').html("<spring:message code='prop.dps.dropw.warn.approver.no.courses.found'/>");
 								$('#alertModal').modal('toggle');
-								
 								dropDataLoadAction(coursesJSON, '#hbDropCoursesAction', '#dropwCoursesAction');
 							}
 						},
@@ -271,10 +274,12 @@
 								data	:	dropWDTO,
 								success	:	function(data)
 								{
+
 									$("#imgAjaxLoading").hide();
 									var courses = JSON.parse(data);
 									courses.approverMain=approver;
-									dropDataLoadAction(courses, '#hbDropCoursesAction', '#dropwCoursesAction');
+									var coursesJSON={'courses':courses,'approverMain':approver, 'studentId':varStudentId, 'studentName':varStudentName };
+									dropDataLoadAction(coursesJSON, '#hbDropCoursesAction', '#dropwCoursesAction');
 								},
 								error	:	function(xhr, status, error)
 								{
@@ -340,6 +345,13 @@
 			return true;
 		}
 		
+		/** Custom if condition for handlebar operation **/
+		Handlebars.registerHelper('ifCond', function(v1, v2, options) {
+			  if(v1 === v2) {
+			    return options.fn(this);
+			  }
+			  return options.inverse(this);
+			});
 		
 	});
 	

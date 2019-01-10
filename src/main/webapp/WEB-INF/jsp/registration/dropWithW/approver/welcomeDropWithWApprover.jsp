@@ -173,10 +173,12 @@
 	    				<td>{{credits}}</td>
 	    				<td>
 							{{#if statusPending}}
-									{{#if ../approverMain}}
+									{{#ifCond ../approverMain 'true'}}
 									  	<div class="col-xs-4"><label><input type="radio" courseNo={{courseNo}} lAbrCourseNo={{lAbrCourseNo}} sectionNo={{sectionNo}} sectCode={{sectCode}} class ="clsAppAction" name="appAction" id="appRadio1" value="${appApprove}" data-toggle="modal" data-target="#modalApprovForm"><spring:message code="prop.dps.role.approve.text"/></label> </div> 
 										<div class="col-xs-2"><label><input type="radio" courseNo={{courseNo}} lAbrCourseNo={{lAbrCourseNo}} sectionNo={{sectionNo}} sectCode={{sectCode}} class ="clsAppAction" name="appAction" id="appRadio2" value="${appRecect}" data-toggle="modal" data-target="#modalApprovForm"> <spring:message code="prop.dps.role.reject.text"/> </label></div>
-									{{/if}} 
+									{{else}}
+										
+									{{/ifCond}} 
 							{{else}}
 								{{statusDesc}}
 							{{/if}}
