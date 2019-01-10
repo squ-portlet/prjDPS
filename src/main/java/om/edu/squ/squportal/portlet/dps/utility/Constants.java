@@ -421,7 +421,7 @@ public interface Constants
 	
 	
 	
-	public	static	final	boolean	CONST_TEST_ENVIRONMENT									=	false;
+	public	static	final	boolean	CONST_TEST_ENVIRONMENT									=	true;
 	public	static	final	String	CONST_EMAIL_FROM										=	"dps_eservices@squ.edu.om";
 	public	static	final	String	CONST_DUMMY_USER_EMAIL_TO								=	"bhabesh@squ.edu.om";
 
