@@ -37,7 +37,6 @@ import java.util.Map;
 
 import javax.portlet.PortletRequest;
 
-import om.edu.squ.portal.common.EmpCommon;
 import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Approver;
 import om.edu.squ.squportal.portlet.dps.bo.DelegateEmployee;
@@ -74,16 +73,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class DpsServiceImpl implements DpsServiceDao
 {
 	
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private final 	Logger 					logger = LoggerFactory.getLogger(this.getClass());
+	
+	private			Map<String, Object> 	myRules;
 	
 	@Autowired
-	DpsDbDao	dpsDbDao;
+					DpsDbDao				dpsDbDao;
 	@Autowired
-	UserIdUtil	userIdUtil;
+					UserIdUtil				userIdUtil;
 	@Autowired	
-	Role	roleService;
+					Role					roleService;
 	@Autowired
-	Rule	ruleService;
+					Rule					ruleService;
 
 
 
@@ -676,5 +677,32 @@ public class DpsServiceImpl implements DpsServiceDao
 	{
 		return dpsDbDao.getDelegatedEmployee(empUserName);
 	}
+
+
+	/**
+	 * Getter Method	: getMyRules
+	 * @return the myRules
+	 * 
+	 * Date				: Jan 14, 2019
+	 */
+	public Map<String, Object> getMyRules()
+	{
+		return this.myRules;
+	}
+
+
+	/**
+	 * Setter method : setMyRules
+	 * @param myRules the myRules to set
+	 * 
+	 * Date          : Jan 14, 2019 1:46:41 PM
+	 */
+	public void setMyRules(Map<String, Object> myRules)
+	{
+		this.myRules = myRules;
+	}
+	
+	
+	
 	
 }
