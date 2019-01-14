@@ -9,6 +9,16 @@
 	<portlet:resourceURL id="ajaxCoursesToBeDropped" var="urlAjaxCoursesToBeDropped"></portlet:resourceURL>
 	<portlet:resourceURL id="ajaxApproverAction" var="urlAjaxApproverAction"></portlet:resourceURL>
 
+
+      <div class="row">
+      		<div class="col-sm-9"></div>
+      		<div class="col-sm-2">
+      				<a href='<spring:message code="prop.dps.dropw.link.help.user.manual"/>'>
+      					<spring:message code="prop.dps.link.help.text"/> <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+      				</a>
+      		</div>
+      </div>
+
 	<ul class="nav nav-tabs">
 		<li role="presentation" id="idNav-home" class="clsNavRole active"><a href="#">Home</a></li>
 		<c:if test="${(not empty employee) }">
