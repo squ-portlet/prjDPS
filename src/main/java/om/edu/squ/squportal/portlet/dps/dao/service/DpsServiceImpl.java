@@ -702,7 +702,16 @@ public class DpsServiceImpl implements DpsServiceDao
 		this.myRules = myRules;
 	}
 	
-	
-	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao#booToString(boolean, java.util.Locale)
+	 */
+	public	String booToString(boolean booVal, Locale locale )
+	{
+		return 
+				(booVal)
+						?	UtilProperty.getMessage("prop.dps.role.submit.yes.text", null, locale)
+						:	UtilProperty.getMessage("prop.dps.role.submit.no.text", null, locale);
+	}
 	
 }
