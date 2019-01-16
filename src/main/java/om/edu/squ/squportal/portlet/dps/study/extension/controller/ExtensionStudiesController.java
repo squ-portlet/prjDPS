@@ -218,7 +218,8 @@ public class ExtensionStudiesController
 		model.addAttribute("extenstions",extensions);
 		/* TODO for Apply RULE uncomment the following statement */
 		//model.addAttribute("isRuleStudentComplete", true);
-		model.addAttribute("isRuleStudentComplete", extensionServiceDao.isRuleStudentComplete(student.getAcademicDetail().getStudentNo(),student.getAcademicDetail().getStdStatCode()));
+		model.addAttribute("isRuleStudentComplete", extensionServiceDao.isRuleStudentComplete(student.getAcademicDetail().getStudentNo(),student.getAcademicDetail().getStdStatCode(), locale));
+		model.addAttribute("myRules", dpsServiceDao.getMyRules());
 		
 		return "study/extension/student/welcomeExtensionStudent";
 	}
