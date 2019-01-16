@@ -410,4 +410,19 @@ public interface DpsServiceDao
 	 * Date    		:	Jan 14, 2019 1:48:47 PM
 	 */
 	public void setMyRules(Map<String, Object> myRules);
+	
+	/**
+	 * 
+	 * method name  : booToString
+	 * @param booVal
+	 * @param locale
+	 * @return
+	 * DpsServiceImpl
+	 * return type  : String
+	 * 
+	 * purpose		: Boolean to String (Convert true/false to Yes/No)
+	 *
+	 * Date    		:	Jan 15, 2019 12:08:40 PM
+	 */
+	public	String booToString(boolean booVal, Locale locale );
 }

@@ -37,6 +37,7 @@ import java.util.Map;
 
 import javax.portlet.PortletRequest;
 
+import om.edu.squ.portal.common.EmpCommon;
 import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Approver;
 import om.edu.squ.squportal.portlet.dps.bo.DelegateEmployee;
@@ -676,6 +677,42 @@ public class DpsServiceImpl implements DpsServiceDao
 	public	DelegateEmployee getDelegatedEmployee(String empUserName)
 	{
 		return dpsDbDao.getDelegatedEmployee(empUserName);
+	}
+
+
+	/**
+	 * Getter Method	: getMyRules
+	 * @return the myRules
+	 * 
+	 * Date				: Jan 14, 2019
+	 */
+	public Map<String, Object> getMyRules()
+	{
+		return this.myRules;
+	}
+
+
+	/**
+	 * Setter method : setMyRules
+	 * @param myRules the myRules to set
+	 * 
+	 * Date          : Jan 14, 2019 1:46:41 PM
+	 */
+	public void setMyRules(Map<String, Object> myRules)
+	{
+		this.myRules = myRules;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao#booToString(boolean, java.util.Locale)
+	 */
+	public	String booToString(boolean booVal, Locale locale )
+	{
+		return 
+				(booVal)
+						?	UtilProperty.getMessage("prop.dps.role.submit.yes.text", null, locale)
+						:	UtilProperty.getMessage("prop.dps.role.submit.no.text", null, locale);
 	}
 
 

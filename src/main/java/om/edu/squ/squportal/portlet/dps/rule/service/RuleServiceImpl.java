@@ -52,6 +52,16 @@ public class RuleServiceImpl implements Rule
 	@Autowired
 	DpsServiceDao	dpsServiceDao;
 	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.rule.service.Rule#getJoinAndCloseTime(java.lang.String, java.lang.String)
+	 */
+	public StudentCompletionAndJoinTime getJoinAndCloseTime(String studentNo, String stdStatCode)
+	{
+		return ruleDbDao.getJoinAndCloseTime(studentNo, stdStatCode);
+	}
+	
+	
 	/**
 	 * 
 	 * method name  : lastSemester
@@ -67,7 +77,7 @@ public class RuleServiceImpl implements Rule
 	 */
 	public boolean lastSemester(String studentNo, String stdStatCode)
 	{
-		StudentCompletionAndJoinTime	completionAndJoinTime	=	ruleDbDao.getJoinAndCloseTime(studentNo, stdStatCode);
+		StudentCompletionAndJoinTime	completionAndJoinTime	=	getJoinAndCloseTime(studentNo, stdStatCode);
 		YearSemester					yearSemester			=	getCurrentYearSemester();
 		int 							totalSem				=	0;
 		String							studentMode				=	dpsServiceDao.getStudentMode(studentNo, stdStatCode);
@@ -83,7 +93,7 @@ public class RuleServiceImpl implements Rule
 		int		fromStartSem	=	completionAndJoinTime.getFromSemCode();
 		int		currYear		=	yearSemester.getYear();
 		int		currSemester	=	yearSemester.getSemester();
-		boolean	isLangCourse	=	ruleDbDao.isLanguageCourseTaken(studentNo, currYear, fromStartYear, fromStartSem);
+		boolean	isLangCourse	=	isLanguageCourseTaken(studentNo, currYear, fromStartYear, fromStartSem);
 		
 		int 	countSem		=	0;
 		int		countTotal		=	0;
@@ -135,6 +145,14 @@ public class RuleServiceImpl implements Rule
 		return (totalSem==countTotal)?true:false;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.rule.service.Rule#isLanguageCourseTaken(java.lang.String, int, int, int)
+	 */
+	public boolean isLanguageCourseTaken(String studentNo, int currentYear, int courseStartYear, int courseStartSemester )
+	{
+		return ruleDbDao.isLanguageCourseTaken(studentNo, currentYear, courseStartYear, courseStartSemester);
+	}
 	
 	/**
 	 * 
@@ -240,7 +258,7 @@ public class RuleServiceImpl implements Rule
 	 *
 	 * Date    		:	Mar 14, 2017 12:51:58 PM
 	 */
-	private YearSemester	getCurrentYearSemester()
+	public YearSemester	getCurrentYearSemester()
 	{
 		return ruleDbDao.getCurrentYearSemester();
 	}

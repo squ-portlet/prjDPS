@@ -29,12 +29,48 @@
  */
 package om.edu.squ.squportal.portlet.dps.rule.service;
 
+import om.edu.squ.squportal.portlet.dps.rule.bo.StudentCompletionAndJoinTime;
+import om.edu.squ.squportal.portlet.dps.rule.bo.YearSemester;
+
 /**
  * @author Bhabesh
  *
  */
 public interface Rule
 {
+	
+	/**
+	 * 
+	 * method name  : getJoinAndCloseTime
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * Rule
+	 * return type  : StudentCompletionAndJoinTime
+	 * 
+	 * purpose		: Get Joining and estimated total number of semester to completion of the course
+	 *
+	 * Date    		:	Jan 16, 2019 8:35:40 AM
+	 */
+	public StudentCompletionAndJoinTime getJoinAndCloseTime(String studentNo, String stdStatCode);
+	
+	/**
+	 * 
+	 * method name  : isLanguageCourseTaken
+	 * @param studentNo
+	 * @param currentYear
+	 * @param courseStartYear
+	 * @param courseStartSemester
+	 * @return
+	 * RuleDbDao
+	 * return type  : boolean
+	 * 
+	 * purpose		: find out possibility of have language course taken by student
+	 *
+	 * Date    		:	Dec 24, 2018 5:12:17 PM
+	 */
+	public boolean isLanguageCourseTaken(String studentNo, int currentYear, int courseStartYear, int courseStartSemester );
+	
 	/**
 	 * 
 	 * method name  : lastSemester
@@ -95,6 +131,19 @@ public interface Rule
 	 */
 	public boolean isCurrentDateInSpecificWeek(String weekNumber);
 
+	/**
+	 * 
+	 * method name  : getCurrentYearSemester
+	 * @return
+	 * RuleDbImpl
+	 * return type  : YearSemester
+	 * 
+	 * purpose		: Get Current year sem
+	 *
+	 * Date    		:	Mar 14, 2017 12:51:58 PM
+	 */
+	public YearSemester	getCurrentYearSemester();
+	
 	/**
 	 * 
 	 * method name  : countPostpone
