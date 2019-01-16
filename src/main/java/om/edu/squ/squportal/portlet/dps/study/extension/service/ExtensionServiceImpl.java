@@ -29,13 +29,17 @@
  */
 package om.edu.squ.squportal.portlet.dps.study.extension.service;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import om.edu.squ.squportal.notification.exception.NotificationException;
 import om.edu.squ.squportal.notification.service.NotificationService;
 import om.edu.squ.squportal.notification.service.core.NotificationServiceCore;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
+import om.edu.squ.squportal.portlet.dps.bo.NameValue;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
@@ -44,6 +48,8 @@ import om.edu.squ.squportal.portlet.dps.notification.bo.NotifierPeople;
 import om.edu.squ.squportal.portlet.dps.notification.service.DPSNotification;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
+import om.edu.squ.squportal.portlet.dps.rule.bo.StudentCompletionAndJoinTime;
+import om.edu.squ.squportal.portlet.dps.rule.bo.YearSemester;
 import om.edu.squ.squportal.portlet.dps.rule.service.Rule;
 import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO;
 import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionReason;
@@ -490,6 +496,9 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		
 		return extensionDTOResult;
 	}
+
+	
+
 	
 	/**
 	 * 
@@ -508,7 +517,7 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 	/*Rule 2 -- first seminar completed if program option reqire thesis / If candidate doesn't have thesis then approver will be advisor*/ 
 	/*Rule 3 -- Starting from week 10 */
 	/*Rule 4 -- Student can apply only once for extension */
-	public boolean isRuleStudentComplete(String studentNo, String stdStatCode)
+	public boolean isRuleStudentComplete(String studentNo, String stdStatCode, Locale locale)
 	{
 		boolean	result 								= 	false;
 
@@ -517,6 +526,9 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		boolean isFirstSeminarCompletedApplicable	=	false;
 		boolean	isWeekSpecifiedAvailable			=	false;
 		boolean	isAlreadyExtensionApproved			=	false;
+		
+		Map<String, Object> myRules					=	new LinkedHashMap<String, Object>();
+		
 		
 		hasThesis	=	ruleService.isStudentHasThesis(studentNo, stdStatCode);
 		
@@ -556,7 +568,46 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 			}
 		}
 		
+		/****************** RULE TEXT *****************************/
+		YearSemester					yearSemester			=	ruleService.getCurrentYearSemester();
+		String							studentMode				=	dpsServiceDao.getStudentMode(studentNo, stdStatCode);
+		StudentCompletionAndJoinTime	completionAndJoinTime	=	ruleService.getJoinAndCloseTime(studentNo, stdStatCode);
+		int								postponeCount			=	ruleService.countPostpone(studentNo, stdStatCode);
+		boolean							isLangCourse			=	ruleService.isLanguageCourseTaken(studentNo, yearSemester.getYear(), completionAndJoinTime.getFromCCYrCode(), completionAndJoinTime.getFromSemCode());
+		int 							totalSem				=	0;
+		if(studentMode.equals(Constants.CONST_FULL_TIME))
+		{
+			totalSem		=	completionAndJoinTime.getEstimatedSemesters();		//For Full Time Students
+		}
+		else
+		{
+			totalSem		=	completionAndJoinTime.getMaximumSemesters();		// For Part Time Students
+		}
+		
+		
+		
+		/* Storing the rules for user */
+		myRules.put("isAlreadyExtensionApproved", new NameValue(true, UtilProperty.getMessage("prop.dps.extension.already.approved", null, locale), dpsServiceDao.booToString(isAlreadyExtensionApproved, locale)));
+		myRules.put("hasThesis", new NameValue(hasThesis, UtilProperty.getMessage("prop.dps.has.thesis", null, locale), dpsServiceDao.booToString(hasThesis, locale)));
+		myRules.put("isLastSemester", new NameValue(true, UtilProperty.getMessage("prop.dps.last.semester", null, locale), dpsServiceDao.booToString(isLastSemester,locale)));
+			myRules.put("curYearSemester", new NameValue(true, UtilProperty.getMessage("prop.dps.current.year.semester", null, locale), String.valueOf(yearSemester.getYear())+"/"+String.valueOf(yearSemester.getSemester()) ));
+			myRules.put("studentMode", new NameValue(true, UtilProperty.getMessage("prop.dps.mode",null, locale), studentMode));
+			myRules.put("degreeStartTime", new NameValue(true, UtilProperty.getMessage("prop.dps.year.semester.started", null, locale), String.valueOf(completionAndJoinTime.getFromCCYrCode()+"/"+completionAndJoinTime.getFromSemCode())));
+			myRules.put("totalSem", new NameValue(true, UtilProperty.getMessage("prop.dps.year.allowed.number.of.semester", null, locale), String.valueOf(totalSem)));
+			myRules.put("postponeCount", new NameValue(true, UtilProperty.getMessage("prop.dps.count.postponement", null, locale), String.valueOf(postponeCount)));
+			myRules.put("isLangCourse", new NameValue(true, UtilProperty.getMessage("prop.dps.count.language.course", null, locale), dpsServiceDao.booToString(isLangCourse,locale)));
+		myRules.put("isFirstSeminarCompletedApplicable", new NameValue(true, UtilProperty.getMessage("prop.dps.first.seminar.completed", null,locale), dpsServiceDao.booToString(isFirstSeminarCompletedApplicable,locale)));
+		myRules.put("isWeekSpecifiedAvailable", new NameValue(true, UtilProperty.getMessage("prop.dps.week.10", null, locale), dpsServiceDao.booToString(isWeekSpecifiedAvailable,locale)));
+		myRules.put("isAlreadyExtensionApproved", new NameValue(isAlreadyExtensionApproved, UtilProperty.getMessage("prop.dps.extension.already.approved", null, locale), String.valueOf(isAlreadyExtensionApproved)));
+		
+		
+		
+		dpsServiceDao.setMyRules(myRules);
+		
+		
 		return result;
 	}
+	
+
 	
 }

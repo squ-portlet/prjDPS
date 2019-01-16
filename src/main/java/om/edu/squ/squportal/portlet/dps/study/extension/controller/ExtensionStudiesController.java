@@ -225,6 +225,7 @@ public class ExtensionStudiesController
 		{
 			model.addAttribute("isRuleStudentComplete", extensionServiceDao.isRuleStudentComplete(student.getAcademicDetail().getStudentNo(),student.getAcademicDetail().getStdStatCode()));
 		}
+		model.addAttribute("myRules", dpsServiceDao.getMyRules());
 		
 		return "study/extension/student/welcomeExtensionStudent";
 	}

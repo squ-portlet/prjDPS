@@ -41,7 +41,94 @@
 								<br>	<spring:message code="prop.dps.extension.rule.04"/>									          				
 	          				</div>
           				</center>
-          			</c:otherwise>
+          				
+ <!-- RULE Text --  Display Fulfillment of rules to Student -->
+
+						<div class="row">
+				
+						<div class="col-sm-3 col-md-2">&nbsp;</div>
+				
+						  <div class="col-sm-6 col-md-4">
+						    <div class="thumbnail">
+						      <div class="caption">
+						        <h4><spring:message code="prop.dps.present.situation"/></h4>
+						        <p>
+			          				<dl>
+				          				<c:forEach items="${myRules}" var="mapRule">
+			      								<c:if test="${mapRule.key ==  'isAlreadyExtensionApproved'}">
+			      									<dt>
+			      										${mapRule.value.name} : ${mapRule.value.value}
+			      									</dt>
+			      								</c:if>
+			          							<c:choose>
+				          							<c:when test="${mapRule.key == 'hasThesis'}">
+				          								<dt>${mapRule.value.name} : ${mapRule.value.value}</dt>
+				          									<c:forEach items="${myRules}" var="mapRule">
+						          								<c:if test="${mapRule.key ==  'isFirstSeminarCompletedApplicable'}">
+						          									<dd>
+						          										${mapRule.value.name} : ${mapRule.value.value}
+						          									</dd>
+						          								</c:if>	
+					          								</c:forEach>
+				          							</c:when>
+				          							<c:otherwise>
+				          								
+				          							</c:otherwise>
+			          							</c:choose>
+					          			</c:forEach>
+			   							<c:forEach items="${myRules}" var="mapRule">
+			      								<c:if test="${mapRule.key ==  'isLastSemester'}">
+			      									<dt>
+			      										${mapRule.value.name} : ${mapRule.value.value}
+			      									</dt>
+			      								</c:if>
+			        								<c:if test="${mapRule.key ==  'curYearSemester'}">
+			        									<dd>
+			        										${mapRule.value.name} : ${mapRule.value.value}
+			        									</dd>
+			        								</c:if>
+			        								<c:if test="${mapRule.key ==  'studentMode'}">
+			        									<dd>
+			        										${mapRule.value.name} : ${mapRule.value.value}
+			        									</dd>
+			        								</c:if>
+			        								<c:if test="${mapRule.key ==  'degreeStartTime'}">
+			        									<dd>
+			        										${mapRule.value.name} : ${mapRule.value.value}
+			        									</dd>
+			        								</c:if>
+			        								<c:if test="${mapRule.key ==  'totalSem'}">
+			        									<dd>
+			        										${mapRule.value.name} : ${mapRule.value.value}
+			        									</dd>
+			        								</c:if>
+			        								<c:if test="${mapRule.key ==  'postponeCount'}">
+			        									<dd>
+			        										${mapRule.value.name} : ${mapRule.value.value}
+			        									</dd>
+			        								</c:if>
+			        								<c:if test="${mapRule.key ==  'isLangCourse'}">
+			        									<dd>
+			        										${mapRule.value.name} : ${mapRule.value.value}
+			        									</dd>
+			        								</c:if>        								        								
+			      								<c:if test="${mapRule.key ==  'isWeekSpecifiedAvailable'}">
+			      									<dt>
+			      										${mapRule.value.name} : ${mapRule.value.value}
+			      									</dt>
+			      								</c:if>			          							
+			   							</c:forEach>
+			          				</dl>
+						        </p>
+						
+						      </div>
+						    </div>
+						  </div>
+						</div>
+ 
+ <!-- End of Rule Text  -->
+ 
+           			</c:otherwise>
           		</c:choose>
           </div>
         </div>
