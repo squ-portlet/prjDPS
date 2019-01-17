@@ -4,47 +4,34 @@
     <comment>DPS RULES </comment>
     <entry key="sql.rule.student.join.close.time">
     	<![CDATA[
-	    	SELECT 
-				  SS.STDSTATCD								AS		STDSTATCD
-				, SS.STDNO									AS		STUDENT_NO
-				, D.DEGRESTSEMGRD							AS		DGR_GRAD_ESTIMATE_SEM_COUNT
-				, D.DEGRMAXSEMGRD							AS		DGR_GRAD_MAXIMUM_SEM_COUNT
-				, SS.CCYRCD								AS		FROMCCYRCD
-				, SS.SEMCD 								AS		FROMSEMCD
-				, TO_NUMBER(TO_CHAR(SYSDATE,'YYYY'))     	AS    	CURRENT_YEAR
-		        , D.DEGRCD 
-					FROM 
-						  STD_DEGREE 	SD 
-						, DEGREE 		D
-		
-		       , (       
-			          SELECT * 
-			          FROM 
-				          (
-				          SELECT 
-				                  SH.STDSTATCD		AS	STDSTATCD
-				                , SH.STDNO			AS	STDNO
-				                , SH.SEMCD			AS	SEMCD
-				                , SH.CCYRCD			AS	CCYRCD
-				          FROM
-				                  STD_STATUS_HISTORY SH
-				                , SIS_CODES 		CODES
-				          WHERE
-				                SH.STDSTATCD = :paramStdStatCode
-				                AND SH.STATUSCD = CODES.SISCODECD
-				                AND CODES.L_ABR_CODE = 'REG'
-				          ORDER BY SH.CCYRCD ASC, SH.SEMCD ASC
-				          ) 
-			          WHERE 
-			          	ROWNUM =1
-		      )      SS  
-		              
-		        
-					WHERE 
-								SD.DEGRCD		=	D.DEGRCD 
-						AND 	SS.STDSTATCD	=	SD.STDSTATCD 
-						AND 	SS.STDNO		=	:paramStdNo
-						AND   	SS.STDSTATCD  	= 	:paramStdStatCode
+				SELECT 
+						* 
+				FROM
+					(
+					    	SELECT 
+				                DISTINCT
+				                SD.STDSTATCD								AS		STDSTATCD
+				              , SD.STDNO									AS		STUDENT_NO
+				              , D.DEGRESTSEMGRD								AS		DGR_GRAD_ESTIMATE_SEM_COUNT
+				              , D.DEGRMAXSEMGRD								AS		DGR_GRAD_MAXIMUM_SEM_COUNT
+				              , SG.CCYRCD								    AS		FROMCCYRCD
+				              , SG.SEMCD 								    AS		FROMSEMCD
+				              , TO_NUMBER(TO_CHAR(SYSDATE,'YYYY'))     		AS    	CURRENT_YEAR
+				              , D.DEGRCD 
+							FROM 
+								  STD_DEGREE 	SD 
+								, DEGREE 		D
+				            	, STD_GRADES 	SG
+							WHERE 
+					                    SD.DEGRCD		  =	  D.DEGRCD 
+					            AND     SD.STDNO      =   SG.STDNO
+					            AND     SG.CCYRCD     >=  D.CCYRCD
+					            AND     SD.STDNO      =	  :paramStdNo
+					            AND     SD.STDSTATCD  =   :paramStdStatCode
+					          ORDER BY FROMCCYRCD, FROMSEMCD
+				 	)         
+				WHERE 
+				    	ROWNUM = 1
     	]]>
     </entry>
     <entry key="sql.rule.student.language.course.from.course.start">

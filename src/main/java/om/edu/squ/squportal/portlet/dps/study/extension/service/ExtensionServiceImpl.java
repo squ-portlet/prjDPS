@@ -568,7 +568,8 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 			}
 		}
 		
-		/****************** RULE TEXT *****************************/
+		
+		/****************** RULE TEXT - START *****************************/
 		YearSemester					yearSemester			=	ruleService.getCurrentYearSemester();
 		String							studentMode				=	dpsServiceDao.getStudentMode(studentNo, stdStatCode);
 		StudentCompletionAndJoinTime	completionAndJoinTime	=	ruleService.getJoinAndCloseTime(studentNo, stdStatCode);
@@ -604,6 +605,7 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		
 		dpsServiceDao.setMyRules(myRules);
 		
+		/****************** RULE TEXT - END *****************************/
 		
 		return result;
 	}
