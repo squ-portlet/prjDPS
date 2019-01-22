@@ -570,7 +570,7 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		
 		
 		/****************** RULE TEXT - START *****************************/
-		YearSemester					yearSemester			=	ruleService.getCurrentYearSemester();
+		YearSemester					yearSemester			=	ruleService.getRuleLastYearSemester();
 		String							studentMode				=	dpsServiceDao.getStudentMode(studentNo, stdStatCode);
 		StudentCompletionAndJoinTime	completionAndJoinTime	=	ruleService.getJoinAndCloseTime(studentNo, stdStatCode);
 		int								postponeCount			=	ruleService.countPostpone(studentNo, stdStatCode);
