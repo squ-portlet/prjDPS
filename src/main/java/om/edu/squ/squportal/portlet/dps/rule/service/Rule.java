@@ -130,6 +130,20 @@ public interface Rule
 	 * Date    		:	Mar 15, 2017 4:53:42 PM
 	 */
 	public boolean isCurrentDateInSpecificWeek(String weekNumber);
+	
+	/**
+	 * 
+	 * method name  : getRuleLastYearSemester
+	 * @return
+	 * RuleServiceImpl
+	 * return type  : YearSemester
+	 * 
+	 * purpose		: Get the year semester based on sysdate 
+	 * 					It helps when semester over but officially another semester doesn't start
+	 *
+	 * Date    		:	Jan 21, 2019 5:11:45 PM
+	 */
+	public YearSemester	getRuleLastYearSemester();
 
 	/**
 	 * 
@@ -143,6 +157,8 @@ public interface Rule
 	 * Date    		:	Mar 14, 2017 12:51:58 PM
 	 */
 	public YearSemester	getCurrentYearSemester();
+	
+
 	
 	/**
 	 * 

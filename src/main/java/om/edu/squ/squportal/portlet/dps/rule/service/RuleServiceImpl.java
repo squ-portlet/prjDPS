@@ -78,7 +78,7 @@ public class RuleServiceImpl implements Rule
 	public boolean lastSemester(String studentNo, String stdStatCode)
 	{
 		StudentCompletionAndJoinTime	completionAndJoinTime	=	getJoinAndCloseTime(studentNo, stdStatCode);
-		YearSemester					yearSemester			=	getCurrentYearSemester();
+		YearSemester					yearSemester			=	getRuleLastYearSemester();  //Based on current date decide the semester to cover the gap between the semesters
 		int 							totalSem				=	0;
 		String							studentMode				=	dpsServiceDao.getStudentMode(studentNo, stdStatCode);
 		if(studentMode.equals(Constants.CONST_FULL_TIME))
@@ -116,6 +116,7 @@ public class RuleServiceImpl implements Rule
 
 			for(int y=p; y<=4; y++)
 			{
+
 				s++;
 				if(s==10) break;
 				
@@ -123,7 +124,9 @@ public class RuleServiceImpl implements Rule
 				{
 					countSem++;
 				}
+				
 			}
+			
 		}
 		
 		if(currSemester==2)
@@ -262,7 +265,16 @@ public class RuleServiceImpl implements Rule
 	{
 		return ruleDbDao.getCurrentYearSemester();
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.rule.service.Rule#getRuleLastYearSemester()
+	 */
+	public YearSemester	getRuleLastYearSemester()
+	{
+		return ruleDbDao.getRuleLastYearSemester();
+	}
+
 	/**
 	 * *********** Specific service related query which affects rules ************************ 
 	 */

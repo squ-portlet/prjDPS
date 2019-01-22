@@ -192,6 +192,62 @@ public class RuleDbImpl implements RuleDbDao
 		
 		return nPJdbcTemplDps.queryForObject(SQL_RULE_CURRENT_YEAR_SEMESTER, mapParamsRule, rowMapper);
 	}
+
+	/**
+	 * 
+	 * method name  : myYearSemester
+	 * @return
+	 * RuleDbImpl
+	 * return type  : int
+	 * 
+	 * purpose		: Decide to get the year semester based on current date (if 0 then last semester if 1 then current semester)
+	 *
+	 * Date    		:	Jan 21, 2019 5:02:22 PM
+	 */
+	private	int isMySemester()
+	{
+		String CONST_PROP_SQL_RULE_DECIDE_YEAR_SEMESTER		=	queryPropsCommonRule.getProperty(Constants.CONST_PROP_SQL_RULE_DECIDE_YEAR_SEMESTER);
+		Map<String, String> mapParamsRule			=	new HashMap<String, String>();
+		return nPJdbcTemplDps.queryForInt(CONST_PROP_SQL_RULE_DECIDE_YEAR_SEMESTER, mapParamsRule);
+	}
+	
+	
+	public YearSemester	getRuleLastYearSemester()
+	{
+		if (isMySemester()==0)
+		{
+			return getLastYearSemester();
+		}
+		else
+		{
+			return getCurrentYearSemester();
+		}
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.rule.db.RuleDbDao#getLastYearSemester()
+	 */
+	public YearSemester getLastYearSemester()
+	{
+		String	SQL_VIEW_RULE_LAST_YEAR_SEMESTER		=	queryPropsCommonRule.getProperty(Constants.CONST_PROP_SQL_VIEW_RULE_LAST_YEAR_SEMESTER);
+		RowMapper<YearSemester> 	rowMapper		=	new RowMapper<YearSemester>()
+		{
+			
+			@Override
+			public YearSemester mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				YearSemester	yearSemester	=	new YearSemester();
+				yearSemester.setYear(rs.getInt(Constants.COST_COL_DPS_COURSE_YEAR));
+				yearSemester.setSemester(rs.getInt(Constants.COST_COL_DPS_SEMESTER_CODE));
+				return yearSemester;
+			}
+		};
+		
+		Map<String, String> mapParamsRule			=	new HashMap<String, String>();
+		
+		return nPJdbcTemplDps.queryForObject(SQL_VIEW_RULE_LAST_YEAR_SEMESTER, mapParamsRule, rowMapper);
+	}
 	
 
 	/**
@@ -256,11 +312,57 @@ public class RuleDbImpl implements RuleDbDao
 	 */
 	public int getCurrentDateInSpecificWeek(String weekNumber)
 	{
+		if (isMySemester()==0)
+		{
+			return getCurrentDateInSpecificWeekLastSem(weekNumber);
+		}
+		else
+		{
+			return getCurrentDateInSpecificWeekCurrentSem(weekNumber);
+		}
+
+	}
+	
+	/**
+	 * 
+	 * method name  : getCurrentDateInSpecificWeekCurrentSem
+	 * @param weekNumber
+	 * @return
+	 * RuleDbImpl
+	 * return type  : int
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Jan 22, 2019 8:52:18 AM
+	 */
+	public int getCurrentDateInSpecificWeekCurrentSem(String weekNumber)
+	{
 		String	SQL_RULE_CURR_DATE_IN_SPECIFIC_WEEK	=	queryPropsCommonRule.getProperty(Constants.CONST_PROP_SQL_RULE_CURR_DATE_IN_SPECIFIC_WEEK);
 		Map<String, String> mapParamsRule	=	new HashMap<String, String>();
 		mapParamsRule.put("param_week", weekNumber);
 		
 		return nPJdbcTemplDps.queryForInt(SQL_RULE_CURR_DATE_IN_SPECIFIC_WEEK, mapParamsRule);
+	}
+	
+	/**
+	 * 
+	 * method name  : getCurrentDateInSpecificWeekLastSem
+	 * @param weekNumber
+	 * @return
+	 * RuleDbImpl
+	 * return type  : int
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Jan 22, 2019 8:52:26 AM
+	 */
+	public int getCurrentDateInSpecificWeekLastSem(String weekNumber)
+	{
+		String	SQL_RULE_CURR_DATE_IN_SPECIFIC_WEEK_LAST_SEM	=	queryPropsCommonRule.getProperty(Constants.CONST_PROP_SQL_RULE_CURR_DATE_IN_SPECIFIC_WEEK_LAST_SEM);
+		Map<String, String> mapParamsRule	=	new HashMap<String, String>();
+		mapParamsRule.put("param_week", weekNumber);
+		
+		return nPJdbcTemplDps.queryForInt(SQL_RULE_CURR_DATE_IN_SPECIFIC_WEEK_LAST_SEM, mapParamsRule);
 	}
 	
 	
