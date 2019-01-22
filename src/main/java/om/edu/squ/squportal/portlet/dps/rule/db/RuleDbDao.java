@@ -100,6 +100,34 @@ public interface RuleDbDao
 	
 	/**
 	 * 
+	 * method name  : getRuleLastYearSemester
+	 * @return
+	 * RuleDbDao
+	 * return type  : YearSemester
+	 * 
+	 * purpose		: Get the year semester based on sysdate 
+	 * 					It helps when semester over but officially another semester doesn't start
+	 *
+	 * Date    		:	Jan 21, 2019 5:09:26 PM
+	 */
+	public YearSemester	getRuleLastYearSemester();
+
+	/**
+	 * 
+	 * method name  : getLastYearSemester
+	 * @return
+	 * RuleDbDao
+	 * return type  : YearSemester
+	 * 
+	 * purpose		: Get last semester
+	 *
+	 * Date    		:	Jan 21, 2019 4:42:44 PM
+	 */
+	public YearSemester getLastYearSemester();	
+	
+	
+	/**
+	 * 
 	 * method name  : getThesisCode
 	 * @param studentNo
 	 * @param stdStatCode
