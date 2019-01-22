@@ -223,7 +223,7 @@ public class ExtensionStudiesController
 		}
 		else
 		{
-			model.addAttribute("isRuleStudentComplete", extensionServiceDao.isRuleStudentComplete(student.getAcademicDetail().getStudentNo(),student.getAcademicDetail().getStdStatCode()));
+			model.addAttribute("isRuleStudentComplete", extensionServiceDao.isRuleStudentComplete(student.getAcademicDetail().getStudentNo(),student.getAcademicDetail().getStdStatCode(),locale));
 		}
 		model.addAttribute("myRules", dpsServiceDao.getMyRules());
 		
