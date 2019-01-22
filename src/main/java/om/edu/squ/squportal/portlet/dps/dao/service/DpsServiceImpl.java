@@ -715,31 +715,5 @@ public class DpsServiceImpl implements DpsServiceDao
 						:	UtilProperty.getMessage("prop.dps.role.submit.no.text", null, locale);
 	}
 
-
-	/**
-	 * Getter Method	: getMyRules
-	 * @return the myRules
-	 * 
-	 * Date				: Jan 14, 2019
-	 */
-	public Map<String, Object> getMyRules()
-	{
-		return this.myRules;
-	}
-
-
-	/**
-	 * Setter method : setMyRules
-	 * @param myRules the myRules to set
-	 * 
-	 * Date          : Jan 14, 2019 1:46:41 PM
-	 */
-	public void setMyRules(Map<String, Object> myRules)
-	{
-		this.myRules = myRules;
-	}
-	
-	
-	
 	
 }
