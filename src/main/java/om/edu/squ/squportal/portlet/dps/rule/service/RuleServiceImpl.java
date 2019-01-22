@@ -52,6 +52,16 @@ public class RuleServiceImpl implements Rule
 	@Autowired
 	DpsServiceDao	dpsServiceDao;
 	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.rule.service.Rule#getJoinAndCloseTime(java.lang.String, java.lang.String)
+	 */
+	public StudentCompletionAndJoinTime getJoinAndCloseTime(String studentNo, String stdStatCode)
+	{
+		return ruleDbDao.getJoinAndCloseTime(studentNo, stdStatCode);
+	}
+	
+	
 	/**
 	 * 
 	 * method name  : lastSemester
@@ -67,8 +77,8 @@ public class RuleServiceImpl implements Rule
 	 */
 	public boolean lastSemester(String studentNo, String stdStatCode)
 	{
-		StudentCompletionAndJoinTime	completionAndJoinTime	=	ruleDbDao.getJoinAndCloseTime(studentNo, stdStatCode);
-		YearSemester					yearSemester			=	getCurrentYearSemester();
+		StudentCompletionAndJoinTime	completionAndJoinTime	=	getJoinAndCloseTime(studentNo, stdStatCode);
+		YearSemester					yearSemester			=	getRuleLastYearSemester();  //Based on current date decide the semester to cover the gap between the semesters
 		int 							totalSem				=	0;
 		String							studentMode				=	dpsServiceDao.getStudentMode(studentNo, stdStatCode);
 		if(studentMode.equals(Constants.CONST_FULL_TIME))
@@ -83,7 +93,7 @@ public class RuleServiceImpl implements Rule
 		int		fromStartSem	=	completionAndJoinTime.getFromSemCode();
 		int		currYear		=	yearSemester.getYear();
 		int		currSemester	=	yearSemester.getSemester();
-		boolean	isLangCourse	=	ruleDbDao.isLanguageCourseTaken(studentNo, currYear, fromStartYear, fromStartSem);
+		boolean	isLangCourse	=	isLanguageCourseTaken(studentNo, currYear, fromStartYear, fromStartSem);
 		
 		int 	countSem		=	0;
 		int		countTotal		=	0;
@@ -106,6 +116,7 @@ public class RuleServiceImpl implements Rule
 
 			for(int y=p; y<=4; y++)
 			{
+
 				s++;
 				if(s==10) break;
 				
@@ -113,7 +124,9 @@ public class RuleServiceImpl implements Rule
 				{
 					countSem++;
 				}
+				
 			}
+			
 		}
 		
 		if(currSemester==2)
@@ -135,6 +148,14 @@ public class RuleServiceImpl implements Rule
 		return (totalSem==countTotal)?true:false;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.rule.service.Rule#isLanguageCourseTaken(java.lang.String, int, int, int)
+	 */
+	public boolean isLanguageCourseTaken(String studentNo, int currentYear, int courseStartYear, int courseStartSemester )
+	{
+		return ruleDbDao.isLanguageCourseTaken(studentNo, currentYear, courseStartYear, courseStartSemester);
+	}
 	
 	/**
 	 * 
@@ -240,11 +261,20 @@ public class RuleServiceImpl implements Rule
 	 *
 	 * Date    		:	Mar 14, 2017 12:51:58 PM
 	 */
-	private YearSemester	getCurrentYearSemester()
+	public YearSemester	getCurrentYearSemester()
 	{
 		return ruleDbDao.getCurrentYearSemester();
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.rule.service.Rule#getRuleLastYearSemester()
+	 */
+	public YearSemester	getRuleLastYearSemester()
+	{
+		return ruleDbDao.getRuleLastYearSemester();
+	}
+
 	/**
 	 * *********** Specific service related query which affects rules ************************ 
 	 */

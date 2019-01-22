@@ -264,6 +264,8 @@ public interface Constants
 	
 	/************* PROPERTY FILE ******************************/
 	public	static	String	RESOURCE_PROPERTY_FILE_NAME										=	"messages";
+	public	static	String	RESOURCE_PROPERTY_FILE_NAME_EXTENSION							=	"extension";
+	
 
 	
 	/******************************************************/
@@ -363,10 +365,13 @@ public interface Constants
 	public	static	final	String	CONST_PROP_SQL_RULE_THESIS_CODE							=	"sql.rule.thesis.code";
 	public	static	final	String	CONST_PROP_SQL_RULE_SEMINAR_RECORD_COUNT				=	"sql.rule.seminar.complete.record.count";
 	public	static	final	String	CONST_PROP_SQL_RULE_CURR_DATE_IN_SPECIFIC_WEEK			=	"sql.rule.current.date.in.specific.week";
+	public	static	final	String	CONST_PROP_SQL_RULE_CURR_DATE_IN_SPECIFIC_WEEK_LAST_SEM	=	"sql.rule.current.date.in.specific.week.last.semester";
 	
 	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_EXTENSION_COUNT				=	"sql.rule.service.extension.select.count.student";
 	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_DROP_W_PERIOD				=	"sql.rule.service.dropw.withdraw.preriod";
-
+	public	static	final	String	CONST_PROP_SQL_VIEW_RULE_CURRENT_YEAR_SEMESTER			=	"sql.view.rule.current.year.semester";
+	public	static	final	String	CONST_PROP_SQL_VIEW_RULE_LAST_YEAR_SEMESTER				=	"sql.view.rule.last.year.semester";
+	public	static	final	String	CONST_PROP_SQL_RULE_DECIDE_YEAR_SEMESTER				=	"sql.rule.decicide.year.semester";
 	
 	/* ---  SQL - DPS - Role --------------------- */
 	public	static	final	String	CONST_PROP_SQL_STATUS_DESCRIPTION						=	"sql.status.description";
