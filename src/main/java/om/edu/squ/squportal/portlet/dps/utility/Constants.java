@@ -357,6 +357,7 @@ public interface Constants
 	
 	/* ---  SQL - DPS - Rule --------------------- */
 	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_JOIN_CLOSE_TIME				=	"sql.rule.student.join.close.time";	
+	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_LANGUAGE_COURSE_TAKEN		=	"sql.rule.student.language.course.from.course.start";
 	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_POSTPONE_COUNT				=	"sql.rule.student.count.postpone";
 	public	static	final	String	CONST_PROP_SQL_RULE_CURRENT_YEAR_SEMESTER				=	"sql.rule.current.year.semester";
 	public	static	final	String	CONST_PROP_SQL_RULE_THESIS_CODE							=	"sql.rule.thesis.code";

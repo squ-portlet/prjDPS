@@ -53,6 +53,23 @@ public interface RuleDbDao
 	 */
 	public StudentCompletionAndJoinTime getJoinAndCloseTime(String studentNo, String stdStatCode);
 	
+	
+	/**
+	 * 
+	 * method name  : isLanguageCourseTaken
+	 * @param studentNo
+	 * @param currentYear
+	 * @param courseStartYear
+	 * @param courseStartSemester
+	 * @return
+	 * RuleDbDao
+	 * return type  : boolean
+	 * 
+	 * purpose		: find out possibility of have language course taken by student
+	 *
+	 * Date    		:	Dec 24, 2018 5:12:17 PM
+	 */
+	public boolean isLanguageCourseTaken(String studentNo, int currentYear, int courseStartYear, int courseStartSemester );
 	/**
 	 * 
 	 * method name  : countPostpone

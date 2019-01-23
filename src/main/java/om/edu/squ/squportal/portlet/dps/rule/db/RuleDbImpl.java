@@ -119,6 +119,22 @@ public class RuleDbImpl implements RuleDbDao
 		return nPJdbcTemplDps.queryForObject(SQL_RULE_STUDENT_JOIN_CLOSE_TIME, mapParamsRule, mapper);
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.rule.db.RuleDbDao#isLanguageCourseTaken(java.lang.String, int, int, int)
+	 */
+	public boolean isLanguageCourseTaken(String studentNo, int currentYear, int courseStartYear, int courseStartSemester )
+	{
+		String	SQL_RULE_STUDENT_LANGUAGE_COURSE_TAKEN		=	queryPropsCommonRule.getProperty(Constants.CONST_PROP_SQL_RULE_STUDENT_LANGUAGE_COURSE_TAKEN);
+		Map<String, String> mapParamsRule	=	new HashMap<String, String>();
+		mapParamsRule.put("paramStdNo", studentNo);
+		mapParamsRule.put("paramCurrentYear", String.valueOf(currentYear));
+		mapParamsRule.put("paramFromCourseYear", String.valueOf(courseStartYear));
+		mapParamsRule.put("paramFromSemester", String.valueOf(courseStartSemester));
+		
+		return (nPJdbcTemplDps.queryForInt(SQL_RULE_STUDENT_LANGUAGE_COURSE_TAKEN, mapParamsRule)>0)?true:false;
+	}
+	
 	/**
 	 * 
 	 * method name  : countPostpone
