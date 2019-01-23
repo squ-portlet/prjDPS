@@ -104,6 +104,7 @@ public class RuleDbImpl implements RuleDbDao
 				studentCompletionAndJoinTime.setStudentNo(rs.getString(Constants.CONST_COLMN_STUDENT_NO));
 				studentCompletionAndJoinTime.setStdStatCode(rs.getString(Constants.CONST_COLMN_STDSTATCD));
 				studentCompletionAndJoinTime.setEstimatedSemesters(rs.getInt(Constants.CONST_COLMN_DGR_GRAD_ESTIMATE_SEM_COUNT));
+				studentCompletionAndJoinTime.setMaximumSemesters(rs.getInt(Constants.CONST_COLMN_DGR_GRAD_MAXIMUM_SEM_COUNT));
 				studentCompletionAndJoinTime.setFromCCYrCode(rs.getInt(Constants.COST_COL_DPS_FROM_COURSE_YEAR_CODE));
 				studentCompletionAndJoinTime.setFromSemCode(rs.getInt(Constants.COST_COL_DPS_FROM_SEMESTER_CODE));
 				studentCompletionAndJoinTime.setCurrentYear(rs.getInt(Constants.COST_COL_DPS_CURRENT_YEAR));

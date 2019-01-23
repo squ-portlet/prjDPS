@@ -79,7 +79,7 @@ public class RuleServiceImpl implements Rule
 	{
 		StudentCompletionAndJoinTime	completionAndJoinTime	=	getJoinAndCloseTime(studentNo, stdStatCode);
 		YearSemester					yearSemester			=	getRuleLastYearSemester();  //Based on current date decide the semester to cover the gap between the semesters
-		int 	totalSem		=	completionAndJoinTime.getEstimatedSemesters();
+
 		int 							totalSem				=	0;
 		String							studentMode				=	dpsServiceDao.getStudentMode(studentNo, stdStatCode);
 		if(studentMode.equals(Constants.CONST_FULL_TIME))

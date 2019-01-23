@@ -38,6 +38,7 @@ public class StudentCompletionAndJoinTime
 	private	String	studentNo;
 	private	String 	stdStatCode;
 	private	int		estimatedSemesters;
+	private	int		maximumSemesters;
 	private	int		fromCCYrCode;
 	private	int		fromSemCode;
 	private	int		currentYear;
@@ -100,6 +101,26 @@ public class StudentCompletionAndJoinTime
 	public void setEstimatedSemesters(int estimatedSemesters)
 	{
 		this.estimatedSemesters = estimatedSemesters;
+	}
+	/**
+	 * Getter Method	: getMaximumSemesters
+	 * @return the maximumSemesters
+	 * 
+	 * Date				: Dec 27, 2018
+	 */
+	public int getMaximumSemesters()
+	{
+		return this.maximumSemesters;
+	}
+	/**
+	 * Setter method : setMaximumSemesters
+	 * @param maximumSemesters the maximumSemesters to set
+	 * 
+	 * Date          : Dec 27, 2018 8:57:00 AM
+	 */
+	public void setMaximumSemesters(int maximumSemesters)
+	{
+		this.maximumSemesters = maximumSemesters;
 	}
 	/**
 	 * Getter Method	: getFromCCYrCode
@@ -170,9 +191,10 @@ public class StudentCompletionAndJoinTime
 	{
 		return "StudentCompletionAndJoinTime [studentNo=" + this.studentNo
 				+ ", stdStatCode=" + this.stdStatCode + ", estimatedSemesters="
-				+ this.estimatedSemesters + ", fromCCYrCode="
-				+ this.fromCCYrCode + ", fromSemCode=" + this.fromSemCode
-				+ ", currentYear=" + this.currentYear + "]";
+				+ this.estimatedSemesters + ", maximumSemesters="
+				+ this.maximumSemesters + ", fromCCYrCode=" + this.fromCCYrCode
+				+ ", fromSemCode=" + this.fromSemCode + ", currentYear="
+				+ this.currentYear + "]";
 	}
 	
 	
