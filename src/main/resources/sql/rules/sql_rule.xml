@@ -20,6 +20,61 @@
 				AND 	SS.STDSTATCD	=	SD.STDSTATCD 
 				AND 	SS.STDNO		=	:paramStdNo
 				AND   	SS.STDSTATCD  	= 	:paramStdStatCode
+				SELECT 
+						* 
+				FROM
+					(
+					    	SELECT 
+				                DISTINCT
+				                SD.STDSTATCD								AS		STDSTATCD
+				              , SD.STDNO									AS		STUDENT_NO
+				              , D.DEGRESTSEMGRD								AS		DGR_GRAD_ESTIMATE_SEM_COUNT
+				              , D.DEGRMAXSEMGRD								AS		DGR_GRAD_MAXIMUM_SEM_COUNT
+				              , SG.CCYRCD								    AS		FROMCCYRCD
+				              , SG.SEMCD 								    AS		FROMSEMCD
+				              , TO_NUMBER(TO_CHAR(SYSDATE,'YYYY'))     		AS    	CURRENT_YEAR
+				              , D.DEGRCD 
+							FROM 
+								  STD_DEGREE 	SD 
+								, DEGREE 		D
+				            	, STD_GRADES 	SG
+							WHERE 
+					                    SD.DEGRCD		  =	  D.DEGRCD 
+					            AND     SD.STDNO      =   SG.STDNO
+					            AND     SG.CCYRCD     >=  D.CCYRCD
+					            AND     SD.STDNO      =	  :paramStdNo
+					            AND     SD.STDSTATCD  =   :paramStdStatCode
+					          ORDER BY FROMCCYRCD ASC, FROMSEMCD ASC
+				 	)         
+				WHERE 
+				    	ROWNUM = 1
+    	]]>
+    </entry>
+    <entry key="sql.rule.student.language.course.from.course.start">
+    	<![CDATA[
+				SELECT 
+				        COUNT(L_ABR_CRSNO)
+				FROM
+				(
+				
+				      SELECT       SCHED.STDNO
+				                , SECT.L_ABR_CRSNO
+				                , SECT.CCYRCD
+				                , SECT.SEMCD
+				      FROM 
+				                  SCHED_STD   SCHED
+				            ,     SECT        SECT
+				      WHERE
+				                  SCHED.SECTCD  = SECT.SECTCD
+				            AND   STDNO = :paramStdNo
+				            AND
+				                (SECT.CCYRCD >= :paramFromCourseYear AND SECT.CCYRCD <= :paramCurrentYear )
+				                AND NOT (SECT.CCYRCD =  :paramFromCourseYear AND SECT.CCYRCD < :paramFromSemester)
+				                
+				                ORDER BY SECT.CCYRCD, SECT.SEMCD
+				 ) 
+				 WHERE
+				    L_ABR_CRSNO LIKE 'LANC%'    
     	]]>
     </entry>
     <entry key="sql.rule.student.count.postpone">
@@ -39,6 +94,33 @@
 				CURRENT_YR_SEM    
     </entry>
     
+	<entry key="sql.rule.decicide.year.semester">
+		<![CDATA[
+			SELECT 
+			    COUNT(*)      								AS COUNT_REC          
+			FROM 
+			    V_CURRENT_YRSEM_PORTAL VCYP
+			WHERE
+			    TRUNC(VCYP.SEMSTDTE) < TRUNC(SYSDATE)
+		 ]]>	
+	</entry>	
+		
+	<entry key="sql.view.rule.current.year.semester">
+			SELECT 
+			        CCYRCD    								AS  CCYRCD
+			      , SEMCD									AS  SEMCD
+			FROM
+			    V_YR_SEM_CURRENT	
+	</entry>
+
+	<entry key="sql.view.rule.last.year.semester">
+			SELECT 
+			        CCYRCD    								AS  CCYRCD
+			      , SEMCD     								AS  SEMCD  
+			FROM
+			    V_YR_SEM_LAST	
+	</entry>
+
     <entry key="sql.rule.thesis.code">
 		    SELECT
 				   NVL( 
@@ -95,6 +177,20 @@
 				        SYSDATE >= SEMSTDTE+((:param_week-1)*7)
 				  ) 
   	</entry>
+  	<entry key="sql.rule.current.date.in.specific.week.last.semester">
+		  	 SELECT 
+		  	 		NVL(COUNT_REC,0)					AS		COUNT_REC
+			 FROM
+				  (
+				    SELECT 
+				        COUNT(*) COUNT_REC
+				    FROM 
+				        V_YR_SEM_LAST
+				    WHERE
+				        SYSDATE >= SEMSTDTE+((:param_week-1)*7)
+				  ) 
+  	</entry>
+
 <!-- Service Specific Rules -->
 		<!-- Service Rules with Extension ** 
 				only one time student can extend therefore 
