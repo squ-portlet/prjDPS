@@ -30,6 +30,7 @@
 package om.edu.squ.squportal.portlet.dps.dao.service;
 
 import java.util.Locale;
+import java.util.Map;
 
 import javax.portlet.PortletRequest;
 
@@ -383,4 +384,45 @@ public interface DpsServiceDao
 	 * Date    		:	Aug 26, 2018 2:42:55 PM
 	 */
 	public	DelegateEmployee getDelegatedEmployee(String empUserName);
+	
+	/**
+	 * 
+	 * method name  : getMyRules
+	 * @return
+	 * DpsServiceDao
+	 * return type  : Map<String,Object>
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Jan 14, 2019 1:48:36 PM
+	 */
+	public Map<String, Object> getMyRules();
+	
+	/**
+	 * 
+	 * method name  : setMyRules
+	 * @param myRules
+	 * DpsServiceDao
+	 * return type  : void
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Jan 14, 2019 1:48:47 PM
+	 */
+	public void setMyRules(Map<String, Object> myRules);
+	
+	/**
+	 * 
+	 * method name  : booToString
+	 * @param booVal
+	 * @param locale
+	 * @return
+	 * DpsServiceImpl
+	 * return type  : String
+	 * 
+	 * purpose		: Boolean to String (Convert true/false to Yes/No)
+	 *
+	 * Date    		:	Jan 15, 2019 12:08:40 PM
+	 */
+	public	String booToString(boolean booVal, Locale locale );
 }

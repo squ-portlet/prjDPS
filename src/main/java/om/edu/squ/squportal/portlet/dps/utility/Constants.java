@@ -261,6 +261,8 @@ public interface Constants
 	
 	/************* PROPERTY FILE ******************************/
 	public	static	String	RESOURCE_PROPERTY_FILE_NAME										=	"messages";
+	public	static	String	RESOURCE_PROPERTY_FILE_NAME_EXTENSION							=	"extension";
+	
 
 	
 	/******************************************************/
