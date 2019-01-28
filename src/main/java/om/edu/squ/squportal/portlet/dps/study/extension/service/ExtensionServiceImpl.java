@@ -533,7 +533,7 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		hasThesis	=	ruleService.isStudentHasThesis(studentNo, stdStatCode);
 		
 		/*Rule 1*/
-		isLastSemester	= ruleService.lastSemester(studentNo, stdStatCode);
+		isLastSemester	= ruleService.lastSemester(studentNo, stdStatCode, String.valueOf(Constants.CONST_ALLOWED_EXTRA_DAYS_MORE_EXTENSION));
 		
 		
 		/*Rule 2*/
@@ -544,7 +544,7 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		
 		
 		/*Rule 3*/
-		isWeekSpecifiedAvailable				=	ruleService.isCurrentDateInSpecificWeek(Constants.CONST_WEEK_10);
+		isWeekSpecifiedAvailable				=	ruleService.isCurrentDateInSpecificWeek(Constants.CONST_WEEK_10, String.valueOf(Constants.CONST_ALLOWED_EXTRA_DAYS_MORE_EXTENSION));
 		
 		/*Rule 4  */
 		isAlreadyExtensionApproved				=	ruleService.isExtensionRecordAlreadyExist(studentNo, stdStatCode);
@@ -570,7 +570,7 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		
 		
 		/****************** RULE TEXT - START *****************************/
-		YearSemester					yearSemester			=	ruleService.getRuleLastYearSemester();
+		YearSemester					yearSemester			=	ruleService.getRuleLastYearSemester(String.valueOf(Constants.CONST_ALLOWED_EXTRA_DAYS_MORE_EXTENSION));
 		String							studentMode				=	dpsServiceDao.getStudentMode(studentNo, stdStatCode);
 		StudentCompletionAndJoinTime	completionAndJoinTime	=	ruleService.getJoinAndCloseTime(studentNo, stdStatCode);
 		int								postponeCount			=	ruleService.countPostpone(studentNo, stdStatCode);
@@ -586,7 +586,6 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		}
 		
 		
-		
 		/* Storing the rules for user */
 		myRules.put("isAlreadyExtensionApproved", new NameValue(true, UtilProperty.getMessage("prop.dps.extension.already.approved", null, locale), dpsServiceDao.booToString(isAlreadyExtensionApproved, locale)));
 		myRules.put("hasThesis", new NameValue(hasThesis, UtilProperty.getMessage("prop.dps.has.thesis", null, locale), dpsServiceDao.booToString(hasThesis, locale)));
@@ -599,10 +598,7 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 			myRules.put("isLangCourse", new NameValue(true, UtilProperty.getMessage("prop.dps.count.language.course", null, locale), dpsServiceDao.booToString(isLangCourse,locale)));
 		myRules.put("isFirstSeminarCompletedApplicable", new NameValue(true, UtilProperty.getMessage("prop.dps.first.seminar.completed", null,locale), dpsServiceDao.booToString(isFirstSeminarCompletedApplicable,locale)));
 		myRules.put("isWeekSpecifiedAvailable", new NameValue(true, UtilProperty.getMessage("prop.dps.week.10", null, locale), dpsServiceDao.booToString(isWeekSpecifiedAvailable,locale)));
-		myRules.put("isAlreadyExtensionApproved", new NameValue(isAlreadyExtensionApproved, UtilProperty.getMessage("prop.dps.extension.already.approved", null, locale), String.valueOf(isAlreadyExtensionApproved)));
-		
-		
-		
+
 		dpsServiceDao.setMyRules(myRules);
 		
 		/****************** RULE TEXT - END *****************************/
