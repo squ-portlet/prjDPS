@@ -196,6 +196,7 @@ public class RuleDbImpl implements RuleDbDao
 	/**
 	 * 
 	 * method name  : myYearSemester
+	 * @param NumberOfDaysAdjust
 	 * @return
 	 * RuleDbImpl
 	 * return type  : int
@@ -204,19 +205,23 @@ public class RuleDbImpl implements RuleDbDao
 	 *
 	 * Date    		:	Jan 21, 2019 5:02:22 PM
 	 */
-	private	int isMySemester()
+	private	int isMySemester(String NumberOfDaysAdjust)
 	{
 		String CONST_PROP_SQL_RULE_DECIDE_YEAR_SEMESTER		=	queryPropsCommonRule.getProperty(Constants.CONST_PROP_SQL_RULE_DECIDE_YEAR_SEMESTER);
 		Map<String, String> mapParamsRule			=	new HashMap<String, String>();
+		mapParamsRule.put("paramNumberDays", NumberOfDaysAdjust);
 		return nPJdbcTemplDps.queryForInt(CONST_PROP_SQL_RULE_DECIDE_YEAR_SEMESTER, mapParamsRule);
 	}
 	
-	
-	public YearSemester	getRuleLastYearSemester()
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.rule.db.RuleDbDao#getRuleLastYearSemester(java.lang.String)
+	 */
+	public YearSemester	getRuleLastYearSemester(String NumberOfDaysAdjust)
 	{
-		if (isMySemester()==0)
+		if (isMySemester(NumberOfDaysAdjust)==0)
 		{
-			return getLastYearSemester();
+			return getLastYearSemester(NumberOfDaysAdjust);
 		}
 		else
 		{
@@ -250,6 +255,34 @@ public class RuleDbImpl implements RuleDbDao
 	}
 	
 
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.rule.db.RuleDbDao#getLastYearSemester(java.lang.String)
+	 */
+	public YearSemester getLastYearSemester(String numberOfDays)
+	{
+		String	SQL_VIEW_RULE_LAST_YEAR_SEMESTER_PARAMETER		=	queryPropsCommonRule.getProperty(Constants.CONST_PROP_SQL_VIEW_RULE_LAST_YEAR_SEMESTER_PARAMETER);
+		RowMapper<YearSemester> 	rowMapper		=	new RowMapper<YearSemester>()
+		{
+			
+			@Override
+			public YearSemester mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				YearSemester	yearSemester	=	new YearSemester();
+				yearSemester.setYear(rs.getInt(Constants.COST_COL_DPS_COURSE_YEAR));
+				yearSemester.setSemester(rs.getInt(Constants.COST_COL_DPS_SEMESTER_CODE));
+				return yearSemester;
+			}
+		};
+		
+		Map<String, String> mapParamsRule			=	new HashMap<String, String>();
+		mapParamsRule.put("paramNumberDays", numberOfDays);
+		
+		return nPJdbcTemplDps.queryForObject(SQL_VIEW_RULE_LAST_YEAR_SEMESTER_PARAMETER, mapParamsRule, rowMapper);
+	}	
+	
+	
+	
 	/**
 	 * 
 	 * method name  : getThesisCode
@@ -298,23 +331,19 @@ public class RuleDbImpl implements RuleDbDao
 		return nPJdbcTemplDps.queryForInt(SQL_RULE_SEMINAR_RECORD_COUNT, mapParamsRule);
 	}
 	
-	/**
-	 * 
-	 * method name  : getCurrentDateInSpecificWeek
-	 * @param weekNumber
-	 * @return
-	 * RuleDbImpl
-	 * return type  : int
-	 * 
-	 * purpose		: Find whether the date is within specified week
-	 *
-	 * Date    		:	Mar 15, 2017 4:41:48 PM
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.rule.db.RuleDbDao#getCurrentDateInSpecificWeek(java.lang.String, java.lang.String)
 	 */
-	public int getCurrentDateInSpecificWeek(String weekNumber)
+	public int getCurrentDateInSpecificWeek(String weekNumber, String numberOfDaysAdjust)
 	{
-		if (isMySemester()==0)
+		if (isMySemester(numberOfDaysAdjust)==0)
 		{
-			return getCurrentDateInSpecificWeekLastSem(weekNumber);
+			return 1; /* 
+							no record found in current semester means number of adjust days applied 
+						and extension rule to get extension for extended days are respected 
+					*/  
+					/* TODO -- old way to connect last semester */ //getCurrentDateInSpecificWeekLastSem(weekNumber);
 		}
 		else
 		{
