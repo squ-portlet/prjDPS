@@ -214,6 +214,9 @@ public interface Constants
 	public static final int		CONST_FULL_TIME_ALLOWED_CREDIT_AFTER_DROP					=	9;
 	public static final int		CONST_PART_TIME_ALLOWED_CREDIT_AFTER_DROP					=	3;
 	
+	public static final int		CONST_ALLOWED_EXTRA_DAYS_NO									=	0;
+	public static final int		CONST_ALLOWED_EXTRA_DAYS_MORE_EXTENSION						=	7;
+	
 	/******************************************************/
 	public static final	String	CONST_SQL_STATUS_CODE_PENDING								=	"5539";
 	public static final	String	CONST_SQL_STATUS_CODE_NAME_MODFY							=	"MODFY";
@@ -370,6 +373,7 @@ public interface Constants
 	public	static	final	String	CONST_PROP_SQL_VIEW_RULE_CURRENT_YEAR_SEMESTER			=	"sql.view.rule.current.year.semester";
 	public	static	final	String	CONST_PROP_SQL_VIEW_RULE_LAST_YEAR_SEMESTER				=	"sql.view.rule.last.year.semester";
 	public	static	final	String	CONST_PROP_SQL_RULE_DECIDE_YEAR_SEMESTER				=	"sql.rule.decicide.year.semester";
+	public	static	final	String	CONST_PROP_SQL_VIEW_RULE_LAST_YEAR_SEMESTER_PARAMETER	=	"sql.view.rule.last.year.semester.parameter";
 	
 	/* ---  SQL - DPS - Role --------------------- */
 	public	static	final	String	CONST_PROP_SQL_STATUS_DESCRIPTION						=	"sql.status.description";

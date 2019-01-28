@@ -62,23 +62,14 @@ public class RuleServiceImpl implements Rule
 	}
 	
 	
-	/**
-	 * 
-	 * method name  : lastSemester
-	 * @param studentNo
-	 * @param stdStatCode
-	 * @return
-	 * RuleServiceImpl
-	 * return type  : boolean
-	 * 
-	 * purpose		: Is student is in Last semester 
-	 *
-	 * Date    		:	Mar 13, 2017 7:49:10 PM
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.rule.service.Rule#lastSemester(java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public boolean lastSemester(String studentNo, String stdStatCode)
+	public boolean lastSemester(String studentNo, String stdStatCode, String NumberOfDaysAdjust)
 	{
 		StudentCompletionAndJoinTime	completionAndJoinTime	=	getJoinAndCloseTime(studentNo, stdStatCode);
-		YearSemester					yearSemester			=	getRuleLastYearSemester();  //Based on current date decide the semester to cover the gap between the semesters
+		YearSemester					yearSemester			=	getRuleLastYearSemester(NumberOfDaysAdjust);  //Based on current date decide the semester to cover the gap between the semesters
 
 		int 							totalSem				=	0;
 		String							studentMode				=	dpsServiceDao.getStudentMode(studentNo, stdStatCode);
@@ -210,9 +201,9 @@ public class RuleServiceImpl implements Rule
 	 *
 	 * Date    		:	Mar 15, 2017 4:53:42 PM
 	 */
-	public boolean isCurrentDateInSpecificWeek(String weekNumber)
+	public boolean isCurrentDateInSpecificWeek(String weekNumber, String numberOfDaysAdjust)
 	{
-		return (ruleDbDao.getCurrentDateInSpecificWeek(weekNumber) == 0) ?false:true;
+		return (ruleDbDao.getCurrentDateInSpecificWeek(weekNumber, numberOfDaysAdjust) == 0) ?false:true;
 	}
 	
 	/**
@@ -270,11 +261,11 @@ public class RuleServiceImpl implements Rule
 
 	/*
 	 * (non-Javadoc)
-	 * @see om.edu.squ.squportal.portlet.dps.rule.service.Rule#getRuleLastYearSemester()
+	 * @see om.edu.squ.squportal.portlet.dps.rule.service.Rule#getRuleLastYearSemester(java.lang.String)
 	 */
-	public YearSemester	getRuleLastYearSemester()
+	public YearSemester	getRuleLastYearSemester(String NumberOfDaysAdjust)
 	{
-		return ruleDbDao.getRuleLastYearSemester();
+		return ruleDbDao.getRuleLastYearSemester(NumberOfDaysAdjust);
 	}
 
 	/**

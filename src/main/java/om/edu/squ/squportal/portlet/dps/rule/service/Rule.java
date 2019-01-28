@@ -76,6 +76,7 @@ public interface Rule
 	 * method name  : lastSemester
 	 * @param studentNo
 	 * @param stdStatCode
+	 * @param NumberOfDaysAdjust
 	 * @return
 	 * RuleServiceImpl
 	 * return type  : boolean
@@ -84,7 +85,7 @@ public interface Rule
 	 *
 	 * Date    		:	Mar 13, 2017 7:49:10 PM
 	 */
-	public boolean lastSemester(String studentNo, String stdStatCode);
+	public boolean lastSemester(String studentNo, String stdStatCode, String NumberOfDaysAdjust);
 	
 	/**
 	 * 
@@ -121,6 +122,7 @@ public interface Rule
 	 * 
 	 * method name  : isCurrentDateInSpecificWeek
 	 * @param weekNumber
+	 * @param numberOfDaysAdjust
 	 * @return
 	 * RuleServiceImpl
 	 * return type  : boolean
@@ -129,11 +131,12 @@ public interface Rule
 	 *
 	 * Date    		:	Mar 15, 2017 4:53:42 PM
 	 */
-	public boolean isCurrentDateInSpecificWeek(String weekNumber);
+	public boolean isCurrentDateInSpecificWeek(String weekNumber, String numberOfDaysAdjust);
 	
 	/**
 	 * 
 	 * method name  : getRuleLastYearSemester
+	 * @param NumberOfDaysAdjust
 	 * @return
 	 * RuleServiceImpl
 	 * return type  : YearSemester
@@ -143,7 +146,7 @@ public interface Rule
 	 *
 	 * Date    		:	Jan 21, 2019 5:11:45 PM
 	 */
-	public YearSemester	getRuleLastYearSemester();
+	public YearSemester	getRuleLastYearSemester(String NumberOfDaysAdjust);
 
 	/**
 	 * 
