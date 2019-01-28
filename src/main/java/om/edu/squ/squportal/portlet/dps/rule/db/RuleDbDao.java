@@ -101,6 +101,7 @@ public interface RuleDbDao
 	/**
 	 * 
 	 * method name  : getRuleLastYearSemester
+	 * @param NumberOfDaysAdjust TODO
 	 * @return
 	 * RuleDbDao
 	 * return type  : YearSemester
@@ -110,7 +111,7 @@ public interface RuleDbDao
 	 *
 	 * Date    		:	Jan 21, 2019 5:09:26 PM
 	 */
-	public YearSemester	getRuleLastYearSemester();
+	public YearSemester	getRuleLastYearSemester(String NumberOfDaysAdjust);
 
 	/**
 	 * 
@@ -124,6 +125,20 @@ public interface RuleDbDao
 	 * Date    		:	Jan 21, 2019 4:42:44 PM
 	 */
 	public YearSemester getLastYearSemester();	
+	
+	/**
+	 * 
+	 * method name  : getLastYearSemester
+	 * @param numberOfDays
+	 * @return
+	 * RuleDbDao
+	 * return type  : YearSemester
+	 * 
+	 * purpose		: Get last semester with parameter to adjust more or less days
+	 *
+	 * Date    		:	Jan 27, 2019 2:10:29 PM
+	 */
+	public YearSemester getLastYearSemester(String numberOfDays);
 	
 	
 	/**
@@ -160,6 +175,7 @@ public interface RuleDbDao
 	 * 
 	 * method name  : getCurrentDateInSpecificWeek
 	 * @param weekNumber
+	 * @param numberOfDaysAdjust
 	 * @return
 	 * RuleDbImpl
 	 * return type  : int
@@ -168,7 +184,7 @@ public interface RuleDbDao
 	 *
 	 * Date    		:	Mar 15, 2017 4:41:48 PM
 	 */
-	public int getCurrentDateInSpecificWeek(String weekNumber);
+	public int getCurrentDateInSpecificWeek(String weekNumber, String numberOfDaysAdjust);
 	
 	/**
 	 * *********** Specific service related query which affects rules ************************ 

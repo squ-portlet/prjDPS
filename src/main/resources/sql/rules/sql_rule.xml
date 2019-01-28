@@ -85,7 +85,7 @@
 			FROM 
 			    V_CURRENT_YRSEM_PORTAL VCYP
 			WHERE
-			    TRUNC(VCYP.SEMSTDTE) < TRUNC(SYSDATE)
+			    TRUNC(VCYP.SEMSTDTE +:paramNumberDays) < TRUNC(SYSDATE)
 		 ]]>	
 	</entry>	
 		
@@ -103,6 +103,25 @@
 			      , SEMCD     								AS  SEMCD  
 			FROM
 			    V_YR_SEM_LAST	
+	</entry>
+
+	<entry key="sql.view.rule.last.year.semester.parameter">
+		<![CDATA[
+			SELECT 
+		        	CCYRCD									AS  CCYRCD
+		        ,	SEMCD									AS  SEMCD
+			FROM
+			(
+				  SELECT 
+				          *
+				  FROM
+				        YR_SEM YRSEM
+				  WHERE
+				        TRUNC(YRSEM.SEMSTDTE+:paramNumberDays) <= TRUNC(SYSDATE)
+				  ORDER BY YRSEM.SEMSTDTE DESC
+			)
+			WHERE ROWNUM = 1
+		]]> 	
 	</entry>
 
     <entry key="sql.rule.thesis.code">
