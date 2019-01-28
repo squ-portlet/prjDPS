@@ -63,10 +63,10 @@
 			          							<c:choose>
 				          							<c:when test="${mapRule.key == 'hasThesis'}">
 				          								<dt>${mapRule.value.name} : ${mapRule.value.value}</dt>
-				          									<c:forEach items="${myRules}" var="mapRule">
-						          								<c:if test="${mapRule.key ==  'isFirstSeminarCompletedApplicable'}">
+				          									<c:forEach items="${myRules}" var="mapRule02">
+						          								<c:if test="${mapRule02.key ==  'isFirstSeminarCompletedApplicable'}">
 						          									<dd>
-						          										${mapRule.value.name} : ${mapRule.value.value}
+						          										${mapRule02.value.name} : ${mapRule02.value.value}
 						          									</dd>
 						          								</c:if>	
 					          								</c:forEach>
