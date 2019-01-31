@@ -30,6 +30,7 @@
 package om.edu.squ.squportal.portlet.dps.rule.service;
 
 import om.edu.squ.squportal.portlet.dps.rule.bo.StudentCompletionAndJoinTime;
+import om.edu.squ.squportal.portlet.dps.rule.bo.WithdrawPeriod;
 import om.edu.squ.squportal.portlet.dps.rule.bo.YearSemester;
 
 /**
@@ -225,4 +226,34 @@ public interface Rule
 	 * Date    		:	Aug 20, 2017 4:46:22 PM
 	 */
 	public boolean isDropWPeriod(String studentNo, String stdStatCode);
+	
+	/**
+	 * 
+	 * method name  : getWithdrawPeriod
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * Rule
+	 * return type  : WithdrawPeriod
+	 * 
+	 * purpose		: Get first and second withdraw period
+	 *
+	 * Date    		:	Jan 31, 2019 5:08:48 PM
+	 */
+	public WithdrawPeriod	getWithdrawPeriod(String studentNo, String stdStatCode);
+	
+	/**
+	 * 
+	 * method name  : isCourseThesis
+	 * @param studentNo
+	 * @param courseNo
+	 * @return
+	 * RuleDbDao
+	 * return type  : boolean
+	 * 
+	 * purpose		: Check the course is a thesis course or not
+	 *
+	 * Date    		:	Jan 30, 2019 2:34:48 PM
+	 */
+	public boolean isCourseThesis(String studentNo, String courseNo);
 }

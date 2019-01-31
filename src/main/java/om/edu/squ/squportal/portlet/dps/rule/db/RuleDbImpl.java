@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import om.edu.squ.squportal.portlet.dps.rule.bo.StudentCompletionAndJoinTime;
+import om.edu.squ.squportal.portlet.dps.rule.bo.WithdrawPeriod;
 import om.edu.squ.squportal.portlet.dps.rule.bo.YearSemester;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 
@@ -457,5 +458,56 @@ public class RuleDbImpl implements RuleDbDao
 		}
 		
 	}
+/*
+ * (non-Javadoc)
+ * @see om.edu.squ.squportal.portlet.dps.rule.db.RuleDbDao#getWithdrawPeriod(java.lang.String, java.lang.String)
+ */
+	public WithdrawPeriod	getWithdrawPeriod(String studentNo, String stdStatCode)
+	{
+		String	SQL_RULE_STUDENT_DROP_W_DATE	=	queryPropsCommonRule.getProperty(Constants.CONST_PROP_SQL_RULE_STUDENT_DROP_W_DATE);
+		
+		RowMapper<WithdrawPeriod> rowMapper		=	new RowMapper<WithdrawPeriod>()
+		{
+			
+			@Override
+			public WithdrawPeriod mapRow(ResultSet rs, int rowNum) throws SQLException
+			{
+				WithdrawPeriod	withdrawPeriod	=	new WithdrawPeriod();
+				withdrawPeriod.setFirstWithDrawDate(rs.getString(Constants.CONST_COLMN_FIRST_WITHDRAW_DATE));
+				withdrawPeriod.setSecondWithDrawDate(rs.getString(Constants.CONST_COLMN_SECOND_WITHDRAW_DATE));
+				
+				return withdrawPeriod;
+			}
+		};	
+		
+		Map<String, String> mapParamsRule	=	new HashMap<String, String>();
+		mapParamsRule.put("paramStdNo", studentNo);
+		mapParamsRule.put("paramStdStatCode", stdStatCode);
+		return nPJdbcTemplDps.queryForObject(SQL_RULE_STUDENT_DROP_W_DATE, mapParamsRule, rowMapper);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.rule.db.RuleDbDao#isCourseThesis(java.lang.String, java.lang.String)
+	 */
+	public boolean isCourseThesis(String studentNo, String courseNo)
+	{
+		boolean result	=	false;
+		String	SQL_IS_THESIS_COURSE	=	queryPropsCommonRule.getProperty(Constants.CONST_PROP_SQL_IS_THESIS_COURSE);
+		
+		Map<String, String> mapParamsRule	=	new HashMap<String, String>();
+		mapParamsRule.put("paramStdNo", studentNo);
+		mapParamsRule.put("paramCourseNo", courseNo);
+		
+			if(nPJdbcTemplDps.queryForObject(SQL_IS_THESIS_COURSE, mapParamsRule,String.class).equals(Constants.CONST_YES))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+	}
+	
 	
 }
