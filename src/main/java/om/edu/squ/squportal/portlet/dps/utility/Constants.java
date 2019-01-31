@@ -370,10 +370,13 @@ public interface Constants
 	
 	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_EXTENSION_COUNT				=	"sql.rule.service.extension.select.count.student";
 	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_DROP_W_PERIOD				=	"sql.rule.service.dropw.withdraw.preriod";
+	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_DROP_W_DATE					=	"sql.rule.service.dropw.withdraw.dates";
 	public	static	final	String	CONST_PROP_SQL_VIEW_RULE_CURRENT_YEAR_SEMESTER			=	"sql.view.rule.current.year.semester";
 	public	static	final	String	CONST_PROP_SQL_VIEW_RULE_LAST_YEAR_SEMESTER				=	"sql.view.rule.last.year.semester";
 	public	static	final	String	CONST_PROP_SQL_RULE_DECIDE_YEAR_SEMESTER				=	"sql.rule.decicide.year.semester";
 	public	static	final	String	CONST_PROP_SQL_VIEW_RULE_LAST_YEAR_SEMESTER_PARAMETER	=	"sql.view.rule.last.year.semester.parameter";
+	
+	public	static	final	String	CONST_PROP_SQL_IS_THESIS_COURSE							=	"sql.rule.service.is.course.thesis";
 	
 	/* ---  SQL - DPS - Role --------------------- */
 	public	static	final	String	CONST_PROP_SQL_STATUS_DESCRIPTION						=	"sql.status.description";

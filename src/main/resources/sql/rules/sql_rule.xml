@@ -5,13 +5,13 @@
     <entry key="sql.rule.student.join.close.time">
     	<![CDATA[
 	    	SELECT 
-				  SS.STDSTATCD								AS		STDSTATCD
-				, SS.STDNO									AS		STUDENT_NO
-				, D.DEGRESTSEMGRD							AS		DGR_GRAD_ESTIMATE_SEM_COUNT
-				, D.DEGRMAXSEMGRD							AS		DGR_GRAD_MAXIMUM_SEM_COUNT
-				, SS.FROMCCYRCD								AS		FROMCCYRCD
-				, SS.FROMSEMCD 								AS		FROMSEMCD
-				, TO_NUMBER(TO_CHAR(SYSDATE,'YYYY'))     	AS    	CURRENT_YEAR
+				  SS.STDSTATCD																								AS	STDSTATCD
+				, SS.STDNO																									AS	STUDENT_NO
+				, D.DEGRESTSEMGRD																							AS	DGR_GRAD_ESTIMATE_SEM_COUNT
+				, D.DEGRMAXSEMGRD																							AS	DGR_GRAD_MAXIMUM_SEM_COUNT
+				, SS.FROMCCYRCD																								AS	FROMCCYRCD
+				, SS.FROMSEMCD 																								AS	FROMSEMCD
+				, TO_NUMBER(TO_CHAR(SYSDATE,'YYYY'))     																	AS  CURRENT_YEAR
         , D.DEGRCD 
 			FROM 
 				  STD_DEGREE 	SD 
@@ -28,13 +28,13 @@
 					(
 					    	SELECT 
 				                DISTINCT
-				                SD.STDSTATCD								AS		STDSTATCD
-				              , SD.STDNO									AS		STUDENT_NO
-				              , D.DEGRESTSEMGRD								AS		DGR_GRAD_ESTIMATE_SEM_COUNT
-				              , D.DEGRMAXSEMGRD								AS		DGR_GRAD_MAXIMUM_SEM_COUNT
-				              , SG.CCYRCD								    AS		FROMCCYRCD
-				              , SG.SEMCD 								    AS		FROMSEMCD
-				              , TO_NUMBER(TO_CHAR(SYSDATE,'YYYY'))     		AS    	CURRENT_YEAR
+				                SD.STDSTATCD																				AS	STDSTATCD
+				              , SD.STDNO																					AS	STUDENT_NO
+				              , D.DEGRESTSEMGRD																				AS	DGR_GRAD_ESTIMATE_SEM_COUNT
+				              , D.DEGRMAXSEMGRD																				AS	DGR_GRAD_MAXIMUM_SEM_COUNT
+				              , SG.CCYRCD								    												AS	FROMCCYRCD
+				              , SG.SEMCD 								    												AS	FROMSEMCD
+				              , TO_NUMBER(TO_CHAR(SYSDATE,'YYYY'))     														AS  CURRENT_YEAR
 				              , D.DEGRCD 
 							FROM 
 								  STD_DEGREE 	SD 
@@ -108,7 +108,7 @@
     </entry>
     <entry key="sql.rule.student.count.postpone">
 	        SELECT
-	              		COUNT(STDNO)						AS		COUNT_REC
+	              		COUNT(STDNO)																						AS	COUNT_REC
 	        FROM
 	              STD_POSTPONE
 	        WHERE
@@ -117,8 +117,8 @@
     </entry>
     <entry key="sql.rule.current.year.semester">
 			SELECT 
-			      CCYRCD									AS		CURRENT_YEAR	 
-			  	, SEMCD 									AS		SEMCD
+			      CCYRCD																									AS	CURRENT_YEAR	 
+			  	, SEMCD 																									AS	SEMCD
 			FROM 
 				CURRENT_YR_SEM    
     </entry>
@@ -126,7 +126,7 @@
 	<entry key="sql.rule.decicide.year.semester">
 		<![CDATA[
 			SELECT 
-			    COUNT(*)      								AS COUNT_REC          
+			    COUNT(*)      																								AS COUNT_REC          
 			FROM 
 			    V_CURRENT_YRSEM_PORTAL VCYP
 			WHERE
@@ -136,16 +136,16 @@
 		
 	<entry key="sql.view.rule.current.year.semester">
 			SELECT 
-			        CCYRCD    								AS  CCYRCD
-			      , SEMCD									AS  SEMCD
+			        CCYRCD    																								AS  CCYRCD
+			      , SEMCD																									AS  SEMCD
 			FROM
 			    V_YR_SEM_CURRENT	
 	</entry>
 
 	<entry key="sql.view.rule.last.year.semester">
 			SELECT 
-			        CCYRCD    								AS  CCYRCD
-			      , SEMCD     								AS  SEMCD  
+			        CCYRCD    																								AS  CCYRCD
+			      , SEMCD     																								AS  SEMCD  
 			FROM
 			    V_YR_SEM_LAST	
 	</entry>
@@ -153,8 +153,8 @@
 	<entry key="sql.view.rule.last.year.semester.parameter">
 		<![CDATA[
 			SELECT 
-		        	CCYRCD									AS  CCYRCD
-		        ,	SEMCD									AS  SEMCD
+		        	CCYRCD																									AS  CCYRCD
+		        ,	SEMCD																									AS  SEMCD
 			FROM
 			(
 				  SELECT 
@@ -181,12 +181,12 @@
 				                  T1.STDNO     		= :paramStdNo
 				                  AND T1.STDSTATCD 	= :paramStdStatCode
 				            ) , 0
-				        )           						AS 		STDTHESISCD
+				        )           																						AS 	STDTHESISCD
 		FROM DUAL
     </entry>
  	<entry key="sql.rule.seminar.complete.record.count">
 			SELECT
-			    COUNT(STDNO)								AS		COUNT_REC
+			    COUNT(STDNO)																								AS	COUNT_REC
 			FROM
 			      THESIS_DISCUSSION   TH
 			    , SIS_CODES           CODES
@@ -214,7 +214,7 @@
  	</entry>
   	<entry key="sql.rule.current.date.in.specific.week">
 		  	 SELECT 
-		  	 		NVL(COUNT_REC,0)					AS		COUNT_REC
+		  	 		NVL(COUNT_REC,0)																						AS	COUNT_REC
 			 FROM
 				  (
 				    SELECT 
@@ -227,7 +227,7 @@
   	</entry>
   	<entry key="sql.rule.current.date.in.specific.week.last.semester">
 		  	 SELECT 
-		  	 		NVL(COUNT_REC,0)					AS		COUNT_REC
+		  	 		NVL(COUNT_REC,0)																						AS	COUNT_REC
 			 FROM
 				  (
 				    SELECT 
@@ -246,7 +246,7 @@
 		-->
  	<entry key="sql.rule.service.extension.select.count.student">
      SELECT
-            COUNT(EXTN.STDNO)   					AS 		COUNT_REC
+            COUNT(EXTN.STDNO)   																							AS 	COUNT_REC
      FROM 
             STD_EXTENSION   EXTN
           , SIS_CODES       CODES
@@ -268,7 +268,7 @@
 			          (
 			            COUNT(WITHIN_DATE)
 			            , 0 , 'N','Y'
-			          ) 										AS 	WITHDRAW_DATE
+			          ) 																									AS 	WITHDRAW_DATE
 		FROM
 		(
 		    SELECT
@@ -282,5 +282,37 @@
 		)
 	</entry>
   
+  <entry key="sql.rule.service.dropw.withdraw.dates">
+	    SELECT
+                DISTINCT 
+	              TO_CHAR(REG.FIRSTWTHDTE, 'DD-MON-YYYY HH:MM')   															AS   FIRST_WITHDRAW_DATE
+	           ,  TO_CHAR(REG.SECONDWTHDTE, 'DD-MON-YYYY HH:MM')  															AS   SECOND_WITHDRAW_DATE
+	    FROM
+	        V_STD_CURREG        REG
+	    WHERE
+              REG.STDSTATCD = :paramStdStatCode 
+          AND ROWNUM  = 1 
+  </entry>
+  
+  	<entry key="sql.rule.service.is.course.thesis">
+		SELECT 
+		        DECODE (
+		                    CNT
+		                  , 0, 'N','Y'
+		                )               																					AS 	IS_THESIS_COURSE
+		FROM
+		(
+		 SELECT 
+		           count(*) AS CNT
+		 FROM
+		      SCHED_STD SCH_STD
+		    , V_CRS_TYP VCT
+		 WHERE
+		          SCH_STD.CRSTYPCD  = VCT.CRSTYPCD
+		      AND SCH_STD.STDNO=:paramStdNo 
+		      AND SCH_STD.CRSNO=:paramCourseNo
+		    AND VCT.L_ABR_CRSTYP='THESI'
+		)  	
+  	</entry>
     
 </properties>
