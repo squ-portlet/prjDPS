@@ -31,6 +31,7 @@ package om.edu.squ.squportal.portlet.dps.rule.service;
 
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.rule.bo.StudentCompletionAndJoinTime;
+import om.edu.squ.squportal.portlet.dps.rule.bo.WithdrawPeriod;
 import om.edu.squ.squportal.portlet.dps.rule.bo.YearSemester;
 import om.edu.squ.squportal.portlet.dps.rule.db.RuleDbDao;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
@@ -70,6 +71,7 @@ public class RuleServiceImpl implements Rule
 	{
 		StudentCompletionAndJoinTime	completionAndJoinTime	=	getJoinAndCloseTime(studentNo, stdStatCode);
 		YearSemester					yearSemester			=	getRuleLastYearSemester(NumberOfDaysAdjust);  //Based on current date decide the semester to cover the gap between the semesters
+
 		int 							totalSem				=	0;
 		String							studentMode				=	dpsServiceDao.getStudentMode(studentNo, stdStatCode);
 		if(studentMode.equals(Constants.CONST_FULL_TIME))
@@ -129,6 +131,7 @@ public class RuleServiceImpl implements Rule
 		}
 		
 		countTotal	=	countSem - countPostpone;
+
 		
 		/* Exclusion of the semester counting for considering language course (e.g. English) */
 		if(isLangCourse)
@@ -343,6 +346,24 @@ public class RuleServiceImpl implements Rule
 	public boolean isDropWPeriod(String studentNo, String stdStatCode)
 	{
 		return ruleDbDao.isDropWPeriod(studentNo, stdStatCode);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.rule.service.Rule#getWithdrawPeriod(java.lang.String, java.lang.String)
+	 */
+	public WithdrawPeriod	getWithdrawPeriod(String studentNo, String stdStatCode)
+	{
+		return ruleDbDao.getWithdrawPeriod(studentNo, stdStatCode);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.rule.service.Rule#isCourseThesis(java.lang.String, java.lang.String)
+	 */
+	public boolean isCourseThesis(String studentNo, String courseNo)
+	{
+		return ruleDbDao.isCourseThesis(studentNo, courseNo);
 	}
 	
 }

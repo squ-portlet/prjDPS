@@ -20,7 +20,7 @@
       </div>
 
 	<ul class="nav nav-tabs">
-		<li role="presentation" id="idNav-home" class="clsNavRole active"><a href="#">Home</a></li>
+		<li role="presentation" id="idNav-home" class="clsNavRole active"><a href="#"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
 		<c:if test="${(not empty employee) }">
 			<c:forEach items="${employee.myRoles}" var="myRole">
 				<li class="clsNavRole" id="idNav-${myRole.roleName}" role="presentation"><a id="role-${myRole.roleName}" href="#">${myRole.roleValue}</a></li>

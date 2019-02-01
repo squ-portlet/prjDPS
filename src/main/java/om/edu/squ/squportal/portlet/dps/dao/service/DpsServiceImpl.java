@@ -78,6 +78,7 @@ public class DpsServiceImpl implements DpsServiceDao
 	
 	private			Map<String, Object> 	myRules;
 	
+	
 	@Autowired
 					DpsDbDao				dpsDbDao;
 	@Autowired
@@ -714,6 +715,5 @@ public class DpsServiceImpl implements DpsServiceDao
 						?	UtilProperty.getMessage("prop.dps.role.submit.yes.text", null, locale)
 						:	UtilProperty.getMessage("prop.dps.role.submit.no.text", null, locale);
 	}
-
 	
 }

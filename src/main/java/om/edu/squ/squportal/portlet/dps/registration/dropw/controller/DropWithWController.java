@@ -33,6 +33,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import javax.portlet.EventRequest;
+import javax.portlet.EventResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -61,6 +63,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.portlet.bind.annotation.EventMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import com.google.gson.Gson;
@@ -141,21 +144,26 @@ public class DropWithWController
 		
 		model.addAttribute("dropCourseModel", dropCourseModel);
 		
+		/* Rule applied*/
 		if(Constants.CONST_TEST_ENVIRONMENT)
 		{
-			/* TODO Below one for test only */
+			/* test environment only */
 			model.addAttribute("isRuleStudentComplete",  true);
 		}
 		else
 		{
-			/* Rule applied*/
+			/* production environment only */
 			model.addAttribute("isRuleStudentComplete", dropWService.isRuleStudentComplete(
 																								student.getAcademicDetail().getStudentNo(), 
 																								student.getAcademicDetail().getStdStatCode(), 
-																								null, null
+																								null, null, locale
 																							)
 								);
+			
 		}
+
+		
+		
 
 		model.addAttribute("courseList", dropWService.getCourseList(student, locale));
 		model.addAttribute("dropWDTOs", gson.toJson(dropWService.getDropWCourses(student, locale)));
@@ -225,12 +233,14 @@ public class DropWithWController
 		
 		try
 		{
-			if(dropWService.isRuleStudentComplete(student.getAcademicDetail().getStudentNo(), student.getAcademicDetail().getStdStatCode(), dropCourseModel.getCourseNo(), dropCourseModel.getSectNo()))
+			if(dropWService.isRuleStudentComplete(student.getAcademicDetail().getStudentNo(), student.getAcademicDetail().getStdStatCode(), dropCourseModel.getCourseNo(), dropCourseModel.getSectNo(), locale))
 			{
+				dropWDTOs	=	dropWService.setDropWCourseAdd(student,dropCourseModel, locale);
+				response.getWriter().print(gson.toJson(dropWDTOs));
+				
 				if(dropWService.isRuleModeCreditApplied())
 				{
-					dropWDTOs	=	dropWService.setDropWCourseAdd(student,dropCourseModel, locale);
-					response.getWriter().print(gson.toJson(dropWDTOs));
+					
 				}
 				else 
 				{
@@ -241,8 +251,10 @@ public class DropWithWController
 			}
 			else
 			{
+				
 				response.setProperty(ResourceResponse.HTTP_STATUS_CODE, Integer.toString(HttpServletResponse.SC_INTERNAL_SERVER_ERROR));
-				response.getWriter().print(UtilProperty.getMessage("err.dps.service.not.available.text", null, locale));				
+				response.getWriter().print(new Gson().toJson(dpsServiceDao.getMyRules()));
+				//UtilProperty.getMessage("err.dps.service.not.available.text", null, locale)
 			}
 		}
 		catch (IOException ex)

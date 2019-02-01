@@ -29,8 +29,10 @@
  */
 package om.edu.squ.squportal.portlet.dps.registration.dropw.service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +42,7 @@ import com.google.gson.Gson;
 
 import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
+import om.edu.squ.squportal.portlet.dps.bo.NameValue;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
@@ -53,6 +56,7 @@ import om.edu.squ.squportal.portlet.dps.registration.dropw.db.DropWDBDao;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.model.DropCourseModel;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
+import om.edu.squ.squportal.portlet.dps.rule.bo.WithdrawPeriod;
 import om.edu.squ.squportal.portlet.dps.rule.service.Rule;
 import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
@@ -65,7 +69,7 @@ import om.edu.squ.squportal.portlet.dps.utility.UtilProperty;
 public class DropWServiceImpl implements DropWService
 {
 	private final Logger 	logger 						= 	LoggerFactory.getLogger(this.getClass());
-	private		  boolean	stdModeCreditApplied		=	false;  
+	private		  boolean	stdModeCreditApplied		=	true;  
 	
 	private		  String	dropWTimeApplied			=	Constants.CONST_RULE_DROP_W_PERIOD_NOT_APPLIED;
 	
@@ -471,59 +475,121 @@ public class DropWServiceImpl implements DropWService
 	 *
 	 * Date    		:	May 17, 2017 3:11:11 PM
 	 */
-	public boolean isRuleStudentComplete(String studentNo, String stdStatCode, String courseNo, String sectNo)
+	public boolean isRuleStudentComplete(String studentNo, String stdStatCode, String courseNo, String sectNo, Locale locale)
 	{
 		/*Rule 1 : 	Full Time need 9 Credit after drop
 		 * 			Part Time need 3 Credit after drop
-		 * Rule 2 : Period within Drop W Period 
+		 * Rule 2 : Period within Drop W Period
+		 * 
+		 * Rule 3 : If having Thesis course, can drop any course except thesis course
 		 * */
 		
+		boolean				result				=	false;
+		Map<String, Object> myRules				=	new LinkedHashMap<String, Object>();
 		
-		/*Rule 1 */
-		String studyModeType = dpsServiceDao.getStudentMode(studentNo,stdStatCode);
-		int	totalCredit	=	dpsServiceDao.getTotalRegisteredCredit(studentNo, stdStatCode);
-		if(null==courseNo)
+		boolean 			hasThesis 			= 	false;
+							hasThesis			=	ruleService.isStudentHasThesis(studentNo, stdStatCode);
+		String 				studyModeType 		= 	dpsServiceDao.getStudentMode(studentNo,stdStatCode);
+		int					totalCredit			=	dpsServiceDao.getTotalRegisteredCredit(studentNo, stdStatCode);
+		String				courseCredit		=	"-";
+		WithdrawPeriod		withdrawPeriod		= 	ruleService.getWithdrawPeriod(studentNo, stdStatCode);
+		
+				
+		if(null == courseNo)
 		{
 			
-			this.stdModeCreditApplied	=	ruleService.isDropwTotalRegisteredCreditRuleExist(
-																						totalCredit, 
-																						0,
-																						studyModeType, null
-																					);
 		}
 		else
 		{
-			this.stdModeCreditApplied	=	ruleService.isDropwTotalRegisteredCreditRuleExist(
-																						totalCredit, 
-																						dpsServiceDao.getSelectedRegisteredCourseCredit(studentNo, stdStatCode, courseNo, sectNo),
-																						studyModeType, null
-																					);
+			courseCredit = String.valueOf(dpsServiceDao.getSelectedRegisteredCourseCredit(studentNo, stdStatCode, courseNo, sectNo));
 		}
-		
-		
-		/*Rule 2 */
-		
-		if(ruleService.isDropWPeriod(studentNo, stdStatCode))
-		{
-			this.dropWTimeApplied		= 	Constants.CONST_RULE_DROP_W_PERIOD_APPLIED; 
-		}
-		else
-		{
-			this.dropWTimeApplied		=	Constants.CONST_RULE_DROP_W_PERIOD_NOT_APPLIED;
-		}
-		
-		/* Following rules not applied at test environment
-		 * 
-		 * rule 2
-		 * */
-		
-		if(Constants.CONST_TEST_ENVIRONMENT)
-		{
-			this.dropWTimeApplied		=	Constants.CONST_RULE_DROP_W_PERIOD_NOT_APPLIED;
-		}
+					
+					
+					/* Following rules not applied at test environment */
+					if(Constants.CONST_TEST_ENVIRONMENT)
+					{
+						this.dropWTimeApplied		=	Constants.CONST_RULE_DROP_W_PERIOD_NOT_APPLIED;
+					}
+					else
+					{
+						if(ruleService.isDropWPeriod(studentNo, stdStatCode))
+						{
+							this.dropWTimeApplied		= 	Constants.CONST_RULE_DROP_W_PERIOD_NOT_APPLIED; 
+						}
+						else
+						{
+							this.dropWTimeApplied		=	Constants.CONST_RULE_DROP_W_PERIOD_APPLIED;
+						}
+					}
+					
+					/*Rule 2  - Drop W Period */
+				if(isDropWTimeApplied())
+				{
+					/* Rule 3 - Thesis Courses */
+					if(hasThesis)
+					{
+							if(ruleService.isCourseThesis(studentNo, courseNo))
+							{
+								/* can not drop thesis course */
+								result=  false;
+							}
+							else
+							{
+								result=  true;
+							}
+					}
+					else
+					{
+							/* Rule 1 - Remaining credit balance after drop for part/full time */
 
-		//TODO : Do not change result of the rule
-		return true;
+							if(null==courseNo)
+							{
+								
+								this.stdModeCreditApplied	=	ruleService.isDropwTotalRegisteredCreditRuleExist(
+																											totalCredit, 
+																											0,
+																											studyModeType, null
+																										);
+							}
+							else
+							{
+								this.stdModeCreditApplied	=	ruleService.isDropwTotalRegisteredCreditRuleExist(
+																											totalCredit, 
+																											dpsServiceDao.getSelectedRegisteredCourseCredit(studentNo, stdStatCode, courseNo, sectNo),
+																											studyModeType, null
+																										);
+							}
+							
+							result = this.stdModeCreditApplied;
+							
+					}
+					
+					
+				}
+				else
+				{
+					result = false;
+				}
+				
+			
+			
+			/****************** RULE TEXT - START *****************************/
+			
+			/* Storing the rules for user */
+			
+			myRules.put("hasThesis", new NameValue(hasThesis, UtilProperty.getMessage("prop.dps.has.thesis", null, locale), dpsServiceDao.booToString(hasThesis, locale)));
+			myRules.put("isThesisCourse", new NameValue(hasThesis, UtilProperty.getMessage("prop.dps.is.thesis.course", null, locale), dpsServiceDao.booToString(ruleService.isCourseThesis(studentNo, courseNo), locale)));
+			myRules.put("studyModeType", new NameValue(true, UtilProperty.getMessage("prop.dps.mode", null, locale), studyModeType));
+			myRules.put("stdModeCreditApplied", stdModeCreditApplied);
+			myRules.put("totalCredit", new NameValue(true, UtilProperty.getMessage("prop.dps.total.credit", null, locale), String.valueOf(totalCredit)));
+			myRules.put("courseCredit", new NameValue(true, UtilProperty.getMessage("prop.dps.course.credit", null, locale), courseCredit));
+			myRules.put("isDropWPeriod", new NameValue(true, UtilProperty.getMessage("prop.dps.dropw.is.drop.with.w.period", null, locale), dpsServiceDao.booToString(ruleService.isDropWPeriod(studentNo, stdStatCode), locale)));
+			myRules.put("dropWPeriod", new NameValue(true, UtilProperty.getMessage("prop.dps.dropw.drop.with.w.period", null, locale), UtilProperty.getMessage("prop.dps.dropw.drop.with.w.period.value", new String[]{withdrawPeriod.getFirstWithDrawDate(),withdrawPeriod.getSecondWithDrawDate()}, locale)));
+			
+			dpsServiceDao.setMyRules(myRules);
+		
+			/****************** RULE TEXT - END *****************************/
+		return result;
 	}
 	
 	/**
@@ -555,7 +621,7 @@ public class DropWServiceImpl implements DropWService
 	 */
 	public boolean isDropWTimeApplied()
 	{
-		if(this.dropWTimeApplied.equals(Constants.CONST_RULE_DROP_W_PERIOD_NOT_APPLIED))
+		if(this.dropWTimeApplied.equals(Constants.CONST_RULE_DROP_W_PERIOD_APPLIED))
 		{
 			return false;
 		}

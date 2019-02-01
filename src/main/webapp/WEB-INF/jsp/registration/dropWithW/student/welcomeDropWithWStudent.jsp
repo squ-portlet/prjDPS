@@ -88,9 +88,16 @@
 			<div id="divDropStatAlert"></div>
 		</c:when>
 		<c:otherwise>
-			<div class="alert alert-warning">
-				
-			</div>
+
+				<center>
+       				<div class="alert alert-warning">
+		       					<spring:message code="prop.dps.dropw.rule.text"/>
+						<br>	<spring:message code="prop.dps.dropw.rule.01"/>
+						<br>	<spring:message code="prop.dps.dropw.rule.02"/>
+						<br>	<spring:message code="prop.dps.dropw.rule.03"/>
+       				</div>
+          	</center>
+
 		</c:otherwise>
 		
 </c:choose>
@@ -173,8 +180,45 @@
 	<div class="alert alert-warning alert-dismissible" role="alert" id="msgAlert"> 
 	  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
 	 	<strong><spring:message code="prop.dps.extension.student.applications.head.column.action"/>!</strong>
+		<br>
+				<font color="red"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></font> 
+						<spring:message code="err.dps.dropw.withdraw.not.possible.text"/>
 	  		<hr> 
-				{{{messageAlert}}}
+ 			<div class="col-sm-6 col-md-4">
+			    <div class="thumbnail">
+					<div class="caption">
+						<h4><spring:message code="prop.dps.present.situation"/></h4>
+
+						<dl>
+							{{#each .}}
+									<dt> {{hasThesis.name}} :  {{hasThesis.value}} </dt>
+										<dd> {{isThesisCourse.name}} : {{isThesisCourse.value}}</dd>
+									<dt> {{studyModeType.name}} : {{studyModeType.value}}  </dt>
+										<dd>{{totalCredit.name}} : {{totalCredit.value}}</dd>
+										<dd>{{courseCredit.name}} : {{courseCredit.value}}</dd>
+									<dt> {{isDropWPeriod.name}}	: {{isDropWPeriod.value}} </dt>
+										<dd>{{dropWPeriod.name}} : {{dropWPeriod.value}}</dd>
+							{{/each}}
+						</dl>
+					</div>
+				</div>
+			</div>
+
+ 			<div class="col-sm-6 col-md-4">
+			    <div class="thumbnail">
+					<div class="caption">
+						<h4><spring:message code="prop.dps.dropw.rule.text"/></h4>
+						<dl>
+							<dd>	<spring:message code="prop.dps.dropw.rule.01"/>	</dd>
+							<dd>	<spring:message code="prop.dps.dropw.rule.02"/>	</dd>
+							<dd>	<spring:message code="prop.dps.dropw.rule.03"/>	</dd>
+							<dd>	<spring:message code="prop.dps.dropw.rule.04"/>	</dd>
+						</dl>
+					</div>
+				</div>
+			</div>
+
+
 	</div>	
 	
 	</script>
