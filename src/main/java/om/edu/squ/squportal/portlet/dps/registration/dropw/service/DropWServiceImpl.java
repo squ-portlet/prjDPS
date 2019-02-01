@@ -508,17 +508,17 @@ public class DropWServiceImpl implements DropWService
 					/* Following rules not applied at test environment */
 					if(Constants.CONST_TEST_ENVIRONMENT)
 					{
-						this.dropWTimeApplied		=	Constants.CONST_RULE_DROP_W_PERIOD_APPLIED;
+						this.dropWTimeApplied		=	Constants.CONST_RULE_DROP_W_PERIOD_NOT_APPLIED;
 					}
 					else
 					{
 						if(ruleService.isDropWPeriod(studentNo, stdStatCode))
 						{
-							this.dropWTimeApplied		= 	Constants.CONST_RULE_DROP_W_PERIOD_APPLIED; 
+							this.dropWTimeApplied		= 	Constants.CONST_RULE_DROP_W_PERIOD_NOT_APPLIED; 
 						}
 						else
 						{
-							this.dropWTimeApplied		=	Constants.CONST_RULE_DROP_W_PERIOD_NOT_APPLIED;
+							this.dropWTimeApplied		=	Constants.CONST_RULE_DROP_W_PERIOD_APPLIED;
 						}
 					}
 					
@@ -621,7 +621,7 @@ public class DropWServiceImpl implements DropWService
 	 */
 	public boolean isDropWTimeApplied()
 	{
-		if(this.dropWTimeApplied.equals(Constants.CONST_RULE_DROP_W_PERIOD_NOT_APPLIED))
+		if(this.dropWTimeApplied.equals(Constants.CONST_RULE_DROP_W_PERIOD_APPLIED))
 		{
 			return false;
 		}
