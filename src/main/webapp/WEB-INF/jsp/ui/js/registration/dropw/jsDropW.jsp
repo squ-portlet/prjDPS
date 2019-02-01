@@ -33,8 +33,8 @@
 							    "lAbrCourseNo": this.getAttribute("lAbrCourseNo"),
 							    "courseName": this.getAttribute("courseName")
 							  };
-					var theAlertTemplate=$("#hbCourseData").html();
-					var template = Handlebars.compile(theAlertTemplate);
+						var theAlertTemplate=$("#hbCourseData").html();
+						var template = Handlebars.compile(theAlertTemplate);
 					
 					$('.content-placeholder').html(template(context));
 				});
@@ -69,7 +69,7 @@
 							error : function(xhr, status)
 							{
 								var message = {};
-								message.messageAlert = xhr.responseText;
+								message.messageAlert = JSON.parse(xhr.responseText);
 								dropDataLoadActionStudent(message, '#hbDropStatAlert', '#divDropStatAlert');
 							}
 						

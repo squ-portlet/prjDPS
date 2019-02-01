@@ -78,6 +78,8 @@ public class DpsServiceImpl implements DpsServiceDao
 	
 	private			Map<String, Object> 	myRules;
 	
+	private			Map<String, Object> 	myRules;
+	
 	@Autowired
 					DpsDbDao				dpsDbDao;
 	@Autowired
@@ -715,5 +717,42 @@ public class DpsServiceImpl implements DpsServiceDao
 						:	UtilProperty.getMessage("prop.dps.role.submit.no.text", null, locale);
 	}
 
+	
+
+
+	/**
+	 * Getter Method	: getMyRules
+	 * @return the myRules
+	 * 
+	 * Date				: Jan 14, 2019
+	 */
+	public Map<String, Object> getMyRules()
+	{
+		return this.myRules;
+	}
+
+
+	/**
+	 * Setter method : setMyRules
+	 * @param myRules the myRules to set
+	 * 
+	 * Date          : Jan 14, 2019 1:46:41 PM
+	 */
+	public void setMyRules(Map<String, Object> myRules)
+	{
+		this.myRules = myRules;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao#booToString(boolean, java.util.Locale)
+	 */
+	public	String booToString(boolean booVal, Locale locale )
+	{
+		return 
+				(booVal)
+						?	UtilProperty.getMessage("prop.dps.role.submit.yes.text", null, locale)
+						:	UtilProperty.getMessage("prop.dps.role.submit.no.text", null, locale);
+	}
 	
 }
