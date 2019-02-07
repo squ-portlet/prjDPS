@@ -51,11 +51,13 @@ public class DropWDTO extends Course implements Cloneable
 	private	Advisor	advisor;
 	private	Student	student;
 	private	boolean	approver;
+	private	boolean	approverApplicable ;
 	private	boolean	statusPending;
 	private	boolean	statusReject;
 	private	String	statusApprove;
 	private	String	remarks;
 	private	String	roleName;
+	private	boolean applyDelegation;
 	
 	
 	public DropWDTO()
@@ -307,6 +309,26 @@ public class DropWDTO extends Course implements Cloneable
 	}
 	
 	/**
+	 * Getter Method	: isApproverApplicable
+	 * @return the approverApplicable
+	 * 
+	 * Date				: Dec 5, 2018
+	 */
+	public boolean isApproverApplicable()
+	{
+		return this.approverApplicable;
+	}
+	/**
+	 * Setter method : setApproverApplicable
+	 * @param approverApplicable the approverApplicable to set
+	 * 
+	 * Date          : Dec 5, 2018 10:50:37 AM
+	 */
+	public void setApproverApplicable(boolean approverApplicable)
+	{
+		this.approverApplicable = approverApplicable;
+	}
+	/**
 	 * Getter Method	: isStatusPending
 	 * @return the statusPending
 	 * 
@@ -411,6 +433,26 @@ public class DropWDTO extends Course implements Cloneable
 		this.roleName = roleName;
 	}
 	
+	/**
+	 * Getter Method	: isApplyDelegation
+	 * @return the applyDelegation
+	 * 
+	 * Date				: Dec 5, 2018
+	 */
+	public boolean isApplyDelegation()
+	{
+		return this.applyDelegation;
+	}
+	/**
+	 * Setter method : setApplyDelegation
+	 * @param applyDelegation the applyDelegation to set
+	 * 
+	 * Date          : Dec 5, 2018 10:53:00 AM
+	 */
+	public void setApplyDelegation(boolean applyDelegation)
+	{
+		this.applyDelegation = applyDelegation;
+	}
 	public Object clone() throws CloneNotSupportedException
 	{
 		return super.clone();
@@ -430,10 +472,11 @@ public class DropWDTO extends Course implements Cloneable
 				+ ", statusCodeName=" + this.statusCodeName + ", statusDesc="
 				+ this.statusDesc + ", advisor=" + this.advisor + ", student="
 				+ this.student + ", approver=" + this.approver
+				+ ", approverApplicable=" + this.approverApplicable
 				+ ", statusPending=" + this.statusPending + ", statusReject="
 				+ this.statusReject + ", statusApprove=" + this.statusApprove
 				+ ", remarks=" + this.remarks + ", roleName=" + this.roleName
-				+ "]";
+				+ ", applyDelegation=" + this.applyDelegation + "]";
 	}
 	
 	

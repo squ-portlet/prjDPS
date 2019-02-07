@@ -72,8 +72,10 @@ public class ExtensionDTO
 	private	CollegeDean	collegeDean;
 	private	DpsDean		dpsDean;
 	private	boolean		approver;
+	private	boolean		approverApplicable ;
 	private	String		roleName;
 	private	String		approvalCode;
+	private	boolean 	applyDelegation;
 	
 	
 	
@@ -613,6 +615,27 @@ public class ExtensionDTO
 		this.approver = approver;
 	}
 	
+	
+	/**
+	 * Getter Method	: isApproverApplicable
+	 * @return the approverApplicable
+	 * 
+	 * Date				: Jul 22, 2018
+	 */
+	public boolean isApproverApplicable()
+	{
+		return this.approverApplicable;
+	}
+	/**
+	 * Setter method : setApproverApplicable
+	 * @param approverApplicable the approverApplicable to set
+	 * 
+	 * Date          : Jul 22, 2018 12:29:40 PM
+	 */
+	public void setApproverApplicable(boolean approverApplicable)
+	{
+		this.approverApplicable = approverApplicable;
+	}
 	/**
 	 * Getter Method	: getRoleName
 	 * @return the roleName
@@ -736,6 +759,27 @@ public class ExtensionDTO
 	{
 		this.dpsDean = dpsDean;
 	}
+	
+	/**
+	 * Getter Method	: isApplyDelegation
+	 * @return the applyDelegation
+	 * 
+	 * Date				: May 10, 2018
+	 */
+	public boolean isApplyDelegation()
+	{
+		return this.applyDelegation;
+	}
+	/**
+	 * Setter method : setApplyDelegation
+	 * @param applyDelegation the applyDelegation to set
+	 * 
+	 * Date          : May 10, 2018 2:32:44 PM
+	 */
+	public void setApplyDelegation(boolean applyDelegation)
+	{
+		this.applyDelegation = applyDelegation;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -760,8 +804,11 @@ public class ExtensionDTO
 				+ ", statusDesc=" + this.statusDesc + ", advisor="
 				+ this.advisor + ", supervisor=" + this.supervisor
 				+ ", collegeDean=" + this.collegeDean + ", dpsDean="
-				+ this.dpsDean + ", approver=" + this.approver + ", roleName="
-				+ this.roleName + ", approvalCode=" + this.approvalCode + "]";
+				+ this.dpsDean + ", approver=" + this.approver
+				+ ", approverApplicable=" + this.approverApplicable
+				+ ", roleName=" + this.roleName + ", approvalCode="
+				+ this.approvalCode + ", applyDelegation="
+				+ this.applyDelegation + "]";
 	}
 	
 	

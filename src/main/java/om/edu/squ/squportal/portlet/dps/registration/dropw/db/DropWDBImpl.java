@@ -249,24 +249,25 @@ public class DropWDBImpl implements DropWDBDao
 	}
 	
 	
-	/**
-	 * 
-	 * method name  : getDropWForApprovers
-	 * @param roleType
-	 * @param employee
-	 * @param locale
-	 * @param studentNo
-	 * @return
-	 * DropWDBImpl
-	 * return type  : List<DropWDTO>
-	 * 
-	 * purpose		: Get List of student records for courses to be dropped 
-	 *
-	 * Date    		:	Apr 17, 2017 8:24:28 PM
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.registration.dropw.db.DropWDBDao#getDropWForApprovers(java.lang.String, om.edu.squ.squportal.portlet.dps.bo.Employee, java.util.Locale, java.lang.String, boolean, boolean, boolean, boolean)
 	 */
-	public List<DropWDTO> getDropWForApprovers(String roleType, Employee employee, Locale locale, String studentNo) throws NoDBRecordException
+	public List<DropWDTO> getDropWForApprovers(
+															String 		roleType, 
+															Employee 	employee, 
+															Locale 		locale, 
+															String 		studentNo, 
+													final 	boolean 	isDelegation, 
+													final 	boolean 	applyDelegation, 
+													final 	boolean 	delegationDefaultApprove, 
+													final 	boolean 	delegationApprove
+												) throws NoDBRecordException
 	{
-		String	SQL_DROPW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	queryDropWProps.getProperty(Constants.CONST_SQL_DROPW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE);
+		String	SQL_DROPW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	queryDropWProps.getProperty
+																					(
+																							Constants.CONST_SQL_DROPW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE
+																					);
 		
 		RowMapper<DropWDTO> 	mapper		=	new RowMapper<DropWDTO>()
 		{
@@ -289,18 +290,45 @@ public class DropWDBImpl implements DropWDBDao
 				
 				advisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS));
 				
-				if(rs.getString(Constants.CONST_COLMN_ROLE_IS_APPROVER).equals("Y"))
+				if(rs.getString(Constants.CONST_COLMN_ROLE_IS_APPROVER).equals(Constants.CONST_YES))
 				{
 					dropWDTO.setApprover(true);
+					dropWDTO.setApproverApplicable(true);
 				}
 				else
 				{
 					dropWDTO.setApprover(false);
+					dropWDTO.setApproverApplicable(false);
 				}
 				
 				student.setAcademicDetail(academicDetail);
 				dropWDTO.setStudent(student);
 				dropWDTO.setAdvisor(advisor);
+				
+				/* Delegation */
+				if(isDelegation)
+				{
+					if(delegationDefaultApprove)
+					{
+						
+					}
+					else
+					{
+						if(!delegationApprove)
+						{
+							dropWDTO.setApprover(false);
+							dropWDTO.setApproverApplicable(false);
+						
+						}
+					}
+					if(delegationApprove)
+					{
+						/* Glyphicon for delegation */
+						dropWDTO.setApplyDelegation(applyDelegation);			
+					}
+					
+				}
+				
 				
 				return dropWDTO;
 			}
@@ -483,7 +511,7 @@ public class DropWDBImpl implements DropWDBDao
 		}
 		catch(BadSqlGrammarException badGrException)
 		{
-			logger.error("Might be a grammatical issue in stored procedure");
+			logger.error("Might be a grammatical issue in stored procedure. Error : {}",badGrException.getMessage());
 			throw new NotSuccessFulDBUpdate(badGrException.getMessage());
 		}
 		catch(UncategorizedSQLException exception)

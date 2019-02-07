@@ -29,7 +29,9 @@
  */
 package om.edu.squ.squportal.portlet.dps.rule.service;
 
+import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.rule.bo.StudentCompletionAndJoinTime;
+import om.edu.squ.squportal.portlet.dps.rule.bo.WithdrawPeriod;
 import om.edu.squ.squportal.portlet.dps.rule.bo.YearSemester;
 import om.edu.squ.squportal.portlet.dps.rule.db.RuleDbDao;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
@@ -48,28 +50,43 @@ public class RuleServiceImpl implements Rule
 	@Autowired
 	RuleDbDao	ruleDbDao;
 	
-	/**
-	 * 
-	 * method name  : lastSemester
-	 * @param studentNo
-	 * @param stdStatCode
-	 * @return
-	 * RuleServiceImpl
-	 * return type  : boolean
-	 * 
-	 * purpose		: Is student is in Last semester 
-	 *
-	 * Date    		:	Mar 13, 2017 7:49:10 PM
+	@Autowired
+	DpsServiceDao	dpsServiceDao;
+	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.rule.service.Rule#getJoinAndCloseTime(java.lang.String, java.lang.String)
 	 */
-	public boolean lastSemester(String studentNo, String stdStatCode)
+	public StudentCompletionAndJoinTime getJoinAndCloseTime(String studentNo, String stdStatCode)
 	{
-		StudentCompletionAndJoinTime	completionAndJoinTime	=	ruleDbDao.getJoinAndCloseTime(studentNo, stdStatCode);
-		YearSemester					yearSemester			=	getCurrentYearSemester();
-		int 	totalSem		=	completionAndJoinTime.getEstimatedSemesters();
+		return ruleDbDao.getJoinAndCloseTime(studentNo, stdStatCode);
+	}
+	
+	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.rule.service.Rule#lastSemester(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public boolean lastSemester(String studentNo, String stdStatCode, String NumberOfDaysAdjust)
+	{
+		StudentCompletionAndJoinTime	completionAndJoinTime	=	getJoinAndCloseTime(studentNo, stdStatCode);
+		YearSemester					yearSemester			=	getRuleLastYearSemester(NumberOfDaysAdjust);  //Based on current date decide the semester to cover the gap between the semesters
+
+		int 							totalSem				=	0;
+		String							studentMode				=	dpsServiceDao.getStudentMode(studentNo, stdStatCode);
+		if(studentMode.equals(Constants.CONST_FULL_TIME))
+			{
+				totalSem		=	completionAndJoinTime.getEstimatedSemesters();		//For Full Time Students
+			}
+		else
+			{
+				totalSem		=	completionAndJoinTime.getMaximumSemesters();		// For Part Time Students
+			}
 		int		fromStartYear	=	completionAndJoinTime.getFromCCYrCode();
 		int		fromStartSem	=	completionAndJoinTime.getFromSemCode();
 		int		currYear		=	yearSemester.getYear();
 		int		currSemester	=	yearSemester.getSemester();
+		boolean	isLangCourse	=	isLanguageCourseTaken(studentNo, currYear, fromStartYear, fromStartSem);
 		
 		int 	countSem		=	0;
 		int		countTotal		=	0;
@@ -92,6 +109,7 @@ public class RuleServiceImpl implements Rule
 
 			for(int y=p; y<=4; y++)
 			{
+
 				s++;
 				if(s==10) break;
 				
@@ -99,7 +117,9 @@ public class RuleServiceImpl implements Rule
 				{
 					countSem++;
 				}
+				
 			}
+			
 		}
 		
 		if(currSemester==2)
@@ -112,9 +132,24 @@ public class RuleServiceImpl implements Rule
 		
 		countTotal	=	countSem - countPostpone;
 
+		
+		/* Exclusion of the semester counting for considering language course (e.g. English) */
+		if(isLangCourse)
+		{
+			countTotal = countTotal - 1;
+		}
+
 		return (totalSem==countTotal)?true:false;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.rule.service.Rule#isLanguageCourseTaken(java.lang.String, int, int, int)
+	 */
+	public boolean isLanguageCourseTaken(String studentNo, int currentYear, int courseStartYear, int courseStartSemester )
+	{
+		return ruleDbDao.isLanguageCourseTaken(studentNo, currentYear, courseStartYear, courseStartSemester);
+	}
 	
 	/**
 	 * 
@@ -167,9 +202,9 @@ public class RuleServiceImpl implements Rule
 	 *
 	 * Date    		:	Mar 15, 2017 4:53:42 PM
 	 */
-	public boolean isCurrentDateInSpecificWeek(String weekNumber)
+	public boolean isCurrentDateInSpecificWeek(String weekNumber, String numberOfDaysAdjust)
 	{
-		return (ruleDbDao.getCurrentDateInSpecificWeek(weekNumber) == 0) ?false:true;
+		return (ruleDbDao.getCurrentDateInSpecificWeek(weekNumber, numberOfDaysAdjust) == 0) ?false:true;
 	}
 	
 	/**
@@ -220,11 +255,20 @@ public class RuleServiceImpl implements Rule
 	 *
 	 * Date    		:	Mar 14, 2017 12:51:58 PM
 	 */
-	private YearSemester	getCurrentYearSemester()
+	public YearSemester	getCurrentYearSemester()
 	{
 		return ruleDbDao.getCurrentYearSemester();
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.rule.service.Rule#getRuleLastYearSemester(java.lang.String)
+	 */
+	public YearSemester	getRuleLastYearSemester(String NumberOfDaysAdjust)
+	{
+		return ruleDbDao.getRuleLastYearSemester(NumberOfDaysAdjust);
+	}
+
 	/**
 	 * *********** Specific service related query which affects rules ************************ 
 	 */
@@ -262,7 +306,7 @@ public class RuleServiceImpl implements Rule
 	 *
 	 * Date    		:	Aug 16, 2017 4:00:37 PM
 	 */
-	public boolean isDropwTotalRegisteredCreditRuleExist(int totalRegisteredCredit,  int selectedCourseCredit, String studyModeType)
+	public boolean isDropwTotalRegisteredCreditRuleExist(int totalRegisteredCredit,  int selectedCourseCredit, String studyModeType, String sectNo)
 	{
 		boolean	result = false;
 		
@@ -302,6 +346,24 @@ public class RuleServiceImpl implements Rule
 	public boolean isDropWPeriod(String studentNo, String stdStatCode)
 	{
 		return ruleDbDao.isDropWPeriod(studentNo, stdStatCode);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.rule.service.Rule#getWithdrawPeriod(java.lang.String, java.lang.String)
+	 */
+	public WithdrawPeriod	getWithdrawPeriod(String studentNo, String stdStatCode)
+	{
+		return ruleDbDao.getWithdrawPeriod(studentNo, stdStatCode);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.rule.service.Rule#isCourseThesis(java.lang.String, java.lang.String)
+	 */
+	public boolean isCourseThesis(String studentNo, String courseNo)
+	{
+		return ruleDbDao.isCourseThesis(studentNo, courseNo);
 	}
 	
 }

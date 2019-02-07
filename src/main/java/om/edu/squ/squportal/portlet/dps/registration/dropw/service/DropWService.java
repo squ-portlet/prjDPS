@@ -7,6 +7,7 @@ import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotSuccessFulDBUpdate;
+import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.model.DropCourseModel;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
@@ -73,13 +74,15 @@ public interface DropWService
 	 *
 	 * Date    		:	Apr 17, 2017 8:24:28 PM
 	 * @throws NoDBRecordException 
+	 * @throws ExceptionEmptyResultset 
 	 */
-	public List<DropWDTO> getDropWForApprovers(String roleType, Employee employee, Locale locale) throws NoDBRecordException;
+	public List<DropWDTO> getDropWForApprovers(String roleType, Employee employee, Locale locale) throws NoDBRecordException, ExceptionEmptyResultset;
 	
 	/**
 	 * 
 	 * method name  : setDropWCourseUpdate
 	 * @param dropWDTO
+	 * @param employee TODO
 	 * @param locale TODO
 	 * @return
 	 * DropWDBImpl
@@ -90,7 +93,7 @@ public interface DropWService
 	 * Date    		:	May 2, 2017 10:59:22 AM
 	 * @throws NotSuccessFulDBUpdate 
 	 */
-	public List<DropWDTO> setDropWCourseUpdate(DropWDTO dropWDTO, Locale locale) throws NotSuccessFulDBUpdate;
+	public List<DropWDTO> setDropWCourseUpdate(DropWDTO dropWDTO, Employee employee, Locale locale) throws NotSuccessFulDBUpdate;
 	
 	/**
 	 * 
@@ -98,6 +101,8 @@ public interface DropWService
 	 * @param studentNo
 	 * @param stdStatCode
 	 * @param courseNo TODO
+	 * @param sectNo TODO
+	 * @param locale TODO
 	 * @return
 	 * DropWServiceImpl
 	 * return type  : boolean
@@ -106,12 +111,13 @@ public interface DropWService
 	 *
 	 * Date    		:	May 17, 2017 3:11:11 PM
 	 */
-	public boolean isRuleStudentComplete(String studentNo, String stdStatCode, String courseNo);
+	public boolean isRuleStudentComplete(String studentNo, String stdStatCode, String courseNo, String sectNo, Locale locale);
 	
 	/**
 	 * 
 	 * method name  : setRoleTransaction
 	 * @param dropWDTO
+	 * @param employee TODO
 	 * @return
 	 * DropWServiceImpl
 	 * return type  : ApprovalDTO
@@ -120,7 +126,7 @@ public interface DropWService
 	 *
 	 * Date    		:	Aug 1, 2017 5:40:55 PM
 	 */
-	public ApprovalDTO setRoleTransaction(DropWDTO dropWDTO, Locale locale);
+	public ApprovalDTO setRoleTransaction(DropWDTO dropWDTO, Employee employee, Locale locale);
 	
 	/**
 	 * 

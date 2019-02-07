@@ -30,10 +30,12 @@
 package om.edu.squ.squportal.portlet.dps.dao.service;
 
 import java.util.Locale;
+import java.util.Map;
 
 import javax.portlet.PortletRequest;
 
 import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
+import om.edu.squ.squportal.portlet.dps.bo.DelegateEmployee;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.PersonalDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
@@ -130,6 +132,41 @@ public interface DpsServiceDao
 	
 	/**
 	 * 
+	 * method name  : getEmployee
+	 * @param empNumber
+	 * @param empUserName TODO
+	 * @param locale
+	 * @param applyDelegation TODO
+	 * @return
+	 * @throws ExceptionEmptyResultset
+	 * DpsServiceDao
+	 * return type  : Employee
+	 * 
+	 * purpose		:	get employee by employee number
+	 *
+	 * Date    		:	May 9, 2018 10:24:03 PM
+	 */
+	public Employee	getEmployee(String empNumber, String empUserName, Locale locale, boolean applyDelegation) throws ExceptionEmptyResultset;
+	
+	/**
+	 * 
+	 * method name  : getEmployee
+	 * @param empNumber
+	 * @param empUserName
+	 * @param applyDelegation
+	 * @return
+	 * @throws ExceptionEmptyResultset
+	 * DpsServiceDao
+	 * return type  : Employee
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Aug 28, 2018 2:16:43 PM
+	 */
+	public Employee getEmployee(String empNumber, String empUserName, boolean applyDelegation) throws ExceptionEmptyResultset;
+	
+	/**
+	 * 
 	 * method name  : getStudent
 	 * @param studentId
 	 * @param studentNo TODO
@@ -165,6 +202,7 @@ public interface DpsServiceDao
 	 * method name  : getEmployee
 	 * @param request
 	 * @param locale
+	 * @param applyDelegation TODO
 	 * @return
 	 * @throws ExceptionEmptyResultset
 	 * DpsServiceImpl
@@ -174,7 +212,7 @@ public interface DpsServiceDao
 	 *
 	 * Date    		:	Mar 27, 2017 4:24:34 PM
 	 */
-	public Employee getEmployee(PortletRequest request, Locale locale) throws ExceptionEmptyResultset;
+	public Employee getEmployee(PortletRequest request, Locale locale, boolean applyDelegation) throws ExceptionEmptyResultset;
 	
 	/**
 	 * 
@@ -229,6 +267,7 @@ public interface DpsServiceDao
 	 * @param studentNo
 	 * @param stdStatCode
 	 * @param courseNo
+	 * @param sectNo TODO
 	 * @return
 	 * DpsDbImpl
 	 * return type  : int
@@ -237,7 +276,7 @@ public interface DpsServiceDao
 	 *
 	 * Date    		:	Aug 17, 2017 5:05:04 PM
 	 */
-	public int getSelectedRegisteredCourseCredit(String studentNo, String stdStatCode, String courseNo);
+	public int getSelectedRegisteredCourseCredit(String studentNo, String stdStatCode, String courseNo, String sectNo);
 	
 	/**
 	 * 
@@ -252,7 +291,8 @@ public interface DpsServiceDao
 	 * Date    		:	Mar 27, 2017 4:20:42 PM
 	 */
     public  String getEmpNumber(PortletRequest request);
-	
+
+
 	
 	/**
 	 * 
@@ -314,4 +354,75 @@ public interface DpsServiceDao
 	 * Date    		:	Dec 26, 2017 1:57:12 PM
 	 */
 	public boolean isPostponeCountWithinLimit(String studentNo, String stdStatCode);
+	
+	/**
+	 * 
+	 * method name  : getSequenceNumber
+	 * @return
+	 * DpsDbDao
+	 * return type  : int
+	 * 
+	 * purpose		: Get Squence number
+	 *
+	 * Date    		:	Jan 14, 2018 12:40:56 PM
+	 */
+	public double getSequenceNumber();
+	
+	/*
+	 * Delegation
+	 */
+	/**
+	 * 
+	 * method name  : getDelegatedEmployee
+	 * @param empUserName
+	 * @return
+	 * DpsServiceDao
+	 * return type  : DelegateEmployee
+	 * 
+	 * purpose		: Get delegatee (person who delegates) and delegated user with username, from and to date
+	 *
+	 * Date    		:	Aug 26, 2018 2:42:55 PM
+	 */
+	public	DelegateEmployee getDelegatedEmployee(String empUserName);
+	
+	/**
+	 * 
+	 * method name  : getMyRules
+	 * @return
+	 * DpsServiceDao
+	 * return type  : Map<String,Object>
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Jan 14, 2019 1:48:36 PM
+	 */
+	public Map<String, Object> getMyRules();
+	
+	/**
+	 * 
+	 * method name  : setMyRules
+	 * @param myRules
+	 * DpsServiceDao
+	 * return type  : void
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Jan 14, 2019 1:48:47 PM
+	 */
+	public void setMyRules(Map<String, Object> myRules);
+	
+	/**
+	 * 
+	 * method name  : booToString
+	 * @param booVal
+	 * @param locale
+	 * @return
+	 * DpsServiceImpl
+	 * return type  : String
+	 * 
+	 * purpose		: Boolean to String (Convert true/false to Yes/No)
+	 *
+	 * Date    		:	Jan 15, 2019 12:08:40 PM
+	 */
+	public	String booToString(boolean booVal, Locale locale );
 }

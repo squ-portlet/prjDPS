@@ -54,6 +54,8 @@ public interface Constants
 	public static final	String	COST_COL_DPS_BRANCH_CODE									=	"BRANCH_CODE";
 	public static final	String	COST_COL_DPS_DEPT_CODE										=	"DEPT_CODE";
 	public static final	String	COST_COL_DPS_EMP_EMAIL										=	"EMP_EMAIL";
+	public static final	String	COST_COL_DPS_EMP_NAME_EN									=	"EMP_NAME_EN";
+	public static final	String	COST_COL_DPS_EMP_NAME_AR									=	"EMP_NAME_AR";
 	
 	public static final	String	COST_COL_DPS_COURSE_YEAR									=	"CCYRCD";
 	public static final	String	COST_COL_DPS_SEMESTER_CODE									=	"SEMCD";
@@ -73,6 +75,9 @@ public interface Constants
 	public static final	String	CONST_COLMN_STUDENT_NO										=	"STUDENT_NO";
 	public static final	String	CONST_COLMN_STDSTATCD										=	"STDSTATCD";
 	public static final	String	CONST_COLMN_STUDENT_NAME									=	"STUDENT_NAME";
+	public static final	String	CONST_COLMN_STUDENT_NAME_ENG								=	"STUDENT_NAME_ENG";
+	public static final	String	CONST_COLMN_STUDENT_NAME_AR									=	"STUDENT_NAME_AR";
+	public static final	String	CONST_COLMN_STUDENT_GENDER									=	"STUDENT_GENDER";
 	public static final	String	CONST_COLMN_STUDENT_HOME_REGION								=	"STUDENT_HOME_REGION";
 	public static final	String	CONST_COLMN_STUDENT_HOME_WILAYAT							=	"STUDENT_HOME_WILAYAT";
 	public static final	String	CONST_COLMN_STUDENT_TOWN_VILLAGE							=	"STUDENT_TOWN_VILLAGE";
@@ -82,13 +87,20 @@ public interface Constants
 	public static final	String	CONST_COLMN_STUDENT_EMAIL									=	"STUDENT_EMAIL";
 	public static final	String	CONST_COLMN_STUDENT_HAS_THESIS								=	"HAS_THESIS";
 	public static final	String	CONST_COLMN_DGR_GRAD_ESTIMATE_SEM_COUNT						=	"DGR_GRAD_ESTIMATE_SEM_COUNT";
+	public static final	String	CONST_COLMN_DGR_GRAD_MAXIMUM_SEM_COUNT						=	"DGR_GRAD_MAXIMUM_SEM_COUNT";
 
-	public static final	String	CONST_COLMN_COLLEGE_NAME									=	"COLLEGE_NAME";             
+	public static final	String	CONST_COLMN_COLLEGE_NAME									=	"COLLEGE_NAME";
+	public static final	String	CONST_COLMN_COLLEGE_NAME_ENG								=	"COLLEGE_NAME_ENG";  
+	public static final	String	CONST_COLMN_COLLEGE_NAME_AR									=	"COLLEGE_NAME_AR";  
 	public static final	String	CONST_COLMN_MAJOR_NAME										=	"MAJOR_NAME";  
+	public static final	String	CONST_COLMN_MAJOR_NAME_ENG									=	"MAJOR_NAME_ENG";
+	public static final	String	CONST_COLMN_MAJOR_NAME_AR									=	"MAJOR_NAME_AR";
 	public static final	String	CONST_COLMN_ADVISOR_ID										=	"ADVISOR_ID";
 	public static final	String	CONST_COLMN_ADVISOR_NAME									=	"ADVISOR_NAME";
 	public static final	String	CONST_COLMN_SUPERVISOR_ID									=	"SUPERVISOR_ID";
-	public static final	String	CONST_COLMN_DEGREE_NAME										=	"DEGREE_NAME";          
+	public static final	String	CONST_COLMN_DEGREE_NAME										=	"DEGREE_NAME";
+	public static final	String	CONST_COLMN_DEGREE_NAME_ENG									=	"DEGREE_NAME_ENG";
+	public static final	String	CONST_COLMN_DEGREE_NAME_AR									=	"DEGREE_NAME_AR";
 	public static final	String	CONST_COLMN_STATUS_NAME										=	"STATUS_NAME";  
 	public static final	String	CONST_COLMN_MINOR_NAME										=	"MINOR_NAME";
 	public static final	String	CONST_COLMN_SPEC_NAME										=	"SPEC_NAME";
@@ -105,8 +117,10 @@ public interface Constants
 	public static final	String	CONST_COLMN_GRADE_VAL										=	"GRADE_VAL";
 	public static final	String	CONST_COLMN_GRADE_VAL_OLD									=	"GRADE_VAL_OLD";
 	public static final	String	CONST_COLMN_GRADE_VAL_NEW									=	"GRADE_VAL_NEW";
+	public static final	String	CONST_COLMN_GRADE_IS_INCOMPLETE_GRADE						=	"IS_INCOMPLETE_GRADE";
 
 	public static final	String	CONST_COLMN_SISCODECD										=	"SISCODECD";
+	public static final	String	CONST_COLMN_SISCODENAME										=	"SIS_CODE_NAME";
 	public static final	String	CONST_COLMN_STATUS_CODE										=	"STATUS_CODE";
 	public static final	String	CONST_COLMN_STATUS_CODE_NAME								=	"STATUS_CODE_NAME";
 	public static final	String	CONST_COLMN_STATUS_DESC										=	"STATUS_DESC";
@@ -114,6 +128,7 @@ public interface Constants
 	public static final	String	CONST_COLMN_STATUS_DESC_AR									=	"STATUS_DESC_AR";
 	public static final	String	CONST_COLMN_COHORT											=	"COHORT";
 	public static final	String	CONST_COLMN_COMMENT											=	"COMMENTS";
+	public static final	String	CONST_COLMN_REASON											=	"REASON";
 	
 	public static final	String	CONST_COLMN_EXTENSION_REASON_CODE							=	"EXTENSION_REASON_CODE";
 	public static final	String	CONST_COLMN_EXTENSION_REASON_NAME							=	"EXTENSION_REASON_NAME";
@@ -126,12 +141,18 @@ public interface Constants
 	public static final	String	CONST_COLMN_POSTPONE_REASON_NAME							=	"POSTPONE_REASON_NAME";
 	public static final	String	CONST_COLMN_POSTPONE_OTHER_REASON							=	"POSTPONE_OTHER_REASON";
 	
+	public static final	String	CONST_COLMN_UNIVERSITY_WITHDRAW_STD_REASON_CODE				=	"UNIVERSITY_STD_REASON_CODE";
+	public static final	String	CONST_COLMN_UNIVERSITY_WITHDRAW_STD_REASON_NAME				=	"UNIVERSITY_STD_REASON_NAME";
+	
 	public static final	String	CONST_COLMN_POSTPONE_GRADE_IS_UPDATABLE						=	"IS_UPDATABLE";
 	public static final	String	CONST_COLMN_IS_CHANGE_ALLOWED								=	"CHANGE_ALLOWED";
+	public static final	String	CONST_COLMN_RECORD_AVAILABLE								=	"RECORD_AVAILABLE";
 	
 	public static final	String	CONST_COLMN_APPROVAL_CODE									=	"APPROVAL_CODE";
 	public static final	String	CONST_COLMN_APPROVER_ROLE_CODE								=	"APPROVER_ROLE_CODE";
 	public static final	String	CONST_COLMN_APPROVER_ROLE_NAME								=	"APPROVER_ROLE_NAME";
+	public static final	String	CONST_COLMN_APPROVER_ROLE_NAME_ENG							=	"APPROVER_ROLE_NAME_ENG";
+	public static final	String	CONST_COLMN_APPROVER_ROLE_NAME_AR							=	"APPROVER_ROLE_NAME_AR";
 	public static final	String	CONST_COLMN_APPROVAL_SEQUENCE								=	"APPROVAL_SEQUENCE";
 	public static final	String	CONST_COLMN_APPROVAL_MAX_SEQUENCE							=	"APPROVAL_MAX_SEQUENCE";
 	public static final	String	CONST_COLMN_APPROVAL_CODE_ADVISOR 							=	"ADVISOR_APPROVAL_CODE";
@@ -159,6 +180,16 @@ public interface Constants
 	
 	public static final	String	CONST_COLMN_SEQUENCE_NO										=	"SEQUENCE_NUMBER";
 	
+	public static final	String	CONST_COLMN_DELEGATE_USER_DELEGATED							=	"DELEGATED";
+	public static final	String	CONST_COLMN_DELEGATE_USER_DELEGATEE							=	"DELEGATEE";
+	public static final	String	CONST_COLMN_DELEGATED_FROM									=	"DELEGATED_FROM";
+	public static final	String	CONST_COLMN_DELEGATED_TO									=	"DELEGATED_TO";
+	
+	public static final boolean	CONST_IS_DELEGATION											=	true;	
+	public static final boolean	CONST_DELEGATED_APPROVER_DEFAULT_ELIGIBLE					=	false;							//	Flag for default approving for delegatee
+	public static final boolean	CONST_DELEGATION_APPROVE_ELIGIBLE							=	true;
+	public static final boolean	CONST_DELEGATION_APPROVE_NOT_ELIGIBLE						=	false;
+	
 	public static final String	CONST_PARAM_NAME_STUDENT_NO									=	"paramStudentNo";
 	public static final String	CONST_PARAM_NAME_FORM_NAME									=	"paramFormName";
 	public static final String	CONST_PARAM_NAME_ROLE_NAME									=	"paramRoleName";
@@ -175,12 +206,16 @@ public interface Constants
 	public static final String	CONST_NO													=	"N";
 	
 	public static final String	CONST_NOT_USED												=	"NU";
+	public static final String	CONST_NOT_AVAILABLE											=	"NA";
 	
 	public static final String	CONST_FULL_TIME												=	"FULL";
 	public static final String	CONST_PART_TIME												=	"PART";
 	
 	public static final int		CONST_FULL_TIME_ALLOWED_CREDIT_AFTER_DROP					=	9;
 	public static final int		CONST_PART_TIME_ALLOWED_CREDIT_AFTER_DROP					=	3;
+	
+	public static final int		CONST_ALLOWED_EXTRA_DAYS_NO									=	0;
+	public static final int		CONST_ALLOWED_EXTRA_DAYS_MORE_EXTENSION						=	7;
 	
 	/******************************************************/
 	public static final	String	CONST_SQL_STATUS_CODE_PENDING								=	"5539";
@@ -219,13 +254,19 @@ public interface Constants
 //	public static final	String	CONST_FORM_DPS_EXTENSION_STUDY								=	"3413";
 
 	public static final	String	CONST_FORM_NAME_DPS_DROP_W									=	"DPS7";
+	public static final	String	CONST_FORM_NAME_DPS_INCOMPLETE_GRADE_NOTIFY					=	"DPS8";
 	public static final	String	CONST_FORM_NAME_DPS_GRADE_CHANGE							=	"DPS9"; 
+	public static final	String	CONST_FORM_NAME_DPS_UNIVERSITY_WITHDRAWAL					=	"DPS11";
 	public static final	String	CONST_FORM_NAME_DPS_POSTPONE_STUDY							=	"DPS13";
 	public static final	String	CONST_FORM_NAME_DPS_EXTENSION_STUDY							=	"DPS19";
 	
 	
+	
+	
 	/************* PROPERTY FILE ******************************/
 	public	static	String	RESOURCE_PROPERTY_FILE_NAME										=	"messages";
+	public	static	String	RESOURCE_PROPERTY_FILE_NAME_EXTENSION							=	"extension";
+	
 
 	
 	/******************************************************/
@@ -248,6 +289,7 @@ public interface Constants
 	
 	public static 	final	String	CONST_SP_APPROVER_NEXT									=	"dps.stored.procedure.sp.approver.next";
 	public static 	final	String	CONST_SQL_FUNC_IS_SUPERVISOR_AVAILABLE					=	"dps.function.is.supervisor.available";
+	public	static	final	String	CONST_SQL_SEQUENCE_NUM									=	"dps.sequence.no";
 	
 	/* ---  SQL - DPS - Extension property--------------------- */
 	public	static	final	String	CONST_SQL_EXTENSION_REASONS								=	"dps.extension.select.extension.reasons";
@@ -284,9 +326,32 @@ public interface Constants
 	public	static	final	String	CONST_SQL_GRADE_SELECT_RULE_TEST_CURRENT_YEAR_SEM		=	"dps.grades.select.rule.test.current.year.sem";
 	public	static	final	String	CONST_SQL_GRADE_SELECT_RULE_YEAR_SEM					=	"dps.grades.select.rule.grade.change.year.sem";
 	
+	/* ---  SQL - DPS - Incomplete Grade Notification property ------------------ */
+	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_SELECT_COURSE_LIST			=	"dps.incomplete.grade.select.course.list";	
+	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_SELECT_RULE_TEST_CURRENT_YEAR_SEM		=	"dps.incomplete.grades.select.rule.test.current.year.sem";
+	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_SELECT_RULE_YEAR_SEM			=	"dps.incomplete.grades.select.rule.grade.change.year.sem";
+	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_SELECT_STUDENT_LIST			=	"dps.incomplete.grades.select.students";
+	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_INSERT_NOTIFY_INSTRUCTOR		=	"dps.incomplete.grades.insert.notify.by.instructor";
+	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_SELECT_INSTRUCTOR_COMMENTS	=	"dps.incomplete.grades.select.instructor.comments";
+	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_SELECT_HISORY				=	"dps.incomplete.grades.select.notify.history";
+	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	"dps.incomplete.grades.select.student.records.by.employee";
+	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_SELECT_NOTIFY				=	"dps.incomplete.grades.select.course.temp.for.notify";
+	public	static	final	String	CONST_SQL_INCOMPLETE_GRADE_CHANGE_UPDATE_APPROVAL_TEMP	=	"dps.incomplete.grades.update.approval.by.approver";
+	
+	/* ---  SQL - DPS - Withdraw from University property ------------------ */
+	public	static	final	String	CONST_SQL_UNIVERSITY_WITHDRAW_COUNT_REC					=	"dps.university.withdraw.select.count.rec";
+	public	static	final	String	CONST_SQL_UNIVERSITY_WITHDRAW_COUNT_REJECT				=	"dps.university.withdraw.select.count.reject";
+	public	static	final	String	CONST_SQL_UNIVERSITY_WITHDRAW_REASON_LIST_STUDENT		=	"dps.university.withdraw.select.reason.list.student";
+	public	static	final	String	CONST_SQL_UNIVERSITY_WITHDRAW_INSERT_APPLY_BY_STUDENT	=	"dps.university.withdraw.insert.apply.by.student";
+	public	static	final	String	CONST_SQL_UNIVERSITY_WITHDRAW_SELECT_RECORDS_BY_STUDENT	=	"dps.university.withdraw.select.student.records";
+	public	static	final	String	CONST_SQL_UNIVERSITY_WITHDRAW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE	=	"dps.university.withdraw.select.student.records.by.employee";
+	
+	/* --- SQL - DPS - Delegation ---------------------------------------------- */
+	public	static	final	String	CONST_SQL_DELEGATE_SELECT_DELEGATED						=	"dps.delegate.select.delegated";
+	public	static	final	String	CONST_SQL_DELEGATE_SELECT_DELEGATEE						=	"dps.delegate.select.delegatee";
 
 	/* ---  SQL - DPS - Drop With W -- Stored Procedure -- --------------------- */	
-	public	static	final	String	CONST_PROC_DROPW_WITHDRAW_COURSE						=	"PROC_WITHDRAW_COURSE";
+	public	static	final	String	CONST_PROC_DROPW_WITHDRAW_COURSE						=	"WEB_PKG.WITHDRAW_COURSE_DPS";
 	
 	public	static	final	String	CONST_PROC_COL_NAME_P_STDNO								=	"p_stdno";
 	public	static	final	String	CONST_PROC_COL_NAME_P_SECTCD							=	"p_sectcd";
@@ -295,15 +360,23 @@ public interface Constants
 	
 	/* ---  SQL - DPS - Rule --------------------- */
 	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_JOIN_CLOSE_TIME				=	"sql.rule.student.join.close.time";	
+	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_LANGUAGE_COURSE_TAKEN		=	"sql.rule.student.language.course.from.course.start";
 	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_POSTPONE_COUNT				=	"sql.rule.student.count.postpone";
 	public	static	final	String	CONST_PROP_SQL_RULE_CURRENT_YEAR_SEMESTER				=	"sql.rule.current.year.semester";
 	public	static	final	String	CONST_PROP_SQL_RULE_THESIS_CODE							=	"sql.rule.thesis.code";
 	public	static	final	String	CONST_PROP_SQL_RULE_SEMINAR_RECORD_COUNT				=	"sql.rule.seminar.complete.record.count";
 	public	static	final	String	CONST_PROP_SQL_RULE_CURR_DATE_IN_SPECIFIC_WEEK			=	"sql.rule.current.date.in.specific.week";
+	public	static	final	String	CONST_PROP_SQL_RULE_CURR_DATE_IN_SPECIFIC_WEEK_LAST_SEM	=	"sql.rule.current.date.in.specific.week.last.semester";
 	
 	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_EXTENSION_COUNT				=	"sql.rule.service.extension.select.count.student";
 	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_DROP_W_PERIOD				=	"sql.rule.service.dropw.withdraw.preriod";
-
+	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_DROP_W_DATE					=	"sql.rule.service.dropw.withdraw.dates";
+	public	static	final	String	CONST_PROP_SQL_VIEW_RULE_CURRENT_YEAR_SEMESTER			=	"sql.view.rule.current.year.semester";
+	public	static	final	String	CONST_PROP_SQL_VIEW_RULE_LAST_YEAR_SEMESTER				=	"sql.view.rule.last.year.semester";
+	public	static	final	String	CONST_PROP_SQL_RULE_DECIDE_YEAR_SEMESTER				=	"sql.rule.decicide.year.semester";
+	public	static	final	String	CONST_PROP_SQL_VIEW_RULE_LAST_YEAR_SEMESTER_PARAMETER	=	"sql.view.rule.last.year.semester.parameter";
+	
+	public	static	final	String	CONST_PROP_SQL_IS_THESIS_COURSE							=	"sql.rule.service.is.course.thesis";
 	
 	/* ---  SQL - DPS - Role --------------------- */
 	public	static	final	String	CONST_PROP_SQL_STATUS_DESCRIPTION						=	"sql.status.description";

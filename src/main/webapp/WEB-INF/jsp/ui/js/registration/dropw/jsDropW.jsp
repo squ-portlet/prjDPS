@@ -33,8 +33,8 @@
 							    "lAbrCourseNo": this.getAttribute("lAbrCourseNo"),
 							    "courseName": this.getAttribute("courseName")
 							  };
-					var theAlertTemplate=$("#hbCourseData").html();
-					var template = Handlebars.compile(theAlertTemplate);
+						var theAlertTemplate=$("#hbCourseData").html();
+						var template = Handlebars.compile(theAlertTemplate);
 					
 					$('.content-placeholder').html(template(context));
 				});
@@ -59,7 +59,7 @@
 							success : function(data)
 							{
 	
-								$('#status-'+dropCourseModel.sectCode).html('<span class="glyphicon glyphicon-ban-circle" ></span>');
+								$('#status-'+dropCourseModel.sectCode+'-'+dropCourseModel.sectNo).html('<span class="glyphicon glyphicon-ban-circle" ></span>');
 								
 								var courses	=	JSON.parse(data);
 								
@@ -69,7 +69,7 @@
 							error : function(xhr, status)
 							{
 								var message = {};
-								message.messageAlert = xhr.responseText;
+								message.messageAlert = JSON.parse(xhr.responseText);
 								dropDataLoadActionStudent(message, '#hbDropStatAlert', '#divDropStatAlert');
 							}
 						
@@ -119,6 +119,8 @@
 	$(function() {
 		var varStudentNo;
 		var	varStdStatCode;
+		var	varStudentId;
+		var	varStudentName;
 		var	approver;
 		var idRadioBttn;
 		
@@ -169,6 +171,8 @@
 				};
 				varStudentNo	=	this.getAttribute("studentNo");
 				varStdStatCode	=	this.getAttribute("stdStatCode");
+				varStudentId	=	this.getAttribute("studentId");
+				varStudentName	=	this.getAttribute("studentName");
 				var studentId	=	this.getAttribute("studentId");
 				var	studentName	=	this.getAttribute("studentName");
 				
@@ -189,18 +193,17 @@
 								courses.studentId=studentId;
 								courses.studentName=studentName;
 								data.approverMain=approver;
+							var coursesJSON={'courses':courses,'approverMain':approver, 'studentId':studentId, 'studentName':studentName };
 							if($.trim(courses))
 							{
-								
-								dropDataLoadAction(courses, '#hbDropCoursesAction', '#dropwCoursesAction');
+								dropDataLoadAction(coursesJSON, '#hbDropCoursesAction', '#dropwCoursesAction');
 							}
 							else
 							{
 								courses.approverMain=false;
 								$('#modalAlertErrMsg').html("<spring:message code='prop.dps.dropw.warn.approver.no.courses.found'/>");
 								$('#alertModal').modal('toggle');
-								
-								dropDataLoadAction(courses, '#hbDropCoursesAction', '#dropwCoursesAction');
+								dropDataLoadAction(coursesJSON, '#hbDropCoursesAction', '#dropwCoursesAction');
 							}
 						},
 						error	:	function(xhr, status)
@@ -271,10 +274,12 @@
 								data	:	dropWDTO,
 								success	:	function(data)
 								{
+
 									$("#imgAjaxLoading").hide();
 									var courses = JSON.parse(data);
 									courses.approverMain=approver;
-									dropDataLoadAction(courses, '#hbDropCoursesAction', '#dropwCoursesAction');
+									var coursesJSON={'courses':courses,'approverMain':approver, 'studentId':varStudentId, 'studentName':varStudentName };
+									dropDataLoadAction(coursesJSON, '#hbDropCoursesAction', '#dropwCoursesAction');
 								},
 								error	:	function(xhr, status, error)
 								{
@@ -340,6 +345,13 @@
 			return true;
 		}
 		
+		/** Custom if condition for handlebar operation **/
+		Handlebars.registerHelper('ifCond', function(v1, v2, options) {
+			  if(v1 === v2) {
+			    return options.fn(this);
+			  }
+			  return options.inverse(this);
+			});
 		
 	});
 	

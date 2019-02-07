@@ -39,6 +39,9 @@ public class PersonalDetail
 	private	String	studentNo;
 	private	String	studentUserName;
 	private	String	name;
+	private	String	nameEng;
+	private	String	nameAr;
+	private	String	gender;
 	private	String	phone;
 	private	String	email;
 	private	String	region;
@@ -127,6 +130,66 @@ public class PersonalDetail
 	public void setName(String name)
 	{
 		this.name = name;
+	}
+	/**
+	 * Getter Method	: getNameEng
+	 * @return the nameEng
+	 * 
+	 * Date				: Oct 16, 2018
+	 */
+	public String getNameEng()
+	{
+		return this.nameEng;
+	}
+	/**
+	 * Setter method : setNameEng
+	 * @param nameEng the nameEng to set
+	 * 
+	 * Date          : Oct 16, 2018 3:05:23 PM
+	 */
+	public void setNameEng(String nameEng)
+	{
+		this.nameEng = nameEng;
+	}
+	/**
+	 * Getter Method	: getNameAr
+	 * @return the nameAr
+	 * 
+	 * Date				: Oct 16, 2018
+	 */
+	public String getNameAr()
+	{
+		return this.nameAr;
+	}
+	/**
+	 * Setter method : setNameAr
+	 * @param nameAr the nameAr to set
+	 * 
+	 * Date          : Oct 16, 2018 3:05:23 PM
+	 */
+	public void setNameAr(String nameAr)
+	{
+		this.nameAr = nameAr;
+	}
+	/**
+	 * Getter Method	: getGender
+	 * @return the gender
+	 * 
+	 * Date				: Jan 8, 2018
+	 */
+	public String getGender()
+	{
+		return this.gender;
+	}
+	/**
+	 * Setter method : setGender
+	 * @param gender the gender to set
+	 * 
+	 * Date          : Jan 8, 2018 5:27:12 PM
+	 */
+	public void setGender(String gender)
+	{
+		this.gender = gender;
 	}
 	/**
 	 * Getter Method	: getPhone
@@ -276,10 +339,12 @@ public class PersonalDetail
 	{
 		return "PersonalDetail [id=" + this.id + ", studentNo="
 				+ this.studentNo + ", studentUserName=" + this.studentUserName
-				+ ", name=" + this.name + ", phone=" + this.phone + ", email="
-				+ this.email + ", region=" + this.region + ", willayat="
-				+ this.willayat + ", town=" + this.town + ", poBox="
-				+ this.poBox + ", postalCode=" + this.postalCode + "]";
+				+ ", name=" + this.name + ", nameEng=" + this.nameEng
+				+ ", nameAr=" + this.nameAr + ", gender=" + this.gender
+				+ ", phone=" + this.phone + ", email=" + this.email
+				+ ", region=" + this.region + ", willayat=" + this.willayat
+				+ ", town=" + this.town + ", poBox=" + this.poBox
+				+ ", postalCode=" + this.postalCode + "]";
 	}
 
 	
