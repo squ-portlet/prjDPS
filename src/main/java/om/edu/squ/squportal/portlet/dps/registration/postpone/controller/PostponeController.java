@@ -133,8 +133,18 @@ public class PostponeController
 		Student 		student	= 	dpsServiceDao.getStudent(user.getUserId(), null, new Locale("en"));
 		List<Course> 	courses	=	postponeService.getExistingGrades(student.getAcademicDetail().getStudentNo(), locale);
 		
-		/* Implementing rules */
-		postponeService.isRuleComplete(student.getAcademicDetail().getStudentNo(), student.getAcademicDetail().getStdStatCode());
+		
+		/* Rule applied*/
+		if(Constants.CONST_TEST_ENVIRONMENT)
+		{
+			/* test environment only */
+			model.addAttribute("isRuleStudentComplete",  true);
+		}
+		{
+			/* Implementing rules */
+			postponeService.isRuleComplete(student.getAcademicDetail().getStudentNo(), student.getAcademicDetail().getStdStatCode());
+			
+		}
 		
 		if(!model.containsAttribute("postponeStudentDataModel"))
 		{
@@ -143,7 +153,6 @@ public class PostponeController
 		}
 		
 		if(null == courses || courses.size() == 0)
-			
 		{
 			model.addAttribute("student", student);
 			model.addAttribute("currYearSem", dpsServiceDao.getCurrentYearSemester(locale));

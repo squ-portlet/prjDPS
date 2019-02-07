@@ -362,6 +362,7 @@ public class PostponeServiceImpl implements PostponeService
 	 */
 	public boolean isRuleComplete(String studentNo, String stdStatCode)
 	{
+		boolean result	= false;
 		/*
 		 * Rule 1 : Allowed for Maximum two semester
 		 * */
@@ -381,18 +382,17 @@ public class PostponeServiceImpl implements PostponeService
 			this.dropWTimeApplied	=	false;
 		}
 		
-		
-		if(Constants.CONST_TEST_ENVIRONMENT)
+		/**** Applying rules ****/
+		if(rulePostponeCountWithinLimit && dropWTimeApplied)
 		{
-			this.dropWTimeApplied	=	true;
+			result = true;
+		}
+		else
+		{
+			result	= false;
 		}
 		
-		
-		
-
-		
-		//Please don't change the return value
-		return true;
+		return result;
 	}
 	
 	
