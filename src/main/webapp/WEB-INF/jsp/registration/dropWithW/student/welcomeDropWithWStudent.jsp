@@ -124,7 +124,7 @@
 							</div>
 					  </div>
 					  <div class="panel-footer">
-					  	<button type="button" id="bttnSubmitDrop" class="btn btn-default">Submit Button</button>
+					  	<button type="button" id="bttnSubmitDrop" class="btn btn-default"><spring:message code="prop.dps.button.submit"/></button>
 					  </div>
 				  </form:form>
 			</div>
@@ -136,7 +136,7 @@
 	
 	<script id="hbCourseData" type="text/x-handlebars-template">
 			<div class="alert alert-warning">
-				Do you want to drop the course {{lAbrCourseNo}} / {{courseName}} ?
+				<spring:message code="prop.dps.dropw.student.want.to.drop"/> {{lAbrCourseNo}} / {{courseName}} ?
 			</div>	
 	</script>
 	
@@ -144,7 +144,7 @@
 
 		<p>
 			<ol class="breadcrumb">
-				<li><center>Based On action, possible dropped courses might listed below</center></li>
+				<li><center><spring:message code="prop.dps.dropw.list.dropped.courses"/></center></li>
 			</ol>
 		</p>
 	<table class="table table-bordered">
