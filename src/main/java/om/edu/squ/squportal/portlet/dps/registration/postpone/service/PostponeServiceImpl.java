@@ -36,6 +36,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.gson.Gson;
+
 import om.edu.squ.squportal.notification.exception.NotificationException;
 import om.edu.squ.squportal.portlet.dps.bo.Course;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
@@ -44,6 +46,7 @@ import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionDropDownPeriod;
+import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
 import om.edu.squ.squportal.portlet.dps.notification.bo.NotifierPeople;
 import om.edu.squ.squportal.portlet.dps.notification.service.DPSNotification;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
@@ -215,15 +218,97 @@ public class PostponeServiceImpl implements PostponeService
 	 *
 	 * Date    		:	Sep 13, 2017 5:13:02 PM
 	 * @throws NoDBRecordException 
+	 * @throws ExceptionEmptyResultset 
 	 */
-	public List<PostponeDTO> getPostponeForAprovers(String roleType, Employee employee, Locale locale) throws NoDBRecordException
+	public List<PostponeDTO> getPostponeForAprovers(String roleType, Employee employee, Locale locale) throws NoDBRecordException, ExceptionEmptyResultset
 	{
+		List<PostponeDTO> 	resultList	=	null;
+		
 		if(employee.getEmpNumber().substring(0,1).equals("e"))
 		{
 			employee.setEmpNumber(employee.getEmpNumber().substring(1));
 		}
 		
-		return postponeDBDao.getPostponeForApprovers(roleType, employee, locale, null, false, false, false, false);
+		if(null == employee.getEmpNumberDelegated())
+		{
+			resultList	=	postponeDBDao.getPostponeForApprovers(
+																		roleType
+																	, 	employee
+																	, 	locale
+																	, 	null
+																	, 	false
+																	, 	false
+																	, 	false
+																	, 	false
+																	);
+		}
+		else
+		{
+			List<PostponeDTO> 	listResultForDelegated	=	null;
+			List<PostponeDTO> 	listResultForDelegatee	=	null;
+			
+			Gson				gson					=	new	Gson();
+			Employee			delegatedEmployee		=	dpsServiceDao.getEmployee(employee.getEmpNumberDelegated(), employee.getUserNameDelegated(), locale, false);
+			Employee			delegateeEmployee		=	dpsServiceDao.getEmployee(employee.getEmpNumberDelegatee(), employee.getUserNameDelegatee(), locale, false);
+			
+			if(delegatedEmployee.getEmpNumber().substring(0,1).equals("e"))
+			{
+				delegatedEmployee = dpsServiceDao.getDelegatedEmployee(delegatedEmployee, employee);
+			}
+			if(delegateeEmployee.getEmpNumber().substring(0,1).equals("e"))
+			{
+				delegateeEmployee	=	dpsServiceDao.getDelegateeEmployee(delegateeEmployee, employee);
+			}
+			
+			/* Delegatee employee not required to view records of delegated */
+			if(employee.getUserName().equals(employee.getUserNameDelegatee()))
+			{
+				listResultForDelegatee	=	postponeDBDao.getPostponeForApprovers
+																					(
+																							roleType
+																						, 	delegateeEmployee
+																						, 	locale
+																						, 	null
+																						, 	Constants.CONST_IS_DELEGATION
+																						, 	true
+																						, 	Constants.CONST_DELEGATED_APPROVER_DEFAULT_ELIGIBLE
+																						, 	Constants.CONST_DELEGATION_APPROVE_NOT_ELIGIBLE
+																					);
+				resultList				=	listResultForDelegatee;
+			}
+			else
+			{
+				listResultForDelegatee	=	postponeDBDao.getPostponeForApprovers
+																				(
+																							roleType
+																						, 	delegateeEmployee
+																						, 	locale
+																						, 	null
+																						, 	Constants.CONST_IS_DELEGATION
+																						, 	true
+																						, 	Constants.CONST_DELEGATED_APPROVER_DEFAULT_ELIGIBLE
+																						, 	Constants.CONST_DELEGATION_APPROVE_ELIGIBLE
+																				);
+				listResultForDelegated	= 	postponeDBDao.getPostponeForApprovers 
+																				(
+																						roleType
+																					, 	delegatedEmployee
+																					, 	locale
+																					, 	null
+																					, 	Constants.CONST_IS_DELEGATION
+																					, 	false
+																					, 	Constants.CONST_DELEGATED_APPROVER_DEFAULT_ELIGIBLE
+																					, 	Constants.CONST_DELEGATION_APPROVE_ELIGIBLE
+																				);	
+				
+				listResultForDelegated.addAll(listResultForDelegatee);
+				resultList				=	listResultForDelegated;
+			}
+			
+			
+		}
+		
+		return resultList;
 	}
 
 	/**
