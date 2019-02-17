@@ -319,6 +319,38 @@ public class DpsServiceImpl implements DpsServiceDao
 	
 	/*
 	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao#getDelegatedEmployee(om.edu.squ.squportal.portlet.dps.bo.Employee, om.edu.squ.squportal.portlet.dps.bo.Employee)
+	 */
+	public	Employee	getDelegatedEmployee(Employee delegatedEmployee, Employee employee)
+	{
+		delegatedEmployee.setEmpNumber(delegatedEmployee.getEmpNumber().substring(1));
+		delegatedEmployee.setUserNameDelegated(employee.getUserNameDelegated());
+		delegatedEmployee.setEmpNumberDelegated(employee.getEmpNumberDelegated());
+		delegatedEmployee.setUserNameDelegatee(employee.getUserNameDelegatee());
+		delegatedEmployee.setEmpNumberDelegatee(employee.getEmpNumberDelegatee());
+		
+		return delegatedEmployee;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao#getDelegateeEmployee(om.edu.squ.squportal.portlet.dps.bo.Employee, om.edu.squ.squportal.portlet.dps.bo.Employee)
+	 */
+	public Employee	getDelegateeEmployee(Employee delegateeEmployee, Employee employee)
+	{
+		delegateeEmployee.setEmpNumber(delegateeEmployee.getEmpNumber().substring(1));
+		
+		delegateeEmployee.setUserNameDelegated(employee.getUserNameDelegated());
+		delegateeEmployee.setEmpNumberDelegated(employee.getEmpNumberDelegated());									
+		delegateeEmployee.setUserNameDelegatee(employee.getUserNameDelegatee());
+		delegateeEmployee.setEmpNumberDelegatee(employee.getEmpNumberDelegatee());
+		
+		return delegateeEmployee;
+	}
+	
+	
+	/*
+	 * (non-Javadoc)
 	 * @see om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao#setRoleTransaction(om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO, om.edu.squ.squportal.portlet.dps.bo.Employee)
 	 */
 	public ApprovalDTO setRoleTransaction(ApprovalTransactionDTO transactionDTO, String formName, String roleName, String statusCodeName)
