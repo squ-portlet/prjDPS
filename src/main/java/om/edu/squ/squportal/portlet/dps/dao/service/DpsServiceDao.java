@@ -167,6 +167,36 @@ public interface DpsServiceDao
 	
 	/**
 	 * 
+	 * method name  : getDelegatedEmployee
+	 * @param delegatedEmployee
+	 * @param employee
+	 * @return
+	 * DpsServiceDao
+	 * return type  : Employee
+	 * 
+	 * purpose		: Get Delegated Employee
+	 *
+	 * Date    		:	Feb 17, 2019 2:04:56 PM
+	 */
+	public	Employee	getDelegatedEmployee(Employee delegatedEmployee, Employee employee);
+	
+	/**
+	 * 
+	 * method name  : getDelegateeEmployee
+	 * @param delegateeEmployee
+	 * @param employee
+	 * @return
+	 * DpsServiceDao
+	 * return type  : Employee
+	 * 
+	 * purpose		: Get Delegatee Employee
+	 *
+	 * Date    		:	Feb 17, 2019 2:05:09 PM
+	 */
+	public	Employee	getDelegateeEmployee(Employee delegateeEmployee, Employee employee);
+	
+	/**
+	 * 
 	 * method name  : getStudent
 	 * @param studentId
 	 * @param studentNo TODO
