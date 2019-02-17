@@ -39,6 +39,7 @@ import java.util.Properties;
 
 import om.edu.squ.squportal.portlet.dps.bo.Course;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeReason;
 import om.edu.squ.squportal.portlet.dps.role.bo.Advisor;
@@ -52,6 +53,7 @@ import om.edu.squ.squportal.portlet.dps.utility.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.BadSqlGrammarException;
+import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
@@ -317,22 +319,20 @@ public class PostponeDBImpl implements PostponeDBDao
 		
 	}
 	
-	/**
-	 * 
-	 * method name  : getExtensionsForApprovers
-	 * @param roleType
-	 * @param employee
-	 * @param locale
-	 * @param studentNo
-	 * @return
-	 * PostponeDBImpl
-	 * return type  : List<PostponeDTO>
-	 * 
-	 * purpose		: List of student's postpone details using employee role
-	 *
-	 * Date    		:	Sep 13, 2017 4:48:56 PM
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.registration.postpone.db.PostponeDBDao#getPostponeForApprovers(java.lang.String, om.edu.squ.squportal.portlet.dps.bo.Employee, java.util.Locale, java.lang.String, boolean, boolean, boolean, boolean)
 	 */
-	public List<PostponeDTO> getPostponeForApprovers(final String roleType, Employee employee, Locale locale, String studentNo)
+	public List<PostponeDTO> getPostponeForApprovers(
+															final 	String		roleType
+														, 			Employee	employee
+														, 			Locale 		locale
+														, 			String 		studentNo
+														, 	final	boolean 	isDelegation
+														, 	final	boolean 	applyDelegation
+														, 	final	boolean 	delegationDefaultApprove
+														, 	final	boolean 	delegationApprove
+													)	throws NoDBRecordException
 	{
 		String SQL_POSTPONE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE		=	queryPostpone.getProperty(Constants.CONST_SQL_POSTPONE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE);
 		RowMapper<PostponeDTO> rowMapper	=	new RowMapper<PostponeDTO>()
@@ -406,6 +406,30 @@ public class PostponeDBImpl implements PostponeDBDao
 				
 				dto.setCommentEng(rs.getString(Constants.CONST_COLMN_COMMENT));
 				
+				/* Delegation */
+				if(isDelegation)
+				{
+					if(delegationDefaultApprove)
+					{
+						
+					}
+					else
+					{
+						if(!delegationApprove)
+						{
+							dto.setApprover(false);
+							dto.setApproverApplicable(false);
+						
+						}
+					}
+					if(delegationApprove)
+					{
+						/* Glyphicon for delegation */
+						dto.setApplyDelegation(applyDelegation);			
+					}
+					
+				}			
+				
 				return dto;
 			}
 		};
@@ -454,7 +478,15 @@ public class PostponeDBImpl implements PostponeDBDao
 			namedParameterMap.put("paramStdNo", studentNo);
 		}
 		
-		return nPJdbcTemplDpsPostpone.query(SQL_POSTPONE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE, namedParameterMap, rowMapper);
+		try
+		{
+			return nPJdbcTemplDpsPostpone.query(SQL_POSTPONE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE, namedParameterMap, rowMapper);
+		}
+		catch(UncategorizedSQLException sqlEx)
+		{
+			logger.error("Error occur to find postpone records for approver");
+			throw new NoDBRecordException(sqlEx.getMessage());
+		}
 	}
 	
 	/**

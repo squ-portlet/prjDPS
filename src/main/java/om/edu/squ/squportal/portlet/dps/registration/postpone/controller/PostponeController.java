@@ -42,6 +42,7 @@ import om.edu.squ.squportal.portlet.dps.bo.Course;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionDropDownPeriod;
@@ -321,7 +322,7 @@ public class PostponeController
 	{
 		Gson	gson	=	new Gson();
 		
-		Employee employee;
+		Employee employee	=	null;
 		try
 		{
 			employee = dpsServiceDao.getEmployee(request,locale, true);
@@ -332,6 +333,11 @@ public class PostponeController
 		catch (ExceptionEmptyResultset ex)
 		{
 			response.getWriter().print(gson.toJson(""));
+		}
+		catch (NoDBRecordException ex)
+		{
+			logger.error("DB records not found for employee : {} of role : {}. Details : {}",employee.getEmpNumber(), roleNameValue.getRoleValue(), ex.getMessage());
+			
 		}
 		
 		

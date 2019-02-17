@@ -40,6 +40,7 @@ import om.edu.squ.squportal.notification.exception.NotificationException;
 import om.edu.squ.squportal.portlet.dps.bo.Course;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionDropDownPeriod;
@@ -213,15 +214,16 @@ public class PostponeServiceImpl implements PostponeService
 	 * purpose		: Get List of student postpone data for approver role
 	 *
 	 * Date    		:	Sep 13, 2017 5:13:02 PM
+	 * @throws NoDBRecordException 
 	 */
-	public List<PostponeDTO> getPostponeForAprovers(String roleType, Employee employee, Locale locale)
+	public List<PostponeDTO> getPostponeForAprovers(String roleType, Employee employee, Locale locale) throws NoDBRecordException
 	{
 		if(employee.getEmpNumber().substring(0,1).equals("e"))
 		{
 			employee.setEmpNumber(employee.getEmpNumber().substring(1));
 		}
 		
-		return postponeDBDao.getPostponeForApprovers(roleType, employee, locale, null);
+		return postponeDBDao.getPostponeForApprovers(roleType, employee, locale, null, false, false, false, false);
 	}
 
 	/**
@@ -238,15 +240,16 @@ public class PostponeServiceImpl implements PostponeService
 	 * purpose		: Get postpone details for particular student
 	 *
 	 * Date    		:	Nov 8, 2017 4:17:32 PM
+	 * @throws NoDBRecordException 
 	 */
-	private PostponeDTO getPostponeForAprovers(String roleType, Employee employee, Locale locale, String studentNo)
+	private PostponeDTO getPostponeForAprovers(String roleType, Employee employee, Locale locale, String studentNo) throws NoDBRecordException
 	{
 		if(employee.getEmpNumber().substring(0,1).equals("e"))
 		{
 			employee.setEmpNumber(employee.getEmpNumber().substring(1));
 		}
 		
-		return postponeDBDao.getPostponeForApprovers(roleType, employee, locale, studentNo).get(0);
+		return postponeDBDao.getPostponeForApprovers(roleType, employee, locale, studentNo, false, false, false, false).get(0);
 	}
 	
 	
@@ -264,8 +267,9 @@ public class PostponeServiceImpl implements PostponeService
 	 * Note			: This function relates with two different transactional statements
 	 *
 	 * Date    		:	Nov 7, 2017 5:55:12 PM
+	 * @throws NoDBRecordException 
 	 */
-	public PostponeDTO setRoleTransaction(PostponeDTO dto, Employee employee, Locale locale)
+	public PostponeDTO setRoleTransaction(PostponeDTO dto, Employee employee, Locale locale) throws NoDBRecordException
 	{
 		int						resultTr				=	0;
 		PostponeDTO				dtoStudent				=	new PostponeDTO();
