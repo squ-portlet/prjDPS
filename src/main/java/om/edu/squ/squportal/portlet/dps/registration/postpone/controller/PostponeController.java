@@ -324,7 +324,7 @@ public class PostponeController
 		Employee employee;
 		try
 		{
-			employee = dpsServiceDao.getEmployee(request,locale, false);
+			employee = dpsServiceDao.getEmployee(request,locale, true);
 			List<PostponeDTO> dtos	=	postponeService.getPostponeForAprovers(roleNameValue.getRoleValue(), employee, locale);
 			response.getWriter().print(gson.toJson(dtos));
 
