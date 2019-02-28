@@ -5,36 +5,18 @@
     <entry key="sql.rule.student.join.close.time">
     	<![CDATA[
 				SELECT 
-				  SS.STDSTATCD																								AS	STDSTATCD
-				, SS.STDNO																									AS	STUDENT_NO
-				, D.DEGRESTSEMGRD																							AS	DGR_GRAD_ESTIMATE_SEM_COUNT
-				, D.DEGRMAXSEMGRD																							AS	DGR_GRAD_MAXIMUM_SEM_COUNT
-				, SS.FROMCCYRCD																								AS	FROMCCYRCD
-				, SS.FROMSEMCD 																								AS	FROMSEMCD
-				, TO_NUMBER(TO_CHAR(SYSDATE,'YYYY'))     																	AS  CURRENT_YEAR
-        , D.DEGRCD 
-			FROM 
-				  STD_DEGREE 	SD 
-				, DEGREE 		D
-				, STD_STATUS 	SS 
-			WHERE 
-						SD.DEGRCD		=	D.DEGRCD 
-				AND 	SS.STDSTATCD	=	SD.STDSTATCD 
-				AND 	SS.STDNO		=	:paramStdNo
-				AND   	SS.STDSTATCD  	= 	:paramStdStatCode
-				SELECT 
 						* 
 				FROM
 					(
 					    	SELECT 
 				                DISTINCT
-				                SD.STDSTATCD																				AS	STDSTATCD
-				              , SD.STDNO																					AS	STUDENT_NO
-				              , D.DEGRESTSEMGRD																				AS	DGR_GRAD_ESTIMATE_SEM_COUNT
-				              , D.DEGRMAXSEMGRD																				AS	DGR_GRAD_MAXIMUM_SEM_COUNT
-				              , SG.CCYRCD								    												AS	FROMCCYRCD
-				              , SG.SEMCD 								    												AS	FROMSEMCD
-				              , TO_NUMBER(TO_CHAR(SYSDATE,'YYYY'))     														AS  CURRENT_YEAR
+				                SD.STDSTATCD								AS		STDSTATCD
+				              , SD.STDNO									AS		STUDENT_NO
+				              , D.DEGRESTSEMGRD								AS		DGR_GRAD_ESTIMATE_SEM_COUNT
+				              , D.DEGRMAXSEMGRD								AS		DGR_GRAD_MAXIMUM_SEM_COUNT
+				              , SG.CCYRCD								    AS		FROMCCYRCD
+				              , SG.SEMCD 								    AS		FROMSEMCD
+				              , TO_NUMBER(TO_CHAR(SYSDATE,'YYYY'))     		AS    	CURRENT_YEAR
 				              , D.DEGRCD 
 							FROM 
 								  STD_DEGREE 	SD 
