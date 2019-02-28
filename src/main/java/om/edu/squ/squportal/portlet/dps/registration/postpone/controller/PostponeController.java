@@ -326,7 +326,7 @@ public class PostponeController
 		try
 		{
 			employee = dpsServiceDao.getEmployee(request,locale, true);
-			List<PostponeDTO> dtos	=	postponeService.getPostponeForAprovers(roleNameValue.getRoleValue(), employee, locale);
+			List<PostponeDTO> dtos	=	postponeService.getPostponeForAprovers(roleNameValue.getRoleValue(), employee, locale, null);
 			response.getWriter().print(gson.toJson(dtos));
 
 		}
@@ -370,7 +370,7 @@ public class PostponeController
 				PostponeDTO	dtoResult	=	null;
 				try
 				{
-					employee		=	dpsServiceDao.getEmployee(request,locale, false);		
+					employee		=	dpsServiceDao.getEmployee(request,locale, Constants.CONST_IS_DELEGATION);		
 					employee.setUserName(request.getRemoteUser());
 					postponeDTO.setUserName(request.getRemoteUser());
 					

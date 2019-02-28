@@ -334,6 +334,7 @@ public class PostponeDBImpl implements PostponeDBDao
 														, 	final	boolean 	delegationApprove
 													)	throws NoDBRecordException
 	{
+		List<PostponeDTO>	result	=	null;
 		String SQL_POSTPONE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE		=	queryPostpone.getProperty(Constants.CONST_SQL_POSTPONE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE);
 		RowMapper<PostponeDTO> rowMapper	=	new RowMapper<PostponeDTO>()
 		{
@@ -419,7 +420,6 @@ public class PostponeDBImpl implements PostponeDBDao
 						{
 							dto.setApprover(false);
 							dto.setApproverApplicable(false);
-						
 						}
 					}
 					if(delegationApprove)
@@ -480,13 +480,14 @@ public class PostponeDBImpl implements PostponeDBDao
 		
 		try
 		{
-			return nPJdbcTemplDpsPostpone.query(SQL_POSTPONE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE, namedParameterMap, rowMapper);
+			result	=	 nPJdbcTemplDpsPostpone.query(SQL_POSTPONE_SELECT_STUDENT_RECORDS_BY_EMPLOYEE, namedParameterMap, rowMapper);
 		}
 		catch(UncategorizedSQLException sqlEx)
 		{
 			logger.error("Error occur to find postpone records for approver");
 			throw new NoDBRecordException(sqlEx.getMessage());
 		}
+		return result;
 	}
 	
 	/**

@@ -102,6 +102,7 @@ public interface PostponeService
 	 * @param roleType
 	 * @param employee
 	 * @param locale
+	 * @param studentNo TODO
 	 * @return
 	 * PostponeServiceImpl
 	 * return type  : List<PostponeDTO>
@@ -112,7 +113,7 @@ public interface PostponeService
 	 * @throws NoDBRecordException 
 	 * @throws ExceptionEmptyResultset 
 	 */
-	public List<PostponeDTO> getPostponeForAprovers(String roleType, Employee employee, Locale locale) throws NoDBRecordException, ExceptionEmptyResultset;
+	public List<PostponeDTO> getPostponeForAprovers(String roleType, Employee employee, Locale locale, String studentNo) throws NoDBRecordException, ExceptionEmptyResultset;
 	
 	/**
 	 * 
@@ -129,8 +130,9 @@ public interface PostponeService
 	 *
 	 * Date    		:	Nov 7, 2017 5:55:12 PM
 	 * @throws NoDBRecordException 
+	 * @throws ExceptionEmptyResultset 
 	 */
-	public PostponeDTO setRoleTransaction(PostponeDTO dto, Employee employee, Locale locale) throws NoDBRecordException;
+	public PostponeDTO setRoleTransaction(PostponeDTO dto, Employee employee, Locale locale) throws NoDBRecordException, ExceptionEmptyResultset;
 	
 	/**
 	 * 

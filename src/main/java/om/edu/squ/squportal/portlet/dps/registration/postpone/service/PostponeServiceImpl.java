@@ -220,7 +220,7 @@ public class PostponeServiceImpl implements PostponeService
 	 * @throws NoDBRecordException 
 	 * @throws ExceptionEmptyResultset 
 	 */
-	public List<PostponeDTO> getPostponeForAprovers(String roleType, Employee employee, Locale locale) throws NoDBRecordException, ExceptionEmptyResultset
+	public List<PostponeDTO> getPostponeForAprovers(String roleType, Employee employee, Locale locale, String studentNo) throws NoDBRecordException, ExceptionEmptyResultset
 	{
 		List<PostponeDTO> 	resultList	=	null;
 		
@@ -228,14 +228,14 @@ public class PostponeServiceImpl implements PostponeService
 		{
 			employee.setEmpNumber(employee.getEmpNumber().substring(1));
 		}
-		
+		/* Delegation Enabled */
 		if(null == employee.getEmpNumberDelegated())
 		{
 			resultList	=	postponeDBDao.getPostponeForApprovers(
 																		roleType
 																	, 	employee
 																	, 	locale
-																	, 	null
+																	, 	studentNo
 																	, 	false
 																	, 	false
 																	, 	false
@@ -263,12 +263,13 @@ public class PostponeServiceImpl implements PostponeService
 			/* Delegatee employee not required to view records of delegated */
 			if(employee.getUserName().equals(employee.getUserNameDelegatee()))
 			{
+			
 				listResultForDelegatee	=	postponeDBDao.getPostponeForApprovers
 																					(
 																							roleType
 																						, 	delegateeEmployee
 																						, 	locale
-																						, 	null
+																						, 	studentNo
 																						, 	Constants.CONST_IS_DELEGATION
 																						, 	true
 																						, 	Constants.CONST_DELEGATED_APPROVER_DEFAULT_ELIGIBLE
@@ -283,7 +284,7 @@ public class PostponeServiceImpl implements PostponeService
 																							roleType
 																						, 	delegateeEmployee
 																						, 	locale
-																						, 	null
+																						, 	studentNo
 																						, 	Constants.CONST_IS_DELEGATION
 																						, 	true
 																						, 	Constants.CONST_DELEGATED_APPROVER_DEFAULT_ELIGIBLE
@@ -294,13 +295,13 @@ public class PostponeServiceImpl implements PostponeService
 																						roleType
 																					, 	delegatedEmployee
 																					, 	locale
-																					, 	null
+																					, 	studentNo
 																					, 	Constants.CONST_IS_DELEGATION
 																					, 	false
 																					, 	Constants.CONST_DELEGATED_APPROVER_DEFAULT_ELIGIBLE
 																					, 	Constants.CONST_DELEGATION_APPROVE_ELIGIBLE
 																				);	
-				
+
 				listResultForDelegated.addAll(listResultForDelegatee);
 				resultList				=	listResultForDelegated;
 			}
@@ -311,32 +312,6 @@ public class PostponeServiceImpl implements PostponeService
 		return resultList;
 	}
 
-	/**
-	 * 
-	 * method name  : getPostponeForAprovers
-	 * @param roleType
-	 * @param employee
-	 * @param locale
-	 * @param studentNo
-	 * @return
-	 * PostponeServiceImpl
-	 * return type  : PostponeDTO
-	 * 
-	 * purpose		: Get postpone details for particular student
-	 *
-	 * Date    		:	Nov 8, 2017 4:17:32 PM
-	 * @throws NoDBRecordException 
-	 */
-	private PostponeDTO getPostponeForAprovers(String roleType, Employee employee, Locale locale, String studentNo) throws NoDBRecordException
-	{
-		if(employee.getEmpNumber().substring(0,1).equals("e"))
-		{
-			employee.setEmpNumber(employee.getEmpNumber().substring(1));
-		}
-		
-		return postponeDBDao.getPostponeForApprovers(roleType, employee, locale, studentNo, false, false, false, false).get(0);
-	}
-	
 	
 	/**
 	 * 
@@ -353,8 +328,9 @@ public class PostponeServiceImpl implements PostponeService
 	 *
 	 * Date    		:	Nov 7, 2017 5:55:12 PM
 	 * @throws NoDBRecordException 
+	 * @throws ExceptionEmptyResultset 
 	 */
-	public PostponeDTO setRoleTransaction(PostponeDTO dto, Employee employee, Locale locale) throws NoDBRecordException
+	public PostponeDTO setRoleTransaction(PostponeDTO dto, Employee employee, Locale locale) throws NoDBRecordException, ExceptionEmptyResultset
 	{
 		int						resultTr				=	0;
 		PostponeDTO				dtoStudent				=	new PostponeDTO();
@@ -367,6 +343,11 @@ public class PostponeServiceImpl implements PostponeService
 								transactionDTO.setAppEmpName(employee.getUserName());
 								transactionDTO.setComments(dto.getCommentEng());
 								transactionDTO.setRequestCode(dto.getRecordSequence());
+																												/* Delegation Entry */
+								transactionDTO.setAppDelegatedEmpNo(employee.getEmpNumberDelegated());
+								transactionDTO.setAppDelegatedEmpUserName(employee.getUserNameDelegated());
+								transactionDTO.setAppDelegateeEmpNo(employee.getEmpNumberDelegatee());
+								transactionDTO.setAppDelegateeEmpUserName(employee.getUserNameDelegatee());
 		
 		ApprovalDTO				approvalDTO				=	dpsServiceDao.setRoleTransaction(
 																									transactionDTO
@@ -401,7 +382,8 @@ public class PostponeServiceImpl implements PostponeService
 		{
 			if(resultTr > 0)
 			{
-				dtoResult	=	getPostponeForAprovers(dto.getRoleName(), employee, locale, dto.getStudentNo());
+				/** Get postpone details for particular student **/				
+				dtoResult	=	getPostponeForAprovers(dto.getRoleName(), employee, locale, dto.getStudentNo()).get(0); 
 				/* -- Notification -- Start --*/
 					NotifierPeople	notifierPeople	=	dpsServiceDao.getNotifierPeople(
 																							dto.getStudentNo()
@@ -461,15 +443,24 @@ public class PostponeServiceImpl implements PostponeService
 		/*
 		 * Rule 2 : Drop with W period
 		 */
-		
-		if(ruleService.isDropWPeriod(studentNo, stdStatCode))
+		/* Following rules not applied at test environment */
+		if(Constants.CONST_TEST_ENVIRONMENT)
 		{
 			this.dropWTimeApplied	=	true;
 		}
 		else
 		{
-			this.dropWTimeApplied	=	false;
+			if(ruleService.isDropWPeriod(studentNo, stdStatCode))
+			{
+				this.dropWTimeApplied	=	true;
+			}
+			else
+			{
+				this.dropWTimeApplied	=	false;
+			}
 		}
+		
+		
 		
 		/**** Applying rules ****/
 		if(rulePostponeCountWithinLimit && dropWTimeApplied)
