@@ -249,7 +249,26 @@ public class DpsServiceImpl implements DpsServiceDao
 	{
 		List<RoleNameValue> 	roleNameValues	=	new ArrayList<RoleNameValue>();
 		Employee				employee		=	dpsDbDao.getEmployee(empNumber, empUserName, applyDelegation);
-		Employee				roleOfEmployee	=	roleService.getEmployeeRole(empNumber);
+		Employee				roleOfEmployee	=	null;
+
+		/**** Delegation ****/
+		if(applyDelegation)
+		{
+			if(empNumber.equals(employee.getEmpNumberDelegated()))
+			{
+				roleOfEmployee	=	roleService.getEmployeeRole(employee.getEmpNumberDelegatee());	// Get Role of Delegatee
+			}
+			else
+			{
+				roleOfEmployee	=	roleService.getEmployeeRole(employee.getEmpNumberDelegated());	// Get Role of Delegated -- might be self empNumber
+			}
+			
+		}
+		else
+		{
+			roleOfEmployee	=	roleService.getEmployeeRole(empNumber);	
+		}
+		
 		employee.setEmployeeRole(roleOfEmployee);
 		employee.setUserName(empUserName);
 		
