@@ -38,6 +38,7 @@ import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionDropDownPeriod;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
+import om.edu.squ.squportal.portlet.dps.exception.ExceptionExtensionExists;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeReason;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentModel;
@@ -92,8 +93,9 @@ public interface PostponeService
 	 *
 	 * Date    		:	Aug 7, 2017 5:00:53 PM
 	 * @throws ExceptionDropDownPeriod 
+	 * @throws ExceptionExtensionExists 
 	 */
-	public List<PostponeDTO> setPostponeByStudent(Student student, PostponeStudentModel studentModel, String userName, Locale locale) throws ExceptionDropDownPeriod;
+	public List<PostponeDTO> setPostponeByStudent(Student student, PostponeStudentModel studentModel, String userName, Locale locale) throws ExceptionDropDownPeriod, ExceptionExtensionExists;
 	
 	
 	/**

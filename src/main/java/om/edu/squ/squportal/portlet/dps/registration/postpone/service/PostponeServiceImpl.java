@@ -47,6 +47,7 @@ import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordExcep
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionDropDownPeriod;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
+import om.edu.squ.squportal.portlet.dps.exception.ExceptionExtensionExists;
 import om.edu.squ.squportal.portlet.dps.notification.bo.NotifierPeople;
 import om.edu.squ.squportal.portlet.dps.notification.service.DPSNotification;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
@@ -55,6 +56,7 @@ import om.edu.squ.squportal.portlet.dps.registration.postpone.db.PostponeDBDao;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentModel;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
+import om.edu.squ.squportal.portlet.dps.role.bo.DpsStaff;
 import om.edu.squ.squportal.portlet.dps.rule.service.Rule;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 import om.edu.squ.squportal.portlet.dps.utility.UtilProperty;
@@ -131,12 +133,22 @@ public class PostponeServiceImpl implements PostponeService
 	 * purpose		: Insert to postpone as student
 	 *
 	 * Date    		:	Aug 7, 2017 5:00:53 PM
+	 * @throws ExceptionExtensionExists 
 	 */
-	public List<PostponeDTO> setPostponeByStudent(Student student, PostponeStudentModel studentModel, String userName, Locale locale) throws ExceptionDropDownPeriod
+	public List<PostponeDTO> setPostponeByStudent(Student student, PostponeStudentModel studentModel, String userName, Locale locale) throws ExceptionDropDownPeriod, ExceptionExtensionExists
 	{
 		int 				result			=	0;
 		List<PostponeDTO>	postponeDTOs	=	null;
 		String 				approverRole	=	null;
+		String				courseYear		=	studentModel.getYearSem().split("-")[0];
+		String				semester		=	studentModel.getYearSem().split("-")[1];
+		String				stdStatCode		=	student.getAcademicDetail().getStdStatCode();
+		
+		if( dpsServiceDao.isSemesterExtended(stdStatCode, courseYear, semester))
+		{
+			throw new ExceptionExtensionExists("year : "+courseYear+ " semester : "+semester + " already extended for student stdStatCode : "+stdStatCode);
+		}
+		
 		
 		if(!dropWTimeApplied)
 		{
@@ -417,7 +429,7 @@ public class PostponeServiceImpl implements PostponeService
 		
 		return dtoResult;
 	}
-	
+
 	/**
 	 * 
 	 * method name  : isRuleComplete
