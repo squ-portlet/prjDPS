@@ -16,6 +16,18 @@
 				<img alt="Loading ...." src="${imgAjaxLoader}">
 			</div>
 		</div>
+
+
+      <div class="row">
+      		<div class="col-sm-9"></div>
+      		<div class="col-sm-2">
+      				<a href='<spring:message code="prop.dps.postpone.link.help.user.manual"/>'>
+      					<spring:message code="prop.dps.link.help.text"/> <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+      				</a>
+      		</div>
+      </div>
+
+
 		
  	<!-- Alert for any issues -->
      <div  id="alertPostponeStudies"></div>

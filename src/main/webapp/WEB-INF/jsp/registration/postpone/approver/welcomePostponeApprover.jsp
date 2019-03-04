@@ -9,9 +9,19 @@
 	<%@include file="../../../ui/js/registration/postpone/jsPostpone.jsp" %>
 	<%@include file="../../../ui/js/registration/postpone/jsValidationPostpone.jsp" %>
 
+<!-- Help link -->
+      <div class="row">
+      		<div class="col-sm-9"></div>
+      		<div class="col-sm-2">
+      				<a href='<spring:message code="prop.dps.postpone.link.help.user.manual"/>'>
+      					<spring:message code="prop.dps.link.help.text"/> <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+      				</a>
+      		</div>
+      </div>
+
 <!-- Role based tabs -->	
 		<ul class="nav nav-tabs">
-			<li role="presentation" id="idNav-home" class="clsNavRole active"><a href="#">Home</a></li>
+			<li role="presentation" id="idNav-home" class="clsNavRole active"><a href="#"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
 			<c:if test="${(not empty employee) }">
 				<c:forEach items="${employee.myRoles}" var="myRole">
 					<li class="clsNavRole" id="idNav-${myRole.roleName}" role="presentation"><a id="role-${myRole.roleName}" href="#">${myRole.roleValue}</a></li>
