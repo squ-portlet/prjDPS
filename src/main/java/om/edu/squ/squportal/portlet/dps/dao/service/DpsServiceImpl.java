@@ -251,7 +251,26 @@ public class DpsServiceImpl implements DpsServiceDao
 	{
 		List<RoleNameValue> 	roleNameValues	=	new ArrayList<RoleNameValue>();
 		Employee				employee		=	dpsDbDao.getEmployee(empNumber, empUserName, applyDelegation);
-		Employee				roleOfEmployee	=	roleService.getEmployeeRole(empNumber);
+		Employee				roleOfEmployee	=	null;
+
+		/**** Delegation ****/
+		if(applyDelegation)
+		{
+			if(empNumber.equals(employee.getEmpNumberDelegated()))
+			{
+				roleOfEmployee	=	roleService.getEmployeeRole(employee.getEmpNumberDelegatee());	// Get Role of Delegatee
+			}
+			else
+			{
+				roleOfEmployee	=	roleService.getEmployeeRole(employee.getEmpNumberDelegated());	// Get Role of Delegated -- might be self empNumber
+			}
+			
+		}
+		else
+		{
+			roleOfEmployee	=	roleService.getEmployeeRole(empNumber);	
+		}
+		
 		employee.setEmployeeRole(roleOfEmployee);
 		employee.setUserName(empUserName);
 		
@@ -746,6 +765,15 @@ public class DpsServiceImpl implements DpsServiceDao
 				(booVal)
 						?	UtilProperty.getMessage("prop.dps.role.submit.yes.text", null, locale)
 						:	UtilProperty.getMessage("prop.dps.role.submit.no.text", null, locale);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao#isSemesterExtended(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public boolean isSemesterExtended(String stdStatCode, String courseYear, String semester)
+	{
+		return ruleService.isSemesterExtended(stdStatCode, courseYear, semester);
 	}
 	
 }

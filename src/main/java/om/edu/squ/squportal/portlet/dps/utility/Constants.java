@@ -137,6 +137,7 @@ public interface Constants
 	public static final	String	CONST_COLMN_FIRST_WITHDRAW_DATE								=	"FIRST_WITHDRAW_DATE";
 	public static final	String	CONST_COLMN_SECOND_WITHDRAW_DATE							=	"SECOND_WITHDRAW_DATE";
 	
+	public static final	String	CONST_COLMN_EXTENSION_SEM_EXTENDED							=	"SEM_EXTENDED";
 	public static final	String	CONST_COLMN_POSTPONE_REASON_CODE							=	"POSTPONE_REASON_CODE";
 	public static final	String	CONST_COLMN_POSTPONE_REASON_NAME							=	"POSTPONE_REASON_NAME";
 	public static final	String	CONST_COLMN_POSTPONE_OTHER_REASON							=	"POSTPONE_OTHER_REASON";
@@ -379,6 +380,7 @@ public interface Constants
 	public	static	final	String	CONST_PROP_SQL_VIEW_RULE_LAST_YEAR_SEMESTER_PARAMETER	=	"sql.view.rule.last.year.semester.parameter";
 	
 	public	static	final	String	CONST_PROP_SQL_IS_THESIS_COURSE							=	"sql.rule.service.is.course.thesis";
+	public	static	final	String	CONST_PROP_SQL_RULE_IS_SEMESTER_EXTENDED				=	"sql.rule.service.is.semester.extended";
 	
 	/* ---  SQL - DPS - Role --------------------- */
 	public	static	final	String	CONST_PROP_SQL_STATUS_DESCRIPTION						=	"sql.status.description";

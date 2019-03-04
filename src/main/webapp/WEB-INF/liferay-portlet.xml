@@ -39,14 +39,14 @@
 	</portlet>
  	<portlet>
 		<portlet-name>dpsRegistrationDropWithW</portlet-name>
-		<instanceable>false</instanceable>
+		<instanceable>true</instanceable>
 		<remoteable>true</remoteable>
 		<user-principal-strategy>screenName</user-principal-strategy> <!-- This tag for liferay screen name as remote user name  -->
 		<requires-namespaced-parameters>false</requires-namespaced-parameters>
 	</portlet>
  	<portlet>
 		<portlet-name>dpsRegistrationPostpone</portlet-name>
-		<instanceable>false</instanceable>
+		<instanceable>true</instanceable>
 		<remoteable>true</remoteable>
 		<user-principal-strategy>screenName</user-principal-strategy> <!-- This tag for liferay screen name as remote user name  -->
 		<requires-namespaced-parameters>false</requires-namespaced-parameters>

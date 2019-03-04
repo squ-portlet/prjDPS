@@ -455,4 +455,22 @@ public interface DpsServiceDao
 	 * Date    		:	Jan 15, 2019 12:08:40 PM
 	 */
 	public	String booToString(boolean booVal, Locale locale );
+	
+	/**
+	 * 
+	 * method name  : isSemesterExtended
+	 * @param stdStatCode
+	 * @param courseYear
+	 * @param semester
+	 * @return
+	 * DpsServiceDao
+	 * return type  : boolean
+	 * 
+	 * purpose		:	Check whether a particular semester of a given year extended by a student or not
+	 *                  Normally this helps to decide one rule of postpone, whether a student is not allowed to postpone 
+	 *                  a semester which he/she already extended
+	 *
+	 * Date    		:	Mar 3, 2019 12:19:29 PM
+	 */
+	public boolean isSemesterExtended(String stdStatCode, String courseYear, String semester);
 }
