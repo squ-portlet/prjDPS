@@ -509,5 +509,27 @@ public class RuleDbImpl implements RuleDbDao
 			}
 	}
 	
-	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.rule.db.RuleDbDao#isSemesterExtended(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public boolean isSemesterExtended(String stdStatCode, String courseYear, String semester)
+	{
+		String	SQL_RULE_IS_SEMESTER_EXTENDED	=	queryPropsCommonRule.getProperty(Constants.CONST_PROP_SQL_RULE_IS_SEMESTER_EXTENDED);
+		
+		Map<String, String> mapParamsRule	=	new HashMap<String, String>();
+							mapParamsRule.put("paramStdStatCode", stdStatCode);
+							mapParamsRule.put("paramCCYrCode", courseYear);
+							mapParamsRule.put("paramSemCode", semester);
+		
+
+			if(nPJdbcTemplDps.queryForObject(SQL_RULE_IS_SEMESTER_EXTENDED, mapParamsRule,String.class).equals(Constants.CONST_YES))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+	}
 }

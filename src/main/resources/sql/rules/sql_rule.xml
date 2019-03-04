@@ -263,6 +263,27 @@
 		      AND  SYSDATE BETWEEN REG.FIRSTWTHDTE AND REG.SECONDWTHDTE
 		)
 	</entry>
+  	<!-- 
+  			Service Rules with Postpone
+  			Student can not postpone extended semester
+  	 -->
+  <entry key="sql.rule.service.is.semester.extended">
+			SELECT 
+			      DECODE (
+			                COUNT(EXT.STDNO)
+			                , 0, 'N'
+			                , 'Y'
+			              )																									AS	SEM_EXTENDED
+			FROM
+	              STD_EXTENSION   EXT
+	            , SIS_CODES       CODES
+			WHERE
+              		EXT.EXTREQ_STATUSCD   =   CODES.SISCODECD
+			    AND EXT.STDSTATCD         =   :paramStdStatCode
+			    AND EXT.FROMCCYRCD        =   :paramCCYrCode
+			    AND EXT.FROMSEMCD         =   :paramSemCode
+          		AND CODES.L_ABR_CODE      =   'ACCPT'
+  </entry>
   
   <entry key="sql.rule.service.dropw.withdraw.dates">
 	    SELECT

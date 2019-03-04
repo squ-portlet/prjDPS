@@ -256,4 +256,22 @@ public interface Rule
 	 * Date    		:	Jan 30, 2019 2:34:48 PM
 	 */
 	public boolean isCourseThesis(String studentNo, String courseNo);
+	
+	/**
+	 * 
+	 * method name  : isSemesterExtended
+	 * @param stdStatCode
+	 * @param courseYear
+	 * @param semester
+	 * @return
+	 * Rule
+	 * return type  : boolean
+	 * 
+	 * purpose		: Check whether a particular semester of a given year extended by a student or not
+	 *                  Normally this helps to decide one rule of postpone, whether a student is not allowed to postpone 
+	 *                  a semester which he/she already extended
+	 *
+	 * Date    		:	Mar 3, 2019 12:03:22 PM
+	 */
+	public boolean isSemesterExtended(String stdStatCode, String courseYear, String semester);
 }
