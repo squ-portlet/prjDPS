@@ -767,4 +767,13 @@ public class DpsServiceImpl implements DpsServiceDao
 						:	UtilProperty.getMessage("prop.dps.role.submit.no.text", null, locale);
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao#isSemesterExtended(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public boolean isSemesterExtended(String stdStatCode, String courseYear, String semester)
+	{
+		return ruleService.isSemesterExtended(stdStatCode, courseYear, semester);
+	}
+	
 }
