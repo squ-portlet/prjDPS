@@ -4,37 +4,19 @@
     <comment>DPS RULES </comment>
     <entry key="sql.rule.student.join.close.time">
     	<![CDATA[
-	    	SELECT 
-				  SS.STDSTATCD																								AS	STDSTATCD
-				, SS.STDNO																									AS	STUDENT_NO
-				, D.DEGRESTSEMGRD																							AS	DGR_GRAD_ESTIMATE_SEM_COUNT
-				, D.DEGRMAXSEMGRD																							AS	DGR_GRAD_MAXIMUM_SEM_COUNT
-				, SS.FROMCCYRCD																								AS	FROMCCYRCD
-				, SS.FROMSEMCD 																								AS	FROMSEMCD
-				, TO_NUMBER(TO_CHAR(SYSDATE,'YYYY'))     																	AS  CURRENT_YEAR
-        , D.DEGRCD 
-			FROM 
-				  STD_DEGREE 	SD 
-				, DEGREE 		D
-				, STD_STATUS 	SS 
-			WHERE 
-						SD.DEGRCD		=	D.DEGRCD 
-				AND 	SS.STDSTATCD	=	SD.STDSTATCD 
-				AND 	SS.STDNO		=	:paramStdNo
-				AND   	SS.STDSTATCD  	= 	:paramStdStatCode
 				SELECT 
 						* 
 				FROM
 					(
 					    	SELECT 
 				                DISTINCT
-				                SD.STDSTATCD																				AS	STDSTATCD
-				              , SD.STDNO																					AS	STUDENT_NO
-				              , D.DEGRESTSEMGRD																				AS	DGR_GRAD_ESTIMATE_SEM_COUNT
-				              , D.DEGRMAXSEMGRD																				AS	DGR_GRAD_MAXIMUM_SEM_COUNT
-				              , SG.CCYRCD								    												AS	FROMCCYRCD
-				              , SG.SEMCD 								    												AS	FROMSEMCD
-				              , TO_NUMBER(TO_CHAR(SYSDATE,'YYYY'))     														AS  CURRENT_YEAR
+				                SD.STDSTATCD								AS		STDSTATCD
+				              , SD.STDNO									AS		STUDENT_NO
+				              , D.DEGRESTSEMGRD								AS		DGR_GRAD_ESTIMATE_SEM_COUNT
+				              , D.DEGRMAXSEMGRD								AS		DGR_GRAD_MAXIMUM_SEM_COUNT
+				              , SG.CCYRCD								    AS		FROMCCYRCD
+				              , SG.SEMCD 								    AS		FROMSEMCD
+				              , TO_NUMBER(TO_CHAR(SYSDATE,'YYYY'))     		AS    	CURRENT_YEAR
 				              , D.DEGRCD 
 							FROM 
 								  STD_DEGREE 	SD 
@@ -281,6 +263,27 @@
 		      AND  SYSDATE BETWEEN REG.FIRSTWTHDTE AND REG.SECONDWTHDTE
 		)
 	</entry>
+  	<!-- 
+  			Service Rules with Postpone
+  			Student can not postpone extended semester
+  	 -->
+  <entry key="sql.rule.service.is.semester.extended">
+			SELECT 
+			      DECODE (
+			                COUNT(EXT.STDNO)
+			                , 0, 'N'
+			                , 'Y'
+			              )																									AS	SEM_EXTENDED
+			FROM
+	              STD_EXTENSION   EXT
+	            , SIS_CODES       CODES
+			WHERE
+              		EXT.EXTREQ_STATUSCD   =   CODES.SISCODECD
+			    AND EXT.STDSTATCD         =   :paramStdStatCode
+			    AND EXT.FROMCCYRCD        =   :paramCCYrCode
+			    AND EXT.FROMSEMCD         =   :paramSemCode
+          		AND CODES.L_ABR_CODE      =   'ACCPT'
+  </entry>
   
   <entry key="sql.rule.service.dropw.withdraw.dates">
 	    SELECT

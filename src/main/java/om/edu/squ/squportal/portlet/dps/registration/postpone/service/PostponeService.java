@@ -35,7 +35,10 @@ import java.util.Locale;
 import om.edu.squ.squportal.portlet.dps.bo.Course;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionDropDownPeriod;
+import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
+import om.edu.squ.squportal.portlet.dps.exception.ExceptionExtensionExists;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeReason;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentModel;
@@ -90,8 +93,9 @@ public interface PostponeService
 	 *
 	 * Date    		:	Aug 7, 2017 5:00:53 PM
 	 * @throws ExceptionDropDownPeriod 
+	 * @throws ExceptionExtensionExists 
 	 */
-	public List<PostponeDTO> setPostponeByStudent(Student student, PostponeStudentModel studentModel, String userName, Locale locale) throws ExceptionDropDownPeriod;
+	public List<PostponeDTO> setPostponeByStudent(Student student, PostponeStudentModel studentModel, String userName, Locale locale) throws ExceptionDropDownPeriod, ExceptionExtensionExists;
 	
 	
 	/**
@@ -100,6 +104,7 @@ public interface PostponeService
 	 * @param roleType
 	 * @param employee
 	 * @param locale
+	 * @param studentNo TODO
 	 * @return
 	 * PostponeServiceImpl
 	 * return type  : List<PostponeDTO>
@@ -107,8 +112,10 @@ public interface PostponeService
 	 * purpose		: Get List of student postpone data for approver role
 	 *
 	 * Date    		:	Sep 13, 2017 5:13:02 PM
+	 * @throws NoDBRecordException 
+	 * @throws ExceptionEmptyResultset 
 	 */
-	public List<PostponeDTO> getPostponeForAprovers(String roleType, Employee employee, Locale locale);
+	public List<PostponeDTO> getPostponeForAprovers(String roleType, Employee employee, Locale locale, String studentNo) throws NoDBRecordException, ExceptionEmptyResultset;
 	
 	/**
 	 * 
@@ -124,8 +131,10 @@ public interface PostponeService
 	 * Note			: This function relates with two different transactional statements
 	 *
 	 * Date    		:	Nov 7, 2017 5:55:12 PM
+	 * @throws NoDBRecordException 
+	 * @throws ExceptionEmptyResultset 
 	 */
-	public PostponeDTO setRoleTransaction(PostponeDTO dto, Employee employee, Locale locale);
+	public PostponeDTO setRoleTransaction(PostponeDTO dto, Employee employee, Locale locale) throws NoDBRecordException, ExceptionEmptyResultset;
 	
 	/**
 	 * 

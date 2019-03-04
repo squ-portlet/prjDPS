@@ -36,13 +36,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.gson.Gson;
+
 import om.edu.squ.squportal.notification.exception.NotificationException;
 import om.edu.squ.squportal.portlet.dps.bo.Course;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionDropDownPeriod;
+import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
+import om.edu.squ.squportal.portlet.dps.exception.ExceptionExtensionExists;
 import om.edu.squ.squportal.portlet.dps.notification.bo.NotifierPeople;
 import om.edu.squ.squportal.portlet.dps.notification.service.DPSNotification;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
@@ -51,6 +56,7 @@ import om.edu.squ.squportal.portlet.dps.registration.postpone.db.PostponeDBDao;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentModel;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
+import om.edu.squ.squportal.portlet.dps.role.bo.DpsStaff;
 import om.edu.squ.squportal.portlet.dps.rule.service.Rule;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 import om.edu.squ.squportal.portlet.dps.utility.UtilProperty;
@@ -127,12 +133,22 @@ public class PostponeServiceImpl implements PostponeService
 	 * purpose		: Insert to postpone as student
 	 *
 	 * Date    		:	Aug 7, 2017 5:00:53 PM
+	 * @throws ExceptionExtensionExists 
 	 */
-	public List<PostponeDTO> setPostponeByStudent(Student student, PostponeStudentModel studentModel, String userName, Locale locale) throws ExceptionDropDownPeriod
+	public List<PostponeDTO> setPostponeByStudent(Student student, PostponeStudentModel studentModel, String userName, Locale locale) throws ExceptionDropDownPeriod, ExceptionExtensionExists
 	{
 		int 				result			=	0;
 		List<PostponeDTO>	postponeDTOs	=	null;
 		String 				approverRole	=	null;
+		String				courseYear		=	studentModel.getYearSem().split("-")[0];
+		String				semester		=	studentModel.getYearSem().split("-")[1];
+		String				stdStatCode		=	student.getAcademicDetail().getStdStatCode();
+		
+		if( dpsServiceDao.isSemesterExtended(stdStatCode, courseYear, semester))
+		{
+			throw new ExceptionExtensionExists("year : "+courseYear+ " semester : "+semester + " already extended for student stdStatCode : "+stdStatCode);
+		}
+		
 		
 		if(!dropWTimeApplied)
 		{
@@ -213,42 +229,101 @@ public class PostponeServiceImpl implements PostponeService
 	 * purpose		: Get List of student postpone data for approver role
 	 *
 	 * Date    		:	Sep 13, 2017 5:13:02 PM
+	 * @throws NoDBRecordException 
+	 * @throws ExceptionEmptyResultset 
 	 */
-	public List<PostponeDTO> getPostponeForAprovers(String roleType, Employee employee, Locale locale)
+	public List<PostponeDTO> getPostponeForAprovers(String roleType, Employee employee, Locale locale, String studentNo) throws NoDBRecordException, ExceptionEmptyResultset
 	{
+		List<PostponeDTO> 	resultList	=	null;
+		
 		if(employee.getEmpNumber().substring(0,1).equals("e"))
 		{
 			employee.setEmpNumber(employee.getEmpNumber().substring(1));
 		}
+		/* Delegation Enabled */
+		if(null == employee.getEmpNumberDelegated())
+		{
+			resultList	=	postponeDBDao.getPostponeForApprovers(
+																		roleType
+																	, 	employee
+																	, 	locale
+																	, 	studentNo
+																	, 	false
+																	, 	false
+																	, 	false
+																	, 	false
+																	);
+		}
+		else
+		{
+			List<PostponeDTO> 	listResultForDelegated	=	null;
+			List<PostponeDTO> 	listResultForDelegatee	=	null;
+			
+			Gson				gson					=	new	Gson();
+			Employee			delegatedEmployee		=	dpsServiceDao.getEmployee(employee.getEmpNumberDelegated(), employee.getUserNameDelegated(), locale, false);
+			Employee			delegateeEmployee		=	dpsServiceDao.getEmployee(employee.getEmpNumberDelegatee(), employee.getUserNameDelegatee(), locale, false);
+			
+			if(delegatedEmployee.getEmpNumber().substring(0,1).equals("e"))
+			{
+				delegatedEmployee = dpsServiceDao.getDelegatedEmployee(delegatedEmployee, employee);
+			}
+			if(delegateeEmployee.getEmpNumber().substring(0,1).equals("e"))
+			{
+				delegateeEmployee	=	dpsServiceDao.getDelegateeEmployee(delegateeEmployee, employee);
+			}
+			
+			/* Delegatee employee not required to view records of delegated */
+			if(employee.getUserName().equals(employee.getUserNameDelegatee()))
+			{
+			
+				listResultForDelegatee	=	postponeDBDao.getPostponeForApprovers
+																					(
+																							roleType
+																						, 	delegateeEmployee
+																						, 	locale
+																						, 	studentNo
+																						, 	Constants.CONST_IS_DELEGATION
+																						, 	true
+																						, 	Constants.CONST_DELEGATED_APPROVER_DEFAULT_ELIGIBLE
+																						, 	Constants.CONST_DELEGATION_APPROVE_NOT_ELIGIBLE
+																					);
+				resultList				=	listResultForDelegatee;
+			}
+			else
+			{
+				listResultForDelegatee	=	postponeDBDao.getPostponeForApprovers
+																				(
+																							roleType
+																						, 	delegateeEmployee
+																						, 	locale
+																						, 	studentNo
+																						, 	Constants.CONST_IS_DELEGATION
+																						, 	true
+																						, 	Constants.CONST_DELEGATED_APPROVER_DEFAULT_ELIGIBLE
+																						, 	Constants.CONST_DELEGATION_APPROVE_ELIGIBLE
+																				);
+				listResultForDelegated	= 	postponeDBDao.getPostponeForApprovers 
+																				(
+																						roleType
+																					, 	delegatedEmployee
+																					, 	locale
+																					, 	studentNo
+																					, 	Constants.CONST_IS_DELEGATION
+																					, 	false
+																					, 	Constants.CONST_DELEGATED_APPROVER_DEFAULT_ELIGIBLE
+																					, 	Constants.CONST_DELEGATION_APPROVE_ELIGIBLE
+																				);	
+
+				listResultForDelegated.addAll(listResultForDelegatee);
+				resultList				=	listResultForDelegated;
+			}
+			
+			
+		}
 		
-		return postponeDBDao.getPostponeForApprovers(roleType, employee, locale, null);
+		return resultList;
 	}
 
-	/**
-	 * 
-	 * method name  : getPostponeForAprovers
-	 * @param roleType
-	 * @param employee
-	 * @param locale
-	 * @param studentNo
-	 * @return
-	 * PostponeServiceImpl
-	 * return type  : PostponeDTO
-	 * 
-	 * purpose		: Get postpone details for particular student
-	 *
-	 * Date    		:	Nov 8, 2017 4:17:32 PM
-	 */
-	private PostponeDTO getPostponeForAprovers(String roleType, Employee employee, Locale locale, String studentNo)
-	{
-		if(employee.getEmpNumber().substring(0,1).equals("e"))
-		{
-			employee.setEmpNumber(employee.getEmpNumber().substring(1));
-		}
-		
-		return postponeDBDao.getPostponeForApprovers(roleType, employee, locale, studentNo).get(0);
-	}
-	
 	
 	/**
 	 * 
@@ -264,8 +339,10 @@ public class PostponeServiceImpl implements PostponeService
 	 * Note			: This function relates with two different transactional statements
 	 *
 	 * Date    		:	Nov 7, 2017 5:55:12 PM
+	 * @throws NoDBRecordException 
+	 * @throws ExceptionEmptyResultset 
 	 */
-	public PostponeDTO setRoleTransaction(PostponeDTO dto, Employee employee, Locale locale)
+	public PostponeDTO setRoleTransaction(PostponeDTO dto, Employee employee, Locale locale) throws NoDBRecordException, ExceptionEmptyResultset
 	{
 		int						resultTr				=	0;
 		PostponeDTO				dtoStudent				=	new PostponeDTO();
@@ -278,6 +355,11 @@ public class PostponeServiceImpl implements PostponeService
 								transactionDTO.setAppEmpName(employee.getUserName());
 								transactionDTO.setComments(dto.getCommentEng());
 								transactionDTO.setRequestCode(dto.getRecordSequence());
+																												/* Delegation Entry */
+								transactionDTO.setAppDelegatedEmpNo(employee.getEmpNumberDelegated());
+								transactionDTO.setAppDelegatedEmpUserName(employee.getUserNameDelegated());
+								transactionDTO.setAppDelegateeEmpNo(employee.getEmpNumberDelegatee());
+								transactionDTO.setAppDelegateeEmpUserName(employee.getUserNameDelegatee());
 		
 		ApprovalDTO				approvalDTO				=	dpsServiceDao.setRoleTransaction(
 																									transactionDTO
@@ -312,7 +394,8 @@ public class PostponeServiceImpl implements PostponeService
 		{
 			if(resultTr > 0)
 			{
-				dtoResult	=	getPostponeForAprovers(dto.getRoleName(), employee, locale, dto.getStudentNo());
+				/** Get postpone details for particular student **/				
+				dtoResult	=	getPostponeForAprovers(dto.getRoleName(), employee, locale, dto.getStudentNo()).get(0); 
 				/* -- Notification -- Start --*/
 					NotifierPeople	notifierPeople	=	dpsServiceDao.getNotifierPeople(
 																							dto.getStudentNo()
@@ -346,7 +429,7 @@ public class PostponeServiceImpl implements PostponeService
 		
 		return dtoResult;
 	}
-	
+
 	/**
 	 * 
 	 * method name  : isRuleComplete
@@ -362,6 +445,7 @@ public class PostponeServiceImpl implements PostponeService
 	 */
 	public boolean isRuleComplete(String studentNo, String stdStatCode)
 	{
+		boolean result	= false;
 		/*
 		 * Rule 1 : Allowed for Maximum two semester
 		 * */
@@ -371,28 +455,36 @@ public class PostponeServiceImpl implements PostponeService
 		/*
 		 * Rule 2 : Drop with W period
 		 */
-		
-		if(ruleService.isDropWPeriod(studentNo, stdStatCode))
+		/* Following rules not applied at test environment */
+		if(Constants.CONST_TEST_ENVIRONMENT)
 		{
 			this.dropWTimeApplied	=	true;
 		}
 		else
 		{
-			this.dropWTimeApplied	=	false;
+			if(ruleService.isDropWPeriod(studentNo, stdStatCode))
+			{
+				this.dropWTimeApplied	=	true;
+			}
+			else
+			{
+				this.dropWTimeApplied	=	false;
+			}
 		}
 		
 		
-		if(Constants.CONST_TEST_ENVIRONMENT)
+		
+		/**** Applying rules ****/
+		if(rulePostponeCountWithinLimit && dropWTimeApplied)
 		{
-			this.dropWTimeApplied	=	true;
+			result = true;
+		}
+		else
+		{
+			result	= false;
 		}
 		
-		
-		
-
-		
-		//Please don't change the return value
-		return true;
+		return result;
 	}
 	
 	
