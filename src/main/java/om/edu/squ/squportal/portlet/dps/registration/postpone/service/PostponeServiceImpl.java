@@ -140,14 +140,22 @@ public class PostponeServiceImpl implements PostponeService
 		int 				result			=	0;
 		List<PostponeDTO>	postponeDTOs	=	null;
 		String 				approverRole	=	null;
-		String				courseYear		=	studentModel.getYearSem().split("-")[0];
-		String				semester		=	studentModel.getYearSem().split("-")[1];
+		String				courseYear		=	null;
+		String				semester		=	null;
 		String				stdStatCode		=	student.getAcademicDetail().getStdStatCode();
 		
-		if( dpsServiceDao.isSemesterExtended(stdStatCode, courseYear, semester))
+	
+		if(null != studentModel.getYearSem() && ! studentModel.getYearSem().trim().equals(""))
 		{
-			throw new ExceptionExtensionExists("year : "+courseYear+ " semester : "+semester + " already extended for student stdStatCode : "+stdStatCode);
+			courseYear		=	studentModel.getYearSem().split("-")[0];
+			semester		=	studentModel.getYearSem().split("-")[1];
+
+			if( dpsServiceDao.isSemesterExtended(stdStatCode, courseYear, semester))
+			{
+				throw new ExceptionExtensionExists("year : "+courseYear+ " semester : "+semester + " already extended for student stdStatCode : "+stdStatCode);
+			}
 		}
+		
 		
 		
 		if(!dropWTimeApplied)
