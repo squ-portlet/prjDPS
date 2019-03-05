@@ -142,9 +142,10 @@ public class PostponeController
 			/* test environment only */
 			model.addAttribute("isRuleStudentComplete",  true);
 		}
+		else
 		{
 			/* Implementing rules */
-			postponeService.isRuleComplete(student.getAcademicDetail().getStudentNo(), student.getAcademicDetail().getStdStatCode());
+			model.addAttribute("isRuleStudentComplete",postponeService.isRuleComplete(student.getAcademicDetail().getStudentNo(), student.getAcademicDetail().getStdStatCode()));
 			
 		}
 		
