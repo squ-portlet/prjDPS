@@ -81,7 +81,7 @@ public class PostponeServiceImpl implements PostponeService
 	
 	private	boolean		rulePostponeCountWithinLimit	=	false;
 	
-	private	boolean		dropWTimeApplied				=	false;
+	private	boolean		dropWTimeApplied;
 
 
 	/**
@@ -144,7 +144,9 @@ public class PostponeServiceImpl implements PostponeService
 		String				semester		=	null;
 		String				stdStatCode		=	student.getAcademicDetail().getStdStatCode();
 		
-	
+		isRuleComplete( student.getAcademicDetail().getStudentNo(), student.getAcademicDetail().getStdStatCode());
+		
+		
 		if(null != studentModel.getYearSem() && ! studentModel.getYearSem().trim().equals(""))
 		{
 			courseYear		=	studentModel.getYearSem().split("-")[0];
@@ -156,9 +158,7 @@ public class PostponeServiceImpl implements PostponeService
 			}
 		}
 		
-		
-		
-		if(!dropWTimeApplied)
+		if(!this.dropWTimeApplied)
 		{
 			logger.error("Attempt of postpone beyond drop with w period");
 			throw new ExceptionDropDownPeriod("Drop with W period not covered.");
@@ -459,7 +459,6 @@ public class PostponeServiceImpl implements PostponeService
 		 * */
 		rulePostponeCountWithinLimit	=	dpsServiceDao.isPostponeCountWithinLimit(studentNo, stdStatCode);
 		
-		
 		/*
 		 * Rule 2 : Drop with W period
 		 */
@@ -479,9 +478,7 @@ public class PostponeServiceImpl implements PostponeService
 				this.dropWTimeApplied	=	false;
 			}
 		}
-		
-		
-		
+
 		/**** Applying rules ****/
 		if(rulePostponeCountWithinLimit && dropWTimeApplied)
 		{

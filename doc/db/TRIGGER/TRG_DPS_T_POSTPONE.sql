@@ -9,6 +9,8 @@ FOR EACH ROW
 
   Author : Bhabesh
   Create Date : 30-December-2017
+  Modification Date : 05-March-2019
+   - Include extra columns from temporary table POSTREQ_STATUSCD, OTHER_REASON ,CREATE_DATE, CREATE_USERNAME   
 
   Need to check whether the final approval is accepted or rejected. Postpone data will be inserted after approval acceptance only.
 
@@ -42,23 +44,31 @@ BEGIN
 			, FROMSEMCD 
 			, TOCCYRCD 
 			, TOSEMCD
-      , COMMNT
+		    , COMMNT
 			, PSTREASONCD
-      , USRACCTCD
-      , UPDDTE
+		    , USRACCTCD
+		    , UPDDTE
+		    , POSTREQ_STATUSCD
+		    , OTHER_REASON
+		    , CREATE_DATE
+		    , CREATE_USERNAME
     )
     		VALUES 
-		(
-        :new.STDNO
-			, :new.STDSTATCD
-			, :new.FROMCCYRCD
-			, :new.FROMSEMCD
-			, :new.TOCCYRCD
-			, :new.TOSEMCD
-      , :new.COMMNT
-			, :new.PSTREASONCD
-      , :new.USRACCTCD
-      , :new.UPDDTE
+	(
+        	:new.STDNO
+		, 	:new.STDSTATCD
+		, 	:new.FROMCCYRCD
+		, 	:new.FROMSEMCD
+		, 	:new.TOCCYRCD
+		, 	:new.TOSEMCD
+      	, 	:new.COMMNT
+		, 	:new.PSTREASONCD
+      	, 	:new.USRACCTCD
+      	, 	:new.UPDDTE
+      	, 	:new.POSTREQ_STATUSCD
+      	, 	:new.OTHER_REASON
+      	, 	:new.CREATE_DATE
+      	, 	:new.CREATE_USERNAME      
     );
     
   END IF;

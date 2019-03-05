@@ -88,10 +88,17 @@
    </c:when>
 	<c:otherwise>
 <!-- 			Rule does not satisfy -->
-			<div class="alert alert-warning alert-dismissible fade in" role="alert">
-					<font color="red"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></font>
-					 <spring:message code="err.dps.service.not.available.text"/>
-			</div>	
+			<center>
+				<div class="alert alert-warning alert-dismissible fade in" role="alert">
+						<font color="red"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></font>
+						 <spring:message code="err.dps.service.not.available.text"/>
+						 	<br>
+							<br>	<spring:message code="prop.dps.postpone.rule.text"/>
+							<br>	<spring:message code="prop.dps.postpone.rule.01"/>
+							<br>	<spring:message code="prop.dps.postpone.rule.02"/>
+							<br>	<spring:message code="prop.dps.postpone.rule.03"/> 
+				</div>
+			</center>	
 	</c:otherwise>
 </c:choose>
 	
