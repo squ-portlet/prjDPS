@@ -776,4 +776,13 @@ public class DpsServiceImpl implements DpsServiceDao
 		return ruleService.isSemesterExtended(stdStatCode, courseYear, semester);
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao#isSemesterPostponed(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public boolean isSemesterPostponed(String stdStatCode)
+	{
+		return ruleService.isSemesterPostponed(stdStatCode);
+	}
+	
 }

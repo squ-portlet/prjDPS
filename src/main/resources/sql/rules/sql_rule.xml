@@ -285,6 +285,26 @@
           		AND CODES.L_ABR_CODE      =   'ACCPT'
   </entry>
   
+  <!-- Student can not postponed if semester already postponed -->
+  <entry key="sql.rule.service.is.semester.postponed">
+			SELECT 
+ 			      DECODE (
+			                COUNT(PST.STDNO)
+			                , 0, 'N'
+			                , 'Y'
+			              )																									AS	SEM_POSTPONED
+                    
+			FROM
+	              STD_POSTPONE   PST
+	            , SIS_CODES       CODES
+			WHERE
+              		PST.POSTREQ_STATUSCD   =   CODES.SISCODECD
+			    AND PST.STDSTATCD         =   :paramStdStatCode
+			    AND PST.FROMCCYRCD        =   (SELECT CCYRCD FROM CURRENT_YR_SEM)
+			    AND PST.FROMSEMCD         =   (SELECT SEMCD FROM CURRENT_YR_SEM)
+          AND CODES.L_ABR_CODE      =   'ACCPT'  
+  </entry>
+  
   <entry key="sql.rule.service.dropw.withdraw.dates">
 	    SELECT
                 DISTINCT 

@@ -375,4 +375,13 @@ public class RuleServiceImpl implements Rule
 		return ruleDbDao.isSemesterExtended(stdStatCode, courseYear, semester);
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.rule.service.Rule#isSemesterPostponed(java.lang.String)
+	 */
+	public boolean isSemesterPostponed(String stdStatCode)
+	{
+		return ruleDbDao.isSemesterPostponed(stdStatCode);
+	}
+	
 }
