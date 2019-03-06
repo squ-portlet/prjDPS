@@ -438,6 +438,15 @@ public class PostponeServiceImpl implements PostponeService
 		return dtoResult;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.registration.postpone.service.PostponeService#isSemesterPostponed(java.lang.String)
+	 */
+	public boolean isSemesterPostponed(String stdStatCode)
+	{
+		return dpsServiceDao.isSemesterPostponed(stdStatCode);
+	}
+	
 	/**
 	 * 
 	 * method name  : isRuleComplete

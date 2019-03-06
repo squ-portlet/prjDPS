@@ -70,16 +70,14 @@
 					    
 					  </div>
 					</div>
-		   			
-		   			
-		
-		   			
 		   		</c:when>
 		   		<c:otherwise>
 				    <div class="section">
 				      <div class="container-fluid">
 					      <div class="row" id="rowButtonAddPostpone">
-								<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalPostponeForm"><spring:message code="prop.dps.postpone.student.apply"/></button>	      
+								<c:if test="${not isSemesterPostponed }">
+									<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalPostponeForm"><spring:message code="prop.dps.postpone.student.apply"/></button>
+								</c:if>	      
 					      </div>
 				      </div>
 				    </div>

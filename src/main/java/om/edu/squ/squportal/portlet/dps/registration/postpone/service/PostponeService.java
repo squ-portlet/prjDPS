@@ -138,6 +138,20 @@ public interface PostponeService
 	
 	/**
 	 * 
+	 * method name  : isSemesterPostponed
+	 * @param stdStatCode
+	 * @return
+	 * PostponeService
+	 * return type  : boolean
+	 * 
+	 * purpose		: Check whether a particular semester of a given year postponed by a student or not
+	 *
+	 * Date    		:	Mar 6, 2019 12:33:22 PM
+	 */
+	public boolean isSemesterPostponed(String stdStatCode);
+	
+	/**
+	 * 
 	 * method name  : isRuleComplete
 	 * @param studentNo
 	 * @param stdStatCode
