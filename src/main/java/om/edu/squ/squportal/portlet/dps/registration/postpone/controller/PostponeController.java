@@ -167,6 +167,8 @@ public class PostponeController
 			model.addAttribute("existingGrades", courses);
 		}
 		
+		model.addAttribute("isSemesterPostponed", postponeService.isSemesterPostponed(student.getAcademicDetail().getStdStatCode()));
+		
 		return "/registration/postpone/student/welcomePostponeStudent";
 	}
 

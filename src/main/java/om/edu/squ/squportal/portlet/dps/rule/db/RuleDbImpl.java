@@ -532,4 +532,25 @@ public class RuleDbImpl implements RuleDbDao
 				return false;
 			}
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.rule.db.RuleDbDao#isSemesterPostponed(java.lang.String)
+	 */
+	public boolean isSemesterPostponed(String stdStatCode)
+	{
+		String SQL_RULE_IS_SEMESTER_POSTPONED = queryPropsCommonRule.getProperty(Constants.CONST_PROP_SQL_RULE_IS_SEMESTER_POSTPONED);
+		
+		Map<String, String> mapParamRule	= new HashMap<String,String>();
+							mapParamRule.put("paramStdStatCode", stdStatCode);
+
+		if(nPJdbcTemplDps.queryForObject(SQL_RULE_IS_SEMESTER_POSTPONED, mapParamRule,String.class).equals(Constants.CONST_YES))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 }
