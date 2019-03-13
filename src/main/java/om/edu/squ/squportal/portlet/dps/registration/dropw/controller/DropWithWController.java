@@ -146,7 +146,7 @@ public class DropWithWController
 		model.addAttribute("isRuleStudentComplete", dropWService.isRuleStudentComplete(
 																							student.getAcademicDetail().getStudentNo(), 
 																							student.getAcademicDetail().getStdStatCode(), 
-																							null
+																							null, null
 																						)
 							);
 		model.addAttribute("courseList", dropWService.getCourseList(student, locale));
@@ -174,7 +174,7 @@ public class DropWithWController
 		Employee employee	=	null;
 		try
 		{
-			employee = dpsServiceDao.getEmployee(request,locale);
+			employee = dpsServiceDao.getEmployee(request,locale, false);
 			
 		}
 		catch (ExceptionEmptyResultset ex)
@@ -217,7 +217,7 @@ public class DropWithWController
 		
 		try
 		{
-			if(dropWService.isRuleStudentComplete(student.getAcademicDetail().getStudentNo(), student.getAcademicDetail().getStdStatCode(), dropCourseModel.getCourseNo()))
+			if(dropWService.isRuleStudentComplete(student.getAcademicDetail().getStudentNo(), student.getAcademicDetail().getStdStatCode(), dropCourseModel.getCourseNo(), dropCourseModel.getSectNo()))
 			{
 				if(dropWService.isRuleModeCreditApplied())
 				{
@@ -269,7 +269,7 @@ public class DropWithWController
 			Employee	employee	=	null;
 			try
 			{
-				employee					=	dpsServiceDao.getEmployee(request,locale);
+				employee					=	dpsServiceDao.getEmployee(request,locale, false);
 				List<DropWDTO>	dropWDTOs	=	dropWService.getDropWForApprovers(roleNameValue.getRoleValue(), employee, locale);
 				response.getWriter().print(gson.toJson(dropWDTOs));
 			}
@@ -337,7 +337,7 @@ public class DropWithWController
 		Gson			gson			=	new Gson();
 		String			errMsg			=	null;
 		String			employeeNumber	=	null;
-		
+		Employee		employee		=	null;
 
 		
 		dropWDTO.setUserName(request.getRemoteUser());
@@ -345,13 +345,21 @@ public class DropWithWController
 		dropWDTO.setRoleName(Constants.CONST_SQL_ROLE_NAME_ADVISOR);
 		try
 			{
-				resultDropWDTOs	=	dropWService.setDropWCourseUpdate(dropWDTO, locale);
+				/* Considering delegation */
+				employee		=	 dpsServiceDao.getEmployee(request,locale, Constants.CONST_IS_DELEGATION);
+				employee.setUserName(request.getRemoteUser());
+				resultDropWDTOs	=	dropWService.setDropWCourseUpdate(dropWDTO, employee, locale);
 			}
 		catch(NotSuccessFulDBUpdate ex)
 		{
 			logger.error("Droping is not successful");
 			/*We catch the error but not throwing technical error to user screen*/
 			errMsg	=	ex.getMessage();
+		}
+		catch(ExceptionEmptyResultset ex)
+		{
+			logger.error("Error in Data generation. Actual error :  "+ex.getMessage());
+			response.getWriter().print(gson.toJson(""));
 		}
 
 		if(null == resultDropWDTOs)

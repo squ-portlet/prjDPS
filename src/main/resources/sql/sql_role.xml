@@ -19,13 +19,15 @@
     </entry>
     <entry key="sql.role.sequence.rolename.list.by.form">
 			SELECT 
-			        APP.APPROVAL_SEQUENCE 													AS APPROVAL_SEQUENCE
-			      , CODES.L_ABR_CODE 														APPROVER_ROLE_CODE   
+			        APP.APPROVAL_SEQUENCE 													AS 	APPROVAL_SEQUENCE
+			      , CODES.L_ABR_CODE 														AS	APPROVER_ROLE_CODE   
 			      , DECODE (
 			                  :paramLocale
-			                  ,'ar',A_CODENM,CODES.CODENM 
+			                  ,'ar',CODES.A_CODENM,CODES.CODENM 
 			                  
-			                ) 																AS APPROVER_ROLE_NAME
+			                ) 																AS 	APPROVER_ROLE_NAME
+			      ,	CODES.CODENM															AS	APPROVER_ROLE_NAME_ENG
+			      ,	CODES.A_CODENM															AS	APPROVER_ROLE_NAME_AR
 			                
 			FROM
 			        APPROVAL_MASTER APP
@@ -328,6 +330,8 @@
 								              , CREATE_USERNAME
 								              , REQUESTCD
 								              ,	COMMENTS
+											  , DELEGATEE_EMPNO
+											  
 								            )
 				      VALUES
 								            (
@@ -342,6 +346,7 @@
 								              , :paramUserName
 								              ,	:paramRequestCode
 								              , :paramComments
+											  , :paramDelegateeEmpNo
 								            )
 		</entry>
 		

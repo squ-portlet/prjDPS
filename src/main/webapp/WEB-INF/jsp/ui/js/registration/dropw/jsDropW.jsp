@@ -59,7 +59,7 @@
 							success : function(data)
 							{
 	
-								$('#status-'+dropCourseModel.sectCode).html('<span class="glyphicon glyphicon-ban-circle" ></span>');
+								$('#status-'+dropCourseModel.sectCode+'-'+dropCourseModel.sectNo).html('<span class="glyphicon glyphicon-ban-circle" ></span>');
 								
 								var courses	=	JSON.parse(data);
 								

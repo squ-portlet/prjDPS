@@ -130,7 +130,7 @@ public class GradeChangeController
 		String	employeeNumber	=	null;
 		try
 		{
-			employee = dpsServiceDao.getEmployee(request,locale);
+			employee = dpsServiceDao.getEmployee(request,locale, false);
 			
 		}
 		catch (ExceptionEmptyResultset ex)
@@ -187,7 +187,7 @@ public class GradeChangeController
 		Employee employee;
 		try
 		{
-			employee = dpsServiceDao.getEmployee(request,locale);
+			employee = dpsServiceDao.getEmployee(request,locale, false);
 			if(employee.getEmpNumber().substring(0,1).equals("e"))
 			{
 				employeeNumber	=	employee.getEmpNumber().substring(1);
@@ -336,7 +336,7 @@ public class GradeChangeController
 		
 		try
 		{
-			employee					=	dpsServiceDao.getEmployee(request,locale);
+			employee					=	dpsServiceDao.getEmployee(request,locale, false);
 		
 			List<Student> students	=	gradeChangeService.getStudentDetailsForApprovers(roleNameValue.getRoleValue(), employee, locale);
 			
@@ -379,7 +379,7 @@ public class GradeChangeController
 			
 		try
 		{
-			employee					=	dpsServiceDao.getEmployee(request,locale);
+			employee					=	dpsServiceDao.getEmployee(request,locale, false);
 			
 			List<GradeDTO>	gradeDTOs	=	gradeChangeService.getCourseListForGradeChange(
 					gradeChangeModel.getStudentNo(), 
@@ -427,7 +427,7 @@ public class GradeChangeController
 			gradeChangeModel.decrypt(crypto, gradeChangeModel.getSalt(), gradeChangeModel.getFour(), gradeChangeModel);
 			try
 			{
-								employee	=	dpsServiceDao.getEmployee(request,locale);
+								employee	=	dpsServiceDao.getEmployee(request,locale, false);
 				List<GradeDTO>	gradeDTOs	=	gradeChangeService.setGradeChangeApproval(gradeChangeModel, employee, request, locale);
 				response.getWriter().print(gson.toJson(gradeDTOs));
 			}

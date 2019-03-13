@@ -36,7 +36,7 @@
 									<td>${course.sectionNo}</td>
 									<td>${course.credits}</td>
 									<td>${course.tutionFees}</td>
-									<td id='status-${course.sectCode}'>
+									<td id='status-${course.sectCode}-${course.sectionNo}'>
 										<c:choose>
 											<c:when test="${empty course.statusDesc}">
 												<a class="clsCourse" href="#" lAbrCourseNo=${course.lAbrCourseNo} courseNo=${course.courseNo} courseName="${course.courseName}" sectCode=${course.sectCode} sectionNo=${course.sectionNo} aria-hidden="true" data-toggle="modal" data-target="#modalDropWForm">

@@ -29,20 +29,27 @@
  */
 package om.edu.squ.squportal.portlet.dps.study.extension.service;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import om.edu.squ.squportal.notification.exception.NotificationException;
 import om.edu.squ.squportal.notification.service.NotificationService;
 import om.edu.squ.squportal.notification.service.core.NotificationServiceCore;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
+import om.edu.squ.squportal.portlet.dps.bo.NameValue;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
+import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
 import om.edu.squ.squportal.portlet.dps.notification.bo.NotifierPeople;
 import om.edu.squ.squportal.portlet.dps.notification.service.DPSNotification;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
+import om.edu.squ.squportal.portlet.dps.rule.bo.StudentCompletionAndJoinTime;
+import om.edu.squ.squportal.portlet.dps.rule.bo.YearSemester;
 import om.edu.squ.squportal.portlet.dps.rule.service.Rule;
 import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO;
 import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionReason;
@@ -54,6 +61,8 @@ import om.edu.squ.squportal.portlet.dps.utility.UtilProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.google.gson.Gson;
 
 /**
  * @author Bhabesh
@@ -107,22 +116,33 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 	 */
 	public int setExtensionByStudent(Student student, ExtensionStudentDataModel extensionStudentDataModel, String userName, Locale locale)
 	{
-		int result = 0;
+		int 				result 			= 	0;
+		String 				approverRole	=	null;
 		ExtensionDTO	extensionDTO	=	new ExtensionDTO(student, extensionStudentDataModel, userName);
 		result	=	extensionDbDao.setExtensionByStudent(extensionDTO);
 
 		
 		if(result > 0)
 		{
+			
+			if(dpsServiceDao.isSupervisorAvailable(student.getAcademicDetail().getStudentNo(), student.getAcademicDetail().getStdStatCode()))
+			{
+				approverRole	=	Constants.CONST_SQL_ROLE_NAME_SUPERVISOR;
+			}
+			else
+			{
+				approverRole	=	Constants.CONST_SQL_ROLE_NAME_ADVISOR;
+			}
+			
 				/* -- Notification -- Start --*/
 				try
 				{
 					NotifierPeople notifierPeople = dpsServiceDao.getNotifierPeople(
 																						extensionDTO.getStudentNo(), 
+																						student.getAcademicDetail().getStdStatCode(), 
 																						Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY, 
-																						Constants.CONST_SQL_ROLE_NAME_SUPERVISOR, 
-																						false, 
-																						locale
+																						approverRole, 
+																						false, locale
 																					);
 		
 					notifierPeople.setFormNameEng(UtilProperty.getMessage("prop.dps.form.name.extension", null));
@@ -189,14 +209,116 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 	 * purpose		: Get list of students for approvers
 	 *
 	 * Date    		:	Feb 15, 2017 10:09:55 PM
+	 * Date (Modification) : 10-May-2018 - Delegation applied
+	 * @throws ExceptionEmptyResultset 
 	 */
-	public List<ExtensionDTO> getExtensionsForApprovers(String roleType, Employee employee, Locale locale)
+	public List<ExtensionDTO> getExtensionsForApprovers(String roleType, Employee employee, Locale locale) throws ExceptionEmptyResultset
 	{
+		List<ExtensionDTO>	resultList	=	null;
 		if(employee.getEmpNumber().substring(0,1).equals("e"))
 		{
 			employee.setEmpNumber(employee.getEmpNumber().substring(1));
 		}
-		return extensionDbDao.getExtensionsForApprovers(roleType, employee, locale, null);
+		
+		
+
+		/* Delegation considered*/
+		if(null == employee.getEmpNumberDelegated())
+		{
+									resultList				=	extensionDbDao.getExtensionsForApprovers
+																											(
+																													roleType
+																												, 	employee
+																												, 	locale
+																												, 	null
+																												, 	false
+																												, 	false
+																												, 	false
+																												, 	false
+																											);
+			return resultList;
+		}
+		else
+		{
+			List<ExtensionDTO>	listResultForDelegated	=	null;
+			List<ExtensionDTO>	listResultForDelegatee	=	null;
+			Gson				gson					=	new Gson();
+			
+			Employee			delegatedEmployee 		= 	dpsServiceDao.getEmployee(employee.getEmpNumberDelegated(), employee.getUserNameDelegated(), locale, false);
+			
+								if(delegatedEmployee.getEmpNumber().substring(0,1).equals("e"))
+								{
+									delegatedEmployee.setEmpNumber(delegatedEmployee.getEmpNumber().substring(1));
+									
+									delegatedEmployee.setUserNameDelegated(employee.getUserNameDelegated());
+									delegatedEmployee.setEmpNumberDelegated(employee.getEmpNumberDelegated());
+									delegatedEmployee.setUserNameDelegatee(employee.getUserNameDelegatee());
+									delegatedEmployee.setEmpNumberDelegatee(employee.getEmpNumberDelegatee());
+
+									
+								}
+								
+								
+								
+			Employee			delegateeEmployee		=	dpsServiceDao.getEmployee(employee.getEmpNumberDelegatee(), employee.getUserNameDelegatee(), locale, false);
+			
+								if(delegateeEmployee.getEmpNumber().substring(0,1).equals("e"))
+								{
+									delegateeEmployee.setEmpNumber(delegateeEmployee.getEmpNumber().substring(1));
+									
+									delegateeEmployee.setUserNameDelegated(employee.getUserNameDelegated());
+									delegateeEmployee.setEmpNumberDelegated(employee.getEmpNumberDelegated());									
+									delegateeEmployee.setUserNameDelegatee(employee.getUserNameDelegatee());
+									delegateeEmployee.setEmpNumberDelegatee(employee.getEmpNumberDelegatee());
+								}
+								
+
+								/* Delegatee employee not required to view records of delegated */
+								if(employee.getUserName().equals(employee.getUserNameDelegatee()))
+								{
+									listResultForDelegatee	= 	extensionDbDao.getExtensionsForApprovers
+																											(
+																													roleType
+																												, 	delegateeEmployee
+																												, 	locale
+																												, 	null
+																												, 	Constants.CONST_IS_DELEGATION
+																												, 	true
+																												, 	Constants.CONST_DELEGATED_APPROVER_DEFAULT_ELIGIBLE
+																												, 	Constants.CONST_DELEGATION_APPROVE_NOT_ELIGIBLE
+																											);
+									return listResultForDelegatee;
+								}
+								else
+								{
+									listResultForDelegatee	= 	extensionDbDao.getExtensionsForApprovers
+																											(
+																													roleType
+																												, 	delegateeEmployee
+																												, 	locale
+																												, 	null
+																												, 	Constants.CONST_IS_DELEGATION
+																												, 	true
+																												, 	Constants.CONST_DELEGATED_APPROVER_DEFAULT_ELIGIBLE
+																												, 	Constants.CONST_DELEGATION_APPROVE_ELIGIBLE
+																											);
+									listResultForDelegated	=	extensionDbDao.getExtensionsForApprovers
+																											(
+																													roleType
+																												, 	delegatedEmployee
+																												, 	locale
+																												, 	null
+																												, 	Constants.CONST_IS_DELEGATION
+																												, 	false
+																												, 	Constants.CONST_DELEGATED_APPROVER_DEFAULT_ELIGIBLE
+																												, 	Constants.CONST_DELEGATION_APPROVE_ELIGIBLE
+																											);
+									listResultForDelegated.addAll(listResultForDelegatee);
+							return 	listResultForDelegated;
+								}
+			
+		}
+		
 	}
 
 	/**
@@ -213,14 +335,59 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 	 * purpose		:
 	 *
 	 * Date    		:	Mar 4, 2017 1:00:05 AM
+	 * @throws ExceptionEmptyResultset 
 	 */
-	private ExtensionDTO getExtensionsForApprovers(String roleType, Employee employee, String studentNo,Locale locale)
+	private ExtensionDTO getExtensionsForApprovers(String roleType, Employee employee, String studentNo,Locale locale) throws ExceptionEmptyResultset
 	{
+		ExtensionDTO	resultBo	=	null;
+		
 		if(employee.getEmpNumber().substring(0,1).equals("e"))
 		{
 			employee.setEmpNumber(employee.getEmpNumber().substring(1));
 		}
-		return extensionDbDao.getExtensionsForApprovers(roleType, employee, locale, studentNo).get(0);
+		
+		
+		
+		if(null == employee.getEmpNumberDelegated())
+		{
+									resultBo				=	extensionDbDao.getExtensionsForApprovers
+																											(
+																													roleType
+																												, 	employee
+																												, 	locale
+																												, 	studentNo
+																												, 	Constants.CONST_IS_DELEGATION
+																												, 	false
+																												, 	false
+																												, 	false
+																											).get(0);
+			return resultBo;
+		}
+		else
+		{
+			ExtensionDTO		resultForDelegated			=	null;
+			Employee			delegatedEmployee 			= 	dpsServiceDao.getEmployee
+																											(
+																													employee.getEmpNumberDelegated()
+																												, 	employee.getUserName()
+																												, 	locale
+																												, 	true
+																											);
+								resultForDelegated			=	extensionDbDao.getExtensionsForApprovers
+																											(
+																													roleType
+																												, 	delegatedEmployee
+																												, 	locale
+																												, 	studentNo
+																												, 	Constants.CONST_IS_DELEGATION
+																												, 	false
+																												, 	false
+																												, 	false
+																											).get(0);
+			return resultForDelegated;
+			
+		}
+
 	}
 	
 	/**
@@ -236,9 +403,10 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 	 * Note			: This function relates with two different transactional statements
 	 *
 	 * Date    		:	Feb 28, 2017 11:32:46 AM
+	 * @throws ExceptionEmptyResultset 
 	 * @throws Exception 
 	 */
-	public ExtensionDTO setRoleTransaction(ExtensionDTO extensionDTOTr, Employee employee, Locale locale) 
+	public ExtensionDTO setRoleTransaction(ExtensionDTO extensionDTOTr, Employee employee, Locale locale) throws ExceptionEmptyResultset 
 	{
 		int 					resultTr			=	0;		
 		ExtensionDTO			extensionDTOStudent	=	new ExtensionDTO();
@@ -249,16 +417,21 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		transactionDTO.setStdStatCode(extensionDTOTr.getStdStatCode());
 		transactionDTO.setAppEmpNo(employee.getEmpNumber());
 		transactionDTO.setAppEmpName(employee.getUserName());
+		transactionDTO.setAppDelegatedEmpNo(employee.getEmpNumberDelegated());
+		transactionDTO.setAppDelegatedEmpUserName(employee.getUserNameDelegated());
+		transactionDTO.setAppDelegateeEmpNo(employee.getEmpNumberDelegatee());
+		transactionDTO.setAppDelegateeEmpUserName(employee.getUserNameDelegatee());
 		transactionDTO.setComments(extensionDTOTr.getCommentEng());
 		transactionDTO.setRequestCode(Constants.CONST_REQUEST_CODE_DEFAULT);
 		
 		
-		ApprovalDTO	approvalDTO				= 	dpsServiceDao.setRoleTransaction(
-																						transactionDTO
-																					, 	Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY
-																					, 	extensionDTOTr.getRoleName()
-																					, 	extensionDTOTr.getStatusCodeName()
-																				);
+		ApprovalDTO				approvalDTO					= 	dpsServiceDao.setRoleTransaction
+																											(
+																													transactionDTO
+																												, 	Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY
+																												, 	extensionDTOTr.getRoleName()
+																												, 	extensionDTOTr.getStatusCodeName()
+																											);
 
 		if(extensionDTOTr.getStatusCodeName().equals(Constants.CONST_SQL_STATUS_CODE_REJCT))
 		{
@@ -281,7 +454,7 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		extensionDTOStudent.setUserName(employee.getUserName());
 		extensionDTOStudent.setCommentEng(extensionDTOTr.getCommentEng());
 		
-		resultTr			=	extensionDbDao.setExtensionStatusOfStudent(extensionDTOStudent);
+								resultTr					=	extensionDbDao.setExtensionStatusOfStudent(extensionDTOStudent);
 		try
 		{
 			if(resultTr>0)
@@ -291,10 +464,10 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 
 									NotifierPeople notifierPeople = dpsServiceDao.getNotifierPeople(
 																										extensionDTOTr.getStudentNo(), 
+																										extensionDTOStudent.getStdStatCode(), 
 																										Constants.CONST_FORM_NAME_DPS_EXTENSION_STUDY, 
 																										extensionDTOTr.getRoleName(), 
-																										true, 
-																										locale
+																										true, locale
 																									);
 									notifierPeople.setFormNameEng(UtilProperty.getMessage("prop.dps.form.name.extension", null));
 									notifierPeople.setFormNameAr(UtilProperty.getMessage("prop.dps.form.name.extension", null, new Locale("ar")));
@@ -323,6 +496,9 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		
 		return extensionDTOResult;
 	}
+
+	
+
 	
 	/**
 	 * 
@@ -341,7 +517,7 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 	/*Rule 2 -- first seminar completed if program option reqire thesis / If candidate doesn't have thesis then approver will be advisor*/ 
 	/*Rule 3 -- Starting from week 10 */
 	/*Rule 4 -- Student can apply only once for extension */
-	public boolean isRuleStudentComplete(String studentNo, String stdStatCode)
+	public boolean isRuleStudentComplete(String studentNo, String stdStatCode, Locale locale)
 	{
 		boolean	result 								= 	false;
 
@@ -351,10 +527,13 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		boolean	isWeekSpecifiedAvailable			=	false;
 		boolean	isAlreadyExtensionApproved			=	false;
 		
+		Map<String, Object> myRules					=	new LinkedHashMap<String, Object>();
+		
+		
 		hasThesis	=	ruleService.isStudentHasThesis(studentNo, stdStatCode);
 		
 		/*Rule 1*/
-		isLastSemester	= ruleService.lastSemester(studentNo, stdStatCode);
+		isLastSemester	= ruleService.lastSemester(studentNo, stdStatCode, String.valueOf(Constants.CONST_ALLOWED_EXTRA_DAYS_MORE_EXTENSION));
 		
 		
 		/*Rule 2*/
@@ -365,7 +544,7 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		
 		
 		/*Rule 3*/
-		isWeekSpecifiedAvailable	=	ruleService.isCurrentDateInSpecificWeek(Constants.CONST_WEEK_10);
+		isWeekSpecifiedAvailable				=	ruleService.isCurrentDateInSpecificWeek(Constants.CONST_WEEK_10, String.valueOf(Constants.CONST_ALLOWED_EXTRA_DAYS_MORE_EXTENSION));
 		
 		/*Rule 4  */
 		isAlreadyExtensionApproved				=	ruleService.isExtensionRecordAlreadyExist(studentNo, stdStatCode);
@@ -389,7 +568,44 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 			}
 		}
 		
+		
+		/****************** RULE TEXT - START *****************************/
+		YearSemester					yearSemester			=	ruleService.getRuleLastYearSemester(String.valueOf(Constants.CONST_ALLOWED_EXTRA_DAYS_MORE_EXTENSION));
+		String							studentMode				=	dpsServiceDao.getStudentMode(studentNo, stdStatCode);
+		StudentCompletionAndJoinTime	completionAndJoinTime	=	ruleService.getJoinAndCloseTime(studentNo, stdStatCode);
+		int								postponeCount			=	ruleService.countPostpone(studentNo, stdStatCode);
+		boolean							isLangCourse			=	ruleService.isLanguageCourseTaken(studentNo, yearSemester.getYear(), completionAndJoinTime.getFromCCYrCode(), completionAndJoinTime.getFromSemCode());
+		int 							totalSem				=	0;
+		if(studentMode.equals(Constants.CONST_FULL_TIME))
+		{
+			totalSem		=	completionAndJoinTime.getEstimatedSemesters();		//For Full Time Students
+		}
+		else
+		{
+			totalSem		=	completionAndJoinTime.getMaximumSemesters();		// For Part Time Students
+		}
+		
+		
+		/* Storing the rules for user */
+		myRules.put("isAlreadyExtensionApproved", new NameValue(true, UtilProperty.getMessage("prop.dps.extension.already.approved", null, locale), dpsServiceDao.booToString(isAlreadyExtensionApproved, locale)));
+		myRules.put("hasThesis", new NameValue(hasThesis, UtilProperty.getMessage("prop.dps.has.thesis", null, locale), dpsServiceDao.booToString(hasThesis, locale)));
+		myRules.put("isLastSemester", new NameValue(true, UtilProperty.getMessage("prop.dps.last.semester", null, locale), dpsServiceDao.booToString(isLastSemester,locale)));
+			myRules.put("curYearSemester", new NameValue(true, UtilProperty.getMessage("prop.dps.current.year.semester", null, locale), String.valueOf(yearSemester.getYear())+"/"+String.valueOf(yearSemester.getSemester()) ));
+			myRules.put("studentMode", new NameValue(true, UtilProperty.getMessage("prop.dps.mode",null, locale), studentMode));
+			myRules.put("degreeStartTime", new NameValue(true, UtilProperty.getMessage("prop.dps.year.semester.started", null, locale), String.valueOf(completionAndJoinTime.getFromCCYrCode()+"/"+completionAndJoinTime.getFromSemCode())));
+			myRules.put("totalSem", new NameValue(true, UtilProperty.getMessage("prop.dps.year.allowed.number.of.semester", null, locale), String.valueOf(totalSem)));
+			myRules.put("postponeCount", new NameValue(true, UtilProperty.getMessage("prop.dps.count.postponement", null, locale), String.valueOf(postponeCount)));
+			myRules.put("isLangCourse", new NameValue(true, UtilProperty.getMessage("prop.dps.count.language.course", null, locale), dpsServiceDao.booToString(isLangCourse,locale)));
+		myRules.put("isFirstSeminarCompletedApplicable", new NameValue(true, UtilProperty.getMessage("prop.dps.first.seminar.completed", null,locale), dpsServiceDao.booToString(isFirstSeminarCompletedApplicable,locale)));
+		myRules.put("isWeekSpecifiedAvailable", new NameValue(true, UtilProperty.getMessage("prop.dps.week.10", null, locale), dpsServiceDao.booToString(isWeekSpecifiedAvailable,locale)));
+
+		dpsServiceDao.setMyRules(myRules);
+		
+		/****************** RULE TEXT - END *****************************/
+		
 		return result;
 	}
+	
+
 	
 }

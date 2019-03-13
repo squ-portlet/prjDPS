@@ -1,0 +1,54 @@
+<!--  
+ * Project 				:	prjDPS
+ * Organization 		:	Sultan Qaboos University
+ * Centre				:	Centre for Information System
+ * Department 			:	Web & E-Services
+ * Author				:	Bhabesh
+ * 
+ * FrameWork			:	Spring 4.0.8 (Annotation) Portlet
+ * 
+ * File Name			:	gradeIncomplete-portlet.xml
+ * 
+ * Date of Modification	:	03-January-2018
+ *  
+ * Summary				:	web context file
+ *
+ * Copyright 2018 the original author or authors.
+ *
+ * Licensed under the SQU, CIS policy
+ * you may not use this file except in compliance with the License.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ */
+--> 
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+        
+              <!-- scan spring components -->
+	  <context:component-scan base-package="om.edu.squ.squportal.portlet.dps.grade.incomplete" />   
+	  
+	    
+  <!-- DI to DPS Incomplete Grade Property for SQL Queries -->
+		<bean id="queryIncompleteGrade" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+			<property name="locations" value="classpath:sql/query_grade_incomplete.xml" />
+		</bean>
+	  
+ <!-- DI to DPS Incomplete Grade DB Dao -->			
+		<bean id="incompleteGradeDBDao"	class="om.edu.squ.squportal.portlet.dps.grade.incomplete.db.IncompleteGradeDBImpl">
+	 		<property name="nPJdbcTemplDpsIncompleteGrade" ref="namedParameterJdbcTemplateDps"/> 
+			<property name="queryProps" ref="queryProps" />
+			<property name="queryIncompleteGrade" ref="queryIncompleteGrade" />
+	 	</bean>
+
+<!-- DI to DPS Incomplete Grade Service Dao -->
+	<bean id="incompleteGradeService"	class="om.edu.squ.squportal.portlet.dps.grade.incomplete.service.IncompleteGradeServiceImpl"/>
+
+</beans>        

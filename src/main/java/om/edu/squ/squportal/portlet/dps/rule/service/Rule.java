@@ -29,17 +29,55 @@
  */
 package om.edu.squ.squportal.portlet.dps.rule.service;
 
+import om.edu.squ.squportal.portlet.dps.rule.bo.StudentCompletionAndJoinTime;
+import om.edu.squ.squportal.portlet.dps.rule.bo.WithdrawPeriod;
+import om.edu.squ.squportal.portlet.dps.rule.bo.YearSemester;
+
 /**
  * @author Bhabesh
  *
  */
 public interface Rule
 {
+	
+	/**
+	 * 
+	 * method name  : getJoinAndCloseTime
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * Rule
+	 * return type  : StudentCompletionAndJoinTime
+	 * 
+	 * purpose		: Get Joining and estimated total number of semester to completion of the course
+	 *
+	 * Date    		:	Jan 16, 2019 8:35:40 AM
+	 */
+	public StudentCompletionAndJoinTime getJoinAndCloseTime(String studentNo, String stdStatCode);
+	
+	/**
+	 * 
+	 * method name  : isLanguageCourseTaken
+	 * @param studentNo
+	 * @param currentYear
+	 * @param courseStartYear
+	 * @param courseStartSemester
+	 * @return
+	 * RuleDbDao
+	 * return type  : boolean
+	 * 
+	 * purpose		: find out possibility of have language course taken by student
+	 *
+	 * Date    		:	Dec 24, 2018 5:12:17 PM
+	 */
+	public boolean isLanguageCourseTaken(String studentNo, int currentYear, int courseStartYear, int courseStartSemester );
+	
 	/**
 	 * 
 	 * method name  : lastSemester
 	 * @param studentNo
 	 * @param stdStatCode
+	 * @param NumberOfDaysAdjust
 	 * @return
 	 * RuleServiceImpl
 	 * return type  : boolean
@@ -48,7 +86,7 @@ public interface Rule
 	 *
 	 * Date    		:	Mar 13, 2017 7:49:10 PM
 	 */
-	public boolean lastSemester(String studentNo, String stdStatCode);
+	public boolean lastSemester(String studentNo, String stdStatCode, String NumberOfDaysAdjust);
 	
 	/**
 	 * 
@@ -85,6 +123,7 @@ public interface Rule
 	 * 
 	 * method name  : isCurrentDateInSpecificWeek
 	 * @param weekNumber
+	 * @param numberOfDaysAdjust
 	 * @return
 	 * RuleServiceImpl
 	 * return type  : boolean
@@ -93,8 +132,53 @@ public interface Rule
 	 *
 	 * Date    		:	Mar 15, 2017 4:53:42 PM
 	 */
-	public boolean isCurrentDateInSpecificWeek(String weekNumber);
+	public boolean isCurrentDateInSpecificWeek(String weekNumber, String numberOfDaysAdjust);
+	
+	/**
+	 * 
+	 * method name  : getRuleLastYearSemester
+	 * @param NumberOfDaysAdjust
+	 * @return
+	 * RuleServiceImpl
+	 * return type  : YearSemester
+	 * 
+	 * purpose		: Get the year semester based on sysdate 
+	 * 					It helps when semester over but officially another semester doesn't start
+	 *
+	 * Date    		:	Jan 21, 2019 5:11:45 PM
+	 */
+	public YearSemester	getRuleLastYearSemester(String NumberOfDaysAdjust);
 
+	/**
+	 * 
+	 * method name  : getCurrentYearSemester
+	 * @return
+	 * RuleDbImpl
+	 * return type  : YearSemester
+	 * 
+	 * purpose		: Get Current year sem
+	 *
+	 * Date    		:	Mar 14, 2017 12:51:58 PM
+	 */
+	public YearSemester	getCurrentYearSemester();
+	
+
+	
+	/**
+	 * 
+	 * method name  : countPostpone
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * RuleServiceImpl
+	 * return type  : int
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Mar 14, 2017 1:08:11 PM
+	 */
+	public int countPostpone(String studentNo, String stdStatCode);
+	
 	/**
 	 * 
 	 * method name  : extensionRecordAlreadyExist
@@ -117,6 +201,7 @@ public interface Rule
 	 * @param totalRegisteredCredit
 	 * @param selectedCourseCredit
 	 * @param studyModeType
+	 * @param sectNo TODO
 	 * @return
 	 * RuleServiceImpl
 	 * return type  : boolean
@@ -125,7 +210,7 @@ public interface Rule
 	 *
 	 * Date    		:	Aug 16, 2017 4:00:37 PM
 	 */
-	public boolean isDropwTotalRegisteredCreditRuleExist(int totalRegisteredCredit,  int selectedCourseCredit, String studyModeType);
+	public boolean isDropwTotalRegisteredCreditRuleExist(int totalRegisteredCredit,  int selectedCourseCredit, String studyModeType, String sectNo);
 	
 	/**
 	 * 
@@ -141,4 +226,52 @@ public interface Rule
 	 * Date    		:	Aug 20, 2017 4:46:22 PM
 	 */
 	public boolean isDropWPeriod(String studentNo, String stdStatCode);
+	
+	/**
+	 * 
+	 * method name  : getWithdrawPeriod
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * Rule
+	 * return type  : WithdrawPeriod
+	 * 
+	 * purpose		: Get first and second withdraw period
+	 *
+	 * Date    		:	Jan 31, 2019 5:08:48 PM
+	 */
+	public WithdrawPeriod	getWithdrawPeriod(String studentNo, String stdStatCode);
+	
+	/**
+	 * 
+	 * method name  : isCourseThesis
+	 * @param studentNo
+	 * @param courseNo
+	 * @return
+	 * RuleDbDao
+	 * return type  : boolean
+	 * 
+	 * purpose		: Check the course is a thesis course or not
+	 *
+	 * Date    		:	Jan 30, 2019 2:34:48 PM
+	 */
+	public boolean isCourseThesis(String studentNo, String courseNo);
+	
+	/**
+	 * 
+	 * method name  : isSemesterExtended
+	 * @param stdStatCode
+	 * @param courseYear
+	 * @param semester
+	 * @return
+	 * Rule
+	 * return type  : boolean
+	 * 
+	 * purpose		: Check whether a particular semester of a given year extended by a student or not
+	 *                  Normally this helps to decide one rule of postpone, whether a student is not allowed to postpone 
+	 *                  a semester which he/she already extended
+	 *
+	 * Date    		:	Mar 3, 2019 12:03:22 PM
+	 */
+	public boolean isSemesterExtended(String stdStatCode, String courseYear, String semester);
 }

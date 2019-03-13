@@ -96,6 +96,10 @@ public interface DropWDBDao
 	 * @param employee
 	 * @param locale
 	 * @param studentNo
+	 * @param isDelegation 
+	 * @param applyDelegation 
+	 * @param delegationDefaultApprove 
+	 * @param delegationApprove 
 	 * @return
 	 * DropWDBImpl
 	 * return type  : List<DropWDTO>
@@ -105,7 +109,7 @@ public interface DropWDBDao
 	 * Date    		:	Apr 17, 2017 8:24:28 PM
 	 * @throws NoDBRecordException 
 	 */
-	public List<DropWDTO> getDropWForApprovers(String roleType, Employee employee, Locale locale, String studentNo) throws NoDBRecordException;
+	public List<DropWDTO> getDropWForApprovers(String roleType, Employee employee, Locale locale, String studentNo, boolean isDelegation, boolean applyDelegation, boolean delegationDefaultApprove, boolean delegationApprove) throws NoDBRecordException;
 	
 	/**
 	 * 

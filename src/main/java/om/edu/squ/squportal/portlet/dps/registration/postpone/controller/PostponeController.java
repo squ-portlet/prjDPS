@@ -38,17 +38,20 @@ import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import javax.servlet.http.HttpServletResponse;
 
+import om.edu.squ.squportal.portlet.dps.bo.Course;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
+import om.edu.squ.squportal.portlet.dps.exception.ExceptionDropDownPeriod;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentDataModel;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentModel;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.service.PostponeService;
 import om.edu.squ.squportal.portlet.dps.role.bo.RoleNameValue;
+import om.edu.squ.squportal.portlet.dps.security.Crypto;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 import om.edu.squ.squportal.portlet.dps.utility.UtilProperty;
 
@@ -83,6 +86,18 @@ public class PostponeController
 	{
 		User	user	=	dpsServiceDao.getUser(request);
 
+		/**** Security - data encryption keys *****/
+		model.addAttribute("cryptoIterationCount", Crypto.CRYPTO_ITERATION_COUNT);
+		model.addAttribute("cryptoKeySize", Crypto.CRYPTO_KEY_SIZE);
+		model.addAttribute("cryptoPassPhrase", Crypto.CRYPTO_PASSCODE);
+		/* ************************************* */
+		
+		model.addAttribute("postponeLimit", Constants.CONST_RULE_POSTPONE_STUDENT_MAXIMUM_ALLOWED);
+		model.addAttribute("statusProgress", Constants.CONST_SQL_STATUS_CODE_NAME_PROGRESS);
+		model.addAttribute("statusPending", Constants.CONST_SQL_STATUS_CODE_NAME_PENDING);
+		model.addAttribute("isUserTypeStudent", user.getUserType().equals(Constants.USER_TYPE_STUDENT));
+			
+		
 		if(user.getUserType().equals(Constants.USER_TYPE_STUDENT))
 		{
 			
@@ -92,6 +107,9 @@ public class PostponeController
 		{
 			return approverWelcome(request,model,locale);
 		} 
+		
+		
+		
 	}
 	
 	/**
@@ -111,8 +129,12 @@ public class PostponeController
 	 */
 	private	String studentWelcome(PortletRequest request, Model model, Locale locale) throws NotCorrectDBRecordException
 	{
-		User	user	=	dpsServiceDao.getUser(request);
-		Student student	= dpsServiceDao.getStudent(user.getUserId(), null, new Locale("en"));
+		User			user	=	dpsServiceDao.getUser(request);
+		Student 		student	= 	dpsServiceDao.getStudent(user.getUserId(), null, new Locale("en"));
+		List<Course> 	courses	=	postponeService.getExistingGrades(student.getAcademicDetail().getStudentNo(), locale);
+		
+		/* Implementing rules */
+		postponeService.isRuleComplete(student.getAcademicDetail().getStudentNo(), student.getAcademicDetail().getStdStatCode());
 		
 		if(!model.containsAttribute("postponeStudentDataModel"))
 		{
@@ -120,10 +142,18 @@ public class PostponeController
 			model.addAttribute("postponeStudentDataModel", postponeStudentDataModel);
 		}
 		
-		model.addAttribute("student", student);
-		model.addAttribute("currYearSem", dpsServiceDao.getCurrentYearSemester(locale));
-		model.addAttribute("nextYearSemester", dpsServiceDao.getNextYearSemester(locale));
-		model.addAttribute("reasonList", postponeService.getPostponeReasons(locale));
+		if(null == courses || courses.size() == 0)
+			
+		{
+			model.addAttribute("student", student);
+			model.addAttribute("currYearSem", dpsServiceDao.getCurrentYearSemester(locale));
+			model.addAttribute("nextYearSemester", dpsServiceDao.getNextYearSemester(locale));
+			model.addAttribute("reasonList", postponeService.getPostponeReasons(locale));
+		}
+		else
+		{
+			model.addAttribute("existingGrades", courses);
+		}
 		
 		return "/registration/postpone/student/welcomePostponeStudent";
 	}
@@ -149,7 +179,7 @@ public class PostponeController
 		Employee employee	=	null;
 		try
 		{
-			employee = dpsServiceDao.getEmployee(request,locale);
+			employee = dpsServiceDao.getEmployee(request,locale, false);
 			
 		}
 		catch (ExceptionEmptyResultset ex)
@@ -196,35 +226,50 @@ public class PostponeController
 		Student 			student			= 	null;
 		String				strJson			=	null;
 		boolean				isError			=	false;
+		boolean				errDropWPeriod	=	false;
 		
 
 		
 		try
 		{
 			student			=	dpsServiceDao.getStudent(user.getUserId(), null, new Locale("en"));
-			postponeDTOs = postponeService.setPostponeByStudent(student, studentModel,request.getRemoteUser(), locale);
+			if(null == student || null == student.getAcademicDetail())
+			{
+				/* Service enquired by staff and not student */
+			}
+			{
+				postponeDTOs = postponeService.setPostponeByStudent(student, studentModel,request.getRemoteUser(), locale);
+			}
 		}
 		catch (NotCorrectDBRecordException ex)
 		{
 			isError	=	true;
 		}
-		
-		
-		if((null != postponeDTOs) && (postponeDTOs.size() != 0) )
+		catch(ExceptionDropDownPeriod exDropPeriod)
 		{
-
-			strJson	=	gson.toJson(postponeDTOs);
-
+			isError	=	true;
+			errDropWPeriod = true;
+			logger.error("Exception exDropPeriod : "+exDropPeriod.getMessage());
+		}
+		
+		
+		if(errDropWPeriod)
+		{
+			strJson = UtilProperty.getMessage("err.dps.service.dropw.period.not.correct", null, locale);
 		}
 		else
-		{
-			
-			isError	=	true;
-			strJson = UtilProperty.getMessage("err.dps.service.not.available.text", null, locale);
+			{
+				if((null != postponeDTOs) && (postponeDTOs.size() != 0) )
+					{
+						strJson	=	gson.toJson(postponeDTOs);
+					}
+					else
+					{
+						isError	=	true;
+						strJson = UtilProperty.getMessage("err.dps.service.postpone.student.no.postpone.records", null, locale);
+					}
+			}
 
-		}
-		
-		
 		try
 		{
 
@@ -270,7 +315,7 @@ public class PostponeController
 		Employee employee;
 		try
 		{
-			employee = dpsServiceDao.getEmployee(request,locale);
+			employee = dpsServiceDao.getEmployee(request,locale, false);
 			List<PostponeDTO> dtos	=	postponeService.getPostponeForAprovers(roleNameValue.getRoleValue(), employee, locale);
 			response.getWriter().print(gson.toJson(dtos));
 
@@ -310,7 +355,7 @@ public class PostponeController
 				PostponeDTO	dtoResult	=	null;
 				try
 				{
-					employee		=	dpsServiceDao.getEmployee(request,locale);		
+					employee		=	dpsServiceDao.getEmployee(request,locale, false);		
 					employee.setUserName(request.getRemoteUser());
 					postponeDTO.setUserName(request.getRemoteUser());
 					
