@@ -79,6 +79,7 @@ public class PostponeDTO
 																				-- like advisor and supervisor. both can not be considered as approver. 
 																				    In this situation this boolean value might help
 																			 */
+	private	boolean 	applyDelegation;
 	
 	
 	/**
@@ -907,6 +908,29 @@ public class PostponeDTO
 	{
 		this.approverApplicable = approverApplicable;
 	}
+	
+
+	/**
+	 * Getter Method	: isApplyDelegation
+	 * @return the applyDelegation
+	 * 
+	 * Date				: Feb 17, 2019
+	 */
+	public boolean isApplyDelegation()
+	{
+		return this.applyDelegation;
+	}
+
+	/**
+	 * Setter method : setApplyDelegation
+	 * @param applyDelegation the applyDelegation to set
+	 * 
+	 * Date          : Feb 17, 2019 11:13:30 AM
+	 */
+	public void setApplyDelegation(boolean applyDelegation)
+	{
+		this.applyDelegation = applyDelegation;
+	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
@@ -936,7 +960,8 @@ public class PostponeDTO
 				+ ", roleName=" + this.roleName + ", approvalCode="
 				+ this.approvalCode + ", activityDate=" + this.activityDate
 				+ ", statusReject=" + this.statusReject
-				+ ", approverApplicable=" + this.approverApplicable + "]";
+				+ ", approverApplicable=" + this.approverApplicable
+				+ ", applyDelegation=" + this.applyDelegation + "]";
 	}
 	
 	

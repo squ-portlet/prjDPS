@@ -36,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import om.edu.squ.squportal.portlet.dps.bo.Course;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeReason;
 
@@ -110,6 +111,10 @@ public interface PostponeDBDao
 	 * @param employee
 	 * @param locale
 	 * @param studentNo
+	 * @param isDelegation TODO
+	 * @param applyDelegation TODO
+	 * @param delegationDefaultApprove TODO
+	 * @param delegationApprove TODO
 	 * @return
 	 * PostponeDBImpl
 	 * return type  : List<PostponeDTO>
@@ -117,8 +122,9 @@ public interface PostponeDBDao
 	 * purpose		: List of student's postpone details using employee role
 	 *
 	 * Date    		:	Sep 13, 2017 4:48:56 PM
+	 * @throws NoDBRecordException 
 	 */
-	public List<PostponeDTO> getPostponeForApprovers(String roleType, Employee employee, Locale locale, String studentNo);
+	public List<PostponeDTO> getPostponeForApprovers(String roleType, Employee employee, Locale locale, String studentNo, boolean isDelegation, boolean applyDelegation, boolean delegationDefaultApprove, boolean delegationApprove) throws NoDBRecordException;
 	
 	/**
 	 * 

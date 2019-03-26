@@ -253,4 +253,36 @@ public interface RuleDbDao
 	 */
 	public boolean isCourseThesis(String studentNo, String courseNo);
 	
+	/**
+	 * 
+	 * method name  : isSemesterExtended
+	 * @param stdStatCode
+	 * @param courseYear
+	 * @param semester
+	 * @return
+	 * RuleDbDao
+	 * return type  : boolean
+	 * 
+	 * purpose		:	Check whether a particular semester of a given year extended by a student or not
+	 *                  Normally this helps to decide one rule of postpone, whether a student is not allowed to postpone 
+	 *                  a semester which he/she already extended
+	 *
+	 * Date    		:	Mar 3, 2019 11:07:56 AM
+	 */
+	public boolean isSemesterExtended(String stdStatCode, String courseYear, String semester);
+	
+	/**
+	 * 
+	 * method name  : isSemesterPostponed
+	 * @param stdStatCode
+	 * @return
+	 * RuleDbDao
+	 * return type  : boolean
+	 * 
+	 * purpose		:	Check whether a particular semester of a given year postponed by a student or not
+	 *
+	 * Date    		:	Mar 6, 2019 12:07:38 PM
+	 */
+	public boolean isSemesterPostponed(String stdStatCode);
+	
 }

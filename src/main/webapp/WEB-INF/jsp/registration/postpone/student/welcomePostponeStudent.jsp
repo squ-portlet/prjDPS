@@ -16,61 +16,89 @@
 				<img alt="Loading ...." src="${imgAjaxLoader}">
 			</div>
 		</div>
+
+
+      <div class="row">
+      		<div class="col-sm-9"></div>
+      		<div class="col-sm-2">
+      				<a href='<spring:message code="prop.dps.postpone.link.help.user.manual"/>'>
+      					<spring:message code="prop.dps.link.help.text"/> <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+      				</a>
+      		</div>
+      </div>
+
+
 		
  	<!-- Alert for any issues -->
      <div  id="alertPostponeStudies"></div>
      <br>
-     
-   <c:choose>
-   		<c:when test="${not empty existingGrades}">
-   			<div class="alert alert-warning">
-   				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-   				<spring:message code="prop.dps.postpone.error.student.existing.grades"/>
-   			</div>
-   			
-   			<div class="panel panel-default">
-			  <div class="panel-heading">
-			    <h4 class="panel-title alert alert-warning"><spring:message code="prop.dps.postpone.student.course.existing.grades"/></h4>
-			  </div>
-			  <div class="panel-body">
-			    
-   				<table class="table table-bordered">
-   					<thead>
-   						<tr>
-   							<th><spring:message code="prop.dps.postpone.student.course.labrno"/></th>
-   							<th><spring:message code="prop.dps.postpone.student.course.name"/></th>
-   							<th><spring:message code="prop.dps.postpone.student.course.grade.value"/></th>
-   						</tr>
-   					</thead>
-   					<tbody>
-   						<c:forEach items="${existingGrades}" var="course">
-   							<tr>
-   								<td>${course.lAbrCourseNo}</td>
-   								<td>${course.courseName}</td>
-   								<td>${course.gradeValue}</td>
-   							</tr>
-   						</c:forEach>
-   					</tbody>
-   				</table>			    
-			    
-			  </div>
-			</div>
-   			
-   			
-
-   			
-   		</c:when>
-   		<c:otherwise>
-		    <div class="section">
-		      <div class="container-fluid">
-			      <div class="row" id="rowButtonAddPostpone">
-						<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalPostponeForm"><spring:message code="prop.dps.postpone.student.apply"/></button>	      
-			      </div>
-		      </div>
-		    </div>
-	    </c:otherwise>
-   </c:choose> 
-
+ 
+<!-- Applying rules -->	
+<c:choose> 
+  <c:when test="${isRuleStudentComplete}">   
+		   <c:choose>
+		   		<c:when test="${not empty existingGrades}">
+		   			<div class="alert alert-warning">
+		   				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+		   				<spring:message code="prop.dps.postpone.error.student.existing.grades"/>
+		   			</div>
+		   			
+		   			<div class="panel panel-default">
+					  <div class="panel-heading">
+					    <h4 class="panel-title alert alert-warning"><spring:message code="prop.dps.postpone.student.course.existing.grades"/></h4>
+					  </div>
+					  <div class="panel-body">
+					    
+		   				<table class="table table-bordered">
+		   					<thead>
+		   						<tr>
+		   							<th><spring:message code="prop.dps.postpone.student.course.labrno"/></th>
+		   							<th><spring:message code="prop.dps.postpone.student.course.name"/></th>
+		   							<th><spring:message code="prop.dps.postpone.student.course.grade.value"/></th>
+		   						</tr>
+		   					</thead>
+		   					<tbody>
+		   						<c:forEach items="${existingGrades}" var="course">
+		   							<tr>
+		   								<td>${course.lAbrCourseNo}</td>
+		   								<td>${course.courseName}</td>
+		   								<td>${course.gradeValue}</td>
+		   							</tr>
+		   						</c:forEach>
+		   					</tbody>
+		   				</table>			    
+					    
+					  </div>
+					</div>
+		   		</c:when>
+		   		<c:otherwise>
+				    <div class="section">
+				      <div class="container-fluid">
+					      <div class="row" id="rowButtonAddPostpone">
+								<c:if test="${not isSemesterPostponed }">
+									<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalPostponeForm"><spring:message code="prop.dps.postpone.student.apply"/></button>
+								</c:if>	      
+					      </div>
+				      </div>
+				    </div>
+			    </c:otherwise>
+		   </c:choose>
+   </c:when>
+	<c:otherwise>
+<!-- 			Rule does not satisfy -->
+			<center>
+				<div class="alert alert-warning alert-dismissible fade in" role="alert">
+						<font color="red"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></font>
+						 <spring:message code="err.dps.service.not.available.text"/>
+						 	<br>
+							<br>	<spring:message code="prop.dps.postpone.rule.text"/>
+							<br>	<spring:message code="prop.dps.postpone.rule.01"/>
+							<br>	<spring:message code="prop.dps.postpone.rule.02"/>
+							<br>	<spring:message code="prop.dps.postpone.rule.03"/> 
+				</div>
+			</center>	
+	</c:otherwise>
+</c:choose>
 	
  	<!-- Postpone data -->
     <div  id="tblPostponeStudies" ></div>
