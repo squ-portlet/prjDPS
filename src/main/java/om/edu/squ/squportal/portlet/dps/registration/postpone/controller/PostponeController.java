@@ -42,10 +42,12 @@ import om.edu.squ.squportal.portlet.dps.bo.Course;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
+import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionDropDownPeriod;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
+import om.edu.squ.squportal.portlet.dps.exception.ExceptionExtensionExists;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentDataModel;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentModel;
@@ -133,8 +135,19 @@ public class PostponeController
 		Student 		student	= 	dpsServiceDao.getStudent(user.getUserId(), null, new Locale("en"));
 		List<Course> 	courses	=	postponeService.getExistingGrades(student.getAcademicDetail().getStudentNo(), locale);
 		
-		/* Implementing rules */
-		postponeService.isRuleComplete(student.getAcademicDetail().getStudentNo(), student.getAcademicDetail().getStdStatCode());
+		
+		/* Rule applied*/
+		if(Constants.CONST_TEST_ENVIRONMENT)
+		{
+			/* test environment only */
+			model.addAttribute("isRuleStudentComplete",  true);
+		}
+		else
+		{
+			/* Implementing rules */
+			model.addAttribute("isRuleStudentComplete",postponeService.isRuleComplete(student.getAcademicDetail().getStudentNo(), student.getAcademicDetail().getStdStatCode()));
+			
+		}
 		
 		if(!model.containsAttribute("postponeStudentDataModel"))
 		{
@@ -143,7 +156,6 @@ public class PostponeController
 		}
 		
 		if(null == courses || courses.size() == 0)
-			
 		{
 			model.addAttribute("student", student);
 			model.addAttribute("currYearSem", dpsServiceDao.getCurrentYearSemester(locale));
@@ -154,6 +166,8 @@ public class PostponeController
 		{
 			model.addAttribute("existingGrades", courses);
 		}
+		
+		model.addAttribute("isSemesterPostponed", postponeService.isSemesterPostponed(student.getAcademicDetail().getStdStatCode()));
 		
 		return "/registration/postpone/student/welcomePostponeStudent";
 	}
@@ -220,13 +234,14 @@ public class PostponeController
 													
 												) 
 	{
-		Gson				gson			=	new Gson();
-		List<PostponeDTO>	postponeDTOs	=	null;
-		User				user			=	dpsServiceDao.getUser(request);
-		Student 			student			= 	null;
-		String				strJson			=	null;
-		boolean				isError			=	false;
-		boolean				errDropWPeriod	=	false;
+		Gson				gson				=	new Gson();
+		List<PostponeDTO>	postponeDTOs		=	null;
+		User				user				=	dpsServiceDao.getUser(request);
+		Student 			student				= 	null;
+		String				strJson				=	null;
+		boolean				isError				=	false;
+		boolean				errDropWPeriod		=	false;
+		boolean				errExtensionExists	=	false;
 		
 
 		
@@ -237,8 +252,9 @@ public class PostponeController
 			{
 				/* Service enquired by staff and not student */
 			}
+			else
 			{
-				postponeDTOs = postponeService.setPostponeByStudent(student, studentModel,request.getRemoteUser(), locale);
+					postponeDTOs = postponeService.setPostponeByStudent(student, studentModel,request.getRemoteUser(), locale);
 			}
 		}
 		catch (NotCorrectDBRecordException ex)
@@ -247,28 +263,38 @@ public class PostponeController
 		}
 		catch(ExceptionDropDownPeriod exDropPeriod)
 		{
-			isError	=	true;
-			errDropWPeriod = true;
+			isError			=	true;
+			errDropWPeriod 	= 	true;
 			logger.error("Exception exDropPeriod : "+exDropPeriod.getMessage());
+		}
+		catch(ExceptionExtensionExists exExtExists)
+		{
+			isError				=	true;
+			errExtensionExists 	= true;
+			logger.error("Postpone not possible. Concerned semester already extended for student Id : {} "+user.getUserId());
 		}
 		
 		
-		if(errDropWPeriod)
+		if(errDropWPeriod )
 		{
 			strJson = UtilProperty.getMessage("err.dps.service.dropw.period.not.correct", null, locale);
 		}
-		else
-			{
-				if((null != postponeDTOs) && (postponeDTOs.size() != 0) )
+		else 	if(errExtensionExists)
 					{
-						strJson	=	gson.toJson(postponeDTOs);
+						strJson = UtilProperty.getMessage("err.dps.service.postpone.semester.already.extended", null, locale);
 					}
-					else
+				else
 					{
-						isError	=	true;
-						strJson = UtilProperty.getMessage("err.dps.service.postpone.student.no.postpone.records", null, locale);
+						if((null != postponeDTOs) && (postponeDTOs.size() != 0) )
+							{
+								strJson	=	gson.toJson(postponeDTOs);
+							}
+							else
+							{
+								isError	=	true;
+								strJson = UtilProperty.getMessage("err.dps.service.postpone.student.no.postpone.records", null, locale);
+							}
 					}
-			}
 
 		try
 		{
@@ -312,17 +338,22 @@ public class PostponeController
 	{
 		Gson	gson	=	new Gson();
 		
-		Employee employee;
+		Employee employee	=	null;
 		try
 		{
-			employee = dpsServiceDao.getEmployee(request,locale, false);
-			List<PostponeDTO> dtos	=	postponeService.getPostponeForAprovers(roleNameValue.getRoleValue(), employee, locale);
+			employee = dpsServiceDao.getEmployee(request,locale, true);
+			List<PostponeDTO> dtos	=	postponeService.getPostponeForAprovers(roleNameValue.getRoleValue(), employee, locale, null);
 			response.getWriter().print(gson.toJson(dtos));
 
 		}
 		catch (ExceptionEmptyResultset ex)
 		{
 			response.getWriter().print(gson.toJson(""));
+		}
+		catch (NoDBRecordException ex)
+		{
+			logger.error("DB records not found for employee : {} of role : {}. Details : {}",employee.getEmpNumber(), roleNameValue.getRoleValue(), ex.getMessage());
+			
 		}
 		
 		
@@ -355,7 +386,7 @@ public class PostponeController
 				PostponeDTO	dtoResult	=	null;
 				try
 				{
-					employee		=	dpsServiceDao.getEmployee(request,locale, false);		
+					employee		=	dpsServiceDao.getEmployee(request,locale, Constants.CONST_IS_DELEGATION);		
 					employee.setUserName(request.getRemoteUser());
 					postponeDTO.setUserName(request.getRemoteUser());
 					

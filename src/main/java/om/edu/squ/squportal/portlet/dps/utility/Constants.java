@@ -138,6 +138,7 @@ public interface Constants
 	public static final	String	CONST_COLMN_SECOND_WITHDRAW_DATE							=	"SECOND_WITHDRAW_DATE";
 	
 	public static final	String	CONST_COLMN_EXTENSION_SEM_EXTENDED							=	"SEM_EXTENDED";
+	public static final	String	CONST_COLMN_EXTENSION_SEM_POSTPONE							=	"SEM_POSTPONED";
 	public static final	String	CONST_COLMN_POSTPONE_REASON_CODE							=	"POSTPONE_REASON_CODE";
 	public static final	String	CONST_COLMN_POSTPONE_REASON_NAME							=	"POSTPONE_REASON_NAME";
 	public static final	String	CONST_COLMN_POSTPONE_OTHER_REASON							=	"POSTPONE_OTHER_REASON";
@@ -354,7 +355,7 @@ public interface Constants
 	public	static	final	String	CONST_SQL_DELEGATE_SELECT_DELEGATEE						=	"dps.delegate.select.delegatee";
 
 	/* ---  SQL - DPS - Drop With W -- Stored Procedure -- --------------------- */	
-	public	static	final	String	CONST_PROC_DROPW_WITHDRAW_COURSE						=	"PROC_WITHDRAW_COURSE";
+	public	static	final	String	CONST_PROC_DROPW_WITHDRAW_COURSE						=	"WEB_PKG.WITHDRAW_COURSE_DPS";
 	
 	public	static	final	String	CONST_PROC_COL_NAME_P_STDNO								=	"p_stdno";
 	public	static	final	String	CONST_PROC_COL_NAME_P_SECTCD							=	"p_sectcd";
@@ -381,6 +382,7 @@ public interface Constants
 	
 	public	static	final	String	CONST_PROP_SQL_IS_THESIS_COURSE							=	"sql.rule.service.is.course.thesis";
 	public	static	final	String	CONST_PROP_SQL_RULE_IS_SEMESTER_EXTENDED				=	"sql.rule.service.is.semester.extended";
+	public	static	final	String	CONST_PROP_SQL_RULE_IS_SEMESTER_POSTPONED				=	"sql.rule.service.is.semester.postponed";
 	
 	/* ---  SQL - DPS - Role --------------------- */
 	public	static	final	String	CONST_PROP_SQL_STATUS_DESCRIPTION						=	"sql.status.description";

@@ -196,13 +196,13 @@
 						                    , :paramAdvisorRoleName 
 						                    , :paramFormName
 			                    )                       				AS  ADVISOR_STATUS
-			      ,	FUNC_IS_APPROVER(
+			      ,	NVL(FUNC_IS_APPROVER(
 							                  REG.STDNO
 							                , REG.STDSTATCD
 							                , :paramFormName
 							                , :paramRoleName
 							                , :paramEmpNo
-			                          )						 			AS	IS_APPROVER	 	
+			                          ),'N')						 			AS	IS_APPROVER	 	
 			
 			    
 		FROM

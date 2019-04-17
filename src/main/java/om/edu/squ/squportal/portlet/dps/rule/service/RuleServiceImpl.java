@@ -71,6 +71,7 @@ public class RuleServiceImpl implements Rule
 	{
 		StudentCompletionAndJoinTime	completionAndJoinTime	=	getJoinAndCloseTime(studentNo, stdStatCode);
 		YearSemester					yearSemester			=	getRuleLastYearSemester(NumberOfDaysAdjust);  //Based on current date decide the semester to cover the gap between the semesters
+
 		int 							totalSem				=	0;
 		String							studentMode				=	dpsServiceDao.getStudentMode(studentNo, stdStatCode);
 		if(studentMode.equals(Constants.CONST_FULL_TIME))
@@ -130,6 +131,7 @@ public class RuleServiceImpl implements Rule
 		}
 		
 		countTotal	=	countSem - countPostpone;
+		
 		
 		/* Exclusion of the semester counting for considering language course (e.g. English) */
 		if(isLangCourse)
@@ -371,6 +373,15 @@ public class RuleServiceImpl implements Rule
 	public boolean isSemesterExtended(String stdStatCode, String courseYear, String semester)
 	{
 		return ruleDbDao.isSemesterExtended(stdStatCode, courseYear, semester);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.rule.service.Rule#isSemesterPostponed(java.lang.String)
+	 */
+	public boolean isSemesterPostponed(String stdStatCode)
+	{
+		return ruleDbDao.isSemesterPostponed(stdStatCode);
 	}
 	
 }

@@ -15,6 +15,17 @@
 					<img alt="Loading ...." src="${imgAjaxLoader}">
 				</div>
 			</div>
+
+
+      <div class="row">
+      		<div class="col-sm-9"></div>
+      		<div class="col-sm-2">
+      				<a href='<spring:message code="prop.dps.dropw.link.help.user.manual"/>'>
+      					<spring:message code="prop.dps.link.help.text"/> <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+      				</a>
+      		</div>
+      </div>
+
 				
 <c:choose>
 		<c:when test="${isRuleStudentComplete}">	
@@ -77,9 +88,16 @@
 			<div id="divDropStatAlert"></div>
 		</c:when>
 		<c:otherwise>
-			<div class="alert alert-warning">
-				
-			</div>
+
+				<center>
+       				<div class="alert alert-warning">
+		       					<spring:message code="prop.dps.dropw.rule.text"/>
+						<br>	<spring:message code="prop.dps.dropw.rule.01"/>
+						<br>	<spring:message code="prop.dps.dropw.rule.02"/>
+						<br>	<spring:message code="prop.dps.dropw.rule.03"/>
+       				</div>
+          	</center>
+
 		</c:otherwise>
 		
 </c:choose>
@@ -106,7 +124,7 @@
 							</div>
 					  </div>
 					  <div class="panel-footer">
-					  	<button type="button" id="bttnSubmitDrop" class="btn btn-default">Submit Button</button>
+					  	<button type="button" id="bttnSubmitDrop" class="btn btn-default"><spring:message code="prop.dps.button.submit"/></button>
 					  </div>
 				  </form:form>
 			</div>
@@ -118,7 +136,7 @@
 	
 	<script id="hbCourseData" type="text/x-handlebars-template">
 			<div class="alert alert-warning">
-				Do you want to drop the course {{lAbrCourseNo}} / {{courseName}} ?
+				<spring:message code="prop.dps.dropw.student.want.to.drop"/> {{lAbrCourseNo}} / {{courseName}} ?
 			</div>	
 	</script>
 	
@@ -126,7 +144,7 @@
 
 		<p>
 			<ol class="breadcrumb">
-				<li><center>Based On action, possible dropped courses might listed below</center></li>
+				<li><center><spring:message code="prop.dps.dropw.list.dropped.courses"/></center></li>
 			</ol>
 		</p>
 	<table class="table table-bordered">
@@ -162,8 +180,45 @@
 	<div class="alert alert-warning alert-dismissible" role="alert" id="msgAlert"> 
 	  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
 	 	<strong><spring:message code="prop.dps.extension.student.applications.head.column.action"/>!</strong>
+		<br>
+				<font color="red"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></font> 
+						<spring:message code="err.dps.dropw.withdraw.not.possible.text"/>
 	  		<hr> 
-				{{{messageAlert}}}
+ 			<div class="col-sm-6 col-md-4">
+			    <div class="thumbnail">
+					<div class="caption">
+						<h4><spring:message code="prop.dps.present.situation"/></h4>
+
+						<dl>
+							{{#each .}}
+									<dt> {{hasThesis.name}} :  {{hasThesis.value}} </dt>
+										<dd> {{isThesisCourse.name}} : {{isThesisCourse.value}}</dd>
+									<dt> {{studyModeType.name}} : {{studyModeType.value}}  </dt>
+										<dd>{{totalCredit.name}} : {{totalCredit.value}}</dd>
+										<dd>{{courseCredit.name}} : {{courseCredit.value}}</dd>
+									<dt> {{isDropWPeriod.name}}	: {{isDropWPeriod.value}} </dt>
+										<dd>{{dropWPeriod.name}} : {{dropWPeriod.value}}</dd>
+							{{/each}}
+						</dl>
+					</div>
+				</div>
+			</div>
+
+ 			<div class="col-sm-6 col-md-4">
+			    <div class="thumbnail">
+					<div class="caption">
+						<h4><spring:message code="prop.dps.dropw.rule.text"/></h4>
+						<dl>
+							<dd>	<spring:message code="prop.dps.dropw.rule.01"/>	</dd>
+							<dd>	<spring:message code="prop.dps.dropw.rule.02"/>	</dd>
+							<dd>	<spring:message code="prop.dps.dropw.rule.03"/>	</dd>
+							<dd>	<spring:message code="prop.dps.dropw.rule.04"/>	</dd>
+						</dl>
+					</div>
+				</div>
+			</div>
+
+
 	</div>	
 	
 	</script>
