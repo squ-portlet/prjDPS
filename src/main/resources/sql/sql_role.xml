@@ -132,7 +132,10 @@
 						      ,SIS_CODES CODES
 						    WHERE
 						    USERS.USERCATEGORY = CODES.SISCODECD
-						      AND CODES.L_ABR_CODE LIKE 'ADMINP'
+						      AND ( 
+			                             CODES.L_ABR_CODE LIKE  'ADMINP' 
+			                          OR CODES.L_ABR_CODE LIKE  'COLCORP'
+                      			  )
 						      AND LPAD(LTRIM(USERS.USERNAME,'e'),7,0) = LPAD(:paramEmpNo,7,0)
 						      AND USERS.STATUSACTIVE='Y'
 						)
