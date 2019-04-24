@@ -139,13 +139,15 @@ public class YearSemester
 	@Override
 	public boolean equals(Object obj)
 	{
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (getClass() != obj.getClass()) return false;
 		YearSemester other = (YearSemester) obj;
-		if ((this.semesterCode != other.semesterCode) && (this.year != other.year)) return false;
-		//if (this.year != other.year) return false;
-		return true;
+		if ((this.semesterCode == other.semesterCode) && (this.year == other.year))
+			{
+			return true;
+			}
+		else
+		{
+			return false;
+		}
 	}
 	
 	

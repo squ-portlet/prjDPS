@@ -210,6 +210,8 @@ public class ExtensionStudiesController
 																						, 	studentStatCode
 																			  		)
 						  );
+		
+		model.addAttribute("weekSpecified", extensionServiceDao.getWeekSpecifiedAvailable());
 		model.addAttribute("student", student);
 		model.addAttribute("currYearSem", dpsServiceDao.getCurrentYearSemester(locale));
 		model.addAttribute("nextYearSemester", dpsServiceDao.getNextYearSemester(locale));
