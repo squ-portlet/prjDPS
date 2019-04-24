@@ -146,8 +146,7 @@ public class DPSNotificationServiceImpl implements DPSNotification
 		StringTemplate		stringEmailTemplateHigherApprover	=	stringTemplateGroup.getInstanceOf(emailTemplateMap.get(Constants.TEMPLATE_NOTIFICATION_HIGHER_APPROVER_EMAIL));
 		
 		
-		
-		
+
 							/* Student Template */
 							stringSMSTemplateStudent.setAttribute("data", notifierPeople);					
 							stringEmailTemplateStudent.setAttribute("data", notifierPeople);
@@ -164,14 +163,12 @@ public class DPSNotificationServiceImpl implements DPSNotification
 							notificationService.sendSingleSMS(toSenderSMS, smsTextStudent, "e", null, null);
 							
 							
-							
 							/* Approver Template */
 							stringEmailTemplateApprover.setAttribute("data", notifierPeople);
 							stringEmailTemplateHigherApprover.setAttribute("data", notifierPeople);
 							
 							emailBodyApprover			=	stringEmailTemplateApprover.toString();
 							emailBodyHigherApprover		=	stringEmailTemplateHigherApprover.toString();
-							
 							
 							NotifierPeople resultNotifierPeople	=	null;
 							try
@@ -183,11 +180,11 @@ public class DPSNotificationServiceImpl implements DPSNotification
 								logger.error("Error for object cloning from notification. Details : "+ex.getMessage() );
 							}
 							
-
 							if(
 										null 	==	 	resultNotifierPeople
 							  )
 							{
+
 								sendNotificationToApprovers(
 																	emailSubject
 																,	notifierPeople
@@ -197,6 +194,40 @@ public class DPSNotificationServiceImpl implements DPSNotification
 							}
 							else
 							{
+
+								/* Set the Role name of delegated approver same as actual approver */
+								try
+								{
+									resultNotifierPeople.getApprover().setRoleNameEng(notifierPeople.getApprover().getRoleNameEng());
+									resultNotifierPeople.getApprover().setRoleNameAr(notifierPeople.getApprover().getRoleNameAr());
+								}
+								catch(Exception ex)
+								{
+									logger.error("Transfering role to delegation for notification is an issue for approver : {}, Form Name : {}, Details : {}"
+											, notifierPeople.getApprover().getEmail()
+											, notifierPeople.getFormNameEng()
+											,ex.getMessage());
+								}
+
+								try
+								{
+									if(null == resultNotifierPeople.getApproverHigher())
+									{}
+									else
+									{	
+										resultNotifierPeople.getApproverHigher().setRoleNameEng(notifierPeople.getApproverHigher().getRoleNameEng());
+										resultNotifierPeople.getApproverHigher().setRoleNameAr(notifierPeople.getApproverHigher().getRoleNameAr());
+									}
+								}
+								catch(Exception ex)
+								{
+									logger.error("Transfering role to delegation for notification is an issue for Higher approver : {}, Form Name : {}, Details : {}"
+											, notifierPeople.getApproverHigher().getEmail()
+											, notifierPeople.getFormNameEng()
+											,ex.getMessage());
+								}								
+								
+
 								sendNotificationToApprovers(
 																	emailSubject
 																,	notifierPeople
@@ -208,9 +239,6 @@ public class DPSNotificationServiceImpl implements DPSNotification
 																,	resultNotifierPeople
 																,	isTest
 															);
-								
-
-								
 							}
 							
 		
@@ -244,15 +272,14 @@ public class DPSNotificationServiceImpl implements DPSNotification
 		
 		StringTemplate		stringEmailTemplateApprover			=	stringTemplateGroup.getInstanceOf(emailTemplateMap.get(Constants.TEMPLATE_NOTIFICATION_APPROVER_EMAIL));
 		StringTemplate		stringEmailTemplateHigherApprover	=	stringTemplateGroup.getInstanceOf(emailTemplateMap.get(Constants.TEMPLATE_NOTIFICATION_HIGHER_APPROVER_EMAIL));
-		
 				/* Approver Template */
 				stringEmailTemplateApprover.setAttribute("data", notifierPeople);
 				stringEmailTemplateHigherApprover.setAttribute("data", notifierPeople);
-				
+		
 				emailBodyApprover			=	stringEmailTemplateApprover.toString();
 				emailBodyHigherApprover		=	stringEmailTemplateHigherApprover.toString();
+
 				
-		
 		/* Mail sending to Approver */
 		toSenderEmail = (isTest)? new String[]{Constants.CONST_DUMMY_USER_EMAIL_TO}:new String[]{notifierPeople.getApprover().getEmail()};
 		notificationService.sendEMail(Constants.CONST_EMAIL_FROM, toSenderEmail, null, emailSubject, emailBodyApprover, null);
@@ -290,15 +317,39 @@ public class DPSNotificationServiceImpl implements DPSNotification
 	private NotifierPeople getDelegatedApprover(NotifierPeople delNotifierPeople) throws CloneNotSupportedException 
 	{
 		NotifierPeople		notifierPeople				=	(NotifierPeople) delNotifierPeople.clone();
-		
-		String 				approverUserName			=	delNotifierPeople.getApprover().getEmail().substring(0,delNotifierPeople.getApprover().getEmail().indexOf("@"));
-		String 				higherApproverUserName		=	delNotifierPeople.getApproverHigher().getEmail().substring(0,delNotifierPeople.getApproverHigher().getEmail().indexOf("@"));
+		String 				approverUserName			=	null;
+		String 				higherApproverUserName		=	null;
 
-		
+						try
+							{
+								approverUserName			=	delNotifierPeople.getApprover().getEmail().substring(0,delNotifierPeople.getApprover().getEmail().indexOf("@"));
+							}
+							catch(Exception ex)
+							{
+								logger.error("Issue found to extract approver email for delegation. Student Id : {}, Error : {} ",
+																	delNotifierPeople.getStudent().getPersonalDetail().getId(),
+																	ex.getMessage()
+											);
+							}
+
+							try
+							{
+								higherApproverUserName		=	delNotifierPeople.getApproverHigher().getEmail().substring(0,delNotifierPeople.getApproverHigher().getEmail().indexOf("@"));
+							}
+							catch(Exception ex)
+							{
+								logger.error("Issue found to extract higher approver email for delegation.Student Id : {}, Error : {} ",
+											delNotifierPeople.getStudent().getPersonalDetail().getId(),
+											ex.getMessage()
+										);
+							}
+
+
 		DelegateEmployee	empApprover					= 	dpsServiceDao.getDelegatedEmployee(approverUserName);
+
 		DelegateEmployee	empHigherApprover			= 	dpsServiceDao.getDelegatedEmployee(higherApproverUserName);
 
-		
+
 		if(null == empApprover.getUserNameDelegated() || empApprover.getUserNameDelegated().equals(Constants.CONST_NOT_AVAILABLE) )
 		{
 			notifierPeople.setApprover(null);
@@ -314,6 +365,7 @@ public class DPSNotificationServiceImpl implements DPSNotification
 			{
 				logger.error("Error fetching delegated data for approver for notification ");
 			}
+
 			Approver	approver	=	new Approver();
 						approver.setNameEng(employee.getEmpNameEn());
 						approver.setNameAr(employee.getEmpNameAr());
@@ -323,10 +375,10 @@ public class DPSNotificationServiceImpl implements DPSNotification
 						notifierPeople.setDelegateeNameEn(delNotifierPeople.getApprover().getNameEng());
 						notifierPeople.setDelegateeNameAr(delNotifierPeople.getApprover().getNameAr());
 		}
-		
-		
+
 		if(null == empHigherApprover.getUserNameDelegated() || empHigherApprover.getUserNameDelegated().equals(Constants.CONST_NOT_AVAILABLE) )
 		{
+
 			notifierPeople.setApproverHigher(null);
 		}
 		else
@@ -340,6 +392,7 @@ public class DPSNotificationServiceImpl implements DPSNotification
 			{
 				logger.error("Error fetching delegated data for higher approver for notification ");
 			}
+
 			Approver	approverHigher	=	new Approver();
 						approverHigher.setNameEng(employee.getEmpNameEn());
 						approverHigher.setNameAr(employee.getEmpNameAr());
@@ -350,16 +403,17 @@ public class DPSNotificationServiceImpl implements DPSNotification
 						notifierPeople.setDelegateeNameAr(delNotifierPeople.getApproverHigher().getNameAr());
 		}
 		
-		
+
 		if(
 			( null == empApprover.getUserNameDelegated() || empApprover.getUserNameDelegated().equals(Constants.CONST_NOT_AVAILABLE) )
 			&&
 			( null == empHigherApprover.getUserNameDelegated() || empHigherApprover.getUserNameDelegated().equals(Constants.CONST_NOT_AVAILABLE) )
 			)
 			{
+
 				notifierPeople = null;
 			}
-		
+
 		return notifierPeople;
 	}
 	

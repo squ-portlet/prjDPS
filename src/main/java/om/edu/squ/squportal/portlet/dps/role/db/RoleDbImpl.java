@@ -139,6 +139,8 @@ public class RoleDbImpl implements RoleDbDao
 																			rs.getInt(Constants.CONST_COLMN_APPROVAL_SEQUENCE)
 																		,	rs.getString(Constants.CONST_COLMN_APPROVER_ROLE_CODE)
 																		,	rs.getString(Constants.CONST_COLMN_APPROVER_ROLE_NAME)
+																		,	rs.getString(Constants.CONST_COLMN_APPROVER_ROLE_NAME_ENG)
+																		,	rs.getString(Constants.CONST_COLMN_APPROVER_ROLE_NAME_AR)
 																	 );
 				
 				return roleNameValue;

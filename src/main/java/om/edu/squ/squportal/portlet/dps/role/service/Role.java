@@ -68,7 +68,7 @@ public interface Role
 	 * 
 	 * method name  : getRoles
 	 * @param formName
-	 * @param locale TODO
+	 * @param locale
 	 * @return
 	 * RoleDbImpl
 	 * return type  : List<RoleNameValue>

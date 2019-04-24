@@ -30,6 +30,7 @@
 package om.edu.squ.squportal.portlet.dps.rule.db;
 
 import om.edu.squ.squportal.portlet.dps.rule.bo.StudentCompletionAndJoinTime;
+import om.edu.squ.squportal.portlet.dps.rule.bo.WithdrawPeriod;
 import om.edu.squ.squportal.portlet.dps.rule.bo.YearSemester;
 
 /**
@@ -53,6 +54,23 @@ public interface RuleDbDao
 	 */
 	public StudentCompletionAndJoinTime getJoinAndCloseTime(String studentNo, String stdStatCode);
 	
+	
+	/**
+	 * 
+	 * method name  : isLanguageCourseTaken
+	 * @param studentNo
+	 * @param currentYear
+	 * @param courseStartYear
+	 * @param courseStartSemester
+	 * @return
+	 * RuleDbDao
+	 * return type  : boolean
+	 * 
+	 * purpose		: find out possibility of have language course taken by student
+	 *
+	 * Date    		:	Dec 24, 2018 5:12:17 PM
+	 */
+	public boolean isLanguageCourseTaken(String studentNo, int currentYear, int courseStartYear, int courseStartSemester );
 	/**
 	 * 
 	 * method name  : countPostpone
@@ -80,6 +98,49 @@ public interface RuleDbDao
 	 * Date    		:	Mar 14, 2017 12:51:58 PM
 	 */
 	public YearSemester	getCurrentYearSemester();
+	
+	/**
+	 * 
+	 * method name  : getRuleLastYearSemester
+	 * @param NumberOfDaysAdjust TODO
+	 * @return
+	 * RuleDbDao
+	 * return type  : YearSemester
+	 * 
+	 * purpose		: Get the year semester based on sysdate 
+	 * 					It helps when semester over but officially another semester doesn't start
+	 *
+	 * Date    		:	Jan 21, 2019 5:09:26 PM
+	 */
+	public YearSemester	getRuleLastYearSemester(String NumberOfDaysAdjust);
+
+	/**
+	 * 
+	 * method name  : getLastYearSemester
+	 * @return
+	 * RuleDbDao
+	 * return type  : YearSemester
+	 * 
+	 * purpose		: Get last semester
+	 *
+	 * Date    		:	Jan 21, 2019 4:42:44 PM
+	 */
+	public YearSemester getLastYearSemester();	
+	
+	/**
+	 * 
+	 * method name  : getLastYearSemester
+	 * @param numberOfDays
+	 * @return
+	 * RuleDbDao
+	 * return type  : YearSemester
+	 * 
+	 * purpose		: Get last semester with parameter to adjust more or less days
+	 *
+	 * Date    		:	Jan 27, 2019 2:10:29 PM
+	 */
+	public YearSemester getLastYearSemester(String numberOfDays);
+	
 	
 	/**
 	 * 
@@ -115,6 +176,7 @@ public interface RuleDbDao
 	 * 
 	 * method name  : getCurrentDateInSpecificWeek
 	 * @param weekNumber
+	 * @param numberOfDaysAdjust
 	 * @return
 	 * RuleDbImpl
 	 * return type  : int
@@ -123,7 +185,7 @@ public interface RuleDbDao
 	 *
 	 * Date    		:	Mar 15, 2017 4:41:48 PM
 	 */
-	public int getCurrentDateInSpecificWeek(String weekNumber);
+	public int getCurrentDateInSpecificWeek(String weekNumber, String numberOfDaysAdjust);
 	
 	/**
 	 * *********** Specific service related query which affects rules ************************ 
@@ -160,5 +222,53 @@ public interface RuleDbDao
 	 * Date    		:	Aug 20, 2017 4:46:22 PM
 	 */
 	public boolean isDropWPeriod(String studentNo, String stdStatCode);
+	
+	/**
+	 * 
+	 * method name  : getWithdrawPeriod
+	 * @param studentNo
+	 * @param stdStatCode
+	 * @return
+	 * RuleDbDao
+	 * return type  : WithdrawPeriod
+	 * 
+	 * purpose		: Get first and second withdraw period
+	 *
+	 * Date    		:	Jan 31, 2019 4:53:34 PM
+	 */
+	public WithdrawPeriod	getWithdrawPeriod(String studentNo, String stdStatCode);
+	
+	/**
+	 * 
+	 * method name  : isCourseThesis
+	 * @param studentNo
+	 * @param courseNo
+	 * @return
+	 * RuleDbDao
+	 * return type  : boolean
+	 * 
+	 * purpose		: Check the course is a thesis course or not
+	 *
+	 * Date    		:	Jan 30, 2019 2:34:48 PM
+	 */
+	public boolean isCourseThesis(String studentNo, String courseNo);
+	
+	/**
+	 * 
+	 * method name  : isSemesterExtended
+	 * @param stdStatCode
+	 * @param courseYear
+	 * @param semester
+	 * @return
+	 * RuleDbDao
+	 * return type  : boolean
+	 * 
+	 * purpose		:	Check whether a particular semester of a given year extended by a student or not
+	 *                  Normally this helps to decide one rule of postpone, whether a student is not allowed to postpone 
+	 *                  a semester which he/she already extended
+	 *
+	 * Date    		:	Mar 3, 2019 11:07:56 AM
+	 */
+	public boolean isSemesterExtended(String stdStatCode, String courseYear, String semester);
 	
 }

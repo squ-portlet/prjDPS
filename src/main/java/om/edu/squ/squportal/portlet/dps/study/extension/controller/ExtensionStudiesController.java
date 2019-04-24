@@ -210,6 +210,8 @@ public class ExtensionStudiesController
 																						, 	studentStatCode
 																			  		)
 						  );
+		
+		model.addAttribute("weekSpecified", extensionServiceDao.getWeekSpecifiedAvailable());
 		model.addAttribute("student", student);
 		model.addAttribute("currYearSem", dpsServiceDao.getCurrentYearSemester(locale));
 		model.addAttribute("nextYearSemester", dpsServiceDao.getNextYearSemester(locale));
@@ -217,8 +219,9 @@ public class ExtensionStudiesController
 		
 		model.addAttribute("extenstions",extensions);
 		/* TODO for Apply RULE uncomment the following statement */
-		model.addAttribute("isRuleStudentComplete", true);
-		//model.addAttribute("isRuleStudentComplete", extensionServiceDao.isRuleStudentComplete(student.getAcademicDetail().getStudentNo(),student.getAcademicDetail().getStdStatCode()));
+		//model.addAttribute("isRuleStudentComplete", true);
+		model.addAttribute("isRuleStudentComplete", extensionServiceDao.isRuleStudentComplete(student.getAcademicDetail().getStudentNo(),student.getAcademicDetail().getStdStatCode(), locale));
+		model.addAttribute("myRules", dpsServiceDao.getMyRules());
 		
 		return "study/extension/student/welcomeExtensionStudent";
 	}

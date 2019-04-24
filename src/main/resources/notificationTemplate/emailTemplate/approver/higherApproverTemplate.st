@@ -11,8 +11,17 @@
 <table style="width: 100%">
 	<tr>
 		<td  colspan="3">	Dear 
-		$data.approverHigher.roleNameEng$ [$data.approverHigher.nameEng$], 
-		$if(data.delegateeNameEn)$ <br><font color='red'>(Delegated by $data.delegateeNameEn$)</font> $endif$ 
+
+		$if(data.delegateeNameEn)$
+			<font color="red">(Delegated) </font>
+		$else$
+			$data.approverHigher.roleNameEng$
+		$endif$
+			 [$data.approverHigher.nameEng$], 
+		
+		$if(data.delegateeNameEn)$ 
+			<br><font color='red'>(Delegated by $data.delegateeNameEn$)</font> 
+		$endif$ 
 		<br />
 		Detail Status of &nbsp; application is mentioned below :</td>
 	</tr>
@@ -36,7 +45,7 @@
 	<tr>
 		<td>Student Name&nbsp;&nbsp;</td>
 		<td>:</td>
-		<td> <strong>$data.student.personalDetail.name$</strong></td>
+		<td> <strong>$data.student.personalDetail.nameEng$</strong></td>
 	</tr>
 	<tr>
 		<td>Student Id</td>
@@ -51,22 +60,22 @@
 	<tr>
 		<td>Student College&nbsp;&nbsp;</td>
 		<td>:</td>
-		<td> <strong>$data.student.academicDetail.college$</strong></td>
+		<td> <strong>$data.student.academicDetail.collegeEng$</strong></td>
 	</tr>
 	<tr>
 		<td>Student Degree</td>
 		<td>:</td>
-		<td> <strong>$data.student.academicDetail.degree$</strong></td>
+		<td> <strong>$data.student.academicDetail.degreeEng$</strong></td>
 	</tr>
 	<tr>
 		<td>Student Major&nbsp;&nbsp;</td>
 		<td>:</td>
-		<td><strong> $data.student.academicDetail.major$</strong></td>
+		<td><strong> $data.student.academicDetail.majorEng$</strong></td>
 	</tr>
 	<tr>
 		<td>List of Approvers</td>
 		<td>:</td>
-		<td><strong>$data.roles : {x | $x.sequenceNo$.$x.roleValue$ &nbsp;} $</strong></td>
+		<td><strong>$data.roles : {x | $x.sequenceNo$.$x.roleValueEng$ &nbsp;} $</strong></td>
 	</tr>
 	<tr>
 		<td>Previous Approver</td>
@@ -147,7 +156,18 @@ email. Please do not reply to this email</em></span>. )</td>
 <table style="width: 100%" dir="rtl">
 	<tr>
 		<td  colspan="3">	الفاضل 
-		$data.approverHigher.roleNameEng$ [$data.approverHigher.nameEng$], <br />
+							$if(data.delegateeNameEn)$
+								<font color="red"> (المخول) </font>
+							$else$
+								$data.approverHigher.roleNameAr$ 
+							$endif$		
+							[$data.approverHigher.nameAr$], 
+							
+							$if(data.delegateeNameEn)$ 
+								<br><font color='red'>(خول بواسطة $data.delegateeNameAr$)</font> 
+							$endif$	
+							
+							<br />
 		أدناه حالة الطلب : </td>
 	</tr>
 	<tr>
@@ -163,13 +183,13 @@ email. Please do not reply to this email</em></span>. )</td>
 	<tr>
 		<td>الاستمارة</td>
 		<td>:</td>
-		<td> <strong>$data.formNameEng$</strong>
+		<td> <strong>$data.formNameAr$</strong>
 	</td>
 	</tr>
 	<tr>
 		<td>اسم الطالب/ة&nbsp;&nbsp;</td>
 		<td>:</td>
-		<td> <strong>$data.student.personalDetail.name$</strong></td>
+		<td> <strong>$data.student.personalDetail.nameAr$</strong></td>
 	</tr>
 	<tr>
 		<td>الرقم الجامعي</td>
@@ -184,33 +204,33 @@ email. Please do not reply to this email</em></span>. )</td>
 	<tr>
 		<td>الكلية</td>
 		<td>:</td>
-		<td> <strong>$data.student.academicDetail.college$</strong></td>
+		<td> <strong>$data.student.academicDetail.collegeAr$</strong></td>
 	</tr>
 	<tr>
 		<td>البرنامج</td>
 		<td>:</td>
-		<td> <strong>$data.student.academicDetail.degree$</strong></td>
+		<td> <strong>$data.student.academicDetail.degreeAr$</strong></td>
 	</tr>
 	<tr>
 		<td>التخصص&nbsp;&nbsp;</td>
 		<td>:</td>
-		<td><strong> $data.student.academicDetail.major$</strong></td>
+		<td><strong> $data.student.academicDetail.majorAr$</strong></td>
 	</tr>
 	<tr>
 		<td>قائمة الموافقات المطلوبة</td>
 		<td>:</td>
-		<td><strong>$data.roles : {x | $x.sequenceNo$.$x.roleValue$ &nbsp;} $</strong></td>
+		<td><strong>$data.roles : {x | $x.sequenceNo$.$x.roleValueAr$ &nbsp;} $</strong></td>
 	</tr>
 	<tr>
 		<td>الموافقة الحالية</td>
 		<td>:</td>
 		<td> 
-			<strong>$data.approver.roleNameEng$</strong></td>
+			<strong>$data.approver.roleNameAr$</strong></td>
 	</tr>
 	<tr>
 		<td>الحالة</td>
 		<td>&nbsp;</td>
-		<td> <strong>$data.statusDescEng$</strong> </td>
+		<td> <strong>$data.statusDescAr$</strong> </td>
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
@@ -220,7 +240,7 @@ email. Please do not reply to this email</em></span>. )</td>
 	<tr>
 		<td colspan="3">$if(data.accept)$ $else$ $if(data.progress)$ (باعتباركم 
 		الجهة الأعلى إداريا الرجاء اتخاذ ما يلزم حول الطلب أعلاه.
-'$data.approverHigher.roleNameEng$' ) $else$ (هذه 
+'$data.approverHigher.roleNameAr$' ) $else$ (هذه 
 		الرسالة للعلم فقط)
 	$endif$
 $endif$

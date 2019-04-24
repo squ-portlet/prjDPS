@@ -106,19 +106,19 @@
 	</bean>
 
 
-<!-- Data Source from DPS - Production -->	
+<!-- Data Source from DPS - Production 	-->
 		<bean id="dataSourceDps" class="org.springframework.jndi.JndiObjectFactoryBean"> 
     		<property name="jndiName" value="java:comp/env/jdbc/dpsProd"/> 
  		</bean> 
 
  		
 <!-- Data Source from DPS - Test -->	
-<!-- 
+<!--  
 		<bean id="dataSourceDps" class="org.springframework.jndi.JndiObjectFactoryBean"> 
     		<property name="jndiName" value="java:comp/env/jdbc/dpsTest"/> 
  		</bean> 
-
- --> 		
+-->
+ 		
 		<bean id="namedParameterJdbcTemplateDps" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">  
 			<constructor-arg ref="dataSourceDps"></constructor-arg>  
 		</bean>
@@ -214,8 +214,8 @@
 		
 	<!-- SMS Notification -->
  	<bean id="notificationService" class="om.edu.squ.squportal.notification.service.core.NotificationServiceCoreImpl">
- 		<property name="smsUserId" value="cis-sms-live"/>
- 		<property name="smsPassword" value="evil-sms-sic135"/>
+ 		<property name="smsUserId" value="mazinh"/>
+ 		<property name="smsPassword" value="mazinh01"/>
  	</bean>
 
 	<!-- Encryption -->

@@ -75,6 +75,8 @@ public interface Constants
 	public static final	String	CONST_COLMN_STUDENT_NO										=	"STUDENT_NO";
 	public static final	String	CONST_COLMN_STDSTATCD										=	"STDSTATCD";
 	public static final	String	CONST_COLMN_STUDENT_NAME									=	"STUDENT_NAME";
+	public static final	String	CONST_COLMN_STUDENT_NAME_ENG								=	"STUDENT_NAME_ENG";
+	public static final	String	CONST_COLMN_STUDENT_NAME_AR									=	"STUDENT_NAME_AR";
 	public static final	String	CONST_COLMN_STUDENT_GENDER									=	"STUDENT_GENDER";
 	public static final	String	CONST_COLMN_STUDENT_HOME_REGION								=	"STUDENT_HOME_REGION";
 	public static final	String	CONST_COLMN_STUDENT_HOME_WILAYAT							=	"STUDENT_HOME_WILAYAT";
@@ -85,13 +87,20 @@ public interface Constants
 	public static final	String	CONST_COLMN_STUDENT_EMAIL									=	"STUDENT_EMAIL";
 	public static final	String	CONST_COLMN_STUDENT_HAS_THESIS								=	"HAS_THESIS";
 	public static final	String	CONST_COLMN_DGR_GRAD_ESTIMATE_SEM_COUNT						=	"DGR_GRAD_ESTIMATE_SEM_COUNT";
+	public static final	String	CONST_COLMN_DGR_GRAD_MAXIMUM_SEM_COUNT						=	"DGR_GRAD_MAXIMUM_SEM_COUNT";
 
-	public static final	String	CONST_COLMN_COLLEGE_NAME									=	"COLLEGE_NAME";             
+	public static final	String	CONST_COLMN_COLLEGE_NAME									=	"COLLEGE_NAME";
+	public static final	String	CONST_COLMN_COLLEGE_NAME_ENG								=	"COLLEGE_NAME_ENG";  
+	public static final	String	CONST_COLMN_COLLEGE_NAME_AR									=	"COLLEGE_NAME_AR";  
 	public static final	String	CONST_COLMN_MAJOR_NAME										=	"MAJOR_NAME";  
+	public static final	String	CONST_COLMN_MAJOR_NAME_ENG									=	"MAJOR_NAME_ENG";
+	public static final	String	CONST_COLMN_MAJOR_NAME_AR									=	"MAJOR_NAME_AR";
 	public static final	String	CONST_COLMN_ADVISOR_ID										=	"ADVISOR_ID";
 	public static final	String	CONST_COLMN_ADVISOR_NAME									=	"ADVISOR_NAME";
 	public static final	String	CONST_COLMN_SUPERVISOR_ID									=	"SUPERVISOR_ID";
-	public static final	String	CONST_COLMN_DEGREE_NAME										=	"DEGREE_NAME";          
+	public static final	String	CONST_COLMN_DEGREE_NAME										=	"DEGREE_NAME";
+	public static final	String	CONST_COLMN_DEGREE_NAME_ENG									=	"DEGREE_NAME_ENG";
+	public static final	String	CONST_COLMN_DEGREE_NAME_AR									=	"DEGREE_NAME_AR";
 	public static final	String	CONST_COLMN_STATUS_NAME										=	"STATUS_NAME";  
 	public static final	String	CONST_COLMN_MINOR_NAME										=	"MINOR_NAME";
 	public static final	String	CONST_COLMN_SPEC_NAME										=	"SPEC_NAME";
@@ -128,6 +137,7 @@ public interface Constants
 	public static final	String	CONST_COLMN_FIRST_WITHDRAW_DATE								=	"FIRST_WITHDRAW_DATE";
 	public static final	String	CONST_COLMN_SECOND_WITHDRAW_DATE							=	"SECOND_WITHDRAW_DATE";
 	
+	public static final	String	CONST_COLMN_EXTENSION_SEM_EXTENDED							=	"SEM_EXTENDED";
 	public static final	String	CONST_COLMN_POSTPONE_REASON_CODE							=	"POSTPONE_REASON_CODE";
 	public static final	String	CONST_COLMN_POSTPONE_REASON_NAME							=	"POSTPONE_REASON_NAME";
 	public static final	String	CONST_COLMN_POSTPONE_OTHER_REASON							=	"POSTPONE_OTHER_REASON";
@@ -142,6 +152,8 @@ public interface Constants
 	public static final	String	CONST_COLMN_APPROVAL_CODE									=	"APPROVAL_CODE";
 	public static final	String	CONST_COLMN_APPROVER_ROLE_CODE								=	"APPROVER_ROLE_CODE";
 	public static final	String	CONST_COLMN_APPROVER_ROLE_NAME								=	"APPROVER_ROLE_NAME";
+	public static final	String	CONST_COLMN_APPROVER_ROLE_NAME_ENG							=	"APPROVER_ROLE_NAME_ENG";
+	public static final	String	CONST_COLMN_APPROVER_ROLE_NAME_AR							=	"APPROVER_ROLE_NAME_AR";
 	public static final	String	CONST_COLMN_APPROVAL_SEQUENCE								=	"APPROVAL_SEQUENCE";
 	public static final	String	CONST_COLMN_APPROVAL_MAX_SEQUENCE							=	"APPROVAL_MAX_SEQUENCE";
 	public static final	String	CONST_COLMN_APPROVAL_CODE_ADVISOR 							=	"ADVISOR_APPROVAL_CODE";
@@ -174,6 +186,8 @@ public interface Constants
 	public static final	String	CONST_COLMN_DELEGATED_FROM									=	"DELEGATED_FROM";
 	public static final	String	CONST_COLMN_DELEGATED_TO									=	"DELEGATED_TO";
 	
+	public static final	String	CONST_COLMN_DUMMY_DATE_01									=	"01/01/0000";
+	
 	public static final boolean	CONST_IS_DELEGATION											=	true;	
 	public static final boolean	CONST_DELEGATED_APPROVER_DEFAULT_ELIGIBLE					=	false;							//	Flag for default approving for delegatee
 	public static final boolean	CONST_DELEGATION_APPROVE_ELIGIBLE							=	true;
@@ -202,6 +216,9 @@ public interface Constants
 	
 	public static final int		CONST_FULL_TIME_ALLOWED_CREDIT_AFTER_DROP					=	9;
 	public static final int		CONST_PART_TIME_ALLOWED_CREDIT_AFTER_DROP					=	3;
+	
+	public static final int		CONST_ALLOWED_EXTRA_DAYS_NO									=	0;
+	public static final int		CONST_ALLOWED_EXTRA_DAYS_MORE_EXTENSION						=	7;
 	
 	/******************************************************/
 	public static final	String	CONST_SQL_STATUS_CODE_PENDING								=	"5539";
@@ -251,6 +268,8 @@ public interface Constants
 	
 	/************* PROPERTY FILE ******************************/
 	public	static	String	RESOURCE_PROPERTY_FILE_NAME										=	"messages";
+	public	static	String	RESOURCE_PROPERTY_FILE_NAME_EXTENSION							=	"extension";
+	
 
 	
 	/******************************************************/
@@ -344,15 +363,24 @@ public interface Constants
 	
 	/* ---  SQL - DPS - Rule --------------------- */
 	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_JOIN_CLOSE_TIME				=	"sql.rule.student.join.close.time";	
+	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_LANGUAGE_COURSE_TAKEN		=	"sql.rule.student.language.course.from.course.start";
 	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_POSTPONE_COUNT				=	"sql.rule.student.count.postpone";
 	public	static	final	String	CONST_PROP_SQL_RULE_CURRENT_YEAR_SEMESTER				=	"sql.rule.current.year.semester";
 	public	static	final	String	CONST_PROP_SQL_RULE_THESIS_CODE							=	"sql.rule.thesis.code";
 	public	static	final	String	CONST_PROP_SQL_RULE_SEMINAR_RECORD_COUNT				=	"sql.rule.seminar.complete.record.count";
 	public	static	final	String	CONST_PROP_SQL_RULE_CURR_DATE_IN_SPECIFIC_WEEK			=	"sql.rule.current.date.in.specific.week";
+	public	static	final	String	CONST_PROP_SQL_RULE_CURR_DATE_IN_SPECIFIC_WEEK_LAST_SEM	=	"sql.rule.current.date.in.specific.week.last.semester";
 	
 	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_EXTENSION_COUNT				=	"sql.rule.service.extension.select.count.student";
 	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_DROP_W_PERIOD				=	"sql.rule.service.dropw.withdraw.preriod";
-
+	public	static	final	String	CONST_PROP_SQL_RULE_STUDENT_DROP_W_DATE					=	"sql.rule.service.dropw.withdraw.dates";
+	public	static	final	String	CONST_PROP_SQL_VIEW_RULE_CURRENT_YEAR_SEMESTER			=	"sql.view.rule.current.year.semester";
+	public	static	final	String	CONST_PROP_SQL_VIEW_RULE_LAST_YEAR_SEMESTER				=	"sql.view.rule.last.year.semester";
+	public	static	final	String	CONST_PROP_SQL_RULE_DECIDE_YEAR_SEMESTER				=	"sql.rule.decicide.year.semester";
+	public	static	final	String	CONST_PROP_SQL_VIEW_RULE_LAST_YEAR_SEMESTER_PARAMETER	=	"sql.view.rule.last.year.semester.parameter";
+	
+	public	static	final	String	CONST_PROP_SQL_IS_THESIS_COURSE							=	"sql.rule.service.is.course.thesis";
+	public	static	final	String	CONST_PROP_SQL_RULE_IS_SEMESTER_EXTENDED				=	"sql.rule.service.is.semester.extended";
 	
 	/* ---  SQL - DPS - Role --------------------- */
 	public	static	final	String	CONST_PROP_SQL_STATUS_DESCRIPTION						=	"sql.status.description";
@@ -407,8 +435,8 @@ public interface Constants
 	
 	
 	
-	public	static	final	boolean	CONST_TEST_ENVIRONMENT									=	true;
-	public	static	final	String	CONST_EMAIL_FROM										=	"portal_feedback@squ.edu.om";
+	public	static	final	boolean	CONST_TEST_ENVIRONMENT									=	false;
+	public	static	final	String	CONST_EMAIL_FROM										=	"dps_eservices@squ.edu.om";
 	public	static	final	String	CONST_DUMMY_USER_EMAIL_TO								=	"bhabesh@squ.edu.om";
 
 	public	static	final	String	CONST_DUMMY_USER_SMS_TO									=	"----"; //TODO Change to phone number only in development environment 

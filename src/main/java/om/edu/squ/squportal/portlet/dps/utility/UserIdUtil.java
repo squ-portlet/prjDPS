@@ -111,7 +111,7 @@ public class UserIdUtil
 			{
 			if (isStudentId(strUserName.toUpperCase()))
 			  {
-				  user.setUserId(getStudentId(strUserName));
+				  user.setUserId(getStudentId(strUserName.toUpperCase()));
 				  user.setUserType(Constants.USER_TYPE_STUDENT);
 			  }
 			  else

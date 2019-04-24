@@ -229,6 +229,8 @@ public class DpsDbImpl implements DpsDbDao
 					
 					personalDetail.setId(rs.getString(Constants.CONST_COLMN_STUDENT_ID));
 					personalDetail.setName(rs.getString(Constants.CONST_COLMN_STUDENT_NAME));
+					personalDetail.setNameEng(rs.getString(Constants.CONST_COLMN_STUDENT_NAME_ENG));
+					personalDetail.setNameAr(rs.getString(Constants.CONST_COLMN_STUDENT_NAME_AR));
 					personalDetail.setPhone(rs.getString(Constants.CONST_COLMN_STUDENT_PHONE));
 					personalDetail.setEmail(rs.getString(Constants.CONST_COLMN_STUDENT_EMAIL));
 					personalDetail.setRegion(rs.getString(Constants.CONST_COLMN_STUDENT_HOME_REGION));
@@ -284,10 +286,16 @@ public class DpsDbImpl implements DpsDbDao
 					academicDetail.setStudentNo(rs.getString(Constants.CONST_COLMN_STUDENT_NO));
 					academicDetail.setStdStatCode(rs.getString(Constants.CONST_COLMN_STDSTATCD));
 					academicDetail.setCollege(rs.getString(Constants.CONST_COLMN_COLLEGE_NAME));
+					academicDetail.setCollegeEng(rs.getString(Constants.CONST_COLMN_COLLEGE_NAME_ENG));
+					academicDetail.setCollegeAr(rs.getString(Constants.CONST_COLMN_COLLEGE_NAME_AR));
 					academicDetail.setMajor(rs.getString(Constants.CONST_COLMN_MAJOR_NAME));
+					academicDetail.setMajorEng(rs.getString(Constants.CONST_COLMN_MAJOR_NAME_ENG));
+					academicDetail.setMajorAr(rs.getString(Constants.CONST_COLMN_MAJOR_NAME_AR));
 					academicDetail.setAdvisorId(rs.getString(Constants.CONST_COLMN_ADVISOR_ID));
 					academicDetail.setSupervisorId(rs.getString(Constants.CONST_COLMN_SUPERVISOR_ID));
 					academicDetail.setDegree(rs.getString(Constants.CONST_COLMN_DEGREE_NAME));
+					academicDetail.setDegreeEng(rs.getString(Constants.CONST_COLMN_DEGREE_NAME_ENG));
+					academicDetail.setDegreeAr(rs.getString(Constants.CONST_COLMN_DEGREE_NAME_AR));
 					academicDetail.setStatus(rs.getString(Constants.CONST_COLMN_STATUS_NAME));
 				
 				return academicDetail;
@@ -690,7 +698,14 @@ public class DpsDbImpl implements DpsDbDao
 							DelegateEmployee	delegateEmployee	=	new DelegateEmployee();
 							delegateEmployee.setUserNameDelegatee(rs.getString(Constants.CONST_COLMN_DELEGATE_USER_DELEGATEE));
 							delegateEmployee.setDelegatedFromDate(rs.getString(Constants.CONST_COLMN_DELEGATED_FROM));
-							delegateEmployee.setDelegatedToDate(rs.getString(Constants.CONST_COLMN_DELEGATED_TO));
+							if(rs.getString(Constants.CONST_COLMN_DELEGATED_TO).equals(Constants.CONST_COLMN_DUMMY_DATE_01))
+							{
+								delegateEmployee.setDelegatedToDate(null);
+							}
+							else
+								{
+									delegateEmployee.setDelegatedToDate(rs.getString(Constants.CONST_COLMN_DELEGATED_TO));
+								}
 							return delegateEmployee;
 						}
 					};
@@ -727,7 +742,14 @@ public class DpsDbImpl implements DpsDbDao
 								DelegateEmployee	delegateEmployee	=	new DelegateEmployee();
 								delegateEmployee.setUserNameDelegated(rs.getString(Constants.CONST_COLMN_DELEGATE_USER_DELEGATED));
 								delegateEmployee.setDelegatedFromDate(rs.getString(Constants.CONST_COLMN_DELEGATED_FROM));
-								delegateEmployee.setDelegatedToDate(rs.getString(Constants.CONST_COLMN_DELEGATED_TO));
+								if(rs.getString(Constants.CONST_COLMN_DELEGATED_TO).equals(Constants.CONST_COLMN_DUMMY_DATE_01))
+								{
+									delegateEmployee.setDelegatedToDate(null);
+								}
+								else
+								{
+									delegateEmployee.setDelegatedToDate(rs.getString(Constants.CONST_COLMN_DELEGATED_TO));
+								}
 								return delegateEmployee;
 							}
 						};
