@@ -258,7 +258,7 @@
           		AND CODES.L_ABR_CODE      =   'ACCPT'
   </entry>
   
-  <!-- Student can not postponed if semester already postponed -->
+    <!-- Student can not postponed if semester already postponed -->
   <entry key="sql.rule.service.is.semester.postponed">
 			SELECT 
  			      DECODE (
@@ -289,6 +289,29 @@
               REG.STDSTATCD = :paramStdStatCode 
           AND ROWNUM  = 1 
   </entry>
+                    
+  	<entry key="sql.rule.service.is.course.thesis">
+		SELECT 
+		        DECODE (
+		                    CNT
+		                  , 0, 'N','Y'
+		                )               																					AS 	IS_THESIS_COURSE
+		FROM
+		(
+		 SELECT 
+		           count(*) AS CNT
+		 FROM
+		      SCHED_STD SCH_STD
+		    , V_CRS_TYP VCT
+		 WHERE
+		          SCH_STD.CRSTYPCD  = VCT.CRSTYPCD
+		      AND SCH_STD.STDNO=:paramStdNo 
+		      AND SCH_STD.CRSNO=:paramCourseNo
+		    AND VCT.L_ABR_CRSTYP='THESI'
+		)  	
+  	</entry>
+  
+
   
   	<entry key="sql.rule.service.is.course.thesis">
 		SELECT 

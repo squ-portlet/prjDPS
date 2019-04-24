@@ -106,11 +106,11 @@
 	</bean>
 
 
+
 <!-- Data Source from DPS - Production 	-->
 		<bean id="dataSourceDps" class="org.springframework.jndi.JndiObjectFactoryBean"> 
     		<property name="jndiName" value="java:comp/env/jdbc/dpsProd"/> 
  		</bean> 
-
 
  		
 <!-- Data Source from DPS - Test -->	
