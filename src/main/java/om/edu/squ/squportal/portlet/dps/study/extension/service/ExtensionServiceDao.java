@@ -142,4 +142,17 @@ public interface ExtensionServiceDao
 	 * Date    		:	Mar 13, 2017 8:58:51 PM
 	 */
 	public boolean isRuleStudentComplete(String studentNo, String stdStatCode, Locale locale);
+	
+	/**
+	 * 
+	 * method name  : weekSpecifiedAvailable
+	 * @return
+	 * ExtensionServiceDao
+	 * return type  : boolean
+	 * 
+	 * purpose		:
+	 *
+	 * Date    		:	Apr 23, 2019 1:55:03 PM
+	 */
+	public boolean getWeekSpecifiedAvailable();
 }

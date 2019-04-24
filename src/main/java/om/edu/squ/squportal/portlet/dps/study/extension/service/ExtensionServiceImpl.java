@@ -544,8 +544,7 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		
 		
 		/*Rule 3*/
-		isWeekSpecifiedAvailable				=	ruleService.isCurrentDateInSpecificWeek(Constants.CONST_WEEK_10, String.valueOf(Constants.CONST_ALLOWED_EXTRA_DAYS_MORE_EXTENSION));
-		
+		isWeekSpecifiedAvailable				=	getWeekSpecifiedAvailable();
 		/*Rule 4  */
 		isAlreadyExtensionApproved				=	ruleService.isExtensionRecordAlreadyExist(studentNo, stdStatCode);
 		
@@ -606,6 +605,14 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		return result;
 	}
 	
-
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.study.extension.service.ExtensionServiceDao#weekSpecifiedAvailable()
+	 */
+	public boolean getWeekSpecifiedAvailable()
+	{
+		return ruleService.isCurrentDateInSpecificWeek(Constants.CONST_WEEK_10, String.valueOf(Constants.CONST_ALLOWED_EXTRA_DAYS_MORE_EXTENSION));
+	}
+	
 	
 }
