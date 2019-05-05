@@ -173,6 +173,8 @@
 				, PORTAL.COHORT                                 		AS  COHORT						    
 			    , 	GENDER                                				AS  GENDER
 			    , 	STD_EMAIL                             				AS  EMAIL
+		        ,	SECT.CCYRCD											AS	CCYRCD
+		        ,	SECT.SEMCD			    							AS	SEMCD
 	          	, DECODE
 			                (
 			                    :paramLocale
@@ -213,6 +215,7 @@
 				, STD_THESIS        THESIS
 				, V_DEPT_MAJOR      DEPT_MAJ
 				, COL_DEPT          DEPT
+				, SECT              SECT
 		WHERE 
 			          REG.STDNO     = PORTAL.STDNO
 			      AND REG.STDNO		=	T_DROP.STDNO	
@@ -222,7 +225,7 @@
 			--      AND THESIS.STDNO       = REG.STDNO (+)
 			      AND THESIS.STDNO (+)      = PORTAL.STDNO 
 			      AND PORTAL.COLLEGE_CODE = COL.L_ABR_CC
-		
+				  AND T_DROP.SECTCD     =   SECT.SECTCD
 		          AND 
 		              ( 
 		                      :paramColCode = COL.COLCENCD		 		--  College DEAN/ ASST DEAN

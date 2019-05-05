@@ -288,6 +288,7 @@ public class DropWDBImpl implements DropWDBDao
 				academicDetail.setCollege(rs.getString(Constants.CONST_COLMN_COLLEGE_NAME));
 				academicDetail.setDegree(rs.getString(Constants.CONST_COLMN_DEGREE_NAME));
 				
+				
 				advisor.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_ADVISOR_STATUS));
 				
 				if(rs.getString(Constants.CONST_COLMN_ROLE_IS_APPROVER).equals(Constants.CONST_YES))
@@ -304,6 +305,8 @@ public class DropWDBImpl implements DropWDBDao
 				student.setAcademicDetail(academicDetail);
 				dropWDTO.setStudent(student);
 				dropWDTO.setAdvisor(advisor);
+				
+				dropWDTO.setYearSemester(rs.getString(Constants.COST_COL_DPS_COURSE_YEAR)+"/"+rs.getString(Constants.COST_COL_DPS_SEMESTER_CODE));
 				
 				/* Delegation */
 				if(isDelegation)
@@ -375,7 +378,6 @@ public class DropWDBImpl implements DropWDBDao
 		{
 			namedParameterMap.put("paramStdNo", studentNo);
 		}
-		
 		try
 		{
 			return nPJdbcTemplDpsDropW.query(SQL_DROPW_SELECT_STUDENT_RECORDS_BY_EMPLOYEE, namedParameterMap, mapper);
