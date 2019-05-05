@@ -34,6 +34,7 @@ import java.util.Locale;
 
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
+import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
 import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO;
 import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionReason;
 import om.edu.squ.squportal.portlet.dps.study.extension.model.ExtensionStudentDataModel;
@@ -104,8 +105,9 @@ public interface ExtensionServiceDao
 	 * purpose		: Get list of students for approvers
 	 *
 	 * Date    		:	Feb 15, 2017 10:09:55 PM
+	 * @throws ExceptionEmptyResultset 
 	 */
-	public List<ExtensionDTO> getExtensionsForApprovers(String roleType, Employee employee, Locale locale);
+	public List<ExtensionDTO> getExtensionsForApprovers(String roleType, Employee employee, Locale locale) throws ExceptionEmptyResultset;
 	
 	
 	/**

@@ -82,15 +82,19 @@
     <entry key="dps.select.employee.detail">
     	<![CDATA[
     		SELECT
-	    		USERNAME 																   	AS	 	EMPNO
-			   	,COLCENCD             												       	AS		BRANCH_CODE
-			  	,DEPTNO             												        AS		DEPT_CODE
-          		,EMAIL                                      								AS    	EMP_EMAIL
+	    		USR.USERNAME 																AS	 	EMPNO
+				, (FAC.EMPFIRNM || ' ' || FAC.EMPTRIBLNM)									AS		EMP_NAME_EN
+				, (FAC.A_EMPFIRNM || ' ' || FAC.A_EMPTRIBLNM)								AS		EMP_NAME_AR
+			   	,USR.COLCENCD             												    AS		BRANCH_CODE
+			  	,USR.DEPTNO             												    AS		DEPT_CODE
+          		,USR.EMAIL                                      							AS    	EMP_EMAIL
 			FROM
-			  SIS_USERS
+			  SIS_USERS	USR
+			  ,FAC_SURNM  FAC
 			WHERE
-			        LTRIM(USERNAME,'e') =   :paramEmpNumber
-			  AND   STATUSACTIVE          =   'Y'
+			        LTRIM(USR.USERNAME,'e') =   :paramEmpNumber
+			  AND	LTRIM(USR.USERNAME,'e')	=	TO_CHAR(FAC.EMPNO)		
+			  AND   USR.STATUSACTIVE          =   'Y'	
     	]]>
     </entry>
     <entry key="personal.details.of.student">
@@ -98,6 +102,8 @@
    	        SELECT     SI.STD_ID 															AS 		STUDENT_ID, 
    	                   SI.STDNO                                                          	AS	    STUDENT_NO,  
                        NVL(DECODE(:paramLocale,'en',SI.STD_NAME,SI.A_STD_NAME),'-') 		AS 		STUDENT_NAME,
+                       NVL(SI.STD_NAME,'-')											 		AS 		STUDENT_NAME_ENG,
+                       NVL(SI.A_STD_NAME,'-') 												AS 		STUDENT_NAME_AR,
                        NVL(DECODE(:paramLocale,'en',SI.HOME_REGION,SI.AHOME_REGION),'-') 	AS 		STUDENT_HOME_REGION,
                        NVL(DECODE(:paramLocale,'en',SI.HOME_WILLAYAT,SI.AHOME_WILAYAT),'-') AS 		STUDENT_HOME_WILAYAT,
                        NVL(DECODE(:paramLocale,'en',SI.TOWN_VILLAGE,SI.AHOME_TOWN),'-') 	AS 		STUDENT_TOWN_VILLAGE,
@@ -120,7 +126,11 @@
                        	SI.STDNO                                                          	AS	    STUDENT_NO,
                        	SI.STDSTATCD														AS		STDSTATCD,
                        	DECODE(:paramLocale,'en',SI.COLLEGENM, SI.A_COLLEGENM) 			  	AS 		COLLEGE_NAME,
-                       	NVL(DECODE(:paramLocale,'en',SI.MAJORNAME, SI.A_MAJORNAME ),'') 	AS 		MAJOR_NAME,     
+                       	SI.COLLEGENM										 			  	AS 		COLLEGE_NAME_ENG,
+                       	SI.A_COLLEGENM										 			  	AS 		COLLEGE_NAME_AR,
+                       	NVL(DECODE(:paramLocale,'en',SI.MAJORNAME, SI.A_MAJORNAME ),'') 	AS 		MAJOR_NAME, 
+                       	NVL(SI.MAJORNAME,'-')												AS		MAJOR_NAME_ENG,
+                       	NVL(SI.A_MAJORNAME,'-')												AS		MAJOR_NAME_AR,    
                        	SI.ADVISOR														  	AS		ADVISOR_ID,
                        	(
                           SELECT 
@@ -131,7 +141,9 @@
                                   STD_ID = SI.STD_ID
                               AND ACTIVE = 'Y' 
                        	)                                                                  	AS 		ADVISOR_NAME,
-                       	DECODE(:paramLocale,'en',SI.DEGREE_NAME, SI.A_DEGREE_NAME)			AS 		DEGREE_NAME,          
+                       	DECODE(:paramLocale,'en',SI.DEGREE_NAME, SI.A_DEGREE_NAME)			AS 		DEGREE_NAME, 
+                       	SI.DEGREE_NAME														AS 		DEGREE_NAME_ENG,
+                       	SI.A_DEGREE_NAME													AS 		DEGREE_NAME_AR,
                        	DECODE(:paramLocale,'en',SI.STATUS_NAME, SI.A_STATUS_NAME) 			AS 		STATUS_NAME,         
                        	NVL(DECODE(:paramLocale,'en',SI.MINORNAME, SI.A_MINORNAME ),'')  	AS 		MINOR_NAME ,      
                        	NVL(DECODE(:paramLocale,'en',SI.SPECNAME, SI.A_SPECNAME ),'')   	AS 		SPEC_NAME,
@@ -149,23 +161,47 @@
     	 ]]>
     </entry>
     <entry key="dps.select.student.mode">
-			SELECT
-			      		CODES.L_ABR_CODE													AS		STD_MODE												
-			FROM
-			      		SIS_CODES CODES
-			    	,   STD_SPNSR SPNSR
-			WHERE
-			        	SPNSR.RELEASETYPECD = CODES.SISCODECD
-			    	AND SPNSR.STDNO = :paramStdNo
-			    	AND SPNSR.STDSTATCD = :paramStdStatCode
-			   		AND SPNSR.FROMDTE = (
-				                            SELECT 
-				                              MAX(FROMDTE) 
-				                            FROM
-				                              STD_SPNSR
-				                            WHERE STDNO = :paramStdNo
-				                            AND   STDSTATCD = :paramStdStatCode
-			                        	)    
+		    <![CDATA[
+							SELECT 
+							        DECODE(
+							                  STD_MODE
+							                , 'DEFAULT', 'FULL', STD_MODE
+							              )
+							FROM
+							(
+							    SELECT 
+							          STD_MODE
+							    FROM
+							    (
+							          SELECT
+							                    CODES.L_ABR_CODE													AS		STD_MODE												
+							          FROM
+							                    SIS_CODES CODES
+							                ,   STD_SPNSR SPNSR
+							          WHERE
+							                    SPNSR.RELEASETYPECD = CODES.SISCODECD
+							                AND SPNSR.STDNO = :paramStdNo
+							                AND SPNSR.STDSTATCD = :paramStdStatCode
+							                AND SPNSR.FROMDTE = (
+							                                        SELECT 
+							                                          MAX(FROMDTE) 
+							                                        FROM
+							                                          STD_SPNSR
+							                                        WHERE STDNO = :paramStdNo
+							                                        AND   STDSTATCD = :paramStdStatCode
+							                                    )  
+							    
+							          UNION
+							          
+							          SELECT 'DEFAULT'
+							          FROM DUAL
+
+							    )  
+							    
+							    ORDER BY STD_MODE DESC
+							)
+							WHERE ROWNUM < 2
+			]]>    
     </entry>
     
     <entry key="dps.stored.procedure.sp.approver.next">
@@ -203,5 +239,61 @@
     	FROM
     		DUAL
     </entry>
-    
+    <entry key="dps.sequence.no">
+		SELECT 
+					DPS_SQ.NEXTVAL 	 														AS	SEQUENCE_NUMBER
+		FROM 
+					DUAL
+	</entry>
+	<entry key="dps.delegate.select.delegated">
+		<![CDATA[
+				SELECT * FROM
+				(
+					SELECT DISTINCT
+					      NVL(D1.DAR_TO_USERNAME,'NA')          										AS  DELEGATED
+					    , TO_CHAR(D1.DAR_FROM_DATE,'DD/MM/YYYY')  										AS  DELEGATED_FROM
+					    , TO_CHAR(D1.DAR_TO_DATE,'DD/MM/YYYY')    										AS  DELEGATED_TO
+					FROM
+					DPS_ADDITIONAL_ROLES D1, 
+					DPS_ADDITIONAL_ROLES D2
+					
+					WHERE 
+					        D1.DARM_SRL_NO (+) = D2.DARM_SRL_NO
+					    AND D1.DAR_FROM_USERNAME(+) = :paramDelegatedUserName
+					    AND SYSDATE BETWEEN D1.DAR_FROM_DATE(+) AND D1.DAR_TO_DATE(+)
+					    AND D1.DAR_ACTIVE(+)='Y'	
+					ORDER BY 
+			          CASE 
+			            WHEN DELEGATED='NA' THEN 100
+			            ELSE 1
+			          END
+					)
+			 	WHERE ROWNUM < 2  
+	 	]]>        
+	</entry>
+	<entry key="dps.delegate.select.delegatee">
+		<![CDATA[
+			SELECT * FROM
+			(
+			SELECT DISTINCT
+			      NVL(D1.DAR_FROM_USERNAME,'NA')          										AS  DELEGATEE
+			    , TO_CHAR(D1.DAR_FROM_DATE,'DD/MM/YYYY')  										AS  DELEGATED_FROM
+			    , TO_CHAR(D1.DAR_TO_DATE,'DD/MM/YYYY')    										AS  DELEGATED_TO
+			FROM
+			DPS_ADDITIONAL_ROLES D1, 
+			DPS_ADDITIONAL_ROLES D2
+			
+			WHERE 
+			        D1.DARM_SRL_NO (+) = D2.DARM_SRL_NO
+			    AND D1.DAR_TO_USERNAME(+) = :paramDelegatedUserName
+			    AND SYSDATE BETWEEN D1.DAR_FROM_DATE(+) AND D1.DAR_TO_DATE(+)
+			    AND D1.DAR_ACTIVE(+)='Y'
+			ORDER BY 
+	          CASE 
+	            WHEN DELEGATEE='NA' THEN 100
+	            ELSE 1
+	          END
+			  )WHERE ROWNUM < 2  
+	 	]]> 		  
+	</entry>
 </properties>

@@ -44,6 +44,7 @@ import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
+import om.edu.squ.squportal.portlet.dps.exception.ExceptionDropDownPeriod;
 import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.bo.PostponeDTO;
 import om.edu.squ.squportal.portlet.dps.registration.postpone.model.PostponeStudentDataModel;
@@ -178,7 +179,7 @@ public class PostponeController
 		Employee employee	=	null;
 		try
 		{
-			employee = dpsServiceDao.getEmployee(request,locale);
+			employee = dpsServiceDao.getEmployee(request,locale, false);
 			
 		}
 		catch (ExceptionEmptyResultset ex)
@@ -225,6 +226,7 @@ public class PostponeController
 		Student 			student			= 	null;
 		String				strJson			=	null;
 		boolean				isError			=	false;
+		boolean				errDropWPeriod	=	false;
 		
 
 		
@@ -243,20 +245,31 @@ public class PostponeController
 		{
 			isError	=	true;
 		}
-		
-		
-		if((null != postponeDTOs) && (postponeDTOs.size() != 0) )
-		{
-			strJson	=	gson.toJson(postponeDTOs);
-		}
-		else
+		catch(ExceptionDropDownPeriod exDropPeriod)
 		{
 			isError	=	true;
-			strJson = UtilProperty.getMessage("err.dps.service.postpone.student.no.postpone.records", null, locale);
+			errDropWPeriod = true;
+			logger.error("Exception exDropPeriod : "+exDropPeriod.getMessage());
 		}
+		
+		
+		if(errDropWPeriod)
+		{
+			strJson = UtilProperty.getMessage("err.dps.service.dropw.period.not.correct", null, locale);
+		}
+		else
+			{
+				if((null != postponeDTOs) && (postponeDTOs.size() != 0) )
+					{
+						strJson	=	gson.toJson(postponeDTOs);
+					}
+					else
+					{
+						isError	=	true;
+						strJson = UtilProperty.getMessage("err.dps.service.postpone.student.no.postpone.records", null, locale);
+					}
+			}
 
-		
-		
 		try
 		{
 
@@ -302,7 +315,7 @@ public class PostponeController
 		Employee employee;
 		try
 		{
-			employee = dpsServiceDao.getEmployee(request,locale);
+			employee = dpsServiceDao.getEmployee(request,locale, false);
 			List<PostponeDTO> dtos	=	postponeService.getPostponeForAprovers(roleNameValue.getRoleValue(), employee, locale);
 			response.getWriter().print(gson.toJson(dtos));
 
@@ -342,7 +355,7 @@ public class PostponeController
 				PostponeDTO	dtoResult	=	null;
 				try
 				{
-					employee		=	dpsServiceDao.getEmployee(request,locale);		
+					employee		=	dpsServiceDao.getEmployee(request,locale, false);		
 					employee.setUserName(request.getRemoteUser());
 					postponeDTO.setUserName(request.getRemoteUser());
 					

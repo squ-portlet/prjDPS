@@ -9,8 +9,18 @@
 	<portlet:resourceURL id="ajaxCoursesToBeDropped" var="urlAjaxCoursesToBeDropped"></portlet:resourceURL>
 	<portlet:resourceURL id="ajaxApproverAction" var="urlAjaxApproverAction"></portlet:resourceURL>
 
+
+      <div class="row">
+      		<div class="col-sm-9"></div>
+      		<div class="col-sm-2">
+      				<a href='<spring:message code="prop.dps.dropw.link.help.user.manual"/>'>
+      					<spring:message code="prop.dps.link.help.text"/> <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+      				</a>
+      		</div>
+      </div>
+
 	<ul class="nav nav-tabs">
-		<li role="presentation" id="idNav-home" class="clsNavRole active"><a href="#">Home</a></li>
+		<li role="presentation" id="idNav-home" class="clsNavRole active"><a href="#"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
 		<c:if test="${(not empty employee) }">
 			<c:forEach items="${employee.myRoles}" var="myRole">
 				<li class="clsNavRole" id="idNav-${myRole.roleName}" role="presentation"><a id="role-${myRole.roleName}" href="#">${myRole.roleValue}</a></li>
@@ -38,6 +48,7 @@
                   <th ><spring:message code="prop.dps.student.student.id"/></th>
                   <th ><spring:message code="prop.dps.student.student.name"/></th>
                   <th ><spring:message code="prop.dps.student.student.cohort"/></th>
+                  <th> <spring:message code="prop.dps.student.student.sem"/></th>
                   <th ><spring:message code="prop.dps.student.student.college"/></th>
                   <th ><spring:message code="prop.dps.student.student.program"/></th>
 <!--                   <th colspan="3">Approver</th> -->
@@ -126,15 +137,24 @@
 			<th><spring:message code="prop.dps.student.student.id"/></th>
 			<th><spring:message code="prop.dps.student.student.name"/></th>
 			<th><spring:message code="prop.dps.student.student.cohort"/></th>
+			<th> <spring:message code="prop.dps.student.student.sem"/></th>
 			<th><spring:message code="prop.dps.student.student.college"/></th>
 			<th><spring:message code="prop.dps.student.student.program"/></th>
 		</tr>
 		
 		{{#each .}}
 			<tr>
-				<td><a class="clsStudentCourse" href="#" approver={{approver}} studentNo={{student.academicDetail.studentNo}} stdStatCode={{student.academicDetail.stdStatCode}} studentId={{student.academicDetail.id}} studentName="{{student.academicDetail.studentName}}">{{student.academicDetail.id}}</a></td>
+				<td>
+					<a class="clsStudentCourse" href="#" approver={{approver}} studentNo={{student.academicDetail.studentNo}} stdStatCode={{student.academicDetail.stdStatCode}} studentId={{student.academicDetail.id}} studentName="{{student.academicDetail.studentName}}">{{student.academicDetail.id}}</a>
+					&nbsp;
+					{{#if applyDelegation}}	
+						<span class="glyphicon glyphicon-record" aria-hidden="true"></span>
+					{{/if}}
+				</td>
 				<td>{{student.academicDetail.studentName}}</td>
 				<td>{{student.academicDetail.cohort}}</td>
+				<td>{{yearSemester}}</td>
+						
 				<td>{{student.academicDetail.college}}</td>
 				<td>{{student.academicDetail.degree}}</td>
 			</tr>
@@ -159,7 +179,7 @@
 					<th><spring:message code="prop.dps.course.action"/></th>									
 				</tr>
 
-				{{#each .}}
+				{{#each courses}}
 					<tr>
 	    				<td>{{lAbrCourseNo}}</td>
 	    				<td>{{courseName}}</td>
@@ -167,8 +187,12 @@
 	    				<td>{{credits}}</td>
 	    				<td>
 							{{#if statusPending}}
-								  	<div class="col-xs-4"><label><input type="radio" courseNo={{courseNo}} lAbrCourseNo={{lAbrCourseNo}} sectionNo={{sectionNo}} sectCode={{sectCode}} class ="clsAppAction" name="appAction" id="appRadio1" value="${appApprove}" data-toggle="modal" data-target="#modalApprovForm"><spring:message code="prop.dps.role.approve.text"/></label> </div> 
-									<div class="col-xs-2"><label><input type="radio" courseNo={{courseNo}} lAbrCourseNo={{lAbrCourseNo}} sectionNo={{sectionNo}} sectCode={{sectCode}} class ="clsAppAction" name="appAction" id="appRadio2" value="${appRecect}" data-toggle="modal" data-target="#modalApprovForm"> <spring:message code="prop.dps.role.reject.text"/> </label></div> 
+									{{#ifCond ../approverMain 'true'}}
+									  	<div class="col-xs-4"><label><input type="radio" courseNo={{courseNo}} lAbrCourseNo={{lAbrCourseNo}} sectionNo={{sectionNo}} sectCode={{sectCode}} class ="clsAppAction" name="appAction" id="appRadio1" value="${appApprove}" data-toggle="modal" data-target="#modalApprovForm"><spring:message code="prop.dps.role.approve.text"/></label> </div> 
+										<div class="col-xs-2"><label><input type="radio" courseNo={{courseNo}} lAbrCourseNo={{lAbrCourseNo}} sectionNo={{sectionNo}} sectCode={{sectCode}} class ="clsAppAction" name="appAction" id="appRadio2" value="${appRecect}" data-toggle="modal" data-target="#modalApprovForm"> <spring:message code="prop.dps.role.reject.text"/> </label></div>
+									{{else}}
+										
+									{{/ifCond}} 
 							{{else}}
 								{{statusDesc}}
 							{{/if}}
@@ -176,7 +200,7 @@
 					</tr>
 			{{/each}} 
 			{{else}}
-					{{#each .}}
+					{{#each courses}}
 						<tr>
 	    					<td>{{lAbrCourseNo}}</td>
 	    					<td>{{courseName}}</td>

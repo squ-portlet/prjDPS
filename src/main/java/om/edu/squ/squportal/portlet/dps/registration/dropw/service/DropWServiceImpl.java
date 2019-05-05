@@ -29,20 +29,26 @@
  */
 package om.edu.squ.squportal.portlet.dps.registration.dropw.service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.gson.Gson;
+
 import om.edu.squ.squportal.portlet.dps.bo.AcademicDetail;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
+import om.edu.squ.squportal.portlet.dps.bo.NameValue;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NoDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotCorrectDBRecordException;
 import om.edu.squ.squportal.portlet.dps.dao.db.exception.NotSuccessFulDBUpdate;
 import om.edu.squ.squportal.portlet.dps.dao.service.DpsServiceDao;
+import om.edu.squ.squportal.portlet.dps.exception.ExceptionEmptyResultset;
 import om.edu.squ.squportal.portlet.dps.notification.bo.NotifierPeople;
 import om.edu.squ.squportal.portlet.dps.notification.service.DPSNotification;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO;
@@ -50,7 +56,9 @@ import om.edu.squ.squportal.portlet.dps.registration.dropw.db.DropWDBDao;
 import om.edu.squ.squportal.portlet.dps.registration.dropw.model.DropCourseModel;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalDTO;
 import om.edu.squ.squportal.portlet.dps.role.bo.ApprovalTransactionDTO;
+import om.edu.squ.squportal.portlet.dps.rule.bo.WithdrawPeriod;
 import om.edu.squ.squportal.portlet.dps.rule.service.Rule;
+import om.edu.squ.squportal.portlet.dps.study.extension.bo.ExtensionDTO;
 import om.edu.squ.squportal.portlet.dps.utility.Constants;
 import om.edu.squ.squportal.portlet.dps.utility.UtilProperty;
 
@@ -61,7 +69,7 @@ import om.edu.squ.squportal.portlet.dps.utility.UtilProperty;
 public class DropWServiceImpl implements DropWService
 {
 	private final Logger 	logger 						= 	LoggerFactory.getLogger(this.getClass());
-	private		  boolean	stdModeCreditApplied		=	false;  
+	private		  boolean	stdModeCreditApplied		=	true;  
 	
 	private		  String	dropWTimeApplied			=	Constants.CONST_RULE_DROP_W_PERIOD_NOT_APPLIED;
 	
@@ -230,32 +238,121 @@ public class DropWServiceImpl implements DropWService
 	 * purpose		: Get List of student records for courses to be dropped 
 	 *
 	 * Date    		:	Apr 17, 2017 8:24:28 PM
+	 * @throws ExceptionEmptyResultset 
 	 */
-	public List<DropWDTO> getDropWForApprovers(String roleType, Employee employee, Locale locale) throws NoDBRecordException
+	public List<DropWDTO> getDropWForApprovers(String roleType, Employee employee, Locale locale) throws NoDBRecordException, ExceptionEmptyResultset
 	{
+		List<DropWDTO> 	resultList	=	null;
+		
 		if(employee.getEmpNumber().substring(0,1).equals("e"))
 		{
 			employee.setEmpNumber(employee.getEmpNumber().substring(1));
 		}
 		
-		return dropWDBDao.getDropWForApprovers(roleType, employee, locale, null);
+		
+		if(null == employee.getEmpNumberDelegated())
+		{
+			resultList	=	dropWDBDao.getDropWForApprovers(
+																	roleType
+																, 	employee
+																, 	locale
+																, 	null
+																, 	false
+																, 	false
+																, 	false
+																, 	false
+															);
+			return resultList;
+		}
+		else
+		{
+			List<DropWDTO>	listResultForDelegated	=	null;
+			List<DropWDTO>	listResultForDelegatee	=	null;
+			
+			Gson				gson					=	new Gson();
+			Employee			delegatedEmployee 		= 	dpsServiceDao.getEmployee(employee.getEmpNumberDelegated(), employee.getUserNameDelegated(), locale, false);
+
+			if(delegatedEmployee.getEmpNumber().substring(0,1).equals("e"))
+			{
+				delegatedEmployee.setEmpNumber(delegatedEmployee.getEmpNumber().substring(1));
+				
+				delegatedEmployee.setUserNameDelegated(employee.getUserNameDelegated());
+				delegatedEmployee.setEmpNumberDelegated(employee.getEmpNumberDelegated());
+				delegatedEmployee.setUserNameDelegatee(employee.getUserNameDelegatee());
+				delegatedEmployee.setEmpNumberDelegatee(employee.getEmpNumberDelegatee());
+			}
+			Employee			delegateeEmployee		=	dpsServiceDao.getEmployee(employee.getEmpNumberDelegatee(), employee.getUserNameDelegatee(), locale, false);
+			if(delegateeEmployee.getEmpNumber().substring(0,1).equals("e"))
+			{
+				delegateeEmployee.setEmpNumber(delegateeEmployee.getEmpNumber().substring(1));
+				
+				delegateeEmployee.setUserNameDelegated(employee.getUserNameDelegated());
+				delegateeEmployee.setEmpNumberDelegated(employee.getEmpNumberDelegated());									
+				delegateeEmployee.setUserNameDelegatee(employee.getUserNameDelegatee());
+				delegateeEmployee.setEmpNumberDelegatee(employee.getEmpNumberDelegatee());
+			}
+			
+			/* Delegatee employee not required to view records of delegated */
+			if(employee.getUserName().equals(employee.getUserNameDelegatee()))
+			{
+				listResultForDelegatee	= dropWDBDao.getDropWForApprovers 
+						(
+								roleType
+							, 	delegateeEmployee
+							, 	locale
+							, 	null
+							, 	Constants.CONST_IS_DELEGATION
+							, 	true
+							, 	Constants.CONST_DELEGATED_APPROVER_DEFAULT_ELIGIBLE
+							, 	Constants.CONST_DELEGATION_APPROVE_NOT_ELIGIBLE
+						);
+				return listResultForDelegatee;						
+			}
+			else
+			{
+				listResultForDelegatee	= dropWDBDao.getDropWForApprovers 
+											(
+													roleType
+												, 	delegateeEmployee
+												, 	locale
+												, 	null
+												, 	Constants.CONST_IS_DELEGATION
+												, 	true
+												, 	Constants.CONST_DELEGATED_APPROVER_DEFAULT_ELIGIBLE
+												, 	Constants.CONST_DELEGATION_APPROVE_ELIGIBLE
+											);
+				
+				listResultForDelegated	= dropWDBDao.getDropWForApprovers 
+											(
+													roleType
+												, 	delegatedEmployee
+												, 	locale
+												, 	null
+												, 	Constants.CONST_IS_DELEGATION
+												, 	false
+												, 	Constants.CONST_DELEGATED_APPROVER_DEFAULT_ELIGIBLE
+												, 	Constants.CONST_DELEGATION_APPROVE_ELIGIBLE
+											);
+				
+				
+				listResultForDelegated.addAll(listResultForDelegatee);
+				return 	listResultForDelegated;
+			}
+			
+			
+			
+		}
+		
+		
+		
 	}
 	
 	
-	/**
-	 * 
-	 * method name  : setDropWCourseUpdate
-	 * @param dropWDTO
-	 * @return
-	 * DropWDBImpl
-	 * return type  : int
-	 * 
-	 * purpose		: update approver's action in drop w
-	 *
-	 * Date    		:	May 2, 2017 10:59:22 AM
-	 * @throws NotSuccessFulDBUpdate 
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.registration.dropw.service.DropWService#setDropWCourseUpdate(om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO, om.edu.squ.squportal.portlet.dps.bo.Employee, java.util.Locale)
 	 */
-	public List<DropWDTO> setDropWCourseUpdate(DropWDTO dropWDTO, Locale locale) throws NotSuccessFulDBUpdate
+	public List<DropWDTO> setDropWCourseUpdate(DropWDTO dropWDTO, Employee employee, Locale locale) throws NotSuccessFulDBUpdate
 	{
 		int						resultUpdate		=	0;
 		AcademicDetail			academicDetail		=	new AcademicDetail();
@@ -283,7 +380,7 @@ public class DropWServiceImpl implements DropWService
 	
 		if(resultUpdate >  0)
 		{
-			approvalDTO		=	setRoleTransaction(dropWDTOTransaction, locale);
+			approvalDTO		=	setRoleTransaction(dropWDTOTransaction, employee, locale);
 			return getDropWCourses(student,locale);
 		}
 		else
@@ -292,19 +389,11 @@ public class DropWServiceImpl implements DropWService
 		}
 	}
 
-	/**
-	 * 
-	 * method name  : setRoleTransaction
-	 * @param dropWDTO
-	 * @return
-	 * DropWServiceImpl
-	 * return type  : ApprovalDTO
-	 * 
-	 * purpose		: Add records to approval transaction table
-	 *
-	 * Date    		:	Aug 1, 2017 5:40:55 PM
+	/*
+	 * (non-Javadoc)
+	 * @see om.edu.squ.squportal.portlet.dps.registration.dropw.service.DropWService#setRoleTransaction(om.edu.squ.squportal.portlet.dps.registration.dropw.bo.DropWDTO, om.edu.squ.squportal.portlet.dps.bo.Employee, java.util.Locale)
 	 */
-	public ApprovalDTO setRoleTransaction(DropWDTO dropWDTO, Locale locale)
+	public ApprovalDTO setRoleTransaction(DropWDTO dropWDTO, Employee employee, Locale locale)
 	{
 		ApprovalTransactionDTO	transactionDTO		=	new ApprovalTransactionDTO();
 		
@@ -312,6 +401,10 @@ public class DropWServiceImpl implements DropWService
 		transactionDTO.setStdStatCode(dropWDTO.getStudentStatCode());
 		transactionDTO.setAppEmpNo(dropWDTO.getEmpNumber());
 		transactionDTO.setAppEmpName(dropWDTO.getUserName());
+		transactionDTO.setAppDelegatedEmpNo(employee.getEmpNumberDelegated());
+		transactionDTO.setAppDelegatedEmpUserName(employee.getUserNameDelegated());
+		transactionDTO.setAppDelegateeEmpNo(employee.getEmpNumberDelegatee());
+		transactionDTO.setAppDelegateeEmpUserName(employee.getUserNameDelegatee());
 		transactionDTO.setComments(dropWDTO.getRemarks());
 		transactionDTO.setRequestCode(Constants.CONST_REQUEST_CODE_DEFAULT);
 		
@@ -331,7 +424,7 @@ public class DropWServiceImpl implements DropWService
 
 				NotifierPeople notifierPeople = dpsServiceDao.getNotifierPeople(
 																					dropWDTO.getStudentNo(), 
-																					null, 
+																					dropWDTO.getStudentStatCode(), 
 																					Constants.CONST_FORM_NAME_DPS_DROP_W, 
 																					Constants.CONST_SQL_ROLE_NAME_ADVISOR, 
 																					true, locale
@@ -382,59 +475,121 @@ public class DropWServiceImpl implements DropWService
 	 *
 	 * Date    		:	May 17, 2017 3:11:11 PM
 	 */
-	public boolean isRuleStudentComplete(String studentNo, String stdStatCode, String courseNo, String sectNo)
+	public boolean isRuleStudentComplete(String studentNo, String stdStatCode, String courseNo, String sectNo, Locale locale)
 	{
 		/*Rule 1 : 	Full Time need 9 Credit after drop
 		 * 			Part Time need 3 Credit after drop
-		 * Rule 2 : Period within Drop W Period 
+		 * Rule 2 : Period within Drop W Period
+		 * 
+		 * Rule 3 : If having Thesis course, can drop any course except thesis course
 		 * */
 		
+		boolean				result				=	false;
+		Map<String, Object> myRules				=	new LinkedHashMap<String, Object>();
 		
-		/*Rule 1 */
-		String studyModeType = dpsServiceDao.getStudentMode(studentNo,stdStatCode);
-		int	totalCredit	=	dpsServiceDao.getTotalRegisteredCredit(studentNo, stdStatCode);
-		if(null==courseNo)
+		boolean 			hasThesis 			= 	false;
+							hasThesis			=	ruleService.isStudentHasThesis(studentNo, stdStatCode);
+		String 				studyModeType 		= 	dpsServiceDao.getStudentMode(studentNo,stdStatCode);
+		int					totalCredit			=	dpsServiceDao.getTotalRegisteredCredit(studentNo, stdStatCode);
+		String				courseCredit		=	"-";
+		WithdrawPeriod		withdrawPeriod		= 	ruleService.getWithdrawPeriod(studentNo, stdStatCode);
+		
+				
+		if(null == courseNo)
 		{
 			
-			this.stdModeCreditApplied	=	ruleService.isDropwTotalRegisteredCreditRuleExist(
-																						totalCredit, 
-																						0,
-																						studyModeType, null
-																					);
 		}
 		else
 		{
-			this.stdModeCreditApplied	=	ruleService.isDropwTotalRegisteredCreditRuleExist(
-																						totalCredit, 
-																						dpsServiceDao.getSelectedRegisteredCourseCredit(studentNo, stdStatCode, courseNo, sectNo),
-																						studyModeType, null
-																					);
+			courseCredit = String.valueOf(dpsServiceDao.getSelectedRegisteredCourseCredit(studentNo, stdStatCode, courseNo, sectNo));
 		}
-		
-		
-		/*Rule 2 */
-		
-		if(ruleService.isDropWPeriod(studentNo, stdStatCode))
-		{
-			this.dropWTimeApplied		= 	Constants.CONST_RULE_DROP_W_PERIOD_APPLIED; 
-		}
-		else
-		{
-			this.dropWTimeApplied		=	Constants.CONST_RULE_DROP_W_PERIOD_NOT_APPLIED;
-		}
-		
-		/* Following rules not applied at test environment
-		 * 
-		 * rule 2
-		 * */
-		
-		if(Constants.CONST_TEST_ENVIRONMENT)
-		{
-			this.dropWTimeApplied		=	Constants.CONST_RULE_DROP_W_PERIOD_NOT_APPLIED;
-		}
+					
+					
+					/* Following rules not applied at test environment */
+					if(Constants.CONST_TEST_ENVIRONMENT)
+					{
+						this.dropWTimeApplied		=	Constants.CONST_RULE_DROP_W_PERIOD_NOT_APPLIED;
+					}
+					else
+					{
+						if(ruleService.isDropWPeriod(studentNo, stdStatCode))
+						{
+							this.dropWTimeApplied		= 	Constants.CONST_RULE_DROP_W_PERIOD_NOT_APPLIED; 
+						}
+						else
+						{
+							this.dropWTimeApplied		=	Constants.CONST_RULE_DROP_W_PERIOD_APPLIED;
+						}
+					}
+					
+					/*Rule 2  - Drop W Period */
+				if(isDropWTimeApplied())
+				{
+					/* Rule 3 - Thesis Courses */
+					if(hasThesis)
+					{
+							if(ruleService.isCourseThesis(studentNo, courseNo))
+							{
+								/* can not drop thesis course */
+								result=  false;
+							}
+							else
+							{
+								result=  true;
+							}
+					}
+					else
+					{
+							/* Rule 1 - Remaining credit balance after drop for part/full time */
 
-		//TODO : Do not change result of the rule
-		return true;
+							if(null==courseNo)
+							{
+								
+								this.stdModeCreditApplied	=	ruleService.isDropwTotalRegisteredCreditRuleExist(
+																											totalCredit, 
+																											0,
+																											studyModeType, null
+																										);
+							}
+							else
+							{
+								this.stdModeCreditApplied	=	ruleService.isDropwTotalRegisteredCreditRuleExist(
+																											totalCredit, 
+																											dpsServiceDao.getSelectedRegisteredCourseCredit(studentNo, stdStatCode, courseNo, sectNo),
+																											studyModeType, null
+																										);
+							}
+							
+							result = this.stdModeCreditApplied;
+							
+					}
+					
+					
+				}
+				else
+				{
+					result = false;
+				}
+				
+			
+			
+			/****************** RULE TEXT - START *****************************/
+			
+			/* Storing the rules for user */
+			
+			myRules.put("hasThesis", new NameValue(hasThesis, UtilProperty.getMessage("prop.dps.has.thesis", null, locale), dpsServiceDao.booToString(hasThesis, locale)));
+			myRules.put("isThesisCourse", new NameValue(hasThesis, UtilProperty.getMessage("prop.dps.is.thesis.course", null, locale), dpsServiceDao.booToString(ruleService.isCourseThesis(studentNo, courseNo), locale)));
+			myRules.put("studyModeType", new NameValue(true, UtilProperty.getMessage("prop.dps.mode", null, locale), studyModeType));
+			myRules.put("stdModeCreditApplied", stdModeCreditApplied);
+			myRules.put("totalCredit", new NameValue(true, UtilProperty.getMessage("prop.dps.total.credit", null, locale), String.valueOf(totalCredit)));
+			myRules.put("courseCredit", new NameValue(true, UtilProperty.getMessage("prop.dps.course.credit", null, locale), courseCredit));
+			myRules.put("isDropWPeriod", new NameValue(true, UtilProperty.getMessage("prop.dps.dropw.is.drop.with.w.period", null, locale), dpsServiceDao.booToString(ruleService.isDropWPeriod(studentNo, stdStatCode), locale)));
+			myRules.put("dropWPeriod", new NameValue(true, UtilProperty.getMessage("prop.dps.dropw.drop.with.w.period", null, locale), UtilProperty.getMessage("prop.dps.dropw.drop.with.w.period.value", new String[]{withdrawPeriod.getFirstWithDrawDate(),withdrawPeriod.getSecondWithDrawDate()}, locale)));
+			
+			dpsServiceDao.setMyRules(myRules);
+		
+			/****************** RULE TEXT - END *****************************/
+		return result;
 	}
 	
 	/**
@@ -466,7 +621,7 @@ public class DropWServiceImpl implements DropWService
 	 */
 	public boolean isDropWTimeApplied()
 	{
-		if(this.dropWTimeApplied.equals(Constants.CONST_RULE_DROP_W_PERIOD_NOT_APPLIED))
+		if(this.dropWTimeApplied.equals(Constants.CONST_RULE_DROP_W_PERIOD_APPLIED))
 		{
 			return false;
 		}
