@@ -122,6 +122,7 @@
 									{ "mData": "cohort" },
 									{ "mData": "collegeName" },
 									{ "mData": "degreeName" },
+									{ "mData": "toYearSemester" },
 									{ "mData": "advisor.roleStatus", 
 										"render" : function(data, type, full, meta)	
 										{
