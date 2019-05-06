@@ -52,6 +52,7 @@
                   <th ><spring:message code="prop.dps.student.student.cohort"/></th>
                   <th ><spring:message code="prop.dps.student.student.college"/></th>
                   <th ><spring:message code="prop.dps.student.student.program"/></th>
+                  <th ><spring:message code="prop.dps.student.student.sem"/></th>
 <!--                   <th colspan="3">Approver</th> -->
                   <th><spring:message code="prop.dps.role.advisor.text"/></th>
                   <th><spring:message code="prop.dps.role.supervisor.text"/></th>

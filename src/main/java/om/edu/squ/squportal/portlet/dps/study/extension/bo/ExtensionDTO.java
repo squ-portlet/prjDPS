@@ -55,6 +55,7 @@ public class ExtensionDTO
 	private	String		toCcYrCode;
 	private	String		toSemCode;
 	private	String		toSemName;
+	private	String		toYearSemester;
 	private	String		commentEng;
 	private	String		commentArb;
 	private	String		userCode;									// User to insert/ update the record
@@ -368,6 +369,27 @@ public class ExtensionDTO
 	public void setToSemName(String toSemName)
 	{
 		this.toSemName = toSemName;
+	}
+	
+	/**
+	 * Getter Method	: getToYearSemester
+	 * @return the toYearSemester
+	 * 
+	 * Date				: May 5, 2019
+	 */
+	public String getToYearSemester()
+	{
+		return this.toYearSemester;
+	}
+	/**
+	 * Setter method : setToYearSemester
+	 * @param toYearSemester the toYearSemester to set
+	 * 
+	 * Date          : May 5, 2019 2:08:28 PM
+	 */
+	public void setToYearSemester(String toYearSemester)
+	{
+		this.toYearSemester = toYearSemester;
 	}
 	/**
 	 * Getter Method	: getCommentEng
@@ -794,9 +816,10 @@ public class ExtensionDTO
 				+ this.fromCcYrCode + ", fromSemCode=" + this.fromSemCode
 				+ ", fromSemName=" + this.fromSemName + ", toCcYrCode="
 				+ this.toCcYrCode + ", toSemCode=" + this.toSemCode
-				+ ", toSemName=" + this.toSemName + ", commentEng="
-				+ this.commentEng + ", commentArb=" + this.commentArb
-				+ ", userCode=" + this.userCode + ", userName=" + this.userName
+				+ ", toSemName=" + this.toSemName + ", toYearSemester="
+				+ this.toYearSemester + ", commentEng=" + this.commentEng
+				+ ", commentArb=" + this.commentArb + ", userCode="
+				+ this.userCode + ", userName=" + this.userName
 				+ ", activitiDate=" + this.activitiDate + ", reasonCode="
 				+ this.reasonCode + ", reasonDesc=" + this.reasonDesc
 				+ ", reasonOther=" + this.reasonOther + ", statusCode="
