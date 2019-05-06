@@ -333,10 +333,14 @@ public class ExtensionDbImpl implements ExtensionDbDao
 				extensionDTO.setCohort(rs.getString(Constants.CONST_COLMN_COHORT));
 				extensionDTO.setCollegeName(rs.getString(Constants.CONST_COLMN_COLLEGE_NAME));
 				extensionDTO.setDegreeName(rs.getString(Constants.CONST_COLMN_DEGREE_NAME));
-				
-	
-				
-				
+
+				extensionDTO.setToCcYrCode(rs.getString(Constants.COST_COL_DPS_TO_COURSE_YEAR_CODE));
+				extensionDTO.setToSemCode(rs.getString(Constants.COST_COL_DPS_TO_COURSE_SEM_CODE));
+				extensionDTO.setToYearSemester(
+													rs.getString(Constants.COST_COL_DPS_TO_COURSE_YEAR_CODE)
+												+	"/"
+												+	rs.getString(Constants.COST_COL_DPS_TO_COURSE_SEM_CODE)
+											  );
 				collegeDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_COLLEGE_DEAN_STATUS));
 				dpsDean.setRoleStatus(rs.getString(Constants.CONST_COLMN_ROLE_DPS_DEAN_STATUS));
 

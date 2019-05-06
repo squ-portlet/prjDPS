@@ -48,6 +48,7 @@
                   <th ><spring:message code="prop.dps.student.student.id"/></th>
                   <th ><spring:message code="prop.dps.student.student.name"/></th>
                   <th ><spring:message code="prop.dps.student.student.cohort"/></th>
+                  <th> <spring:message code="prop.dps.student.student.sem"/></th>
                   <th ><spring:message code="prop.dps.student.student.college"/></th>
                   <th ><spring:message code="prop.dps.student.student.program"/></th>
 <!--                   <th colspan="3">Approver</th> -->
@@ -136,6 +137,7 @@
 			<th><spring:message code="prop.dps.student.student.id"/></th>
 			<th><spring:message code="prop.dps.student.student.name"/></th>
 			<th><spring:message code="prop.dps.student.student.cohort"/></th>
+			<th> <spring:message code="prop.dps.student.student.sem"/></th>
 			<th><spring:message code="prop.dps.student.student.college"/></th>
 			<th><spring:message code="prop.dps.student.student.program"/></th>
 		</tr>
@@ -151,6 +153,8 @@
 				</td>
 				<td>{{student.academicDetail.studentName}}</td>
 				<td>{{student.academicDetail.cohort}}</td>
+				<td>{{yearSemester}}</td>
+						
 				<td>{{student.academicDetail.college}}</td>
 				<td>{{student.academicDetail.degree}}</td>
 			</tr>
