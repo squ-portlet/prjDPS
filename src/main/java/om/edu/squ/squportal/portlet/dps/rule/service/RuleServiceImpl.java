@@ -94,6 +94,11 @@ public class RuleServiceImpl implements Rule
 
 		int s =0;
 		
+		/*
+		 * x = year
+		 * y = semester number within the year (e.g. : 2 / 3 / 4)
+		 * s = semester count including summer
+		 * */
 		for(int x=fromStartYear; x<currYear; x++)
 		{
 			int p = 0;
@@ -111,13 +116,12 @@ public class RuleServiceImpl implements Rule
 			{
 
 				s++;
-				if(s==10) break;
+				if(s>10) break;
 				
 				if(y!=3)
 				{
 					countSem++;
 				}
-				
 			}
 			
 		}
