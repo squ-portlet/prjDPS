@@ -8,30 +8,35 @@
 						* 
 				FROM
 					(
-					    	SELECT 
-				                DISTINCT
-				                SD.STDSTATCD								AS		STDSTATCD
-				              , SD.STDNO									AS		STUDENT_NO
-				              , D.DEGRESTSEMGRD								AS		DGR_GRAD_ESTIMATE_SEM_COUNT
-				              , D.DEGRMAXSEMGRD								AS		DGR_GRAD_MAXIMUM_SEM_COUNT
-				              , SG.CCYRCD								    AS		FROMCCYRCD
-				              , SG.SEMCD 								    AS		FROMSEMCD
-				              , TO_NUMBER(TO_CHAR(SYSDATE,'YYYY'))     		AS    	CURRENT_YEAR
-				              , D.DEGRCD 
+              SELECT 
+                     SSH.STDSTATCD                              AS    STDSTATCD
+                    , SSH.STDNO                                 AS    STUDENT_NO
+                    , SSH.CCYRCD								                AS		FROMCCYRCD
+				            , SSH.SEMCD 								                AS		FROMSEMCD
+                    , CODE.L_ABR_CODE 
+                    , D.DEGRESTSEMGRD                           AS		DGR_GRAD_ESTIMATE_SEM_COUNT
+                    , D.DEGRMAXSEMGRD                           AS		DGR_GRAD_MAXIMUM_SEM_COUNT
+                    , TO_NUMBER(TO_CHAR(SYSDATE,'YYYY'))     		AS    CURRENT_YEAR
 							FROM 
-								  STD_DEGREE 	SD 
-								, DEGREE 		D
-				            	, STD_GRADES 	SG
-							WHERE 
-					                    SD.DEGRCD		  =	  D.DEGRCD 
-					            AND     SD.STDNO      =   SG.STDNO
-					            AND     SG.CCYRCD     >=  D.CCYRCD
-					            AND     SD.STDNO      =	  :paramStdNo
-					            AND     SD.STDSTATCD  =   :paramStdStatCode
-					          ORDER BY FROMCCYRCD ASC, FROMSEMCD ASC
-				 	)         
+                    STD_STATUS_HISTORY  SSH
+                 ,  SIS_CODES           CODE
+                 ,  STD_DEGREE          SD
+                 ,  DEGREE              D
+              WHERE
+                  SSH.STDNO=:paramStdNo
+                  AND (
+                            SSH.STDSTATCD = :paramStdStatCode
+                        OR  
+                            SSH.STDSTATCD IS NULL
+                        )
+                  AND   SSH.STATUSCD  = CODE.SISCODECD
+                  AND   SSH.STDSTATCD =  SD.STDSTATCD
+                  AND   SD.DEGRCD      =  D.DEGRCD
+                  AND   CODE.L_ABR_CODE IN ('PST','REG')
+              ORDER BY SSH.UPDDTE, SSH.CCYRCD, SSH.SEMCD
+ 				 	)         
 				WHERE 
-				    	ROWNUM = 1
+				    	ROWNUM = 1             
     	]]>
     </entry>
     <entry key="sql.rule.student.language.course.from.course.start">
