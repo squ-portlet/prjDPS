@@ -48,14 +48,14 @@
 				
 						<div class="col-sm-3 col-md-2">&nbsp;</div>
 				
-						  <div class="col-sm-6 col-md-4">
+						  <div class="col-sm-7 col-md-5">
 						    <div class="thumbnail">
 						      <div class="caption">
 						        <h4><spring:message code="prop.dps.present.situation"/></h4>
 						        <p>
 			          				<dl>
 				          				<c:forEach items="${myRules}" var="mapRule">
-			      								<c:if test="${mapRule.key ==  'isAlreadyExtensionApproved'}">
+			      								<c:if test="${mapRule.key ==  'isAlreadyExtensionExist'}">
 			      									<dt>
 			      										${mapRule.value.name} : ${mapRule.value.value}
 			      									</dt>
@@ -271,10 +271,10 @@
 						        <div class="row" id="divExtReasonOther" style="display: none;">
 						        	<div class="form-group">
 						        		<div class="col-sm-2">
-						        			<label for="inputEmail3" class="control-label">Other Reason</label>
+						        			<label for="inputEmail3" class="control-label"><spring:message code="prop.dps.extension.select.reason.other.text"/></label>
 						        		</div>
 						        		<div class="col-sm-8">
-						        			<form:textarea path="reasonOther"/>
+						        			<form:textarea path="reasonOther" />
 						        		</div>
 						        	</div>
 						        </div>
