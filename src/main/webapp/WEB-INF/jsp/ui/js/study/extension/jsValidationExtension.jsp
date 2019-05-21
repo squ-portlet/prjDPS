@@ -5,7 +5,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
-
 <script type="text/javascript">
 	$(function(){
 
@@ -39,7 +38,8 @@
 				      required: true
 				    },
 			    reasonOther: {
-				      required: "#reasonCode:filled"
+				      required: "#reasonCode:filled",
+				      maxlength: 100
 				}
 
 			  },
@@ -51,7 +51,11 @@
 			  messages: {
 				  yearSem: '<spring:message code="prop.dps.extension.error.student.apply.form.yearSem"/>',
 				  reasonCode: '<spring:message code="prop.dps.extension.error.student.apply.form.reasonCode"/>',
-				  reasonOther: '<spring:message code="prop.dps.extension.error.student.apply.form.reasonOther"/>'
+				  reasonOther: {
+					  required:	'<spring:message code="prop.dps.extension.error.student.apply.form.reasonOther"/>' ,
+					  maxlength: '<spring:message code="prop.dps.max.limit.of.characters" arguments="100"/>'
+					  				
+				  }
 				  
 			  }
 			});
