@@ -525,7 +525,7 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		boolean	isLastSemester 						=	false;
 		boolean isFirstSeminarCompletedApplicable	=	false;
 		boolean	isWeekSpecifiedAvailable			=	false;
-		boolean	isAlreadyExtensionApproved			=	false;
+		boolean	isAlreadyExtensionExist			=	false;
 		
 		Map<String, Object> myRules					=	new LinkedHashMap<String, Object>();
 		
@@ -546,9 +546,9 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		/*Rule 3*/
 		isWeekSpecifiedAvailable				=	getWeekSpecifiedAvailable();
 		/*Rule 4  */
-		isAlreadyExtensionApproved				=	ruleService.isExtensionRecordAlreadyExist(studentNo, stdStatCode);
+		isAlreadyExtensionExist				=	ruleService.isExtensionRecordAlreadyExist(studentNo, stdStatCode);
 		
-		if(!isAlreadyExtensionApproved)
+		if(!isAlreadyExtensionExist)
 		{
 
 			if(hasThesis)
@@ -586,7 +586,7 @@ public class ExtensionServiceImpl implements ExtensionServiceDao
 		
 		
 		/* Storing the rules for user */
-		myRules.put("isAlreadyExtensionApproved", new NameValue(true, UtilProperty.getMessage("prop.dps.extension.already.approved", null, locale), dpsServiceDao.booToString(isAlreadyExtensionApproved, locale)));
+		myRules.put("isAlreadyExtensionExist", new NameValue(true, UtilProperty.getMessage("prop.dps.extension.already.available", null, locale), dpsServiceDao.booToString(isAlreadyExtensionExist, locale)));
 		myRules.put("hasThesis", new NameValue(hasThesis, UtilProperty.getMessage("prop.dps.has.thesis", null, locale), dpsServiceDao.booToString(hasThesis, locale)));
 		myRules.put("isLastSemester", new NameValue(true, UtilProperty.getMessage("prop.dps.last.semester", null, locale), dpsServiceDao.booToString(isLastSemester,locale)));
 			myRules.put("curYearSemester", new NameValue(true, UtilProperty.getMessage("prop.dps.current.year.semester", null, locale), String.valueOf(yearSemester.getYear())+"/"+String.valueOf(yearSemester.getSemester()) ));
