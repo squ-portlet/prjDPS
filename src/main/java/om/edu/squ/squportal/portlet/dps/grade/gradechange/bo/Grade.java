@@ -41,6 +41,9 @@ public class Grade
 	private	int		gradeCodeNew;
 	private	String	gradeValOld;
 	private	String	gradeValNew;
+	private	String	gradeEnteredBy;
+	private	String	gradeEntryDate;
+	private	String	gradeUpdateDate;
 	
 	/**
 	 * Getter Method	: getGradeCode
@@ -163,6 +166,67 @@ public class Grade
 	{
 		this.gradeValNew = gradeValNew;
 	}
+	
+	/**
+	 * Getter Method	: getGradeEnteredBy
+	 * @return the gradeEnteredBy
+	 * 
+	 * Date				: Apr 29, 2019
+	 */
+	public String getGradeEnteredBy()
+	{
+		return this.gradeEnteredBy;
+	}
+	/**
+	 * Setter method : setGradeEnteredBy
+	 * @param gradeEnteredBy the gradeEnteredBy to set
+	 * 
+	 * Date          : Apr 29, 2019 2:09:12 PM
+	 */
+	public void setGradeEnteredBy(String gradeEnteredBy)
+	{
+		this.gradeEnteredBy = gradeEnteredBy;
+	}
+	/**
+	 * Getter Method	: getGradeEntryDate
+	 * @return the gradeEntryDate
+	 * 
+	 * Date				: Apr 29, 2019
+	 */
+	public String getGradeEntryDate()
+	{
+		return this.gradeEntryDate;
+	}
+	/**
+	 * Setter method : setGradeEntryDate
+	 * @param gradeEntryDate the gradeEntryDate to set
+	 * 
+	 * Date          : Apr 29, 2019 2:09:12 PM
+	 */
+	public void setGradeEntryDate(String gradeEntryDate)
+	{
+		this.gradeEntryDate = gradeEntryDate;
+	}
+	/**
+	 * Getter Method	: getGradeUpdateDate
+	 * @return the gradeUpdateDate
+	 * 
+	 * Date				: Apr 29, 2019
+	 */
+	public String getGradeUpdateDate()
+	{
+		return this.gradeUpdateDate;
+	}
+	/**
+	 * Setter method : setGradeUpdateDate
+	 * @param gradeUpdateDate the gradeUpdateDate to set
+	 * 
+	 * Date          : Apr 29, 2019 2:09:12 PM
+	 */
+	public void setGradeUpdateDate(String gradeUpdateDate)
+	{
+		this.gradeUpdateDate = gradeUpdateDate;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -172,7 +236,10 @@ public class Grade
 		return "Grade [gradeCode=" + this.gradeCode + ", gradeVal="
 				+ this.gradeVal + ", gradeCodeOld=" + this.gradeCodeOld
 				+ ", gradeCodeNew=" + this.gradeCodeNew + ", gradeValOld="
-				+ this.gradeValOld + ", gradeValNew=" + this.gradeValNew + "]";
+				+ this.gradeValOld + ", gradeValNew=" + this.gradeValNew
+				+ ", gradeEnteredBy=" + this.gradeEnteredBy
+				+ ", gradeEntryDate=" + this.gradeEntryDate
+				+ ", gradeUpdateDate=" + this.gradeUpdateDate + "]";
 	}
 	
 	

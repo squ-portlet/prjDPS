@@ -196,6 +196,8 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 		namedParameterMap.put("paramYear",  String.valueOf(yearSemester.getYear()));
 		namedParameterMap.put("paramSem",  String.valueOf(yearSemester.getSemester()));
 		namedParameterMap.put("paramEmpNo", employeeNo);
+		namedParameterMap.put("paramSectionNo", gradeDTO.getSectionNo());
+		
 		if(null == gradeDTO.getCourse().getlAbrCourseNo() || gradeDTO.getCourse().getlAbrCourseNo().trim().equals(""))
 		{
 			namedParameterMap.put("paramLAbrCrsNo",null);
@@ -739,7 +741,7 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 		};
 		
 			yearSemester	= (isRuleGradeChangeTimingFollowed) ? getRuleYearSem() : getCurrentYearSem();
-			
+
 			Map<String,String> namedParameterMap	=	new HashMap<String,String>();
 			
 			namedParameterMap.put("paramLocale", locale.getLanguage());
@@ -759,6 +761,7 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 	 * @param isRuleGradeChangeTimingFollowed
 	 * @param employeeNo
 	 * @param lAbrCourseNo
+	 * @param sectionNo
 	 * @param locale
 	 * @return
 	 * GradeChangeDBImpl
@@ -768,7 +771,7 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 	 *
 	 * Date    		:	Dec 14, 2017 3:39:51 PM
 	 */
-	public List<Student> getStudentList(boolean isRuleGradeChangeTimingFollowed, String employeeNo,String lAbrCourseNo,  Locale	locale)
+	public List<Student> getStudentList(boolean isRuleGradeChangeTimingFollowed, String employeeNo,String lAbrCourseNo,  String sectionNo, Locale	locale)
 	{
 		String	SQL_GRADE_SELECT_STUDENT_LIST		=	queryGradeChange.getProperty(Constants.CONST_SQL_GRADE_SELECT_STUDENT_LIST);
 		YearSemester	yearSemester						=	null;
@@ -799,6 +802,7 @@ public class GradeChangeDBImpl implements GradeChangeDBDao
 		namedParameterMap.put("paramSemester", String.valueOf(yearSemester.getSemester()));
 		namedParameterMap.put("paramEmpNo", employeeNo);
 		namedParameterMap.put("paramLAbrCourseNo", lAbrCourseNo);
+		namedParameterMap.put("paramSectionNo", sectionNo);
 		
 		return	nPJdbcTemplDpsGradeChange.query(SQL_GRADE_SELECT_STUDENT_LIST, namedParameterMap, rowMapper);
 		

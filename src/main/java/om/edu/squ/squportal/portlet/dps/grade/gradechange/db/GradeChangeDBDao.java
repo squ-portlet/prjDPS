@@ -186,6 +186,7 @@ public interface GradeChangeDBDao
 	 * @param isRuleGradeChangeTimingFollowed
 	 * @param employeeNo
 	 * @param lAbrCourseNo
+	 * @param sectionNo TODO
 	 * @param locale
 	 * @return
 	 * GradeChangeDBImpl
@@ -195,6 +196,6 @@ public interface GradeChangeDBDao
 	 *
 	 * Date    		:	Dec 14, 2017 3:39:51 PM
 	 */
-	public List<Student> getStudentList(boolean isRuleGradeChangeTimingFollowed, String employeeNo,String lAbrCourseNo,  Locale	locale);
+	public List<Student> getStudentList(boolean isRuleGradeChangeTimingFollowed, String employeeNo,String lAbrCourseNo,  String sectionNo, Locale	locale);
 	
 }

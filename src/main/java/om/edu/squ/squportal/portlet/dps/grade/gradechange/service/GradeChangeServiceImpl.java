@@ -107,6 +107,7 @@ public class GradeChangeServiceImpl implements GradeChangeService
 		
 		course.setlAbrCourseNo(gradeChangeModel.getlAbrCrsNo());
 		dto.setCourse(course);
+		dto.setSectionNo(gradeChangeModel.getSectionNo());
 		
 		return gradeChangeDBDao.getStudentGrades(isRuleGradeChangeTimingFollowed, dto, employeeNo, locale);
 	}
@@ -479,10 +480,10 @@ public class GradeChangeServiceImpl implements GradeChangeService
 	/**
 	 * 
 	 * method name  : getStudentList
-	 * @param isRuleGradeChangeTimingFollowed
 	 * @param employeeNo
 	 * @param lAbrCourseNo
 	 * @param locale
+	 * @param isRuleGradeChangeTimingFollowed
 	 * @return
 	 * GradeChangeDBImpl
 	 * return type  : List<Student>
@@ -491,9 +492,9 @@ public class GradeChangeServiceImpl implements GradeChangeService
 	 *
 	 * Date    		:	Dec 14, 2017 3:39:51 PM
 	 */
-	public List<Student> getStudentList( String employeeNo,String lAbrCourseNo,  Locale	locale)
+	public List<Student> getStudentList( String employeeNo,String lAbrCourseNo,  Locale	locale, String sectionNo)
 	{
-		return gradeChangeDBDao.getStudentList(isRuleGradeChangeTimingFollowed, employeeNo, lAbrCourseNo, locale);
+		return gradeChangeDBDao.getStudentList(isRuleGradeChangeTimingFollowed, employeeNo, lAbrCourseNo, sectionNo, locale);
 	}
 	
 	

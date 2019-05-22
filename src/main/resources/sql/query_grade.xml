@@ -19,21 +19,37 @@
 		        , 	SCHED_WEEKLY  SCHW
 		        , 	FAC_SURNM     FACULTY
 		        , 	CRS_BASIC     COURSE
+            
+            ,   STD_GRADES    GRADES
 		      
 		WHERE
-		              SECT.CCYRCD = :paramYear
-		        AND   SECT.SEMCD = :paramSemester
+		        		SECT.CCYRCD = :paramYear
+		        AND   	SECT.SEMCD = :paramSemester
         
-		        AND   SCHW.SECTCD = SECT.SECTCD
+		        AND   	SCHW.SECTCD = SECT.SECTCD
 		        
-		        AND   SCHW.CRSNO  = SECT.CRSNO
-		        AND   SCHW.SECTNO = SECT.SECTNO
+		        AND   	SCHW.CRSNO  = SECT.CRSNO
+		        AND   	SCHW.SECTNO = SECT.SECTNO
 		        
-		        AND   SCHW.FACSURNMCD=FACULTY.FAC_SURNMCD
-		        AND   FACULTY.EMPNO =:paramEmpNo
-		        AND   COURSE.CRSNO  = SECT.CRSNO
-		        AND   COURSE.CRSNO  = SCHW.CRSNO 
+		        AND   	SCHW.FACSURNMCD=FACULTY.FAC_SURNMCD
+		        AND   	FACULTY.EMPNO =:paramEmpNo
+		        AND   	COURSE.CRSNO  = SECT.CRSNO
+		        AND   	COURSE.CRSNO  = SCHW.CRSNO 
+		        AND		WEB_PKG.GRADES_ENTRY_ALLOWED (FACULTY.FAC_SURNMCD, SECT.SECTCD, SECT.SECTNO) = 'Y'
+            
+            	AND   	SECT.CRSNO = GRADES.CRSNO
+		        AND   	SECT.CCYRCD  = GRADES.CCYRCD
+		        AND   	SECT.SEMCD  = GRADES.SEMCD
+            	AND   	(
+                    			SECT.SECTNO  = GRADES.SECTNO
+                    		OR  GRADES.SECTNO IS NULL
+                  	  	)
 		        
+            	AND   	SCHW.CRSNO  = GRADES.CRSNO
+            	AND   	COURSE.CRSNO  = GRADES.CRSNO
+            
+            	AND   	SUBSTR(GRADES.GRADUSRACCTCD,1,1) <> 's'
+            
 		        ORDER BY L_ABR_CRSNO
 		   ]]>	
 	</entry>
@@ -42,6 +58,7 @@
 		SELECT
 		    DISTINCT
 			    PORTAL.STD_ID													AS		STUDENT_ID
+          , PORTAL.STDNO                          AS    STUDENT_NO
 			    , DECODE(
 			          :paramLocale
 			          ,'ar', PORTAL.A_STD_NAME
@@ -49,34 +66,44 @@
 			    ) 																AS  	STUDENT_NAME
 			      , GRADES.GRADUSRACCTCD
 			      , GRADES.SECTNO
-		     
+            , FACULTY.EMPNO
+            , GRADES.CCYRCD
+            , GRADES.SEMCD
+            , SECT.SECTNO
+            , PORTAL.ACTIVE
 		FROM 
 		          STD_GRADES    GRADES
 		        , SECT          SECT
 		        , SCHED_WEEKLY  SCHW
 		        , FAC_SURNM     FACULTY
 		        , V_STDINFO_PORTAL PORTAL
-		      
 		WHERE
 		              GRADES.CCYRCD = :paramYear
 		        AND   GRADES.SEMCD = :paramSemester
 		        AND   SECT.CRSNO = GRADES.CRSNO
 		        AND   SECT.CCYRCD  = GRADES.CCYRCD
 		        AND   SECT.SEMCD  = GRADES.SEMCD
-		        AND   SECT.SECTNO  = GRADES.SECTNO
+		        AND   (
+                    		SECT.SECTNO  = GRADES.SECTNO
+                    	OR  GRADES.SECTNO IS NULL
+                  	  )
 		        
 		        AND   SCHW.SECTCD = SECT.SECTCD
 		        AND   SCHW.CRSNO  = GRADES.CRSNO
-		        AND   SCHW.SECTNO = GRADES.SECTNO
+            AND   SCHW.SECTNO = SECT.SECTNO
+			--  AND   SCHW.SECTNO = GRADES.SECTNO
 		        
 		        AND   SCHW.FACSURNMCD=FACULTY.FAC_SURNMCD
 		        AND   FACULTY.EMPNO =:paramEmpNo
-		        AND   LOWER(SUBSTR(GRADES.GRADUSRACCTCD,1,1)) <> 's'
-		        AND    GRADES.L_ABR_CRSNO = :paramLAbrCourseNo
+            AND   SECT.SECTNO   =:paramSectionNo
+            
+			AND   SUBSTR(GRADES.GRADUSRACCTCD,1,1) <> 's'
+           
+            AND    GRADES.L_ABR_CRSNO = :paramLAbrCourseNo
 		        
 		        AND    GRADES.STDNO =  PORTAL.STDNO
-		        AND    PORTAL.ACTIVE='Y'
-		        
+		        --AND    PORTAL.ACTIVE='Y'
+		        AND   WEB_PKG.GRADES_ENTRY_ALLOWED (FACULTY.FAC_SURNMCD, SECT.SECTCD, SECT.SECTNO) = 'Y'
 		        ORDER BY PORTAL.STD_ID	
 		 ]]>
 	</entry>
@@ -90,7 +117,7 @@
                   					:paramLocale
                   					, 'ar',VSP.A_STD_NAME
                   					,  STD_NAME
-                  		)														AS		STUDENT_NAME
+                  					)											AS		STUDENT_NAME
                   		,	GRADES.STDNO										AS	  	STUDENT_NO
                   		,  	VSP.STDSTATCD                       				AS      STDSTATCD 
                   		,   GRADES.CCYRCD										AS		CCYRCD	
@@ -103,7 +130,7 @@
 			                     , 'ar', A_CRSSNM
 			                     , CRS.CRSSNM
 			                    )                                               AS      COURSE_NAME 
-               			,  GRADES.SECTNO                                        AS      SECTION_NO
+               			,  SECT.SECTNO                                        	AS      SECTION_NO
 			         	,  GRADES.GRADECD                                       AS      GRADE_CODE
 			         	,  DECODE
 			                  (
@@ -130,49 +157,70 @@
 		                          AND SECTDGR.L_ABR_CRSNO = GRADES.L_ABR_CRSNO
 		                	)                                                    AS		EMP_COUNT
 		               ,  GRADES.GRADUSRACCTCD									 AS		USER_ACCT_CD
-		               ,  DECODE (
-		               				SUBSTR(GRADES.GRADUSRACCTCD,2)
-		               				,:paramEmpNo, 'Y','N'
-		               			)												AS		CHANGE_ALLOWED
-                
+	                  ,	
+	                  	(
+				                  SELECT 
+				                      WEB_PKG.GRADES_ENTRY_ALLOWED (FAC_SURNMCD, SECT.SECTCD, SECT.SECTNO)
+				                  FROM
+				                      FAC_SURNM
+				                  WHERE
+				                      EMPNO = :paramEmpNo
+	                  	) AS CHANGE_ALLOWED
+
 			          ,  DECODE
 			                  (
 			                   NVL(T_GRADES.CRSNO,0)
 			                    , 0, 'Y', 'N'
 			                  )                                                  AS    IS_UPDATABLE
+
+              ,VSP.ACTIVE
+              , STATUS.FROMCCYRCD
+              , STATUS.TOCCYRCD
 			            
 			FROM
 			           	GRADE_VAL           GV
 			        ,  	STD_GRADES          GRADES
 			        ,  	CRS_BASIC           CRS
-           			,  	V_STDINFO_PORTAL    VSP
-              		,  	T_STD_GRADES        T_GRADES 
-              		,	SECT     SECT
+           		,  	V_STDINFO_PORTAL    VSP
+              ,  	T_STD_GRADES        T_GRADES 
+              ,	  SECT                SECT
+              
+              ,   STD_STATUS          STATUS
 			         
 			WHERE
 			
                 	VSP.STD_ID = :paramStdId
-			    AND GRADES.CCYRCD=:paramYear
+				AND GRADES.CCYRCD=:paramYear
 			    AND GRADES.SEMCD=:paramSem
-            	AND GRADES.STDNO = VSP.STDNO
-            	AND VSP.ACTIVE  = 'Y'
+		        AND GRADES.STDNO = VSP.STDNO
+--            	AND VSP.ACTIVE  = 'Y'
 			    AND GV.GRADECD  = GRADES.GRADECD
 			    AND CRS.CRSNO = GRADES.CRSNO	
+		        AND SECT.CRSNO = CRS.CRSNO
+        
 	          	AND (
 	                		GRADES.L_ABR_CRSNO  = :paramLAbrCrsNo
 	                	OR 	:paramLAbrCrsNo IS NULL
 	              	)
               
-	          AND GRADES.STDNO  = T_GRADES.STDNO(+)
-	          AND GRADES.CRSNO  = T_GRADES.CRSNO(+)
-	          AND GRADES.CCYRCD  = T_GRADES.CCYRCD(+)
-	          AND GRADES.SEMCD  = T_GRADES.SEMCD(+)
-	          AND T_GRADES.STATUSCD(+) <> FUNC_GET_STATUS_CODE('ACCPT')
-	          AND T_GRADES.STATUSCD(+) <> FUNC_GET_STATUS_CODE('REJCT')
+				AND GRADES.STDNO  = T_GRADES.STDNO(+)
+				AND GRADES.CRSNO  = T_GRADES.CRSNO(+)
+				AND GRADES.CCYRCD  = T_GRADES.CCYRCD(+)
+				AND GRADES.SEMCD  = T_GRADES.SEMCD(+)
+         
+				AND T_GRADES.STATUSCD(+) <> FUNC_GET_STATUS_CODE('ACCPT')
+				AND T_GRADES.STATUSCD(+) <> FUNC_GET_STATUS_CODE('REJCT')
 	          
-	          AND SECT.CCYRCD 		= 	GRADES.CCYRCD
-              AND SECT.SEMCD 		= 	GRADES.SEMCD
-			  AND SECT.CRSNO 		= 	GRADES.CRSNO
+				AND SECT.CCYRCD 	= 	GRADES.CCYRCD
+				AND SECT.SEMCD 		= 	GRADES.SEMCD
+				AND SECT.CRSNO 		= 	GRADES.CRSNO
+				AND SECT.SECTNO   =   :paramSectionNo
+            
+				AND STATUS.STDNO  = GRADES.STDNO
+				AND STATUS.STDNO  = VSP.STDNO
+				AND STATUS.STDSTATCD  = VSP.STDSTATCD
+            
+				AND GRADES.CCYRCD BETWEEN  STATUS.FROMCCYRCD AND STATUS.TOCCYRCD
        ]]>
 	</entry>
 	<entry key="dps.grades.select.grade.values">

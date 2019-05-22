@@ -180,10 +180,11 @@ public interface GradeChangeService
 	/**
 	 * 
 	 * method name  : getStudentList
-	 * @param isRuleGradeChangeTimingFollowed
 	 * @param employeeNo
 	 * @param lAbrCourseNo
 	 * @param locale
+	 * @param sectionNo TODO
+	 * @param isRuleGradeChangeTimingFollowed
 	 * @return
 	 * GradeChangeDBImpl
 	 * return type  : List<Student>
@@ -192,7 +193,7 @@ public interface GradeChangeService
 	 *
 	 * Date    		:	Dec 14, 2017 3:39:51 PM
 	 */
-	public List<Student> getStudentList( String employeeNo,String lAbrCourseNo,  Locale	locale);
+	public List<Student> getStudentList( String employeeNo,String lAbrCourseNo,  Locale	locale, String sectionNo);
 	
 	/**
 	 * 

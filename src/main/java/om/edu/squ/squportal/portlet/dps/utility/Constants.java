@@ -118,6 +118,9 @@ public interface Constants
 	public static final	String	CONST_COLMN_GRADE_VAL_OLD									=	"GRADE_VAL_OLD";
 	public static final	String	CONST_COLMN_GRADE_VAL_NEW									=	"GRADE_VAL_NEW";
 	public static final	String	CONST_COLMN_GRADE_IS_INCOMPLETE_GRADE						=	"IS_INCOMPLETE_GRADE";
+	public static final	String	CONST_COLMN_GRADE_ENTERED_BY								=	"GRADE_ENTERED_BY";
+	public static final	String	CONST_COLMN_CREATION_DATE									=	"CREATION_DATE";
+	public static final	String	CONST_COLMN_UPDATAION_DATE									=	"UPDATAION_DATE";
 
 	public static final	String	CONST_COLMN_SISCODECD										=	"SISCODECD";
 	public static final	String	CONST_COLMN_SISCODENAME										=	"SIS_CODE_NAME";
@@ -437,7 +440,7 @@ public interface Constants
 	
 	
 	
-	public	static	final	boolean	CONST_TEST_ENVIRONMENT									=	false;
+	public	static	final	boolean	CONST_TEST_ENVIRONMENT									=	true;
 	public	static	final	String	CONST_EMAIL_FROM										=	"dps_eservices@squ.edu.om";
 	public	static	final	String	CONST_DUMMY_USER_EMAIL_TO								=	"bhabesh@squ.edu.om";
 

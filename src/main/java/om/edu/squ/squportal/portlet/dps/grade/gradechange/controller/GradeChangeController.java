@@ -152,7 +152,7 @@ public class GradeChangeController
 			{
 				employeeNumber	=	employee.getEmpNumber().substring(1);
 			}
-			
+			Gson	gson	=	new Gson();
 			model.addAttribute("courseList", gradeChangeService.getCourseList(employeeNumber, locale));
 			model.addAttribute("employee", employee);
 			model.addAttribute("appApprove", Constants.CONST_SQL_STATUS_CODE_ACCPT);
@@ -179,20 +179,20 @@ public class GradeChangeController
 	 * Date    		:	Dec 14, 2017 4:08:54 PM
 	 */
 	@ResourceMapping(value="resourceStudentList")
-	private	void getStudentList(@RequestParam("lAbrCourseNo") String lAbrCourseNo, ResourceRequest request, ResourceResponse response, Locale locale ) throws IOException
+	private	void getStudentList(@RequestParam("lAbrCourseNo") String lAbrCourseNo, @RequestParam("sectionNo") String sectionNo, ResourceRequest request, ResourceResponse response, Locale locale ) throws IOException
 	{
 		Gson		gson		= 	new Gson();
 		String	employeeNumber	=	null;
 		
-		Employee employee;
+		Employee employee 		=	null;
 		try
 		{
-			employee = dpsServiceDao.getEmployee(request,locale, false);
+			employee = dpsServiceDao.getEmployee(request,locale, Constants.CONST_IS_DELEGATION);		/* Delegation enabled */
 			if(employee.getEmpNumber().substring(0,1).equals("e"))
 			{
 				employeeNumber	=	employee.getEmpNumber().substring(1);
 			}
-			List<Student> students	=	gradeChangeService.getStudentList(employeeNumber, lAbrCourseNo, locale);
+			List<Student> students	=	gradeChangeService.getStudentList(employeeNumber, lAbrCourseNo, locale, sectionNo);
 			
 			response.getWriter().print(gson.toJson(students));
 		}
@@ -225,12 +225,21 @@ public class GradeChangeController
 	@ResourceMapping(value="resourceAjaxGetStudentGrades")
 	private	void getStudentGrades(@ModelAttribute("gradeChangeModel") GradeChangeModel gradeChangeModel, ResourceRequest request, ResourceResponse response, Locale locale) throws IOException 
 	{
-		Gson		gson		= 	new Gson();
+		Gson		gson			= 	new Gson();
+		Employee 	employee 		=	null;
+		String		employeeNumber	=	null;
+					
 		gradeChangeModel.decrypt(crypto, gradeChangeModel.getSalt(), gradeChangeModel.getFour(), gradeChangeModel);
 		try
 		{
-			List<GradeDTO> 	gradeList		=	gradeChangeService.getStudentGrades(dpsServiceDao.getEmpNumber(request), locale, gradeChangeModel);	
+			employee = dpsServiceDao.getEmployee(request,locale, Constants.CONST_IS_DELEGATION);		/* Delegation enabled */
+			if(employee.getEmpNumber().substring(0,1).equals("e"))
+			{
+				employeeNumber	=	employee.getEmpNumber().substring(1);
+			}
 			
+			List<GradeDTO> 	gradeList		=	gradeChangeService.getStudentGrades(employeeNumber, locale, gradeChangeModel);	
+
 			if( (null == gradeList) || gradeList.size()==0)
 			{
 				response.setProperty(ResourceResponse.HTTP_STATUS_CODE, Integer.toString(HttpServletResponse.SC_INTERNAL_SERVER_ERROR));
@@ -244,6 +253,11 @@ public class GradeChangeController
 		catch(NoDBRecordException ex)
 		{
 			response.getWriter().print(gson.toJson(""));
+		}
+		catch (ExceptionEmptyResultset ex)
+		{
+			logger.error("Error get employee :  "+ex.getMessage());
+			response.getWriter().print("");
 		}
 	}
 	
@@ -336,7 +350,7 @@ public class GradeChangeController
 		
 		try
 		{
-			employee					=	dpsServiceDao.getEmployee(request,locale, false);
+			employee					=	dpsServiceDao.getEmployee(request,locale, Constants.CONST_IS_DELEGATION);	/* Delegation enabled */
 		
 			List<Student> students	=	gradeChangeService.getStudentDetailsForApprovers(roleNameValue.getRoleValue(), employee, locale);
 			

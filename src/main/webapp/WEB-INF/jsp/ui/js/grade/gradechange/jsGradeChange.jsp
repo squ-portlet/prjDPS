@@ -108,7 +108,8 @@
 		$('#divGradeChangeHistory').html('');
 		$('#divStudentGradesForApprove').html('');
 		var lAbrCourseNoModel	=	{
-				lAbrCourseNo	:	this.getAttribute("lAbrCourseNo")
+				lAbrCourseNo	:	this.getAttribute("lAbrCourseNo"),
+				sectionNo		:	this.getAttribute("sectionNo")
 		};
 		
 		var lAbrCourseNo	=	this.getAttribute("lAbrCourseNo");
@@ -151,6 +152,7 @@
 		var gradeChangeModel	=	{
 				studentId	:	this.getAttribute("studentId"),
 				lAbrCrsNo	:	this.getAttribute("lAbrCourseNo"),
+				sectionNo	:	this.getAttribute("sectionNo"),
 				salt		:	salt,
 				four		:	four
 		};

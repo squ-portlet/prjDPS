@@ -190,7 +190,7 @@
 				</thead>
 					{{#each students}}
 					<tr>
-						<td><a class="clsLinkStudentNo" href="#" lAbrCourseNo="{{encryptStr ../lAbrCourseNo}}" studentId="{{encryptStr personalDetail.id}}">{{personalDetail.id}}</a></td>
+						<td><a class="clsLinkStudentNo" href="#" lAbrCourseNo="{{encryptStr ../lAbrCourseNo}}" studentId="{{encryptStr personalDetail.id}}" sectionNo="{{encryptStr ../sectionNo}}">{{personalDetail.id}}</a></td>
 						<td>{{personalDetail.name}}</td>
 					</tr>
 					{{/each}}
@@ -251,6 +251,9 @@
 										</div>
 									{{/if}}
 								</div>
+						{{else}}
+								<div class="row"><font color="red"><spring:message code="prop.dps.gradechange.warn.not.valid.instructor"/></font></div>
+								<div class="row"></div>
 						{{/if}}
 						</form>
 							{{/if}}
