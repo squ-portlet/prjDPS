@@ -202,7 +202,9 @@ public class RuleDbImpl implements RuleDbDao
 	 * RuleDbImpl
 	 * return type  : int
 	 * 
-	 * purpose		: Decide to get the year semester based on current date (if 0 then last semester if 1 then current semester)
+	 * purpose		: Decide to get the year semester based on current date 
+	 *               (if 0 then last semester if 1 then current semester - 
+	 *               Here current semester means extension semester already over and might be in grace period in current semester)
 	 *
 	 * Date    		:	Jan 21, 2019 5:02:22 PM
 	 */
