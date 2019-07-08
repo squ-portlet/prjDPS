@@ -26,7 +26,7 @@
     </entry>
     <entry key="dps.select.next.yr.sem">
     	<![CDATA[
-			SELECT 
+     		 SELECT 
 			        * 
 			FROM
 			    (
@@ -43,23 +43,18 @@
 			                    :paramLocale,
 			                    'en',SEMNM,A_SEMNM
 			                )                                      							AS		SEM_NAME					  
+
+
 			        FROM  
-			              YR_SEM          YS
-			            , CURRENT_YR_SEM  CYS
-			            , SEM             SEM
+			              YR_SEM          			YS
+                  		, V_CURRENT_YRSEM_PORTAL 	CYS
+			            , SEM             			SEM
 			        WHERE 
 			              	YS.SEMCD  	= 	SEM.SEMCD
 			          AND 	YS.SEMCD 	<> 	3
-			          AND 	YS.SEMSTDTE >=  (
-			                                SELECT 
-			                                  	SEMSTDTE
-			                                FROM 
-			                                	YR_SEM
-			                                WHERE
-			                                  		CCYRCD = CYS.CCYRCD
-			                                  	AND SEMCD  = CYS.SEMCD
-			                              	)
-			          ORDER BY YS.SEMSTDTE DESC
+			          AND 	YS.SEMSTDTE >= CYS.SEMSTDTE
+
+			          ORDER BY YS.SEMSTDTE ASC
 			    )
 			    WHERE ROWNUM < 2
     	]]>
