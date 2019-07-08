@@ -100,7 +100,7 @@ public class RuleServiceImpl implements Rule
 		 * y = semester number within the year (e.g. : 2 / 3 / 4)
 		 * s = semester count including summer
 		 * */
-		logger.info("fromStartYear : {} , currYear : {}",fromStartYear, currYear);
+		//logger.info("fromStartYear : {} , currYear : {}",fromStartYear, currYear);
 		for(int x=fromStartYear; x<currYear; x++)
 		{
 			// logger.info(" Year(x) : {} ",x);
@@ -119,7 +119,7 @@ public class RuleServiceImpl implements Rule
 			{
 
 				s++;
-				if(s>12) break;
+				//if(s>=12) break;
 				
 				if(y!=3)
 				{
