@@ -108,11 +108,17 @@
 	<entry key="sql.rule.decicide.year.semester">
 		<![CDATA[
 			SELECT 
-			    COUNT(*)      																								AS COUNT_REC          
+			   COUNT(*)  AS COUNT_REC
 			FROM 
 			    V_CURRENT_YRSEM_PORTAL VCYP
 			WHERE
-			    TRUNC(VCYP.SEMSTDTE +:paramNumberDays) < TRUNC(SYSDATE)
+		         TRUNC(SYSDATE) > ( 
+		                            DECODE(
+		                                    UPPER(SUBSTR(l_abr_yrsem,3,4))
+		                                    , 'SU',(TRUNC(VCYP.SEMSTDTE) + (TRUNC(VCYP.SEMENDDTE) - TRUNC(VCYP.SEMSTDTE)))
+		                                    ,TRUNC(VCYP.SEMSTDTE +:paramNumberDays)
+		                                  )
+		                          )
 		 ]]>	
 	</entry>	
 		
