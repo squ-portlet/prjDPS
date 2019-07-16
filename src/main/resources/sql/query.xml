@@ -26,7 +26,7 @@
     </entry>
     <entry key="dps.select.next.yr.sem">
     	<![CDATA[
-			SELECT 
+     		 SELECT 
 			        * 
 			FROM
 			    (
@@ -43,23 +43,18 @@
 			                    :paramLocale,
 			                    'en',SEMNM,A_SEMNM
 			                )                                      							AS		SEM_NAME					  
+
+
 			        FROM  
-			              YR_SEM          YS
-			            , CURRENT_YR_SEM  CYS
-			            , SEM             SEM
+			              YR_SEM          			YS
+                  		, V_CURRENT_YRSEM_PORTAL 	CYS
+			            , SEM             			SEM
 			        WHERE 
 			              	YS.SEMCD  	= 	SEM.SEMCD
 			          AND 	YS.SEMCD 	<> 	3
-			          AND 	YS.SEMSTDTE >=  (
-			                                SELECT 
-			                                  	SEMSTDTE
-			                                FROM 
-			                                	YR_SEM
-			                                WHERE
-			                                  		CCYRCD = CYS.CCYRCD
-			                                  	AND SEMCD  = CYS.SEMCD
-			                              	)
-			          ORDER BY YS.SEMSTDTE 
+			          AND 	YS.SEMSTDTE >= CYS.SEMSTDTE
+
+			          ORDER BY YS.SEMSTDTE ASC
 			    )
 			    WHERE ROWNUM < 2
     	]]>
@@ -246,31 +241,26 @@
 					DUAL
 	</entry>
 	<entry key="dps.delegate.select.delegated">
-		<![CDATA[
 				SELECT * FROM
 				(
-					SELECT DISTINCT
-					      NVL(D1.DAR_TO_USERNAME,'NA')          										AS  DELEGATED
-					    , TO_CHAR(D1.DAR_FROM_DATE,'DD/MM/YYYY')  										AS  DELEGATED_FROM
-					    , TO_CHAR(D1.DAR_TO_DATE,'DD/MM/YYYY')    										AS  DELEGATED_TO
-					FROM
-					DPS_ADDITIONAL_ROLES D1, 
-					DPS_ADDITIONAL_ROLES D2
-					
-					WHERE 
-					        D1.DARM_SRL_NO (+) = D2.DARM_SRL_NO
-					    AND D1.DAR_FROM_USERNAME(+) = :paramDelegatedUserName
-					    AND SYSDATE BETWEEN D1.DAR_FROM_DATE(+) AND D1.DAR_TO_DATE(+)
-					    AND D1.DAR_ACTIVE(+)='Y'	
-					ORDER BY 
-			          CASE 
-			            WHEN DELEGATED='NA' THEN 100
-			            ELSE 1
-			          END
-					)
-			 	WHERE ROWNUM < 2  
-	 	]]>        
-	</entry>
+				SELECT DISTINCT
+				      NVL(D1.DAR_TO_USERNAME,'NA')          										AS  DELEGATED
+				    , TO_CHAR(D1.DAR_FROM_DATE,'DD/MM/YYYY')  										AS  DELEGATED_FROM
+				    , NVL(TO_CHAR(D1.DAR_TO_DATE,'DD/MM/YYYY'),'01/01/0000')    					AS  DELEGATED_TO
+				FROM
+				DPS_ADDITIONAL_ROLES D1, 
+				DPS_ADDITIONAL_ROLES D2
+				
+				WHERE 
+				        D1.DARM_SRL_NO (+) = D2.DARM_SRL_NO
+				    AND D1.DAR_FROM_USERNAME(+) = :paramDelegatedUserName
+				    AND SYSDATE BETWEEN D1.DAR_FROM_DATE(+) AND D1.DAR_TO_DATE(+)
+				    AND D1.DAR_ACTIVE(+)='Y'
+		        ORDER BY DELEGATED_TO  DESC
+		        )
+		WHERE
+		    ROWNUM = 1
+	</entry>  
 	<entry key="dps.delegate.select.delegatee">
 		<![CDATA[
 			SELECT * FROM
@@ -278,7 +268,7 @@
 			SELECT DISTINCT
 			      NVL(D1.DAR_FROM_USERNAME,'NA')          										AS  DELEGATEE
 			    , TO_CHAR(D1.DAR_FROM_DATE,'DD/MM/YYYY')  										AS  DELEGATED_FROM
-			    , TO_CHAR(D1.DAR_TO_DATE,'DD/MM/YYYY')    										AS  DELEGATED_TO
+			   , NVL(TO_CHAR(D1.DAR_TO_DATE,'DD/MM/YYYY'),'01/01/0000')								AS  DELEGATED_TO
 			FROM
 			DPS_ADDITIONAL_ROLES D1, 
 			DPS_ADDITIONAL_ROLES D2
