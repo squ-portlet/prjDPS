@@ -69,6 +69,8 @@ public class RuleServiceImpl implements Rule
 	 */
 	public boolean lastSemester(String studentNo, String stdStatCode, String NumberOfDaysAdjust)
 	{
+		int temYear = 0;
+		
 		StudentCompletionAndJoinTime	completionAndJoinTime	=	getJoinAndCloseTime(studentNo, stdStatCode);
 		YearSemester					yearSemester			=	getRuleLastYearSemester(NumberOfDaysAdjust);  //Based on current date decide the semester to cover the gap between the semesters
 
@@ -94,8 +96,15 @@ public class RuleServiceImpl implements Rule
 
 		int s =0;
 		
+		/*
+		 * x = year
+		 * y = semester number within the year (e.g. : 2 / 3 / 4)
+		 * s = semester count including summer
+		 * */
+		//logger.info("fromStartYear : {} , currYear : {}",fromStartYear, currYear);
 		for(int x=fromStartYear; x<currYear; x++)
 		{
+			// logger.info(" Year(x) : {} ",x);
 			int p = 0;
 			
 			if(x==fromStartYear)
@@ -111,25 +120,27 @@ public class RuleServiceImpl implements Rule
 			{
 
 				s++;
-				if(s==10) break;
+				//if(s>=12) break;
 				
 				if(y!=3)
 				{
 					countSem++;
 				}
-				
+				//logger.info("counter(s): {}, Semester(y) : {}, countSem : {}",s, y, countSem);
 			}
 			
 		}
 		
-		if(currSemester==2)
+		if(currSemester==2 || currSemester==3)
 		{
 			countSem++;
 		}
 		else if (currSemester==4) {
 			countSem = countSem + 2;
 		}
+		//logger.info("currSemester : {} ",currSemester);
 		
+		//logger.info("totalCountSem : {}, countPostpone: {}",countSem,countPostpone);
 		countTotal	=	countSem - countPostpone;
 
 		
@@ -142,6 +153,10 @@ public class RuleServiceImpl implements Rule
 		return (totalSem==countTotal)?true:false;
 	}
 
+
+	
+	
+	
 	/*
 	 * (non-Javadoc)
 	 * @see om.edu.squ.squportal.portlet.dps.rule.service.Rule#isLanguageCourseTaken(java.lang.String, int, int, int)
