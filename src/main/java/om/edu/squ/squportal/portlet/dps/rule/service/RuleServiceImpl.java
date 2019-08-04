@@ -73,7 +73,6 @@ public class RuleServiceImpl implements Rule
 		
 		StudentCompletionAndJoinTime	completionAndJoinTime	=	getJoinAndCloseTime(studentNo, stdStatCode);
 		YearSemester					yearSemester			=	getRuleLastYearSemester(NumberOfDaysAdjust);  //Based on current date decide the semester to cover the gap between the semesters
-
 		int 							totalSem				=	0;
 		String							studentMode				=	dpsServiceDao.getStudentMode(studentNo, stdStatCode);
 		if(studentMode.equals(Constants.CONST_FULL_TIME))
@@ -142,13 +141,6 @@ public class RuleServiceImpl implements Rule
 		
 		//logger.info("totalCountSem : {}, countPostpone: {}",countSem,countPostpone);
 		countTotal	=	countSem - countPostpone;
-
-		/* Exclusion of the semester counting for considering language course (e.g. English) */
-		if(isLangCourse)
-		{
-			countTotal = countTotal - 1;
-		}
-
 		
 		/* Exclusion of the semester counting for considering language course (e.g. English) */
 		if(isLangCourse)
