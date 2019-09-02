@@ -16,6 +16,7 @@ create or replace FUNCTION            FUNC_IS_APPROVER
   Author : Bhabesh
   Create Date : 20-February-2017
   Modify Date : 06-December-2017 (introduce REQUESTCD from APPROVAL_TRANSACTION)
+              : 02-September-2019 (Commented approver empno for stop delegation related issue)
 */
 COUNT_REC       NUMBER          :=0;
 COUNT_REC_OTHER NUMBER          :=0;
@@ -50,7 +51,7 @@ BEGIN
                       APPROVAL_TRANSACTION  APP_T
                   WHERE
                           APP_T.APPROVALCD  = APPROVAL_CODE
-                      AND APP_T.APPROVER_EMPNO =paramEmpNo
+                      --AND APP_T.APPROVER_EMPNO =paramEmpNo  /* 20190902 - bhabesh : Code commented to stop accidentan record when delegation exists */
                       AND APP_T.STDNO          = paramStudentNo
                       AND (
                                 APP_T.REQUESTCD = paramRequestCode
