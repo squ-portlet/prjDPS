@@ -51,6 +51,7 @@ import javax.portlet.ResourceResponse;
 
 import om.edu.squ.portal.common.EmpCommon;
 import om.edu.squ.squportal.portlet.dps.activiti.dao.db.ActivitiDbImpl;
+import om.edu.squ.squportal.portlet.dps.bo.DelegateEmployee;
 import om.edu.squ.squportal.portlet.dps.bo.Employee;
 import om.edu.squ.squportal.portlet.dps.bo.Student;
 import om.edu.squ.squportal.portlet.dps.bo.User;
@@ -251,10 +252,23 @@ public class ExtensionStudiesController
 	private String approverWelcome(PortletRequest request, Model model, Locale locale)
 	{
 		
-		Employee employee	=	null;
+		Employee employee			=	null;
+		boolean	 applyDelegation	=	false;
+		
+		DelegateEmployee	delegateEmployee	=	dpsServiceDao.getDelegatedEmployee(request.getRemoteUser());
+		
+		if((null == delegateEmployee.getUserNameDelegated()) && (null == delegateEmployee.getUserNameDelegatee()))
+		{
+			applyDelegation	=	 false;
+		}
+		else
+		{
+			applyDelegation = true;
+		}
+		
 		try
 		{
-			employee = dpsServiceDao.getEmployee(request,locale, false);
+			employee = dpsServiceDao.getEmployee(request,locale, applyDelegation);
 			
 		}
 		catch (ExceptionEmptyResultset ex)
