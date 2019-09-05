@@ -227,7 +227,7 @@
 	        			<spring:message code="prop.dps.extension.student.applications.form.title"/>
 	        	</h4>
 	      </div>
-	      
+
 		 <form:form modelAttribute="extensionStudentDataModel" action="${varStudentFormAction}"  method="post" htmlEscape="false">
 			      <div class="modal-body">
 						    <div class="section">
@@ -242,7 +242,14 @@
 											<c:choose>
 												<c:when test="${weekSpecified}">
 								                  <label class="radio-inline">
-								                   	<form:radiobutton path="yearSem" value="${nextYearSemester.year}-${nextYearSemester.semesterCode}"/>${nextYearSemester.year},${nextYearSemester.semesterName}
+								                  	<c:choose>
+								                  		<c:when test="${empty  nextYearSemester.year && empty nextYearSemester.semesterCode }">
+								                  			<form:radiobutton path="yearSem" value="${currYearSem.year}-${currYearSem.semesterCode}"/>${currYearSem.year},${currYearSem.semesterName}
+								                  		</c:when>
+								                  		<c:otherwise>
+															<form:radiobutton path="yearSem" value="${nextYearSemester.year}-${nextYearSemester.semesterCode}"/>${nextYearSemester.year},${nextYearSemester.semesterName}								                  			
+								                  		</c:otherwise>
+								                  	</c:choose>
 								                  </label>
 												</c:when>
 												<c:otherwise>
