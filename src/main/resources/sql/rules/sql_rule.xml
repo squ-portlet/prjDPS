@@ -58,7 +58,7 @@
 				            AND   STDNO = :paramStdNo
 				            AND
 				                (SECT.CCYRCD >= :paramFromCourseYear AND SECT.CCYRCD <= :paramCurrentYear )
-				                AND NOT (SECT.CCYRCD =  :paramFromCourseYear AND SECT.CCYRCD < :paramFromSemester)
+				                AND NOT (SECT.CCYRCD =  :paramFromCourseYear AND SECT.SEMCD < :paramFromSemester)
 				                
 				                ORDER BY SECT.CCYRCD, SECT.SEMCD
 				 ) 
