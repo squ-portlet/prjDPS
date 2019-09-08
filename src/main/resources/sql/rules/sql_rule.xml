@@ -58,7 +58,7 @@
 				            AND   STDNO = :paramStdNo
 				            AND
 				                (SECT.CCYRCD >= :paramFromCourseYear AND SECT.CCYRCD <= :paramCurrentYear )
-				                AND NOT (SECT.CCYRCD =  :paramFromCourseYear AND SECT.CCYRCD < :paramFromSemester)
+				                AND NOT (SECT.CCYRCD =  :paramFromCourseYear AND SECT.SEMCD < :paramFromSemester)
 				                
 				                ORDER BY SECT.CCYRCD, SECT.SEMCD
 				 ) 
@@ -66,33 +66,7 @@
 				    L_ABR_CRSNO LIKE 'LANC%'    
     	]]>
     </entry>
-    <entry key="sql.rule.student.language.course.from.course.start">
-    	<![CDATA[
-				SELECT 
-				        COUNT(L_ABR_CRSNO)
-				FROM
-				(
-				
-				      SELECT       SCHED.STDNO
-				                , SECT.L_ABR_CRSNO
-				                , SECT.CCYRCD
-				                , SECT.SEMCD
-				      FROM 
-				                  SCHED_STD   SCHED
-				            ,     SECT        SECT
-				      WHERE
-				                  SCHED.SECTCD  = SECT.SECTCD
-				            AND   STDNO = :paramStdNo
-				            AND
-				                (SECT.CCYRCD >= :paramFromCourseYear AND SECT.CCYRCD <= :paramCurrentYear )
-				                AND NOT (SECT.CCYRCD =  :paramFromCourseYear AND SECT.CCYRCD < :paramFromSemester)
-				                
-				                ORDER BY SECT.CCYRCD, SECT.SEMCD
-				 ) 
-				 WHERE
-				    L_ABR_CRSNO LIKE 'LANC%'    
-    	]]>
-    </entry>
+
     <entry key="sql.rule.student.count.postpone">
 	        SELECT
 	              		COUNT(STDNO)																						AS	COUNT_REC
