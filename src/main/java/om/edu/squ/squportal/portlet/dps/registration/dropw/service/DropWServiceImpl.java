@@ -512,7 +512,7 @@ public class DropWServiceImpl implements DropWService
 					}
 					else
 					{
-						if(ruleService.isDropWPeriod(studentNo, stdStatCode))
+						if(ruleService.isDropWPeriod())
 						{
 							this.dropWTimeApplied		= 	Constants.CONST_RULE_DROP_W_PERIOD_NOT_APPLIED; 
 						}
@@ -583,7 +583,7 @@ public class DropWServiceImpl implements DropWService
 			myRules.put("stdModeCreditApplied", stdModeCreditApplied);
 			myRules.put("totalCredit", new NameValue(true, UtilProperty.getMessage("prop.dps.total.credit", null, locale), String.valueOf(totalCredit)));
 			myRules.put("courseCredit", new NameValue(true, UtilProperty.getMessage("prop.dps.course.credit", null, locale), courseCredit));
-			myRules.put("isDropWPeriod", new NameValue(true, UtilProperty.getMessage("prop.dps.dropw.is.drop.with.w.period", null, locale), dpsServiceDao.booToString(ruleService.isDropWPeriod(studentNo, stdStatCode), locale)));
+			myRules.put("isDropWPeriod", new NameValue(true, UtilProperty.getMessage("prop.dps.dropw.is.drop.with.w.period", null, locale), dpsServiceDao.booToString(ruleService.isDropWPeriod(), locale)));
 			myRules.put("dropWPeriod", new NameValue(true, UtilProperty.getMessage("prop.dps.dropw.drop.with.w.period", null, locale), UtilProperty.getMessage("prop.dps.dropw.drop.with.w.period.value", new String[]{withdrawPeriod.getFirstWithDrawDate(),withdrawPeriod.getSecondWithDrawDate()}, locale)));
 			
 			dpsServiceDao.setMyRules(myRules);
