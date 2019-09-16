@@ -211,8 +211,6 @@ public interface RuleDbDao
 	/**
 	 * 
 	 * method name  : isDropWPeriod
-	 * @param studentNo
-	 * @param stdStatCode
 	 * @return
 	 * RuleDbImpl
 	 * return type  : boolean
@@ -221,7 +219,7 @@ public interface RuleDbDao
 	 *
 	 * Date    		:	Aug 20, 2017 4:46:22 PM
 	 */
-	public boolean isDropWPeriod(String studentNo, String stdStatCode);
+	public boolean isDropWPeriod();
 	
 	/**
 	 * 
