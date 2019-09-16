@@ -348,8 +348,6 @@ public class RuleServiceImpl implements Rule
 	/**
 	 * 
 	 * method name  : isDropWPeriod
-	 * @param studentNo
-	 * @param stdStatCode
 	 * @return
 	 * RuleDbImpl
 	 * return type  : boolean
@@ -358,9 +356,9 @@ public class RuleServiceImpl implements Rule
 	 *
 	 * Date    		:	Aug 20, 2017 4:46:22 PM
 	 */
-	public boolean isDropWPeriod(String studentNo, String stdStatCode)
+	public boolean isDropWPeriod()
 	{
-		return ruleDbDao.isDropWPeriod(studentNo, stdStatCode);
+		return ruleDbDao.isDropWPeriod();
 	}
 	
 	/*

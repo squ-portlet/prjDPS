@@ -433,8 +433,6 @@ public class RuleDbImpl implements RuleDbDao
 	/**
 	 * 
 	 * method name  : isDropWPeriod
-	 * @param studentNo
-	 * @param stdStatCode
 	 * @return
 	 * RuleDbImpl
 	 * return type  : boolean
@@ -443,13 +441,11 @@ public class RuleDbImpl implements RuleDbDao
 	 *
 	 * Date    		:	Aug 20, 2017 4:46:22 PM
 	 */
-	public boolean isDropWPeriod(String studentNo, String stdStatCode)
+	public boolean isDropWPeriod()
 	{
 		boolean result	= false;
 		String	SQL_RULE_STUDENT_DROP_W_PERIOD	=	queryPropsCommonRule.getProperty(Constants.CONST_PROP_SQL_RULE_STUDENT_DROP_W_PERIOD);
 		Map<String, String> mapParamsRule	=	new HashMap<String, String>();
-		mapParamsRule.put("paramStdNo", studentNo);
-		mapParamsRule.put("paramStdStatCode", stdStatCode);
 		if(nPJdbcTemplDps.queryForObject(SQL_RULE_STUDENT_DROP_W_PERIOD, mapParamsRule, String.class).equals(Constants.CONST_YES))
 		{
 			return true;
