@@ -372,7 +372,7 @@ public class PostponeServiceImpl implements PostponeService
 		 * Rule 2 : Drop with W period
 		 */
 		
-		if(ruleService.isDropWPeriod(studentNo, stdStatCode))
+			if(ruleService.isDropWPeriod())
 		{
 			this.dropWTimeApplied	=	true;
 		}
