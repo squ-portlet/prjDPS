@@ -237,15 +237,17 @@
 			          ) 																									AS 	WITHDRAW_DATE
 		FROM
 		(
-		    SELECT
-		            'Y'  AS WITHIN_DATE
-		    FROM 
-		     V_STD_CURREG        REG
-		    WHERE 
-		            REG.STDNO = :paramStdNo
-		      AND   REG.STDSTATCD = :paramStdStatCode
-		      AND  SYSDATE BETWEEN REG.FIRSTWTHDTE AND REG.SECONDWTHDTE
-		)
+        SELECT 
+                   DISTINCT
+                  'Y' AS WITHIN_DATE
+        FROM
+                SECT S
+              , CURRENT_YR_SEM CYS
+        WHERE
+                      S.CCYRCD = CYS.CCYRCD
+                AND   S.SEMCD  = CYS.SEMCD
+                AND   SYSDATE BETWEEN S.FIRSTWTHDTE AND S.SECONDWTHDTE
+    )
 	</entry>
   	<!-- 
   			Service Rules with Postpone
