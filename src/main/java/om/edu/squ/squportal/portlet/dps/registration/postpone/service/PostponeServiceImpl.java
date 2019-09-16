@@ -478,7 +478,7 @@ public class PostponeServiceImpl implements PostponeService
 		}
 		else
 		{
-			if(ruleService.isDropWPeriod(studentNo, stdStatCode))
+			if(ruleService.isDropWPeriod())
 			{
 				this.dropWTimeApplied	=	true;
 			}
