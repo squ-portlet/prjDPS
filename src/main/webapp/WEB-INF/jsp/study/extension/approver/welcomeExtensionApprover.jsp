@@ -95,7 +95,7 @@
           </div>
           </form>
           <div class="modal-footer">
-            <a class="btn btn-default"  data-dismiss="modal"><spring:message code="prop.dps.role.reject.text"/></a>
+            <a class="btn btn-default"  data-dismiss="modal"><spring:message code="prop.dps.button.close"/></a>
             <button id="linkSubmitApprove" name="linkSubmitApprove" type="button" class="btn btn-primary"><spring:message code="prop.dps.role.approve.text"/></button>
           </div>
           

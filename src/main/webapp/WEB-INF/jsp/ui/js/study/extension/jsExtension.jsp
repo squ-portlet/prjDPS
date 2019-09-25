@@ -207,6 +207,8 @@
 				    {
 				    	<spring:message code="prop.dps.role.approve.text" var="txtRole"/>
 				    	$('.modal-body').html('<spring:message code="prop.dps.extension.approver.modal.body.confirmation.text" arguments="${txtRole}"/>');
+						$('#linkSubmitApprove').addClass('btn-success').removeClass('btn-danger');
+						$('#linkSubmitApprove').html("<spring:message code='prop.dps.role.approve.text'/>");
 				    }
 				    else
 				    {
@@ -217,6 +219,9 @@
 				    							<div col="col-sm-2"><spring:message code="prop.dps.extension.approver.modal.body.approve.comment.text"></spring:message></div> \
 				    							<div col="col-sm-8"><textarea id="txtMessage" name="txtMessage" style="width: 90%;" required ></textarea></div> \
 				    						');
+				    	
+						$('#linkSubmitApprove').addClass('btn-danger').removeClass('btn-success');
+						$('#linkSubmitApprove').html("<spring:message code='prop.dps.role.reject.text'/>");
 				    }
 				    
 				    var tdata=oTable;

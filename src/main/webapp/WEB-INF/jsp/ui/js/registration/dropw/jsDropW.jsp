@@ -234,6 +234,7 @@
 				$('#idCommentTxtArea').html('');
 				$('#idApprovalMsg').html("<spring:message code='prop.dps.dropw.approver.approve.text'/>");
 				$('#linkSubmitApprove').addClass('btn-success').removeClass('btn-danger');
+				$('#linkSubmitApprove').html("<spring:message code='prop.dps.role.approve.text'/>");
 			}
 			else
 			{
@@ -241,6 +242,7 @@
 				$('#idCommentTxtArea').html('<textarea id="txtMessage" name="txtMessage" rows="" cols="" required></textarea>');
 				$('#idApprovalMsg').html("<spring:message code='prop.dps.dropw.approver.reject.text'/>");
 				$('#linkSubmitApprove').addClass('btn-danger').removeClass('btn-success');
+				$('#linkSubmitApprove').html("<spring:message code='prop.dps.role.reject.text'/>");
 			}
 			
 			//idRadioBttn	=	$(this).attr('id');
