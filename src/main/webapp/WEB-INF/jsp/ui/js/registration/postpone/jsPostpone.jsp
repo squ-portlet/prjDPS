@@ -273,6 +273,7 @@ $(document).ajaxStop(function(){
 				$('#idCommentTxtArea').html('');
 				$('#idApprovalMsg').html("<spring:message code='prop.dps.postpone.approver.approve.text'/>");
 				$('#linkSubmitApprove').addClass('btn-success').removeClass('btn-danger');
+				$('#linkSubmitApprove').html("<spring:message code='prop.dps.role.approve.text'/>");
 			}
 			else
 			{
@@ -280,6 +281,7 @@ $(document).ajaxStop(function(){
 				$('#idCommentTxtArea').html('<textarea id="txtMessage" name="txtMessage" rows="" cols="" required></textarea>');
 				$('#idApprovalMsg').html("<spring:message code='prop.dps.postpone.approver.reject.text'/>");
 				$('#linkSubmitApprove').addClass('btn-danger').removeClass('btn-success');
+				$('#linkSubmitApprove').html("<spring:message code='prop.dps.role.reject.text'/>");
 			}
 			tblRowDataApprover 	= 	tblPostponeApprover.table(0).row( this ).data();
 			tblRowIndexApprover	=	tblPostponeApprover.row(this).index();
