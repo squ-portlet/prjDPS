@@ -482,6 +482,7 @@ public class DropWServiceImpl implements DropWService
 		/*Rule 1 */
 		String studyModeType = dpsServiceDao.getStudentMode(studentNo,stdStatCode);
 		int	totalCredit	=	dpsServiceDao.getTotalRegisteredCredit(studentNo, stdStatCode);
+						if(ruleService.isDropWPeriod())
 		if(null==courseNo)
 		{
 			
@@ -524,6 +525,7 @@ public class DropWServiceImpl implements DropWService
 
 		//TODO : Do not change result of the rule
 		return true;
+			myRules.put("isDropWPeriod", new NameValue(true, UtilProperty.getMessage("prop.dps.dropw.is.drop.with.w.period", null, locale), dpsServiceDao.booToString(ruleService.isDropWPeriod(), locale)));
 	}
 	
 	/**

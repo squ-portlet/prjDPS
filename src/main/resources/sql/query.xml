@@ -261,7 +261,7 @@
 		        )
 		WHERE
 		    ROWNUM = 1  
-	</entry>
+	</entry>  
 	<entry key="dps.delegate.select.delegatee">
 		SELECT * 
 		  FROM
@@ -269,7 +269,7 @@
 		    SELECT DISTINCT
 				      NVL(D1.DAR_FROM_USERNAME,'NA')          										AS  DELEGATEE
 				    , TO_CHAR(D1.DAR_FROM_DATE,'DD/MM/YYYY')  										AS  DELEGATED_FROM
-				    , NVL(TO_CHAR(D1.DAR_TO_DATE,'DD/MM/YYYY'),'01/01/0000')   						AS  DELEGATED_TO
+			   , NVL(TO_CHAR(D1.DAR_TO_DATE,'DD/MM/YYYY'),'01/01/0000')								AS  DELEGATED_TO
 				FROM
 				DPS_ADDITIONAL_ROLES D1, 
 				DPS_ADDITIONAL_ROLES D2
