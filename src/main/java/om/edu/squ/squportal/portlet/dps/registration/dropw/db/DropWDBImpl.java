@@ -306,7 +306,7 @@ public class DropWDBImpl implements DropWDBDao
 				dropWDTO.setStudent(student);
 				dropWDTO.setAdvisor(advisor);
 				
-				dropWDTO.setYearSemester(rs.getString(Constants.COST_COL_DPS_COURSE_YEAR)+"/"+rs.getString(Constants.COST_COL_DPS_SEMESTER_CODE));
+				dropWDTO.setYearSemester(rs.getString(Constants.COST_COL_DPS_SEMESTER_CODE) + " " + rs.getString(Constants.COST_COL_DPS_COURSE_YEAR));
 				
 				/* Delegation */
 				if(isDelegation)
