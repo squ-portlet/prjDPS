@@ -159,7 +159,7 @@
 		      AND STDSTATCD   = :paramStdStatCode	
 	</entry>
 	<entry key="dps.dropw.select.student.records.by.employee">
-		SELECT
+			SELECT
 		      	DISTINCT
 				  	REG.STDNO							              	AS	STUDENT_NO
 				, PORTAL.STD_ID											AS	STUDENT_ID
@@ -174,7 +174,12 @@
 			    , 	GENDER                                				AS  GENDER
 			    , 	STD_EMAIL                             				AS  EMAIL
 		        ,	SECT.CCYRCD											AS	CCYRCD
-		        ,	SECT.SEMCD			    							AS	SEMCD
+                ,	DECODE
+						    (
+								        :paramLocale
+								      , 'en', SEM.SEMNM
+								            , SEM.A_SEMNM
+						    )                                       	AS  SEMCD
 	          	, DECODE
 			                (
 			                    :paramLocale
@@ -216,8 +221,10 @@
 				, V_DEPT_MAJOR      DEPT_MAJ
 				, COL_DEPT          DEPT
 				, SECT              SECT
+                , SEM               SEM
 		WHERE 
-			          REG.STDNO     = PORTAL.STDNO
+                      SEM.SEMCD = SECT.SEMCD
+			      AND REG.STDNO     = PORTAL.STDNO
 			      AND REG.STDNO		=	T_DROP.STDNO	
 			      AND REG.STDSTATCD = PORTAL.STDSTATCD
 			      AND DEPT.COLCENCD     = COL.COLCENCD
@@ -256,7 +263,7 @@
 					      OR  :paramStdNo IS NULL
 					)
 
-			ORDER BY PORTAL.COHORT DESC, IS_APPROVER DESC
+			ORDER BY  CCYRCD DESC, SEMCD, IS_APPROVER DESC , PORTAL.COHORT DESC 
 	</entry>
 	
 	<entry key="dps.dropw.update.course.temp.for.drop">

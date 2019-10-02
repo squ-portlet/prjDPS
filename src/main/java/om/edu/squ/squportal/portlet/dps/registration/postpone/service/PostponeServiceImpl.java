@@ -472,6 +472,7 @@ public class PostponeServiceImpl implements PostponeService
 		 * Rule 2 : Drop with W period
 		 */
 		/* Following rules not applied at test environment */
+
 		if(Constants.CONST_TEST_ENVIRONMENT)
 		{
 			this.dropWTimeApplied	=	true;
@@ -484,6 +485,7 @@ public class PostponeServiceImpl implements PostponeService
 			}
 			else
 			{
+			if(ruleService.isDropWPeriod())
 				this.dropWTimeApplied	=	false;
 			}
 		}
